@@ -3,6 +3,7 @@ var express         = require("express"),
     app             = express(),
     bodyParser      = require("body-parser"),
     logger          = require("morgan"),
+    fs		    = require("fs"),
     // favicon         = require("serve-favicon"),
     mongoose        = require("mongoose"),
     // passport        = require("passport"),
@@ -12,6 +13,7 @@ var express         = require("express"),
     // session         = require("express-session"),
     methodOverride  = require("method-override"),
     http            = require("http"),
+    https	    = require("https"),
     path            = require("path"),
     Blog            = require("./models/blog");
     // User        = require("./models/user");
@@ -68,15 +70,23 @@ app.use(function(req, res, next){
 /**
  * Get port from environment and store in Express.
  */
-const port = process.env.PORT || '3000';
+const port = '80';
+const sslPort = '443';
 app.set('port', port);
+app.set('sslPort', sslPort);
 
 /**
  * Create HTTP server.
  */
+const options = {
+    key: fs.readFileSync('../cert/privkey.pem'),
+    cert: fs.readFileSync('../cert/cert.pem')
+};
 const server = http.createServer(app);
+const secureSocketsLayer = https.createServer(options, app);
 
 /**
  * Listen on provided port, on all network interfaces.
  */
 server.listen(port, () => console.log(`The MEATSEO Server Has Started!`));
+secureSocketsLayer.listen(sslPort, () => console.log(`The Secure Sockets Layer Is Connected!`));

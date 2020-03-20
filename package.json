@@ -4,7 +4,7 @@
   "description": "seo blog",
   "main": "meatseo.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack -p --config ./webpack.config.js"
   },
   "author": "bukunjom",
   "license": "ISC",
@@ -18,8 +18,10 @@
     "ejs": "^3.0.1",
     "express": "^4.17.1",
     "file-loader": "^5.0.2",
+    "fs": "0.0.1-security",
     "history": "^4.10.1",
     "http": "0.0.0",
+    "https": "^1.0.0",
     "isotope-layout": "^3.0.6",
     "method-override": "^3.0.0",
     "moment": "^2.24.0",

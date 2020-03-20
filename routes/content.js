@@ -7,9 +7,12 @@ var express = require("express"),
     
 var smtpTransport = nodeMailer.createTransport({
    service: "Gmail",
+   host: "smtpdm.aliyun.com",
+   port: 465,
+   secureConnection: true,
    auth: {
            user: "meatseo",
-           pass: "Tee023936760",
+           pass: "Tee023936760"
    }
 });
 
@@ -39,7 +42,7 @@ router.get("/blogdetail", function(req, res, next){
 
 //SEND MESSAGE - send message via email
 router.post("/message", function(req, res, next){
-       
+    console.log("enter");  
     var mailOptions = {
         from: "meatseo@gmail.com",
         to: req.body.email,
