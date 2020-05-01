@@ -1,9 +1,11 @@
 var express = require("express"),
     router  = express.Router(),
     nodeMailer  = require("nodemailer"),
+    fs      = require("fs"),
     IndexContent = require("../models/indexContent"),
     BlogDetailContent = require("../models/blogDetailContent"),
-    TemplateContent = require("../models/templateContent");
+    TemplateContent = require("../models/templateContent"),
+    contentState = require("../initial_state/content");
     
 var smtpTransport = nodeMailer.createTransport({
    service: "Gmail",
@@ -12,9 +14,11 @@ var smtpTransport = nodeMailer.createTransport({
    secureConnection: true,
    auth: {
            user: "meatseo",
-           pass: "Tee023936760"
+           pass: "ktymosmhlcmlljpu"
    }
 });
+
+//Tee023936760
 
 //INDEXCONTENT - get content of index page
 router.get("/index", function(req, res, next){
@@ -39,6 +43,26 @@ router.get("/blogdetail", function(req, res, next){
         res.json(blogDetailContent);
     });
 });
+
+//INITIALSTATE - update JSON file of initialState content
+router.get("/updateJsonFile", async function(req, res, next) {
+    try {
+        let contentStateJson = await contentState();
+        if (fs.existsSync("./initial_state/initialContentState.json")) {
+            fs.unlink("./initial_state/initialContentState.json", function(err) {
+               if (err) return next(err);
+               console.log("The Javascript file which contains initial content state is deleted !!!");
+            });
+        };
+        fs.writeFile("./initial_state/initialContentState.json", JSON.stringify(contentStateJson), function(err) {
+            if (err) return next(err);
+            console.log("The Javascript file which contains initial content state is written !!!");
+        });
+        res.send("The Javascript file which contains initial content state is updated !!!");
+    } catch (err) {
+        res.send(err);
+    }
+})
 
 //SEND MESSAGE - send message via email
 router.post("/message", function(req, res, next){

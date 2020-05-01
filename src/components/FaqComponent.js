@@ -38,7 +38,7 @@ export default class Faq extends React.Component {
     const { faq } = this.props;
     
     if (!faq) {
-      return <NotFoundPage/>
+      return <div/>
     }
     
     return (

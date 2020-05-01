@@ -40,7 +40,7 @@ export default class Team extends React.Component {
     const { team } = this.props;
     
     if (!team) {
-      return <NotFoundPage/>
+      return <div/>
     }
     
     return (

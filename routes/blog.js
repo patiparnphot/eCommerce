@@ -1,13 +1,16 @@
-var express = require("express"),
-    router  = express.Router(),
-    moment  = require("moment-timezone"),
-    Blog = require("../models/blog");
+var express   = require("express"),
+    router    = express.Router(),
+    moment    = require("moment-timezone"),
+    fs        = require("fs"),
+    Blog      = require("../models/blog"),
+    blogState = require("../initial_state/blog");
     // middleware = require("../middleware");
 
 // var preAuthenticate = function (req,res,next){
 //     console.log(JSON.stringify(req.body));
 //     return next();
 // };
+
 
 //BLOGS - get all blogs
 router.get("/", function(req, res, next){
@@ -20,6 +23,49 @@ router.get("/", function(req, res, next){
         }
     );
 });
+
+//INITIALSTATE - update JSON file of initialState blog
+router.get("/updateJsonFile", async function(req, res, next) {
+try {
+    Blog.find({}, {title: 1, _id: 0}, {}, async function(err, allBlogs){
+        if (err) return next(err);
+        let blogStateArr = [];
+        if (Array.isArray(allBlogs) && (allBlogs.length > 0)) {
+            for (let i = 0; i < allBlogs.length; i++) {
+                let blogTitle = allBlogs[i].title;
+                blogStateArr.push(blogState(blogTitle));
+            };
+        };
+        let finalBlogStateArr = await Promise.all(blogStateArr);
+        let blogStateJS = `module.exports = function(blogTitle) { `;
+        for (let j = 0; j < finalBlogStateArr.length; j++) {
+            if (j == 0) {
+                blogStateJS += `if ( blogTitle == `;
+            } else {
+                blogStateJS += `else if ( blogTitle == `;
+            }
+            blogStateJS += JSON.stringify(finalBlogStateArr[j].title);
+            blogStateJS += ` ) { return `;
+            blogStateJS += JSON.stringify(finalBlogStateArr[j].state);
+            blogStateJS += `; } `;
+        };
+        blogStateJS += `else { return undefined; } }`;
+        if (fs.existsSync("./initial_state/initialBlogState.js")) {
+            fs.unlink("./initial_state/initialBlogState.js", function(err) {
+                if (err) return next(err);
+                console.log("The Javascript file which contains initial blog state is deleted !!!");
+            });
+        };
+        fs.writeFile("./initial_state/initialBlogState.js", blogStateJS, function(err) {
+            if (err) return next(err);
+            console.log("The Javascript file which contains initial blog state is written !!!");
+        });
+        res.send("The Javascript file which contains initial blog state is updated !!!");
+    });
+} catch (err) {
+res.send(err);
+}
+})
 
 //BLOG - get a single blog
 router.get("/:title", function(req, res, next) {
@@ -86,6 +132,8 @@ router.get("/:title", function(req, res, next) {
                             let blogDetail = {};
                             blogDetail = {
                                 '_id': currentlyBlog._id,
+                                'descriptionHtml': currentlyBlog.descriptionHtml,
+                                'titleHtml': currentlyBlog.titleHtml,
                                 'image': currentlyBlog.image,
                                 'title': currentlyBlog.title,
                                 'text': currentlyBlog.text,

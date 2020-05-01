@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Route, Router, Switch, useRouteMatch } from 'react-router-dom';
-import { createBrowserHistory, Location } from 'history';
-import routes from './routes';
+import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import Header from './containers/HeaderContainer';
 import Footer from './containers/FooterContainer';
 import NotFoundPage from './components/NotFoundPage.js';
 import IndexPage from './pages/IndexPage';
 import BlogPage from './pages/BlogPage';
+
+var initialContentState = require("../initial_state/initialContentState.json");
 
 import {
   fetchTemplatecontent,
@@ -15,13 +15,14 @@ import {
   fetchTemplatecontentFailure
 } from './actions/contents';
 
-const history = createBrowserHistory();
+//const history = createMemoryHistory();
 
 
 function App({fetchTemplatecontent, templateContent}) {
   
   React.useEffect(() => {
     fetchTemplatecontent();
+    //templateContent.content = initialContentState.contents.template.content;
   },[]);
   
   const { content, loading, error } = templateContent;
@@ -37,7 +38,7 @@ function App({fetchTemplatecontent, templateContent}) {
   // console.log('template: ', templateContent);
   
   return (
-      <Router history={history}>
+      <div>
         <Header headerTag={content.headerTag} />
         <Switch>
           <Route exact path="/">
@@ -50,7 +51,7 @@ function App({fetchTemplatecontent, templateContent}) {
         </Switch>
         <Footer footerTag={content.footerTag} />
         <a href="#" className="back-to-top"><i className="fa fa-chevron-up"></i></a>
-      </Router>
+      </div>
   );
 }
 
@@ -68,6 +69,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     fetchTemplatecontent: () => {
       dispatch(fetchTemplatecontent()).then((response) => {
+        console.log('templateContent: ', response.payload);
         !response.error ? dispatch(fetchTemplatecontentSuccess(response.payload)) : dispatch(fetchTemplatecontentFailure(response.payload));
       });
     }

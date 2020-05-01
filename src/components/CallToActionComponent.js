@@ -13,7 +13,7 @@ export default class CallToAction extends React.Component {
     const { callToAction } = this.props;
     
     if (!callToAction) {
-      return <NotFoundPage/>
+      return <div/>
     }
     
     return (

@@ -1696,6 +1696,10 @@ h6 {
   font-size: 15px;
 }
 
+.single-post-area .blog_details img {
+  width: 100%;
+}
+
 /* line 1087, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_blog.scss */
 .single-post-area .quote-wrapper {
   background: rgba(130, 139, 178, 0.1);

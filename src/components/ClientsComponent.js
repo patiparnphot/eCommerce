@@ -1,5 +1,9 @@
 import React from 'react';
-import OwlCarousel from 'react-owl-carousel';
+//import './loader.js';
+//import OwlCarousel from 'react-owl-carousel';
+//require('../../static/lib/jquery/jquery.min.js');
+//require('../../static/lib/jquery/jquery-migrate.min.js');
+//require('../../static/lib/owlcarousel/owl.carousel.js');
 
 
 export default class Clients extends React.Component {
@@ -21,9 +25,16 @@ export default class Clients extends React.Component {
     };
   }
   
-//   componentDidMount() {
-//     this.props.fetchBlogs();
-//   }
+   componentDidMount() {
+     var owlCarousel = require('../../static/lib/owlcarousel/owl.carousel.js');
+     // Clients carousel (uses the Owl Carousel library)
+     $(".clients-carousel").owlCarousel({
+        autoplay: true,
+        dots: true,
+        loop: true,
+        responsive: { 0: { items: 2 }, 768: { items: 4 }, 900: { items: 6 }}
+     });
+   }
    
   renderClients(clients) {
     
@@ -49,7 +60,7 @@ export default class Clients extends React.Component {
     const { clients } = this.props;
     
     if (!clients) {
-      return <NotFoundPage/>
+      return <div/>
     }
     
     return (
@@ -60,18 +71,15 @@ export default class Clients extends React.Component {
               <div dangerouslySetInnerHTML={this.getHTML(clients.header)} />
             </header>
     
-            <OwlCarousel
-              className="owl-carousel clients-carousel"
-              autoplay
-              dots
-              loop
-              responsive={this.state.responsive}
-            >
+            <div className="owl-carousel clients-carousel" >
               {this.renderClients(clients.carousel)}
-            </OwlCarousel>
+            </div>
     
           </div>
         </section>
     )
   }
+
+//<OwlCarousel className="owl-carousel clients-carousel" autoplay dots loop responsive={this.state.responsive} >
+
 }

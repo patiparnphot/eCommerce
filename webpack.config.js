@@ -2,10 +2,13 @@ const webpack = require('webpack');
 const path = require('path');
 
 module.exports = {
-  entry: path.join(__dirname, 'src', 'app-client.js'),
+  entry: {
+    appClient: path.join(__dirname, 'src', 'app-client.js'),
+    appBundle: path.join(__dirname, 'src', 'app-bundle.js')
+  },
   output: {
     path: path.join(__dirname, 'static', 'js'),
-    filename: 'bundle.js'
+    filename: '[name].js'
   },
   // module: {
   //   loaders: [

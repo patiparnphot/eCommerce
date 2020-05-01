@@ -1,12 +1,19 @@
 import React from 'react';
-import OwlCarousel from 'react-owl-carousel';
+//import OwlCarousel from 'react-owl-carousel';
 
 
 export default class Testimonials extends React.Component {
   
-//   componentDidMount() {
-//     this.props.fetchBlogs();
-//   }
+   componentDidMount() {
+     var owlCarousel = require('../../static/lib/owlcarousel/owl.carousel.js');
+     // Testimonials carousel (uses the Owl Carousel library)
+     $(".testimonials-carousel").owlCarousel({
+       autoplay: true,
+       dots: true,
+       loop: true,
+       items: 1
+     });
+   }
   
   renderTestimonials(testimonials) {
     return testimonials.map((testimonial) => {
@@ -31,7 +38,7 @@ export default class Testimonials extends React.Component {
     const { testimonials } = this.props;
     
     if (!testimonials) {
-      return <NotFoundPage/>
+      return <div/>
     }
     
     return (
@@ -45,11 +52,11 @@ export default class Testimonials extends React.Component {
             <div className="row justify-content-center">
               <div className="col-lg-8">
     
-                <OwlCarousel className="owl-carousel testimonials-carousel wow fadeInUp" items={1} autoplay dots loop>
+                <div className="owl-carousel testimonials-carousel wow fadeInUp">
         
                   {this.renderTestimonials(testimonials.carousel)}
     
-                </OwlCarousel>
+                </div>
     
               </div>
             </div>
@@ -59,4 +66,7 @@ export default class Testimonials extends React.Component {
         </section>
     )
   }
+
+//<OwlCarousel className="owl-carousel testimonials-carousel wow fadeInUp" items={1} autoplay dots loop>
+
 }

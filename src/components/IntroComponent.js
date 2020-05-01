@@ -17,7 +17,7 @@ export default class Intro extends React.Component {
     const { intro } = this.props;
     
     if (!intro) {
-      return <div></div>
+      return <div/>
     }
     
     return (

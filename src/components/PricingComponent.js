@@ -40,7 +40,7 @@ export default class Pricing extends React.Component {
     const { pricing } = this.props;
     
     if (!pricing) {
-      return <NotFoundPage/>
+      return <div/>
     }
     
     return (

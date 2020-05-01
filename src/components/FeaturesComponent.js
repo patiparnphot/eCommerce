@@ -53,7 +53,7 @@ export default class Features extends React.Component {
     const { features } = this.props;
     
     if (!features) {
-      return <NotFoundPage/>
+      return <div/>
     }
     
     return (

@@ -1,6 +1,8 @@
 var mongoose = require("mongoose");
 
 var indexContentSchema = new mongoose.Schema({
+   titleHtml: String,
+   descriptionHtml: String,
    intro: {
        slogan: String,
        button: String,

@@ -1,21 +1,15 @@
 import React from 'react';
 import { Field, reduxForm} from 'redux-form';
-import fetch from 'cross-fetch';
+import { sendMessage } from '../actions/contents';
 
-const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost/api' : '/api';
+const ROOT_URL = '/api';
 
 
-function SubmitTest(values, dispatch) {
-  console.log(values);
-  fetch(`${ROOT_URL}/contents/message`, {
-    method: "post",
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(values)
-  })
-  .then(response => response.json(), error => console.log('An error occurred.', error));
+function Submit(values, dispatch) {
+  console.log('contactUs', values);
+  dispatch(sendMessage(values)).then((response) => {
+     console.log('sendMessageResponse: ', response);
+  });
 }
 
 const renderField = ({ input, label, type }) => {
@@ -46,7 +40,7 @@ class SendUsMessage extends React.Component {
       formButton
     } = this.props;
     return (
-      <form onSubmit={handleSubmit(SubmitTest)}>
+      <form onSubmit={handleSubmit(Submit)}>
         <Field name="name" type="text" label={placeholderName} component={renderField} />
         <Field name="email" type="email" label={placeholderEmail} component={renderField} />
         <Field name="subject" type="text" label={placeholderSubject} component={renderField} />

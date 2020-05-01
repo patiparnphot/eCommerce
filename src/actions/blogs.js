@@ -1,4 +1,4 @@
-import axios from 'axios';
+//import axios from 'axios';
 import fetch from 'cross-fetch';
 
 //Blog list
@@ -33,7 +33,8 @@ function receiver(type, json) {
   }
 }
 
-const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost/api' : '/api';
+//const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost/api' : '/api';
+const ROOT_URL = '/api/';
 export function fetchBlogs() {
   return dispatch => {
     return fetch(`${ROOT_URL}/blogs`)

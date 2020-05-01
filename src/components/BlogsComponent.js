@@ -1,7 +1,7 @@
 import React from 'react';
-import Isotope from 'isotope-layout/js/isotope';
-import { HashLink as Link } from 'react-router-hash-link';
+import { Link } from 'react-router-dom';
 
+var initialContentState = require("../../initial_state/initialContentState.json");
 
 export default class Blog extends React.Component {
   
@@ -17,7 +17,8 @@ export default class Blog extends React.Component {
   }
   
   componentDidMount() {
-    this.props.fetchBlogs();
+    //this.props.fetchBlogs();
+    //this.props.blogsList.blogs = initialContentState.blogs.blogsList.blogs;
   }
   
   // Click Function
@@ -55,7 +56,7 @@ export default class Blog extends React.Component {
   renderBlogs(blogs) {
     return blogs.map((blog) => {
       return (
-        <div key={blog._id} className={"col-lg-4 col-md-6 blog-item filter-" + blog.type}>
+        <div key={blog.title} className={"col-lg-4 col-md-6 blog-item filter-" + blog.type}>
           <div className="blog-wrap">
             <img src={ blog.image } className="img-fluid" alt="" />
             <div className="blog-info">
@@ -77,9 +78,9 @@ export default class Blog extends React.Component {
   
   render() {
     
-    const { content } = this.props;
-    
     const { blogs, loading, error } = this.props.blogsList;
+    
+    const { content } = this.props;
     
 
     if(loading) {
@@ -87,7 +88,7 @@ export default class Blog extends React.Component {
     } else if(error) {
       return <div className="alert alert-danger">Error: {error.message}</div>
     } else if(!content) {
-      return <div/>
+      return <div/>;
     }
     
     return (

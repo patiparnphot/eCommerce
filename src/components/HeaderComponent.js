@@ -3,11 +3,11 @@ import { HashLink as Link } from 'react-router-hash-link';
 
 export default class Header extends React.Component {
   
-  componentWillUnmount() {
+  //componentWillUnmount() {
     //Important! If your component is navigating based on some global state(from say componentWillReceiveProps)
     //always reset that global state back to null when you REMOUNT
     //  this.props.resetPage();
-  }
+  //}
 
   componentDidMount(){
     // this.props.loadUserFromPage();

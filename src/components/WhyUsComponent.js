@@ -39,7 +39,7 @@ export default class WhyUs extends React.Component {
     const { whyUs } = this.props;
     
     if (!whyUs) {
-      return <NotFoundPage/>
+      return <div/>
     }
     
     return (

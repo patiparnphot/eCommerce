@@ -13,6 +13,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     fetchBlogs: () => {
       dispatch(fetchBlogs()).then((response) => {
+        console.log('allBlogs: ', response.payload);
         !response.error ? dispatch(fetchBlogsSuccess(response.payload)) : dispatch(fetchBlogsFailure(response.payload));
       });
     }

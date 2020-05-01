@@ -1,25 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import NotFoundPage from './NotFoundPage';
-// import { FacebookProvider, Comments } from 'react-facebook';
+import { Helmet } from 'react-helmet';
 
-const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost/blogs' : '/blogs';
+var initialBlogState = require("../../initial_state/initialBlogState");
 
-function Submit(text){
-  return console.log(text);
-}
-
-// class Comment extends React.Component {
-//   render() {
-//     return (
-//       <FacebookProvider appId="182388739813749" >
-//         <Comments href="https://www.patiparnair.com" width="auto" />
-//       </FacebookProvider>
-//     );
-//   }
-// }
-
-// let blogTitleHistory = "";
 
 export default class BlogPage extends React.Component {
   
@@ -32,25 +17,26 @@ export default class BlogPage extends React.Component {
     
     this.props.fetchBlogdetailcontent();
     
-    window.fbAsyncInit = function() {
-      window.FB.init({
-        appId            : '182388739813749',
-        autoLogAppEvents : true,
-        xfbml            : true,
-        version          : 'v5.0'
-      })
-    };
+    //window.fbAsyncInit = function() {
+    //  window.FB.init({
+    //    appId            : '182388739813749',
+    //    autoLogAppEvents : true,
+    //    xfbml            : true,
+    //    version          : 'v5.0'
+    //  })
+    //};
     
     // Load the SDK asynchronously
-    (function(d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s); js.id = id;
-        js.src = "//connect.facebook.net/en_US/sdk.js";
-        fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
+    //(function(d, s, id) {
+    //    var js, fjs = d.getElementsByTagName(s)[0];
+    //    if (d.getElementById(id)) return;
+    //    js = d.createElement(s); js.id = id;
+    //    js.src = "//connect.facebook.net/en_US/sdk.js";
+    //    fjs.parentNode.insertBefore(js, fjs);
+    //}(document, 'script', 'facebook-jssdk'));
     
-    this.props.fetchBlog(this.props.blogTitle);
+    //this.props.fetchBlog(this.props.blogTitle);
+    this.props.activeBlog.blog = initialBlogState(this.props.blogTitle);
     this.setState({blogTitleHistory: this.props.blogTitle});
     
   }
@@ -61,24 +47,23 @@ export default class BlogPage extends React.Component {
       window.FB.XFBML.parse();
     }
     
-    // console.log("blog title: " + this.props.blogTitle);
+    console.log("blog title: ", this.props.blogTitle);
+    console.log("blog histitle: ", this.state.blogTitleHistory);
     
     if ( this.state.blogTitleHistory != this.props.blogTitle ) {
-      this.props.fetchBlog(this.props.blogTitle);
+      //this.props.fetchBlog(this.props.blogTitle);
+      this.props.activeBlog.blog = initialBlogState(this.props.blogTitle);
+      console.log("BlogState", initialBlogState(this.props.blogTitle));
+      console.log("activeBlogTitle", this.props.activeBlog.blog);
       this.setState({blogTitleHistory: this.props.blogTitle});
     }
     
   }
-  
-  // constructor(props){
-  //   super(props);
-  //   this.state = { text: "hello" };
-  // }
-  
+    
   renderRecentPosts(posts) {
     return posts.map((post) => {
       return (
-        <div key={post._id} className="media post_item">
+        <div key={post.title} className="media post_item">
           <img src={post.image} alt="post" />
           <div className="media-body">
             <Link to={"/blogs/" + post.title}>
@@ -96,8 +81,12 @@ export default class BlogPage extends React.Component {
   }
 
   render() {
-    const { content, contentLoading, contentError } = this.props.blogdetailContent;
-    const { blog, blogLoading, blogError } = this.props.activeBlog;
+    const { content } = this.props.blogdetailContent;
+    const contentLoading = this.props.blogdetailContent.loading;
+    const contentError = this.props.blogdetailContent.error;
+    const { blog } = this.props.activeBlog;
+    const blogLoading = this.props.activeBlog.loading;
+    const blogError = this.props.activeBlog.error;
     
     // console.log("blog detail content: ", content);
     // console.log("blog detail: ", blog);
@@ -113,8 +102,14 @@ export default class BlogPage extends React.Component {
     } else if(!blog) {
       return <NotFoundPage/>
     }
+
     return (
       <section id="blog">
+         <Helmet>
+            <title>{blog.titleHtml}</title>
+            <meta name='description' content={blog.descriptionHtml} />
+         </Helmet>
+
           <div className="bradcam_area">
             <div className="container">
               <div className="row">
@@ -135,10 +130,10 @@ export default class BlogPage extends React.Component {
           <section className="blog_area single-post-area section-padding">
             <div className="container">
               <div className="row">
-                <div className="col-lg-9 posts-list">
+                <div className="col-lg-9 col-md-9 col-12 posts-list">
                   <div className="single-post">
                     <div className="feature-img">
-                      <img className="img-fluid" src={blog.image} alt="" />
+                      <img className="img-fluid" style={{width: '100%'}} src={blog.image} alt="" />
                     </div>
                     <div className="blog_details">
                       <h2>{blog.title}</h2>
@@ -203,9 +198,9 @@ export default class BlogPage extends React.Component {
                       </div>
                     </div>
                   </div>
-                  <div className="fb-comments" data-href="https://www.patiparnair.com" data-width="100%" data-numposts="5"></div>
+                  <div className="fb-comments" data-href={"https://www.meatseo.com/blogs/" + blog.title} data-width="100%" data-numposts="5"></div>
                 </div>
-                <div className="col-lg-3">
+                <div className="col-lg-3 col-md-3 col-12">
                   <div className="blog_right_sidebar">
                     <aside className="single_sidebar_widget post_category_widget">
                       <h4 className="widget_title">{content.categoryHead}</h4>

@@ -31,7 +31,7 @@ export default class Services extends React.Component {
     const { services } = this.props;
     
     if (!services) {
-      return <NotFoundPage/>
+      return <div/>
     }
     
     return (

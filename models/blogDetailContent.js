@@ -5,7 +5,7 @@ var blogDetailContentSchema = new mongoose.Schema({
    homeBreadcrumb: String,
    blogDetailBreadcrumb: String,
    previousBlogNav: String,
-   NextBlogNav: String,
+   NxtBlgNav: String,
    categoryHead: String,
    recentPostHead: String
 });

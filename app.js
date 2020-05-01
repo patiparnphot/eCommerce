@@ -14,9 +14,14 @@ var express         = require("express"),
     methodOverride  = require("method-override"),
     http            = require("http"),
     https	    = require("https"),
-    path            = require("path"),
-    Blog            = require("./models/blog");
-    // User        = require("./models/user");
+    path            = require("path");
+
+import { Helmet } from "react-helmet";
+
+var serverSideRender    = require("./src/serverSideRender"),
+    template            = require("./static/template"),
+    initialContentState = require("./initial_state/initialContentState.json"),
+    initialBlogState    = require("./initial_state/initialBlogState");
 
 app.use(express.static('./static'));
 
@@ -56,8 +61,31 @@ app.use("/api/blogs", blogRoutes);
 // app.use("/api/idols/:id/comments", commentRoutes);
 
 // Catch all other routes and return the index file
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'static/index.html'));
+app.get('*', async (req, res, next) => {
+  try {
+     //res.sendFile(path.join(__dirname, 'static/example.html'));
+     let initialStateJson = initialContentState;
+     let titleHtml = initialStateJson.contents.index.content.titleHtml;
+     let descriptionHtml = initialStateJson.contents.index.content.descriptionHtml;
+     let urlArr = (req.url).split("/");
+     if (urlArr.length >= 3 && urlArr[1] === 'blogs') {
+        let activeBlog = await initialBlogState(urlArr[2]);
+        //console.log('blogState', activeBlog);
+        initialStateJson.blogs.activeBlog = {
+           "blog": activeBlog,
+           "error": null,
+           "loading": false
+        };
+        titleHtml = activeBlog.titleHtml;
+        descriptionHtml = activeBlog.descriptionHtml;
+     }
+     //const helmet = Helmet.renderStatic();
+     const { preloadedState, content } = serverSideRender(initialStateJson, req.url);
+     const response = template(titleHtml, preloadedState, content, descriptionHtml);
+     res.send(response);
+  } catch (e) {
+     next(e);
+  }
 });
 
 app.use(function(req, res, next){
@@ -79,7 +107,7 @@ app.set('sslPort', sslPort);
  * Create HTTP server.
  */
 const options = {
-    key: fs.readFileSync('../cert/privkey.pem'),
+    key:  fs.readFileSync('../cert/privkey.pem'),
     cert: fs.readFileSync('../cert/cert.pem')
 };
 const server = http.createServer(app);
@@ -90,3 +118,4 @@ const secureSocketsLayer = https.createServer(options, app);
  */
 server.listen(port, () => console.log(`The MEATSEO Server Has Started!`));
 secureSocketsLayer.listen(sslPort, () => console.log(`The Secure Sockets Layer Is Connected!`));
+

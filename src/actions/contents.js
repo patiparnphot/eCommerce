@@ -24,7 +24,8 @@ function receiver(type, json) {
   }
 }
 
-const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost/api' : '/api';
+//const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost/api' : '/api';
+const ROOT_URL = '/api';
 
 export function fetchIndexcontent() {
   return dispatch => {
@@ -83,5 +84,20 @@ export function fetchBlogdetailcontentFailure(error) {
   return {
     type: FETCH_BLOGDETAILCONTENT_FAILURE,
     payload: error
+  };
+}
+
+export function sendMessage(values) {
+  return dispatch => {
+    return fetch(`${ROOT_URL}/contents/message`,
+      {
+        method: "post",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(values)
+      })
+      .then(response => response, error => console.log('An error occurred.', error));
   };
 }

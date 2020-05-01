@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Helmet } from 'react-helmet';
+
+var initialContentState = require("../../initial_state/initialContentState.json");
 
 import {
   fetchIndexcontent,
@@ -25,6 +28,7 @@ class IndexPage extends Component {
   
   componentDidMount() {
     this.props.fetchIndexcontent();
+    //this.props.indexContent.content = initialContentState.contents.index.content;
   }
   
   render() {
@@ -43,6 +47,10 @@ class IndexPage extends Component {
     
     return (
       <div className='container'>
+        <Helmet>
+                   <title>{content.titleHtml}</title>
+                   <meta name='description' content={content.descriptonHtml} />
+        </Helmet>
         <Intro intro={content.intro} />
         <main id='main'>
           <About about={content.about} />
@@ -55,7 +63,6 @@ class IndexPage extends Component {
           <Testimonials testimonials={content.testimonials} />
           <Team team={content.team} />
           <Clients clients={content.clients} />
-          
           <Faq faq={content.faq} />
         </main>
       </div>
@@ -68,6 +75,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     fetchIndexcontent: () => {
       dispatch(fetchIndexcontent()).then((response) => {
+        console.log('indexContent: ', response.payload);
         !response.error ? dispatch(fetchIndexcontentSuccess(response.payload)) : dispatch(fetchIndexcontentFailure(response.payload));
       });
     }

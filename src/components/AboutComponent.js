@@ -17,7 +17,7 @@ export default class About extends React.Component {
     const { about } = this.props;
     
     if (!about) {
-      return <NotFoundPage/>
+      return <div/>
     }
     
     return (
