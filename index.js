@@ -11,6 +11,7 @@ require('./app')
 //   global.document.documentElement = {};
 //   global.document.documentElement.style = {};
 //   global.document.addEventListener = function(){};
+//   global.document.createElement = function(){};
 //}
 //if (typeof $ === 'undefined') {
 //   var $ = function(arg){

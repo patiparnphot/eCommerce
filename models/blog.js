@@ -1,6 +1,6 @@
 var mongoose = require("mongoose");
 
-var blogSchema = new mongoose.Schema({
+var blogObject = {
    titleHtml: String,
    descriptionHtml: String,
    title: String,
@@ -13,6 +13,10 @@ var blogSchema = new mongoose.Schema({
       description: String
    },
    postedTime: Date
-});
+};
+
+var blogSchema = new mongoose.Schema(blogObject);
 
 module.exports = mongoose.model("Blog", blogSchema);
+
+//module.exports = blogObject;

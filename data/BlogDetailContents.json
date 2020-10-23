@@ -1,0 +1,12 @@
+{
+    "_id": {
+        "$oid": "5e370bf77c213e47b9d2e238"
+    },
+    "headerLine": "แหล่งเรียนรู้",
+    "homeBreadcrumb": "หน้าหลัก",
+    "blogDetailBreadcrumb": "แหล่งเรียนรู้",
+    "previousBlogNav": "ก่อนหน้า",
+    "nextBlogNav": "ถัดไป",
+    "categoryHead": "หมวดหมู่",
+    "recentPostHead": "ล่าสุด"
+}

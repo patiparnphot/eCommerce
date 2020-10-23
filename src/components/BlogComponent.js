@@ -35,8 +35,8 @@ export default class BlogPage extends React.Component {
     //    fjs.parentNode.insertBefore(js, fjs);
     //}(document, 'script', 'facebook-jssdk'));
     
-    //this.props.fetchBlog(this.props.blogTitle);
-    this.props.activeBlog.blog = initialBlogState(this.props.blogTitle);
+    this.props.fetchBlog(this.props.blogTitle);
+    //this.props.activeBlog.blog = initialBlogState(this.props.blogTitle);
     this.setState({blogTitleHistory: this.props.blogTitle});
     
   }
@@ -51,9 +51,9 @@ export default class BlogPage extends React.Component {
     console.log("blog histitle: ", this.state.blogTitleHistory);
     
     if ( this.state.blogTitleHistory != this.props.blogTitle ) {
-      //this.props.fetchBlog(this.props.blogTitle);
-      this.props.activeBlog.blog = initialBlogState(this.props.blogTitle);
-      console.log("BlogState", initialBlogState(this.props.blogTitle));
+      this.props.fetchBlog(this.props.blogTitle);
+      //this.props.activeBlog.blog = initialBlogState(this.props.blogTitle);
+      //console.log("BlogState", initialBlogState(this.props.blogTitle));
       console.log("activeBlogTitle", this.props.activeBlog.blog);
       this.setState({blogTitleHistory: this.props.blogTitle});
     }
@@ -66,7 +66,7 @@ export default class BlogPage extends React.Component {
         <div key={post.title} className="media post_item">
           <img src={post.image} alt="post" />
           <div className="media-body">
-            <Link to={"/blogs/" + post.title}>
+            <Link to={"/blogs/" + post.slug}>
               <h3>{post.title}</h3>
             </Link>
             <p>{post.postedDuration}</p>
@@ -89,7 +89,7 @@ export default class BlogPage extends React.Component {
     const blogError = this.props.activeBlog.error;
     
     // console.log("blog detail content: ", content);
-    // console.log("blog detail: ", blog);
+    console.log("blog detail: ", blog);
     
     if (contentLoading || blogLoading) {
       return <div className="container">Loading...</div>;
@@ -150,18 +150,18 @@ export default class BlogPage extends React.Component {
                       <div className="row">
                         <div className="col-lg-6 col-md-6 col-12 nav-left flex-row d-flex  align-items-center">
                           <div className="thumb">
-                            <Link to={"/blogs/" + blog.prevBlog.title} >
+                            <Link to={"/blogs/" + blog.prevBlog.slug} >
                               <img className="img-fluid" src={blog.prevBlog.image} alt="" />
                             </Link>
                           </div>
                           <div className="arrow">
-                            <Link to={"/blogs/" + blog.prevBlog.title} >
+                            <Link to={"/blogs/" + blog.prevBlog.slug} >
                               <span className="lnr text-white"><i className="fa fa-arrow-left"></i></span>
                             </Link>
                           </div>
                           <div className="detials">
                             <p>{content.previousBlogNav}</p>
-                            <Link to={"/blogs/" + blog.prevBlog.title} >
+                            <Link to={"/blogs/" + blog.prevBlog.slug} >
                               <h4>{blog.prevBlog.title}</h4>
                             </Link>
                           </div>
@@ -169,17 +169,17 @@ export default class BlogPage extends React.Component {
                         <div className="col-lg-6 col-md-6 col-12 nav-right flex-row d-flex justify-content-end align-items-center">
                           <div className="detials">
                             <p>{content.nextBlogNav}</p>
-                            <Link to={"/blogs/" + blog.nextBlog.title}>
+                            <Link to={"/blogs/" + blog.nextBlog.slug}>
                               <h4>{blog.nextBlog.title}</h4>
                             </Link>
                           </div>
                           <div className="thumb">
-                            <Link to={"/blogs/" + blog.nextBlog.title}>
+                            <Link to={"/blogs/" + blog.nextBlog.slug}>
                               <img className="img-fluid" src={blog.nextBlog.image} alt="" />
                             </Link>
                           </div>
                           <div className="arrow">
-                            <Link to={"/blogs/" + blog.nextBlog.title}>
+                            <Link to={"/blogs/" + blog.nextBlog.slug}>
                               <span className="lnr text-white"><i className="fa fa-arrow-right"></i></span>
                             </Link>
                           </div>

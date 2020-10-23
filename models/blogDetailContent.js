@@ -1,6 +1,6 @@
 var mongoose = require("mongoose");
 
-var blogDetailContentSchema = new mongoose.Schema({
+var blogDetailContentObject = {
    headerLine: String,
    homeBreadcrumb: String,
    blogDetailBreadcrumb: String,
@@ -8,6 +8,10 @@ var blogDetailContentSchema = new mongoose.Schema({
    NxtBlgNav: String,
    categoryHead: String,
    recentPostHead: String
-});
+};
+
+var blogDetailContentSchema = new mongoose.Schema(blogDetailContentObject);
 
 module.exports = mongoose.model("BlogDetailContent", blogDetailContentSchema);
+
+//module.exports = blogDetailContentObject;

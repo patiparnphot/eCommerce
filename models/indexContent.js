@@ -1,6 +1,6 @@
 var mongoose = require("mongoose");
 
-var indexContentSchema = new mongoose.Schema({
+var indexContentObject = {
    titleHtml: String,
    descriptionHtml: String,
    intro: {
@@ -93,6 +93,10 @@ var indexContentSchema = new mongoose.Schema({
             answer:String
         }]
     }
-});
+};
+
+var indexContentSchema = new mongoose.Schema(indexContentObject);
 
 module.exports = mongoose.model("IndexContent", indexContentSchema);
+
+//module.exports = indexContentObject;

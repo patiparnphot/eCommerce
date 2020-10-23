@@ -34,10 +34,10 @@ function receiver(type, json) {
 }
 
 //const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost/api' : '/api';
-const ROOT_URL = '/api/';
+const ROOT_URL = '/api';
 export function fetchBlogs() {
   return dispatch => {
-    return fetch(`${ROOT_URL}/blogs`)
+    return fetch(`${ROOT_URL}/blogs/`)
       .then(response => response.json(), error => console.log('An error occurred.', error))
       .then(json => dispatch(receiver(FETCH_BLOGS, json)));
   };

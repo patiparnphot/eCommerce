@@ -1,6 +1,6 @@
 var mongoose = require("mongoose");
 
-var templateContentSchema = new mongoose.Schema({
+var templateContentObject = {
    headerTag: {
        twitter: String,
        facebook: String,
@@ -34,6 +34,10 @@ var templateContentSchema = new mongoose.Schema({
            name: String
        }]
    }
-});
+};
+
+var templateContentSchema = new mongoose.Schema(templateContentObject);
 
 module.exports = mongoose.model("TemplateContent", templateContentSchema);
+
+//module.exports = templateContentObject;

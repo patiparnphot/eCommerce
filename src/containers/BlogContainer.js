@@ -12,11 +12,13 @@ const mapDispatchToProps = (dispatch) => {
   return {
     fetchBlog: (title) => {
       dispatch(fetchBlog(title)).then((response) => {
+        console.log('blog: ', response.payload);
         !response.error ? dispatch(fetchBlogSuccess(response.payload)) : dispatch(fetchBlogFailure(response.payload));
       });
     },
     fetchBlogdetailcontent: () => {
       dispatch(fetchBlogdetailcontent()).then((response) => {
+        console.log('blogdetailContent: ', response.payload);
         !response.error ? dispatch(fetchBlogdetailcontentSuccess(response.payload)) : dispatch(fetchBlogdetailcontentFailure(response.payload));
       });
     }

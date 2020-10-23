@@ -1,0 +1,56 @@
+{
+    "_id": {
+        "$oid": "5e2024c97c213e47b9cb19b3"
+    },
+    "headerTag": {
+        "twitter": "https://twitter.com/MEATSEOO",
+        "facebook": "https://www.facebook.com/meatseo",
+        "linkedin": "#",
+        "instagram": "https://www.instagram.com/meatseo",
+        "introNav": "หน้าแรก",
+        "aboutNav": "เกี่ยวกับเรา",
+        "servicesNav": "บริการของเรา",
+        "blogNav": "แหล่งเรียนรู้",
+        "teamNav": "ทีมงาน MEATSEO",
+        "footerNav": "ติดต่อเรา"
+    },
+    "footerTag": {
+        "info": "MEATSEO รับทำเว็บไซต์สำเร็จรูป ออกแบบเว็บไซต์ เว็บไซต์ e-commerce เว็บไซต์บริษัท รองรับ SEO พร้อมระบบจัดการข้อมูล(CMS) ดีไซน์ทันสมัย รองรับมือถือ Responsive",
+        "contactUsHead": "ติดต่อเรา",
+        "contactUs": "<p><\/p>",
+        "twitter": "https://twitter.com/MEATSEOO",
+        "facebook": "https://www.facebook.com/meatseo",
+        "linkedin": "#",
+        "instagram": "https://www.instagram.com/meatseo/",
+        "formHead": "ทำเว็บไซต์ พร้อมบริการ SEO",
+        "form": "",
+        "placeholderName": "ชื่อของคุณ",
+        "placeholderEmail": "อีเมล์ที่สามารถติดต่อได้",
+        "placeholderSubject": "แพ็คเกจที่เลือก",
+        "placeholderMessage": "่รายละเอียดเพิ่มเติม",
+        "formButton": "ยืนยัน",
+        "linksHead": "เพจที่น่าสนใจ",
+        "links": [
+            {
+                "href": "https://meatseo.com/",
+                "name": "หน้าแรก"
+            },
+            {
+                "href": "https://meatseo.com/#about",
+                "name": "เกี่ยวกับเรา"
+            },
+            {
+                "href": "https://meatseo.com/",
+                "name": "ทำเว็บไซต์สำเร็จรูป"
+            },
+            {
+                "href": "https://meatseo.com/",
+                "name": "บริการทำ SEO"
+            },
+            {
+                "href": "https://meatseo.com/#team",
+                "name": "ทีมงาน MEATSEO"
+            }
+        ]
+    }
+}

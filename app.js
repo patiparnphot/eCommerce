@@ -23,6 +23,21 @@ var serverSideRender    = require("./src/serverSideRender"),
     initialContentState = require("./initial_state/initialContentState.json"),
     initialBlogState    = require("./initial_state/initialBlogState");
 
+// Set Auto Reload due to file change
+fs.watchFile(require.resolve('./initial_state/initialContentState.json'), function () {
+    console.log("InitialContentState changed, reloading...");
+    delete require.cache[require.resolve('./initial_state/initialContentState.json')]
+    initialContentState = require('./initial_state/initialContentState.json');
+    console.log("InitialContentState has changed and Server has reloaded!!!");
+});
+fs.watchFile(require.resolve('./initial_state/initialBlogState'), function () {
+    console.log("InitialBlogState changed, reloading...");
+    delete require.cache[require.resolve('./initial_state/initialBlogState')]
+    initialBlogState = require('./initial_state/initialBlogState');
+    console.log("InitialBlogState has changed and Server has reloaded!!!");
+});
+
+app.use('/admin', express.static('./admin/static'));
 app.use(express.static('./static'));
 
 // Requiring API routes
@@ -60,7 +75,26 @@ app.use("/api/contents", contentRoutes);
 app.use("/api/blogs", blogRoutes);
 // app.use("/api/idols/:id/comments", commentRoutes);
 
+app.get('/date', (req, res, next) => {
+     var dt = new Date();
+     res.send(dt.toISOString());
+});
+
 // Catch all other routes and return the index file
+app.get('/admin/*', async (req, res, next) => {
+  try {
+     //res.sendFile(path.join(__dirname, 'static/example.html'));
+var adminServerSideRender    = require("./admin/src/serverSideRender"),
+    adminTemplate            = require("./admin/static/template");
+     let initialStateJson = initialContentState;
+     const { preloadedState, content } = adminServerSideRender({}, req.url);
+     const response = adminTemplate("ADMINISTRATOR", preloadedState, content);
+     res.send(response);
+  } catch (e) {
+     next(e);
+  }
+});
+
 app.get('*', async (req, res, next) => {
   try {
      //res.sendFile(path.join(__dirname, 'static/example.html'));

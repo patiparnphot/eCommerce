@@ -1,41 +1,32 @@
 var moment  = require("moment-timezone"),
-    Blog = require("../models/blog");
+    Blog = require("../models/blog"),
+    handler = require("../data_handler");
 
-module.exports = async function(title) {
+module.exports = async function(slug) {
+  let title = slug.toLowerCase();
+  
   try {
-     const currentlyBlog = await Blog.findOne({ title: title }).exec();
-     //console.log(currentlyBlog);
+     let currentlyBlog = await handler.findByBlogName(title);
 
      try {
-        let nextBlog;
-        nextBlog = await Blog.findOne(
-           { postedTime: { $gt: currentlyBlog.postedTime } },
-           {title: 1, image: 1},
-           { sort: { postedTime: 1 }, limit: 1 }).exec();
+        let nextBlog = await handler.findByNextBlog(title);
         if (!nextBlog) nextBlog = currentlyBlog;
         //console.log(nextBlog);
 
         try {
-           let prevBlog;
-           prevBlog = await Blog.findOne(
-              { postedTime: { $lt: currentlyBlog.postedTime } },
-              {title: 1, image: 1},
-              { sort: { postedTime: -1 }, limit: 1 }).exec();
+           let prevBlog = await handler.findByPrevBlog(title);
            if (!prevBlog) prevBlog = currentlyBlog;
            //console.log(prevBlog);
 
            try {
-              const recentBlogs = await Blog.find(
-                 { postedTime: { $lt: Date.now() } },
-                 {title: 1, image: 1, postedTime: 1},
-                 { sort: { postedTime: -1 }, limit: 4 }).exec();
+              let recentBlogs = await handler.findByRecentBlogs(4);
               //console.log(recentBlogs);
               let postedTime
               let postedDuration = "";
               let recentPost = [];
               for (let i = 0; i < recentBlogs.length; i++) {
                  postedTime = recentBlogs[i].postedTime;
-                 let diff = Date.now() - currentlyBlog.postedTime;
+                 let diff = Date.now() - postedTime;
                  let minutesDiff = Math.floor(diff/1000/60);
                  // console.log(moment.duration(now.diff(postedTime)).minutes());
                  if (minutesDiff <= 60) {
@@ -48,8 +39,9 @@ module.exports = async function(title) {
                  }
                  // console.log(postedDuration);
                  recentPost.push({
-                    '_id': recentBlogs[i]._id,
+                    'id': recentBlogs[i].id,
                     'image': recentBlogs[i].image,
+                    'slug' : recentBlogs[i].slug,
                     'title': recentBlogs[i].title,
                     'postedDuration': postedDuration
                  });
@@ -58,10 +50,11 @@ module.exports = async function(title) {
               try {
                  let blogDetail = {};
                  blogDetail = {
-                    '_id': currentlyBlog._id,
+                    'id': currentlyBlog.id,
                     'descriptionHtml': currentlyBlog.descriptionHtml,
                     'titleHtml': currentlyBlog.titleHtml,
                     'image': currentlyBlog.image,
+                    'slug': currentlyBlog.slug,
                     'title': currentlyBlog.title,
                     'text': currentlyBlog.text,
                     'type': currentlyBlog.type,
@@ -73,7 +66,7 @@ module.exports = async function(title) {
                  };
                  console.log(blogDetail);
                  return({
-                    'title': currentlyBlog.title,
+                    'slug': currentlyBlog.slug,
                     'state': blogDetail
                  });
 

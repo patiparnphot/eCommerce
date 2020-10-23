@@ -1,7 +1,8 @@
 var Blog = require("../models/blog"),
     IndexContent = require("../models/indexContent"),
     BlogDetailContent = require("../models/blogDetailContent"),
-    TemplateContent = require("../models/templateContent");
+    TemplateContent = require("../models/templateContent"),
+    handler = require("../data_handler");
 
 module.exports = async function() {
   try {
@@ -14,10 +15,11 @@ module.exports = async function() {
            const blogDetailContent = await BlogDetailContent.findOne({}).exec();
 
            try {
-              const allBlogs = await Blog.find(
-                 { postedTime: { $lt: Date.now() } },
-                 {},
-                 { sort: { postedTime: -1 }, limit: 20 }).exec();
+              const allBlogs = await handler.findByRecentBlogs(20);
+                 //await Blog.find(
+                 //{ postedTime: { $lt: Date.now() } },
+                 //{},
+                 //{ sort: { postedTime: -1 }, limit: 20 }).exec();
 
               try {
                  let initialState = {

@@ -17,7 +17,7 @@ export default class Blog extends React.Component {
   }
   
   componentDidMount() {
-    //this.props.fetchBlogs();
+    this.props.fetchBlogs();
     //this.props.blogsList.blogs = initialContentState.blogs.blogsList.blogs;
   }
   
@@ -66,7 +66,7 @@ export default class Blog extends React.Component {
                 <a href={ blog.image } data-lightbox="blog" data-title={ blog.title } className="link-preview" title="Preview">
                   <i className="ion ion-eye"></i>
                 </a>
-                <Link to={"/blogs/" + blog.title} className="link-details" title="More Details"><i className="ion ion-android-open"></i></Link>
+                <Link to={"/blogs/" + blog.slug} className="link-details" title="More Details"><i className="ion ion-android-open"></i></Link>
               </div>
             </div>
           </div>
