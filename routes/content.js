@@ -7,6 +7,8 @@ var express = require("express"),
     TemplateContent = require("../models/templateContent"),
     contentState = require("../initial_state/content");
     
+var handler = require('../data_handler');
+
 var smtpTransport = nodeMailer.createTransport({
    service: "Gmail",
    host: "smtpdm.aliyun.com",
@@ -22,26 +24,32 @@ var smtpTransport = nodeMailer.createTransport({
 
 //INDEXCONTENT - get content of index page
 router.get("/index", function(req, res, next){
-    IndexContent.findOne({}, function(err, indexContent){
-        if(err) return next(err);
-        res.json(indexContent);
-    });
+    res.json(handler.indexContents());
+
+    //IndexContent.findOne({}, function(err, indexContent){
+    //    if(err) return next(err);
+    //    res.json(indexContent);
+    //});
 });
 
 //TEMPLATECONTENT - get content of template
 router.get("/template", function(req, res, next){
-    TemplateContent.findOne({}, function(err, templateContent){
-        if(err) return next(err);
-        res.json(templateContent);
-    });
+    res.json(handler.templateContents());
+    
+    //TemplateContent.findOne({}, function(err, templateContent){
+    //    if(err) return next(err);
+    //    res.json(templateContent);
+    //});
 });
 
 //BLOGDETAILCONTENT - get content of blog
 router.get("/blogdetail", function(req, res, next){
-    BlogDetailContent.findOne({}, function(err, blogDetailContent){
-        if(err) return next(err);
-        res.json(blogDetailContent);
-    });
+    res.json(handler.blogDetailContents());
+
+    //BlogDetailContent.findOne({}, function(err, blogDetailContent){
+    //    if(err) return next(err);
+    //    res.json(blogDetailContent);
+    //});
 });
 
 //INITIALSTATE - update JSON file of initialState content

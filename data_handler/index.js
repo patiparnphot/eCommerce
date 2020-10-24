@@ -300,6 +300,20 @@ module.exports = {
         var jsonData = fs.readFileSync(path.resolve("./data/BlogCategories.json"), 'utf8');
         if (!jsonData) { return {}; }
         else { return JSON.parse(jsonData); }
+    },
+    blogDetailContents: function(){
+        var jsonData = fs.readFileSync(path.resolve("./data/BlogDetailContents.json"), 'utf8');
+        if (!jsonData) { return {}; }
+        else { return JSON.parse(jsonData); }
+    },
+    indexContents: function(){
+        var jsonData = fs.readFileSync(path.resolve("./data/IndexContents.json"), 'utf8');
+        if (!jsonData) { return {}; }
+        else { return JSON.parse(jsonData); }
+    },
+    templateContents: function(){
+        var jsonData = fs.readFileSync(path.resolve("./data/TemplateContents.json"), 'utf8');
+        if (!jsonData) { return {}; }
+        else { return JSON.parse(jsonData); }
     }
-
 }
