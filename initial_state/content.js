@@ -6,13 +6,13 @@ var Blog = require("../models/blog"),
 
 module.exports = async function() {
   try {
-     const indexContent = await IndexContent.findOne({}).exec();
+     const indexContent = handler.indexContents();
 
      try {
-        const templateContent = await TemplateContent.findOne({}).exec();
+        const templateContent = handler.templateContents();
 
         try {
-           const blogDetailContent = await BlogDetailContent.findOne({}).exec();
+           const blogDetailContent = handler.blogDetailContents();
 
            try {
               const allBlogs = await handler.findByRecentBlogs(20);
