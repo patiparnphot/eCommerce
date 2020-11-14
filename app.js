@@ -17,7 +17,7 @@ var express         = require("express"),
     User            = require("./models/user"),
     path            = require("path");
 
-import { Helmet } from "react-helmet";
+//import { Helmet } from "react-helmet";
 
 var serverSideRender    = require("./src/serverSideRender"),
     template            = require("./static/template"),
@@ -45,8 +45,8 @@ app.use(express.static('./static'));
 var blogRoutes    = require("./routes/blog"),
     contentRoutes = require("./routes/content"),
     goodRoutes    = require("./routes/good"),
-    userRoutes    = require("./routes/user"),
-    commentRoutes = require("./routes/comment");
+    userRoutes    = require("./routes/user");
+    //commentRoutes = require("./routes/comment");
     
 // Database setup
 mongoose.connect("mongodb://patiparn.phot:bomgeo57@ds359298.mlab.com:59298/meatseo" || "mongodb://localhost/bnk48");
@@ -77,7 +77,8 @@ passport.use(new JWTStrategy(
       secretOrKey   : 'bukunjom'
    },
    (jwtPayload, cb) => {
-      return User.findById(jwtPayload.id)
+console.log(jwtPayload);
+      return User.findOne({ username: jwtPayload.username })
          .then(user => {
             return cb(null, user);
          })
@@ -95,7 +96,7 @@ app.use("/api/contents", contentRoutes);
 app.use("/api/blogs", blogRoutes);
 app.use("/api/goods", goodRoutes);
 app.use("/api/users", userRoutes);
-app.use("/api/comments", commentRoutes);
+//app.use("/api/comments", commentRoutes);
 
 app.get('/date', (req, res, next) => {
    var dt = new Date();
@@ -154,7 +155,7 @@ app.use(function(req, res, next){
 /**
  * Get port from environment and store in Express.
  */
-const port = '80';
+const port = '1210';
 const sslPort = '443';
 app.set('port', port);
 app.set('sslPort', sslPort);
@@ -162,16 +163,16 @@ app.set('sslPort', sslPort);
 /**
  * Create HTTP server.
  */
-const options = {
-   key:  fs.readFileSync('../cert/privkey.pem'),
-   cert: fs.readFileSync('../cert/cert.pem')
-};
+//const options = {
+//   key:  fs.readFileSync('../cert/privkey.pem'),
+//   cert: fs.readFileSync('../cert/cert.pem')
+//};
 const server = http.createServer(app);
-const secureSocketsLayer = https.createServer(options, app);
+//const secureSocketsLayer = https.createServer(options, app);
 
 /**
  * Listen on provided port, on all network interfaces.
  */
 server.listen(port, () => console.log(`The MEATSEO Server Has Started!`));
-secureSocketsLayer.listen(sslPort, () => console.log(`The Secure Sockets Layer Is Connected!`));
+//secureSocketsLayer.listen(sslPort, () => console.log(`The Secure Sockets Layer Is Connected!`));
 

@@ -8,7 +8,7 @@ var express = require("express"),
     Good = require("../models/good"),
     User  = require("../models/user"),
     //multer = require("multer"),
-    request = require('request'),
+    //request = require('request'),
     middleware = require("../middleware");
     
 const userFieldSet = 'name, link, is_verified, picture';
@@ -36,12 +36,12 @@ var smtpTransport = nodeMailer.createTransport({
 // };
 //var upload = multer({ storage: storage, fileFilter: imageFilter})
 
-var cloudinary = require('cloudinary');
-cloudinary.config({ 
-  cloud_name: "dlaelxhbp", 
-  api_key: "492524649579695", 
-  api_secret: "c1hU9DtqLmmPHsvn0k6kqZBrZKc"
-});
+//var cloudinary = require('cloudinary');
+//cloudinary.config({ 
+//  cloud_name: "dlaelxhbp", 
+//  api_key: "492524649579695", 
+//  api_secret: "c1hU9DtqLmmPHsvn0k6kqZBrZKc"
+//});
 
 //SIGNUP - add new user to db
 router.post("/register", 
@@ -54,7 +54,7 @@ function(req, res){
             firstname: req.body.firstname,
             lastname: req.body.lastname,
             email: req.body.email,
-            avatar: "smt",
+            avatar: req.body.avatar,
             address: req.body.address,
             paypal: req.body.paypal,
             creditCard: req.body.creditCard
@@ -67,15 +67,27 @@ function(req, res){
                 // req.flash("error", err.message);
                 return res.send(err);
             }
-            passport.authenticate('local', {session: false}, (err, user, info) => {
-                if(err) return next(err);
-                if(user) {
-                    let token = jwt.sign(user, 'bukunjom');
-                    return res.json({user, token});
-                } else {
-                    return res.status(422).json(info);
-                }
-            })(req, res, next);
+//            passport.authenticate('local', {session: false}, (err, user, info) => {
+//                if(err) return next(err);
+//                console.log(user);
+//                if(user) {
+                    let modUser = {
+                        username: user.username,
+                        firstname: user.firstname,
+                        lastname: user.lastname,
+                        email: user.email,
+                        avatar: user.avatar,
+                        isAdmin: user.isAdmin,
+                        address: user.address,
+                        paypal: user.paypal,
+                        creditCard: user.creditCard
+                    };
+                    let token = jwt.sign(modUser, 'bukunjom');
+                    return res.json({modUser, token});
+//                } else {
+//                    return res.status(422).json(info);
+//                }
+//            })(req, res, next);
             // passport.authenticate("local")(req, res, function(){
             //     //req.flash("success", "Successfully, Sign Up! Nice to meet you " + user.username);
             //     res.json(req.user);
@@ -88,9 +100,21 @@ function(req, res){
 router.post("/login", function(req, res, next){
     passport.authenticate('local', {session: false}, (err, user, info) => {
         if(err) return next(err);
+        console.log(user);
         if(user) {
-            let token = jwt.sign(user, 'bukunjom');
-            return res.json({user, token});
+            let modUser = {
+                username: user.username,
+                firstname: user.firstname,
+                lastname: user.lastname,
+                email: user.email,
+                avatar: user.avatar,
+                isAdmin: user.isAdmin,
+                address: user.address,
+                paypal: user.paypal,
+                creditCard: user.creditCard
+            };
+            let token = jwt.sign(modUser, 'bukunjom');
+            return res.json({modUser, token});
         } else {
             return res.status(422).json(info);
         }

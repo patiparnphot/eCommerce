@@ -68,8 +68,8 @@ try {
 })
 
 //GOOD - get a single good
-router.get("/:title", function(req, res, next) {
-  Good.findOne({ title: req.params.title }, function(err, currentlyGood){
+router.get("/:slug", function(req, res, next) {
+  Good.findOne({ slug: req.params.slug }, function(err, currentlyGood){
     if (err) return next(err);
     console.log(currentlyGood);
     
@@ -84,7 +84,7 @@ router.get("/:title", function(req, res, next) {
             if (sameCategoryGoods && sameCategoryGoods.length > 0) {
                 for (let i = 0; i < sameCategoryGoods.length; i++) {
                     if (sameCategoryGoods[i].title != currentlyGood.title) {
-                        similarGoods.push(sameCategoryGood[i]);
+                        similarGoods.push(sameCategoryGoods[i]);
                     }
                 }
             } else { similarGoods.push(currentlyGood); }
