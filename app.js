@@ -49,7 +49,7 @@ var blogRoutes    = require("./routes/blog"),
     //commentRoutes = require("./routes/comment");
     
 // Database setup
-mongoose.connect("mongodb://patiparn.phot:bomgeo57@ds359298.mlab.com:59298/meatseo" || "mongodb://localhost/bnk48");
+mongoose.connect("mongodb://patiparn.phot:bomgeo57@ds052827.mlab.com:52827/ecommerce" || "mongodb://localhost/bnk48");
 
 // Parsers for POST data
 app.use(bodyParser.json({limit: '50mb'}));

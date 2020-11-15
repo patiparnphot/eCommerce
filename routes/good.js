@@ -1,15 +1,16 @@
 var express   = require("express"),
     router    = express.Router(),
+    passport = require("passport"),
     moment    = require("moment-timezone"),
     fs        = require("fs"),
     Good      = require("../models/good"),
     goodState = require("../initial_state/good");
     // middleware = require("../middleware");
 
-// var preAuthenticate = function (req,res,next){
-//     console.log(JSON.stringify(req.body));
-//     return next();
-// };
+var preAuthenticate = function (req,res,next){
+    console.log(JSON.stringify(req.body));
+    return next();
+};
 
 
 //GOODS - get a list of goods
@@ -141,17 +142,20 @@ router.get("/:slug", function(req, res, next) {
  
 });
 
-// //CREATE - add a new idol to db
-// router.post("/", preAuthenticate, middleware.isLoggedIn, function(req, res, next) {
-//   Idol.create(req.body.idol, function (err, newlyIdol) {
-//     if (err) return next(err);
-//     newlyIdol.author.id = req.user._id;
-//     newlyIdol.author.username = req.user.username;
-//     newlyIdol.save();
-//     console.log(newlyIdol);
-//     res.json(newlyIdol);
-//   });
-// });
+//CREATE - add a new good to db
+router.post(
+    "/", 
+    preAuthenticate, 
+    passport.authenticate('jwt', {session: false}), 
+    function(req, res, next) {
+        Good.create(req.body.good, function (err, newlyGood) {
+            if (err) return next(err);
+            newlyGood.save();
+            console.log(newlyGood);
+            res.json(newlyGood);
+        });
+    }
+);
 
 // //UPDATE - edit a idol in db
 // router.put("/:id", middleware.checkUserIdol, function(req, res, next) {

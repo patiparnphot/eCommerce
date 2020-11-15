@@ -67,10 +67,6 @@ function(req, res){
                 // req.flash("error", err.message);
                 return res.send(err);
             }
-//            passport.authenticate('local', {session: false}, (err, user, info) => {
-//                if(err) return next(err);
-//                console.log(user);
-//                if(user) {
                     let modUser = {
                         username: user.username,
                         firstname: user.firstname,
@@ -84,16 +80,7 @@ function(req, res){
                     };
                     let token = jwt.sign(modUser, 'bukunjom');
                     return res.json({modUser, token});
-//                } else {
-//                    return res.status(422).json(info);
-//                }
-//            })(req, res, next);
-            // passport.authenticate("local")(req, res, function(){
-            //     //req.flash("success", "Successfully, Sign Up! Nice to meet you " + user.username);
-            //     res.json(req.user);
-            // });
         });
-    // });
 });
 
 //SIGNIN - matching data and user db
@@ -225,7 +212,8 @@ router.get("/logout", function(req, res){
 // });
 
 //USER PROFILE - show information of user
-router.get("/users/:authorId",
+router.get(
+    "/profile",
     passport.authenticate('jwt', {session: false}),
     function(req, res){
         res.json(req.user);
