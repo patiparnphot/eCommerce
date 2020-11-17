@@ -3,16 +3,16 @@ var mongoose = require("mongoose");
 var goodObject = {
    titleHtml: String,
    descriptionHtml: String,
-   slug: String,
-   title: String,
+   slug: { type: String, unique: true, required: true },
+   title: { type: String, required: true },
    description: String,
    image: String,
    category: String,
    rating: String,
    ratingAmount: String,
-   ratierAmount: String,
-   postedTime: Date,
-   isAvailable: Boolean,
+   raterAmount: String,
+   postedTime: { type: Date, default: Date.now },
+   isAvailable: { type: Boolean, default: true },
    comments: [
       {
          type: mongoose.Schema.Types.ObjectId,

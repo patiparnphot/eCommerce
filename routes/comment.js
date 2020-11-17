@@ -1,55 +1,98 @@
 var express = require("express"),
     router  = express.Router({mergeParams: true}),
+    passport = require("passport"),
     Good = require("../models/good"),
     Comment = require("../models/comment"),
     middleware = require("../middleware");
 
 
+var preAuthenticate = function (req,res,next){
+    console.log(JSON.stringify(req.body));
+    return next();
+};
+
 //CREATE - add a new comment to db
-router.post("/", middleware.isLoggedIn, function(req, res){
-   Good.findById(req.params.id, function(err, good){
-       if(err){
-            req.flash("error", "DONT MESS WITH MY SITE");
-            res.redirect("back");
-        }
-      Comment.create(req.body.comment, function(err, comment){
-          if(err){
-            req.flash("error", "CANNOT ADD NEW COMMENT");
-            res.redirect("back");
-          }
-         comment.author.id = req.user._id;
-         comment.author.username = req.user.username;
-         comment.save();
-         good.comments.push(comment);
-         good.save();
-         req.flash("success", "Successfully add your comment");
-         res.json(comment);
-      });
-   });
-});
+router.post(
+    "/",
+    preAuthenticate, 
+    passport.authenticate('jwt', {session: false}), 
+    //middleware.isLoggedIn, 
+    function(req, res, next){
+        Good.findOne({ slug: req.body.slug }, function(err, good){
+            if (err) return next(err);
+            Comment.create(req.body.comment, function(err, comment){
+                if (err) return next(err);
+                comment.rater.id = req.user.id;
+                comment.rater.username = req.user.username;
+                comment.save();
+                let newRatingAmount = Number(good.ratingAmount) + Number(comment.rating);
+                let newRaterAmount = Number(good.raterAmount) + 1;
+                good.ratingAmount = Number(newRatingAmount);
+                good.raterAmount = Number(newRaterAmount);
+                good.rating = Math.round((newRatingAmount/newRaterAmount)*10)/10;
+                good.comments.push(comment);
+                good.save();
+                res.json(comment);
+            });
+        });
+    }
+);
 
 //UPDATE - edit a comment in db
-router.put("/:commentId", middleware.checkUserComment, function(req, res){
-    Comment.findByIdAndUpdate(req.params.commentId, req.body.comment, function(err, comment){
-        if(err){
-            req.flash("error", "DONT MESS WITH MY SITE");
-            res.redirect("back");
-        }
-        req.flash("success", "Successfully edit your comment")
-        res.json(comment);
-    });
-});
+router.put(
+    "/:commentId",
+    preAuthenticate, 
+    passport.authenticate('jwt', {session: false}),
+    //middleware.checkUserComment, 
+    function(req, res, next){
+        Good.findOne({ slug: req.body.slug }, function(err, good){
+            if (err) return next(err);
+            Comment.findByIdAndUpdate(
+                req.params.commentId, 
+                req.body.comment, 
+                { new: true }, 
+                function(err, comment){
+                    if (err) return next(err);
+                    let editedRatingAmount = Number(comment.rating);
+                    let editedRaterAmount = Number(good.raterAmount);
+                    good.ratingAmount = Number(editedRatingAmount);
+                    good.rating = Math.round((editedRatingAmount/editedRaterAmount)*10)/10;
+                    good.save();
+                    res.json(comment);
+                }
+            );
+        });
+    }
+);
 
-//DESTROY - delete a campground from db
-router.delete("/:commentId", middleware.checkUserComment, function(req, res){
-    Comment.findByIdAndRemove(req.params.commentId, function(err){
-        if(err){
-            req.flash("error", "DONT MESS WITH MY SITE");
-            res.redirect("back");
-        }
-        req.flash("success", "Successfully remove your comment");
-        res.json({ success: true });
-    });
-});
+//DESTROY - delete a comment from db
+router.delete(
+    "/:commentId", 
+    preAuthenticate, 
+    passport.authenticate('jwt', {session: false}),
+    //middleware.checkUserComment, 
+    function(req, res, next){
+        Good.findOne({ slug: req.body.slug }, function(err, good){
+            if (err) return next(err);
+            Comment.findByIdAndRemove(req.params.commentId, function(err, comment){
+                if (err) return next(err);
+                if (!comment) return next("this comment id does not exist!!!");
+                let goodCommentArray = good.comments;
+                let index = goodCommentArray.indexOf(comment._id);
+                if (index !== -1) {
+                    goodCommentArray.splice(index, 1);
+                }
+                let newRatingAmount = Number(good.ratingAmount) - Number(comment.rating);
+                let newRaterAmount = Number(good.raterAmount) - 1;
+                good.ratingAmount = Number(newRatingAmount);
+                good.raterAmount = Number(newRaterAmount);
+                good.rating = Math.round((newRatingAmount/newRaterAmount)*10)/10;
+                good.comments = goodCommentArray;
+                good.save();
+                res.json(comment);
+            });
+        });
+    }
+);
 
 module.exports = router;

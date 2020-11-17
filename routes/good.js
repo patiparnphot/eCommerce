@@ -70,7 +70,7 @@ try {
 
 //GOOD - get a single good
 router.get("/:slug", function(req, res, next) {
-  Good.findOne({ slug: req.params.slug }, function(err, currentlyGood){
+  Good.findOne({ slug: req.params.slug }).populate("comments").exec(function(err, currentlyGood){
     if (err) return next(err);
     console.log(currentlyGood);
     
@@ -126,7 +126,8 @@ router.get("/:slug", function(req, res, next) {
                                 'postedTime': currentlyGood.postedTime,
                                 'similarGoods': similarGoods,
                                 'popularGoods': popularGoods,
-                                'recentGoods': recentGoods
+                                'recentGoods': recentGoods,
+                                'comments': currentlyGood.comments
                             };
                             // console.log(goodDetail);
                             res.json(goodDetail);
@@ -157,19 +158,38 @@ router.post(
     }
 );
 
-// //UPDATE - edit a idol in db
-// router.put("/:id", middleware.checkUserIdol, function(req, res, next) {
-//   Idol.findByIdAndUpdate(req.params.id, req.body.idol, function (err, idol) {
-//     if (err) return next(err);
-//     console.log(idol);
-//   });
-// });
+//UPDATE - edit a good in db
+router.put(
+    "/:slug", 
+    preAuthenticate, 
+    passport.authenticate('jwt', {session: false}),
+    //middleware.checkUserIdol, 
+    function(req, res, next) {
+        Good.findOneAndUpdate(
+            { slug: req.params.slug }, 
+            req.body.editGood, 
+            { new: true }, 
+            function (err, editedGood) {
+                if (err) return next(err);
+                console.log(editedGood);
+                res.json(editedGood)
+            }
+        );
+    }
+);
 
-// //DESTROY - delete a idol from db
-// router.delete("/:id", middleware.checkUserIdol, function(req, res, next) {
-//   Idol.findByIdAndRemove(req.params.id, function (err) {
-//     if (err) return next(err);
-//   });
-// });
+//DESTROY - delete a good from db
+router.delete(
+    "/:slug", 
+    preAuthenticate, 
+    passport.authenticate('jwt', {session: false}),
+    //middleware.checkUserIdol, 
+    function(req, res, next) {
+        Good.findOneAndRemove({ slug: req.params.slug }, function (err, deletedGood) {
+            if (err) return next(err);
+            res.json(deletedGood);
+        });
+    }
+);
 
 module.exports = router;

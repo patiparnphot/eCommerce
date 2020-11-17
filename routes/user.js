@@ -68,6 +68,7 @@ function(req, res){
                 return res.send(err);
             }
                     let modUser = {
+                        id: user._id,
                         username: user.username,
                         firstname: user.firstname,
                         lastname: user.lastname,
@@ -90,6 +91,7 @@ router.post("/login", function(req, res, next){
         console.log(user);
         if(user) {
             let modUser = {
+                id: user._id,
                 username: user.username,
                 firstname: user.firstname,
                 lastname: user.lastname,

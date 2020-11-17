@@ -45,8 +45,8 @@ app.use(express.static('./static'));
 var blogRoutes    = require("./routes/blog"),
     contentRoutes = require("./routes/content"),
     goodRoutes    = require("./routes/good"),
-    userRoutes    = require("./routes/user");
-    //commentRoutes = require("./routes/comment");
+    userRoutes    = require("./routes/user"),
+    commentRoutes = require("./routes/comment");
     
 // Database setup
 mongoose.connect("mongodb://patiparn.phot:bomgeo57@ds052827.mlab.com:52827/ecommerce" || "mongodb://localhost/bnk48");
@@ -96,7 +96,7 @@ app.use("/api/contents", contentRoutes);
 app.use("/api/blogs", blogRoutes);
 app.use("/api/goods", goodRoutes);
 app.use("/api/users", userRoutes);
-//app.use("/api/comments", commentRoutes);
+app.use("/api/comments", commentRoutes);
 
 app.get('/date', (req, res, next) => {
    var dt = new Date();
