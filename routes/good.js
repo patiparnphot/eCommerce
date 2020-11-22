@@ -25,6 +25,23 @@ router.get("/", function(req, res, next){
     );
 });
 
+//GOOD PAGINATION - get a paginate list of goods
+router.get("/:start/:end", function(req, res, next){
+    Good.find(
+        { postedTime: { $lt: Date.now() } },
+        {},
+        { 
+            sort: { postedTime: -1 }, 
+            skip: Number(req.params.start) - 1, 
+            limit: (Number(req.params.end) - Number(req.params.start)) + 1 
+        }, 
+        function(err, listOfGoods){
+            if(err) return next(err);
+            res.json(listOfGoods);
+        }
+    );
+});
+
 //INITIALSTATE - update JSON file of initialState good
 router.get("/updateJsonFile", async function(req, res, next) {
 try {

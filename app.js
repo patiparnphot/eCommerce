@@ -38,6 +38,7 @@ fs.watchFile(require.resolve('./initial_state/initialBlogState'), function () {
    console.log("InitialBlogState has changed and Server has reloaded!!!");
 });
 
+// Point static path
 app.use('/admin', express.static('./admin/static'));
 app.use(express.static('./static'));
 
@@ -46,7 +47,8 @@ var blogRoutes    = require("./routes/blog"),
     contentRoutes = require("./routes/content"),
     goodRoutes    = require("./routes/good"),
     userRoutes    = require("./routes/user"),
-    commentRoutes = require("./routes/comment");
+    commentRoutes = require("./routes/comment"),
+    orderRoutes   = require("./routes/order");
     
 // Database setup
 mongoose.connect("mongodb://patiparn.phot:bomgeo57@ds052827.mlab.com:52827/ecommerce" || "mongodb://localhost/bnk48");
@@ -55,13 +57,10 @@ mongoose.connect("mongodb://patiparn.phot:bomgeo57@ds052827.mlab.com:52827/ecomm
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true }));
 
-// Point static path to dist
-
 // Setup https method
 app.use(methodOverride('_method'));
 
 // PASSPORT CONFIGURATION
-
 // app.use(session({
 //     secret: "It is me",
 //     resave: false,
@@ -69,7 +68,6 @@ app.use(methodOverride('_method'));
 // }));
 // app.use(passport.initialize());
 // app.use(passport.session());
-
 passport.use(new LocalStrategy(User.authenticate()));
 passport.use(new JWTStrategy(
    {
@@ -77,7 +75,7 @@ passport.use(new JWTStrategy(
       secretOrKey   : 'bukunjom'
    },
    (jwtPayload, cb) => {
-console.log(jwtPayload);
+      // console.log(jwtPayload);
       return User.findOne({ username: jwtPayload.username })
          .then(user => {
             return cb(null, user);
@@ -87,7 +85,6 @@ console.log(jwtPayload);
          });
    }
 ));
-
 // passport.serializeUser(function(user, done){ done(null, user) });
 // passport.deserializeUser(function(user, done){ done(null, user) });
 
@@ -97,11 +94,7 @@ app.use("/api/blogs", blogRoutes);
 app.use("/api/goods", goodRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/comments", commentRoutes);
-
-app.get('/date', (req, res, next) => {
-   var dt = new Date();
-   res.send(dt.toISOString());
-});
+app.use("/api/orders", orderRoutes);
 
 // Catch all other routes and return the index file
 app.get('/admin/*', async (req, res, next) => {
