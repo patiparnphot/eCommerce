@@ -35,21 +35,44 @@ export default class Services extends React.Component {
     }
     
     return (
-        <section id="services" className="section-bg">
-          <div className="container">
-    
-            <header className="section-header">
-              <div dangerouslySetInnerHTML={this.getHTML(services.header)} />
-            </header>
-    
-            <div className="row">
-    
-              {this.renderBoxes(services.boxes)}
-    
+      <div className="container-fluid space-bottom space-bottom-shift">
+  <div className="row parallax-wrap">
+    <div className="container">
+      <div className="row">
+        <div className="bnr-frame-top">
+          &nbsp;
+        </div>
+        <div className="col-xs-12">
+          <div className="row">
+            <div className="col-sm-6">
+              <span className="comp-header st-20 text-uppercase text-white">
+                Winter 2017 <br/>
+                <small>New collections</small>
+              </span>
+              <p>
+                <span className="sdw-wrap">
+                  <a href="#" className="sdw-hover btn btn-material btn-yellow btn-lg ripple-cont">
+                    View New Collections
+                  </a>
+                </span>
+              </p>
             </div>
-    
+            <div className="col-sm-6"></div>
           </div>
-        </section>
+        </div>
+        <div className="bnr-frame-bottom">
+          &nbsp;
+        </div>
+      </div>
+    </div>
+    <div className="parallax bg-darkness opc-7"
+      data-parallax-image="images/blocks/bg-01.jpg"
+      data-speed-direction="-.2">
+    </div>
+  </div>
+</div>
     )
   }
 }
+
+

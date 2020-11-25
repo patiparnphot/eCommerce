@@ -21,26 +21,109 @@ export default class About extends React.Component {
     }
     
     return (
-        <section id="about">
-    
-          <div className="container">
-            <div className="row">
-    
-              <div className="col-lg-5 col-md-6">
-                <div className="about-img">
-                  <img src={about.image} alt="" />
+<section id="feature">
+
+<div className="container-fluid">
+  <div className="row">
+    <div className="clearfix">
+      <div className="substrate-wrap">
+
+        <div className="substrate parallax-block"
+          data-speed-direction=".3"
+          data-default-pos="-600"
+          data-parallax-block="true">
+          <div className="text text-darkness">
+            IN TREND
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div className="container block">
+
+  <div className="row">
+    <div className="col-xs-12">
+      <div className="block-header text-uppercase">
+        <h2 className="header">Features</h2>
+      </div>
+    </div>
+  </div>
+
+  <div className="row">
+    <div className="col-xs-12">
+      <div className="owl-carousel owl-default features nav-top-left">
+
+        <div className="shop-item hover-sdw">
+          <div className="wrap">
+            <div className="body">
+              <div className="comp-header st-4 text-uppercase">
+                T-shirt
+                <span>
+                  fake Brand
+                </span>
+                <div className="rate">
+                  <ul className="stars">
+                    <li className="active">
+                      <i className="icofont icofont-star"></i>
+                    </li>
+                    <li className="active">
+                      <i className="icofont icofont-star"></i>
+                    </li>
+                    <li className="active">
+                      <i className="icofont icofont-star"></i>
+                    </li>
+                    <li className="active">
+                      <i className="icofont icofont-star"></i>
+                    </li>
+                    <li>
+                      <i className="icofont icofont-star"></i>
+                    </li>
+                  </ul>
+                  <div className="rate-info">
+                    24 members rate it
+                  </div>
                 </div>
+                <span className="sale-badge item-badge text-uppercase bg-green">
+                  New
+                </span>
               </div>
-    
-              <div className="col-lg-7 col-md-6">
-                <div className="about-content">
-                  <div dangerouslySetInnerHTML={this.getHTML(about.content)} />
-                </div>
+              <div className="image">
+                <img className="hover" src="images/shop/img-01-1.jpg" alt=""/>
+                <img className="main" src="images/shop/img-01.jpg" alt=""/>
               </div>
             </div>
+            <div className="info">
+              <a href="shop-item.html" className="btn-material btn-price">
+                <span className="price">
+                  <span className="curr">
+                    $
+                  </span>
+                  <span className="sale">
+                    <span>234<small>.00</small></span>
+                  </span>
+                  <span className="price">
+                    175<small>.50</small>
+                  </span>
+                </span>
+                <span className="icon-card">
+                  <i className="icofont icofont-cart-alt"></i>
+                </span>
+              </a>
+            </div>
           </div>
-    
-        </section>
+        </div>                
+      
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</section>
     )
   }
 }
+

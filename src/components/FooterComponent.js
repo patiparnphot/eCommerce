@@ -83,107 +83,156 @@ export default class Footer extends React.Component {
     }
     
     return (
-        <footer id="footer" className="section-bg">
-        <div className="footer-top">
-          <div className="container">
-    
+      <footer>
+
+  <div className="container-fluid bg-blue footer text-white">
+    <div className="row">
+      <div className="container">
+        <div className="row">
+
+          <div className="col-sm-6 col-md-3">
+            <h3 className="header text-uppercase">
+              Buyer information
+            </h3>
+            <ul className="nav-vrt white opc none-padding">
+              <li>
+                <a href="#" className="btn-material">Support service</a>
+              </li>
+              <li>
+                <a href="#" className="btn-material">Technical proposals</a>
+              </li>
+              <li>
+                <a href="#" className="btn-material">Affiliate program</a>
+              </li>
+            </ul>
+          </div>
+
+          <div className="col-sm-6 col-md-3">
+            <h3 className="header text-uppercase">
+              Service
+            </h3>
+            <ul className="nav-vrt white opc none-padding">
+              <li>
+                <a href="#" className="btn-material">About us</a>
+              </li>
+              <li>
+                <a href="#" className="btn-material">Contact us</a>
+              </li>
+              <li>
+                <a href="#" className="btn-material">My account</a>
+              </li>
+            </ul>
+          </div>
+
+          <div className="col-sm-12 col-md-6">
+
             <div className="row">
-    
-              <div className="col-lg-6">
-    
-                <div className="row">
-    
-                    <div className="col-sm-6">
-    
-                      <div className="footer-info">
-                        <img src="/img/meatseoLogoMonotone.png" />
-                        <p>{footerTag.info}</p>
-                      </div>
-    
-                    </div>
-    
-                    <div className="col-sm-6">
-                      <div className="footer-links">
-                        <h4>{footerTag.linksHead}</h4>
-                        <ul>{this.renderUsefulLinks(footerTag.links)}</ul>
-                      </div>
-    
-                      <div className="footer-links">
-                        <h4>{footerTag.contactUsHead}</h4>
-                        <div dangerouslySetInnerHTML={this.getHTML(footerTag.contactUs)} />
-                      </div>
-    
-                      <div className="social-links">
-                        <a href={footerTag.twitter} className="twitter"><i className="fa fa-twitter"></i></a>
-                        <a href={footerTag.facebook} className="facebook"><i className="fa fa-facebook"></i></a>
-                        <a href={footerTag.linkedin} className="linkedin"><i className="fa fa-linkedin"></i></a>
-                        <a href={footerTag.instagram} className="instagram"><i className="fa fa-instagram"></i></a>
-                      </div>
-    
-                    </div>
-    
-                </div>
-    
+
+              <div className="col-md-6">
+                <h3 className="header text-uppercase">
+                  Our contacts
+                </h3>
+                <ul className="list-icon white ">
+                  <li>
+                    <i className="icon icofont icofont-location-pin"></i>
+                    12A Questen, Mt Vernon, NY 10550, US
+                  </li>
+                  <li>
+                    <a href="mailto:info@example.com">
+                      <i className="icon icofont icofont-email"></i>
+                      info@example.com
+                    </a>
+                  </li>
+                  <li>
+                    <i className="icon icofont icofont-phone-circle"></i>
+                    +1 (234) 567-89-10
+                  </li>
+                  <li>
+                    <i className="icon icofont icofont-clock-time"></i>
+                    Working Days/Hours:
+                    Mon - Sun / 9:00AM - 8:00PM
+                  </li>
+                </ul>
               </div>
-    
-              <div className="col-lg-6">
-    
-                <div className="form">
-                  
-                  <h4>{footerTag.formHead}</h4>
-                  <p>{footerTag.form}</p>
-                  <SendUsMessageForm
-                    placeholderName={footerTag.placeholderName}
-                    placeholderEmail={footerTag.placeholderEmail}
-                    placeholderSubject={footerTag.placeholderSubject}
-                    placeholderMessage={footerTag.placeholderMessage}
-                    formButton={footerTag.formButton}
-                  />
+
+              <div className="col-md-6">
+                <div className="footer-brand">
+                  <img src="images/main-brand.png" alt=""/>
                 </div>
-    
+                <span className="comp-header st-12 text-uppercase">
+                  Komotto
+                  <span>
+                    Bootstrap theme
+                  </span>
+                </span>
+                <p>
+                  Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor nisi elit consequat ipsum, nec sagittis sem nibh id elit.
+                </p>
               </div>
-    
-              
-    
+
             </div>
-    
+
+            <div className="row">
+              <div className="col-md-12">
+                <ul className="social ">
+                  <li>
+                    <a href="#">
+                      <i className="icofont icofont-social-facebook"></i>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <i className="icofont icofont-social-google-plus"></i>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <i className="icofont icofont-social-twitter"></i>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <i className="icofont icofont-social-vk"></i>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <i className="icofont icofont-social-instagram"></i>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <i className="icofont icofont-social-youtube-play"></i>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div className="container-fluid copiright">
+    <div className="row">
+      <div className="container">
+        <div className="row">
+          <div className="col-md-6">
+            <span className="copy">
+              © 2020 e-Commerce by MEATSEO. All rights reserved.
+            </span>
           </div>
         </div>
-    
-        <div className="container">
-          <div className="copyright">
-            &copy; Copyright <strong>MEATSEO</strong>. All Rights Reserved
-          </div>
-          <div className="credits">
-            
-            Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-          </div>
-        </div>
-      </footer>
+      </div>
+    </div>
+  </div>
+
+</footer>
     )
   }
 }
 
-// <form action="" method="post" role="form" className="contactForm">
-//                     <div className="form-group">
-//                       <input type="text" name="name" className="form-control" id="name" placeholder="Your Name" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
-//                       <div className="validation"></div>
-//                     </div>
-//                     <div className="form-group">
-//                       <input type="email" className="form-control" name="email" id="email" placeholder="Your Email" data-rule="email" data-msg="Please enter a valid email" />
-//                       <div className="validation"></div>
-//                     </div>
-//                     <div className="form-group">
-//                       <input type="text" className="form-control" name="subject" id="subject" placeholder="Subject" data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject" />
-//                       <div className="validation"></div>
-//                     </div>
-//                     <div className="form-group">
-//                       <textarea className="form-control" name="message" rows="5" data-rule="required" data-msg="Please write something for us" placeholder="Message"></textarea>
-//                       <div className="validation"></div>
-//                     </div>
-    
-//                     <div id="sendmessage">Your message has been sent. Thank you!</div>
-//                     <div id="errormessage"></div>
-    
-//                     <div className="text-center"><button type="submit" title="Send Message">Send Message</button></div>
-//                   </form>
+

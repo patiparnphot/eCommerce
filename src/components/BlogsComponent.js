@@ -92,32 +92,78 @@ export default class Blog extends React.Component {
     }
     
     return (
-        <section id="blog" className="section-bg">
-          <div className="container">
-    
-            <header className="section-header">
-              <h3 className="section-title">{content.header}</h3>
-            </header>
-    
-            <div className="row">
-              <div className="col-lg-12">
-                <ul id="blog-flters">
-                  <li data-filter="*" className={this.state.allActive} onClick={() => {this.onFilterChange('*')}}>{content.all}</li>
-                  <li data-filter=".filter-seo" className={this.state.seoActive} onClick={() => {this.onFilterChange('filter-seo')}}>{content.seo}</li>
-                  <li data-filter=".filter-dev" className={this.state.devActive} onClick={() => {this.onFilterChange('filter-dev')}}>{content.dev}</li>
-                  <li data-filter=".filter-data" className={this.state.dataActive} onClick={() => {this.onFilterChange('filter-data')}}>{content.data}</li>
-                </ul>
+      <section id="blogs">
+      <div className="container-fluid">
+        <div className="row">
+          <div className="clearfix">
+            <div className="substrate-wrap">
+              <div className="substrate parallax-block"
+                data-speed-direction=".3"
+                data-default-pos="-400"
+                data-parallax-block="true">
+                <div className="text text-dark">
+                  POPULAR
+                </div>
               </div>
             </div>
-    
-            <div className="row blog-container">
-              
-              {this.renderBlogs(blogs)}
-              
-            </div>
-    
           </div>
-        </section>
+        </div>
+      </div>
+      <div className="container-fluid block space-top">
+        <div className="row">
+          <div className="container">
+            <div className="row">
+    
+              <div className="col-md-4 col-lg-3 asside">
+                <div className="inblock padding-none">
+                  <div className="wrap">
+                    <span className="comp-header st-16 text-uppercase">
+                      Latest
+                      <span className="text-grey">
+                        on blog
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+    
+              <div className="col-md-8 col-lg-9">
+                <div className="owl-carousel owl-default latest-on-blog nav-bottom-right">
+                
+                  <div className="blog-item">
+                    <div className="wrap">
+                      <div className="image">
+                        <img src="images/blog/img-01.jpg" alt=""/>
+                      </div>                            
+                      <div className="caption">
+                        <h3 className="header">
+                          <span className="date">
+                            10 january 2017
+                          </span>
+                          <span className="text-uppercase">
+                            Paper Bag
+                          </span>
+                        </h3>
+                        <p className="text">
+                          Fugiat mollitia vero, id eligendi non suscipit
+                          <span className="hidden-xs">
+                            laboriosam maiores, perspiciatis ullam eveniet molestiae, nesciunt est ipsa veniam consequuntur in totam.
+                          </span>
+                        </p>
+                        <a href="blog-item.html" className="more-info">More info</a>
+                      </div>
+                    </div>
+                  </div>
+    
+                </div>
+              </div>
+    
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
     )
   }
 }
+

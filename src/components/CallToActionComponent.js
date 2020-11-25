@@ -17,20 +17,26 @@ export default class CallToAction extends React.Component {
     }
     
     return (
-        <section id="call-to-action" className="wow fadeInUp">
-          <div className="container">
-            <div className="row">
-              <div className="col-lg-9 text-center text-lg-left">
-                <h3 className="cta-title">{callToAction.title}</h3>
-                <p className="cta-text">{callToAction.text}</p>
-              </div>
-              <div className="col-lg-3 cta-btn-container text-center">
-                <a className="cta-btn align-middle" href={callToAction.href}>{callToAction.button}</a>
-              </div>
+      <div className="container-fluid">
+      <div className="row parallax-wrap">
+        <div className="container block">
+          <div className="row">
+            <div className="col-md-5">
+              <span className="comp-header st-18 text-uppercase">
+                Subscribe <br/>
+                <span className="text-white">on latest news</span>
+              </span>
             </div>
-    
+            <div className="col-md-7"></div>
           </div>
-        </section>
+        </div>
+        <div className="parallax bg-grey-light opc-7"
+          data-parallax-image="images/blocks/bg-02.jpg"
+          data-speed-direction="-.2">
+        </div>
+      </div>
+    </div>
     )
   }
 }
+

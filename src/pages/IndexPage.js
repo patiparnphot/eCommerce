@@ -56,14 +56,8 @@ class IndexPage extends Component {
           <About about={content.about} />
           <Services services={content.services} />
           <WhyUs whyUs={content.whyUs} />
-          <CallToAction callToAction={content.callToAction} />
-          <Features features={content.features} />
-          <Pricing pricing={content.pricing} />
           <Blogs blogs={content.blogs} />
-          <Testimonials testimonials={content.testimonials} />
-          <Team team={content.team} />
-          <Clients clients={content.clients} />
-          <Faq faq={content.faq} />
+          <CallToAction callToAction={content.callToAction} />
         </main>
       </div>
     );
