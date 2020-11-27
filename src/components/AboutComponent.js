@@ -3,9 +3,33 @@ import React from 'react';
 
 export default class About extends React.Component {
   
-  // componentDidMount() {
-  //   this.props.fetchBlogs();
-  // }
+  componentDidMount() {
+    var owlCarousel = require('../../static/assets/js/owl.carousel.min.js');
+    // Features carousel (uses the Owl Carousel library)
+    $('.owl-carousel.features').owlCarousel({
+      loop            : false,
+      margin          : 0,
+      responsiveClass : true,
+      nav             : true,
+      navText         : ['<span class="arrow-left icofont icofont-curved-left">', '<span class="arrow-right icofont icofont-curved-right">'],
+      responsive: {
+        0:{
+          items: 2,
+          dots : false
+        },
+        321:{
+          items: 2,
+          dots : false
+        },
+        767:{
+          items: 3
+        },
+        1200:{
+          items: 4
+        }
+      }
+    });
+  }
    
   getHTML(htmlCode) {
     return { __html: htmlCode };

@@ -6,7 +6,7 @@
 
 'use strict';
 
-$(function() {
+(function($) {
     var $window = $(window);
     
     /**
@@ -26,12 +26,12 @@ $(function() {
         nav        : true,
         navText    : ['<span class="arrow-left icofont icofont-curved-left">', '<span class="arrow-right icofont icofont-curved-right">'],
         responsive: {
-            0:{
-                dots : false
-            },
-            992:{
-                dots : true
-            }
+           0:{
+               dots : false
+           },
+           992:{
+               dots : true
+           }
         }
     });
     
@@ -531,7 +531,7 @@ $(function() {
         var $preloader = $('.preloader');
         $preloader.hide()
     });
-});
+})(jQuery);
 
 
 

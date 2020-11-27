@@ -28,14 +28,15 @@ module.exports = function template(title = "MEATSEO", initialState = {}, content
                     <link href="https://fonts.googleapis.com/css?family=Raleway:500,800" rel="stylesheet">
     
                     <!--Bootstrap CSS File -->
-                    <link href="/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+                    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
     
                     <!--Libraries CSS Files -->
-                    <link href="/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+                    <link href="/assets/fonts/icofont/icofont.min.css" rel="stylesheet">
+                    <!--<link href="/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
                     <link href="/lib/animate/animate.min.css" rel="stylesheet">
                     <link href="/assets/fonts/icofont/icofont.min.css" rel="stylesheet">
                     <link href="/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-                    <link href="/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+                    <link href="/lib/lightbox/css/lightbox.min.css" rel="stylesheet">-->
     
                     <!--Main Stylesheet File -->
                     <link href="/css/theme.min.css" rel="stylesheet">
@@ -76,16 +77,16 @@ module.exports = function template(title = "MEATSEO", initialState = {}, content
                     <div id="root" class="wrap-inner">${content}</div>
   
                     <!-- JavaScript Libraries -->
-                    <script src="/lib/jquery/jquery.min.js"></script>
+                    <script src="/assets/js/jquery.min.js"></script>
                     <script src="/assets/js/jquery-ui.min.js"></script>
-                    <script src="/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+                    <script src="/assets/js/bootstrap.min.js"></script>
+                    <!--<script src="/assets/js/owl.carousel.min.js"></script>-->
                     <script src="/assets/js/lv-ripple.jquery.min.js"></script>
                     <script src="/assets/js/SmoothScroll.min.js"></script>
                     <script src="/assets/js/jquery.TDPageEvents.min.js"></script>
                     <script src="/assets/js/jquery.TDParallax.min.js"></script>
                     <script src="/assets/js/jquery.TDTimer.min.js"></script>
                     <script src="/assets/js/selectize.min.js"></script>
-                    <script src="/lib/owlcarousel/owl.carousel.min.js"></script>
 
                     <!-- Template Main Javascript File -->
                     <script src="/js/main.js"></script>

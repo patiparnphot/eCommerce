@@ -15,13 +15,7 @@ import About from '../containers/AboutContainer';
 import Services from '../containers/ServicesContainer';
 import WhyUs from '../containers/WhyUsContainer';
 import CallToAction from '../containers/CallToActionContainer';
-import Features from '../containers/FeaturesContainer';
 import Blogs from '../containers/BlogsContainer';
-import Testimonials from '../containers/TestimonialsContainer';
-import Team from '../containers/TeamContainer';
-import Clients from '../containers/ClientsContainer';
-import Pricing from '../containers/PricingContainer';
-import Faq from '../containers/FaqContainer';
 import NotFoundPage from '../components/NotFoundPage.js';
 
 class IndexPage extends Component {
@@ -46,7 +40,7 @@ class IndexPage extends Component {
     // console.log('enter indexPage: ', this.props);
     
     return (
-      <div className='container'>
+      <div>
         <Helmet>
                    <title>{content.titleHtml}</title>
                    <meta name='description' content={content.descriptonHtml} />
