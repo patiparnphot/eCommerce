@@ -2,6 +2,7 @@ var Blog = require("../models/blog"),
     IndexContent = require("../models/indexContent"),
     BlogDetailContent = require("../models/blogDetailContent"),
     TemplateContent = require("../models/templateContent"),
+    Good      = require("../models/good"),
     handler = require("../data_handler");
 
 module.exports = async function() {
@@ -16,6 +17,15 @@ module.exports = async function() {
 
            try {
               const allBlogs = await handler.findByRecentBlogs(20);
+              const recentGoods = await Good.find(
+               { postedTime: { $lt: Date.now() } },
+               {},
+               { sort: { postedTime: -1 }, limit: 20 }).exec();
+              const filterGoods = await Good.find(
+                 {},
+                 {},
+                 { sort: { rating: -1 }, limit: 10 }).exec();
+               
                  //await Blog.find(
                  //{ postedTime: { $lt: Date.now() } },
                  //{},
@@ -45,6 +55,18 @@ module.exports = async function() {
                           "loading": false
                        }
                     },
+                    "goods": {
+                       "recentGoods": {
+                          "goods": [],
+                          "error": null,
+                          "loading": false
+                        },
+                        "filterGoods": {
+                          "goods": [],
+                          "error": null,
+                          "loading": false
+                        }
+                     },
                     "contents": {
                        "index": {
                           "content": {},
@@ -65,6 +87,8 @@ module.exports = async function() {
                     "form": {}
                  };
                  initialState.blogs.blogsList.blogs = allBlogs;
+                 initialState.goods.recentGoods.goods = recentGoods;
+                 initialState.goods.filterGoods.goods = filterGoods;
                  initialState.contents.index.content = indexContent;
                  initialState.contents.template.content = templateContent;
                  initialState.contents.blogDetail.content = blogDetailContent;

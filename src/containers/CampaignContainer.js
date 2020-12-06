@@ -1,4 +1,4 @@
-import About from '../components/AboutComponent';
+import Campaign from '../components/CampaignComponent';
 import { connect } from 'react-redux';
 
 
@@ -9,8 +9,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 function mapStateToProps(state, ownProps) {
   return {
-    about: ownProps.about
+    campaign: ownProps.campaign
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(About);
+export default connect(mapStateToProps, mapDispatchToProps)(Campaign);

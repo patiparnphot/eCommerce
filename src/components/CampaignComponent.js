@@ -1,24 +1,11 @@
 import React from 'react';
 
 
-export default class Services extends React.Component {
+export default class Campaign extends React.Component {
   
-//   componentDidMount() {
-//     this.props.fetchBlogs();
-//   }
-
-  renderBoxes(boxes) {
-    return boxes.map((box) => {
-      return (
-        <div key={box.title} className="col-md-6 col-lg-4 wow bounceInUp" data-wow-duration="1.4s">
-          <div className="box">
-            <div className="icon" style={{background: box.bgColor}}><i className={box.icon} style={{color: box.iconColor}}></i></div>
-            <h4 className="title"><a href={box.href}>{box.title}</a></h4>
-            <p className="description">{box.description}</p>
-          </div>
-        </div>
-      );
-    });
+  componentDidMount() {
+    var parallax = require('../../static/assets/js/jquery.TDParallax.min.js');
+    $('.parallax').TDParallax();
   }
   
   getHTML(htmlCode) {
@@ -28,9 +15,9 @@ export default class Services extends React.Component {
   
   render() {
     
-    const { services } = this.props;
+    const { campaign } = this.props;
     
-    if (!services) {
+    if (!campaign) {
       return <div/>
     }
     
@@ -46,13 +33,13 @@ export default class Services extends React.Component {
           <div className="row">
             <div className="col-sm-6">
               <span className="comp-header st-20 text-uppercase text-white">
-                Winter 2017 <br/>
-                <small>New collections</small>
+                {campaign.title} <br/>
+                <small>{campaign.subTitle}</small>
               </span>
               <p>
                 <span className="sdw-wrap">
-                  <a href="#" className="sdw-hover btn btn-material btn-yellow btn-lg ripple-cont">
-                    View New Collections
+                  <a href={campaign.btnLink} className="sdw-hover btn btn-material btn-yellow btn-lg ripple-cont">
+                    {campaign.btnText}
                   </a>
                 </span>
               </p>
@@ -66,7 +53,7 @@ export default class Services extends React.Component {
       </div>
     </div>
     <div className="parallax bg-darkness opc-7"
-      data-parallax-image="images/blocks/bg-01.jpg"
+      data-parallax-image={campaign.parallaxImage}
       data-speed-direction="-.2">
     </div>
   </div>

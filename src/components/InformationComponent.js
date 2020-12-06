@@ -1,18 +1,19 @@
 import React from 'react';
 
 
-export default class CallToAction extends React.Component {
+export default class Information extends React.Component {
   
-//   componentDidMount() {
-//     this.props.fetchBlogs();
-//   }
+  componentDidMount() {
+    var parallax = require('../../static/assets/js/jquery.TDParallax.min.js');
+    $('.parallax').TDParallax();
+  }
   
   
   render() {
     
-    const { callToAction } = this.props;
+    const { information } = this.props;
     
-    if (!callToAction) {
+    if (!information) {
       return <div/>
     }
     
@@ -23,15 +24,15 @@ export default class CallToAction extends React.Component {
           <div className="row">
             <div className="col-md-5">
               <span className="comp-header st-18 text-uppercase">
-                Subscribe <br/>
-                <span className="text-white">on latest news</span>
+                {information.title} <br/>
+                <span className="text-white">{information.text}</span>
               </span>
             </div>
             <div className="col-md-7"></div>
           </div>
         </div>
         <div className="parallax bg-grey-light opc-7"
-          data-parallax-image="images/blocks/bg-02.jpg"
+          data-parallax-image={information.parallaxImage}
           data-speed-direction="-.2">
         </div>
       </div>

@@ -9,11 +9,11 @@ import {
 
 	const INITIAL_STATE = {
 	    blogsList: {blogs: null, error:null, loading: false},  
-            newBlog: {blog:null, error: null, loading: false}, 
+      newBlog: {blog:null, error: null, loading: false}, 
 	    activeBlog: {blog:null, error:null, loading: false},
-            editBlog: {blog:null, error:null, loading: false}, 
-            deletedBlog: {blog: null, error:null, loading: false}
-        };
+      editBlog: {blog:null, error:null, loading: false}, 
+      deletedBlog: {blog: null, error:null, loading: false}
+  };
 
 export default function(state = INITIAL_STATE, action) {
   let error;

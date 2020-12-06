@@ -80,7 +80,7 @@ module.exports = function template(title = "MEATSEO", initialState = {}, content
                     <script src="/assets/js/jquery.min.js"></script>
                     <script src="/assets/js/jquery-ui.min.js"></script>
                     <script src="/assets/js/bootstrap.min.js"></script>
-                    <!--<script src="/assets/js/owl.carousel.min.js"></script>-->
+                    <script src="/assets/js/owl.carousel.min.js"></script>
                     <script src="/assets/js/lv-ripple.jquery.min.js"></script>
                     <script src="/assets/js/SmoothScroll.min.js"></script>
                     <script src="/assets/js/jquery.TDPageEvents.min.js"></script>

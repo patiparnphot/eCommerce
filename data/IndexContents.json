@@ -1,213 +1,90 @@
 {
-    "_id": {
-        "$oid": "5e14d1f47c213e47b9c73a13"
-    },
     "titleHtml": "รับออกแบบเว็บไซต์ ทำเว็บไซต์สำเร็จรูป เว็บบริษัท โดยมืออาชีพที่ชำนาญ",
     "descriptionHtml": "MEATSEO รับทำเว็บไซต์สำเร็จรูป ออกแบบเว็บไซต์ เว็บไซต์ e-commerce เว็บไซต์บริษัท รองรับ SEO พร้อมระบบจัดการข้อมูล(CMS) ดีไซน์ทันสมัย รองรับมือถือ Responsive",
     "intro": {
-        "slogan": "<h2>MEATSEO<br/> <span>รับทำเว็บไซต์สำเร็จรูป รองรับ SEO พร้อมระบบจัดการข้อมูล<\/span><\/h2>",
-        "button": "สั่งทำเว็บไซต์",
-        "image": "https://hapuk.org/wp-content/uploads/2020/05/banner-grow.png",
-        "href": "#footer"
-    },
-    "about": {
-        "image": "https://hapuk.org/wp-content/uploads/2020/05/banner-web-development.png",
-        "content": "<h2>บริการรับทำเว็บไซต์ ครบวงจร<\/h2><p>รับทำเว็บไซต์สำเร็จรูป ออกแบบเว็บไซต์บริษัท ทำเว็บไซต์ e-commerce ตามแบบที่คุณต้องการ พร้อมระบบจัดการข้อมูล (CMS) รองรับการทำ SEO ใช้งานง่าย เหนือกว่าเว็บไซต์สำเร็จรูปทุกรูปแบบที่คุณเคยเห็น ด้วยระบบ React & Node.js ประมวลผลรวดเร็ว รองรับการใช้งานบนมือถือ และ Device อื่นๆทุกขนาด<\/p><p>เพราะเราเชื่อว่าการมีเว็บไซต์ที่ดี เร็ว ง่ายต่อการแก้ไขข้อมูล คือจุดเริ่มต้นของความสำเร็จบนโลกของตลาดดิจิตอล<\/p><ul><li><i class='ion-android-checkmark-circle'><\/i>เรามีหลากหลาย Design ให้คุณเลือก<\/li><li><i class='ion-android-checkmark-circle'><\/i>ตัวเว็บไซต์รองรับการทำ SEO หมดปัญหาเรื่องมีเว็บไซต์แต่ไม่มีคนเข้า <\/li><li><i class='ion-android-checkmark-circle'><\/i>ดูแลและให้คำปรึกษาตลอดการใช้งาน<\/li><\/ul>"
-    },
-    "services": {
-        "header": "<h3>บริการของเรา<\/h3>",
-        "boxes": [
+        "slideshows": [
             {
-                "icon": "ion-ios-analytics-outline",
-                "iconColor": "#ff689b",
-                "bgColor": "#fceef3",
-                "href": "",
-                "title": "เว็บไซต์สำเร็จรูป",
-                "description": "รับสร้างเว็บไซต์สำเร็จรูป พร้อมระบบจัดการข้อมูล บนเทคโนโลยี Node.js และ React เร็ว แรง ง่าย รองรับการทำ SEO"
+              "header": "Sneakers",
+              "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et maxime vero amet, quisquam nihil! Odit, hic fugiat!",
+              "link": "#",
+              "btnLink": "More Info",
+              "image": "/images/slideshow/img-01.png",
+              "campaign": "New",
+              "tag": "JustDoIt!!!"
             },
             {
-                "icon": "ion-ios-bookmarks-outline",
-                "iconColor": "#e98e06",
-                "bgColor": "#fff0da",
-                "href": "",
-                "title": "SEO",
-                "description": "ปรับแต่งเว็บไซต์ของคุณ ให้มีความเหมาะสมกับการประมวลผลของ Search Engine พร้อมทั้งตรวจสอบ และเพิ่มประสิทธิภาพให้กับตัวเว็บไซต์"
+              "header": "Belt",
+              "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et maxime vero amet, quisquam nihil! Odit, hic fugiat!",
+              "link": "#",
+              "btnLink": "More Info",
+              "image": "/images/slideshow/img-02.png",
+              "campaign": "Hot",
+              "tag": "BeltYourWaist"
             },
             {
-                "icon": "ion-ios-paper-outline",
-                "iconColor": "#3fcdc7",
-                "bgColor": "#e6fdfc",
-                "href": "",
-                "title": "พัฒนาเว็บไซต์",
-                "description": "รับออกแบบเว็บไซต์ เพิ่ม feature ตามแบบที่คุณอยากได้ พร้อมดูแลโครงสร้างให้รองรับการทำ SEO "
-            },
-            {
-                "icon": "ion-ios-speedometer-outline",
-                "iconColor": "#41cf2e",
-                "bgColor": "#eafde7",
-                "href": "",
-                "title": "การโฆษณากับ Google",
-                "description": "อยากเป็นแบรนด์ชั้นนำ เราช่วยคุณได้ !  ด้วยการวางแผน ออกแบบค่าใช้จ่ายให้ถูกจุด เข้าถึงกลุ่มลูกค้าที่มีความต้องการสินค้าหรือบริการของคุณ "
-            },
-            {
-                "icon": "ion-ios-world-outline",
-                "iconColor": "#2282ff",
-                "bgColor": "#e1eeff",
-                "href": "",
-                "title": "การโฆษณากับ Facebook",
-                "description": "ก้าวไปอีกขั้นสู่ความสำเร็จ ที่สัมผัสได้ พัฒนาธุรกิจของคุณให้ก้าวกระโดดด้วยการโฆษณาที่เข้าถึงกลุ่มเป้าหมาย "
+              "header": "Camera",
+              "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et maxime vero amet, quisquam nihil! Odit, hic fugiat!",
+              "link": "#",
+              "btnLink": "More Info",
+              "image": "/images/slideshow/img-03.png",
+              "tag": "ShootYourBaby"
             }
-        ]
+          ]
     },
-    "whyUs": {
-        "header": "<h3>ให้เราออกแบบเว็บไซต์ที่ดีที่สุดให้คุณ<\/h3>",
-        "image": "https://hapuk.org/wp-content/uploads/2020/05/banner-analysis.png",
-        "content": "<p>เรามุ่งมั่นสร้างสรรค์ผลงานที่มีคุณภาพและดีที่สุดให้กับคุณ เรามั่นใจว่าเราสามารถสร้างเว็บไซต์ ที่ดี เร็ว และง่ายต่อการใช้งานออกมาให้กับคุณได้ เราอยากที่จะส่งมอบเว็บไซต์ที่ดีที่สุดและ รองรับ SEO ให้กับคุณ เราจะแสดงให้ทั่วโลกเห็นว่า เรา<strong> MEATSEO <\/strong> คือผู้นำด้านการสร้างเว็บไซต์สำเร็จรูป และเป็นผู้นำทางด้าน Search Engine Optimization<\/p>",
-        "topics": [
+    "recent": {
+        "parallaxText": "IN TREND",
+        "header": "Features"
+    },
+    "campaign": {
+        "title": "Winter 2017",
+        "subTitle": "New collections",
+        "btnText": "View New Collections",
+        "btnLink": "#",
+        "parallaxImage": "/images/blocks/bg-01.jpg"
+    },
+    "popularOnShop": {
+        "sidebarImage": "/images/blocks/parallax-bg-popular-on-shop.png",
+        "selector": [
             {
-                "icon": "fa fa-diamond",
-                "iconColor": "#f058dc",
-                "content": "<h4>ระบบจัดการข้อมูลที่ใช้ง่าย<\/h4><p> เว็บไซต์ที่ดีในความหมายของเราแล้ว นอกจากจะเร็ว และรองรับ SEO แล้ว มันควรจะเป็นเว็บไซต์ที่มีระบบจัดการข้อมูลที่ใช้ง่าย ใช้ได้จริง และง่ายต่อการปรับแก้ไข<\/p>"
-            },
-            {
-                "icon": "fa fa-object-group",
-                "iconColor": "#ffb774",
-                "content": "<h4>เร็ว เหมาะสมกับการใช้งาน<\/h4><p>เว็บไซต์สำเร็จรูปของเรา คือเว็บไซต์สำเร็จรูปที่ดี่และเร็วที่สุดเท่าที่ประเทศไทยเคยมีมา และเราจะคงมาตราฐานนี้ต่อไป<\/p>"
+                "topic": "",
+                "type": "",
+                "options": [
+                    ""
+                ]
             }
         ],
-        "counters": [
+        "categoryHead": "Category",
+        "categories": [
             {
-                "amount": "3",
-                "text": "Clients"
+                "topic": "Man",
+                "link": "#"
             },
             {
-                "amount": "4",
-                "text": "Projects"
+                "topic": "Woman",
+                "link": "#"
             },
             {
-                "amount": "500+",
-                "text": "Hours Of Support"
+                "topic": "Accessories",
+                "link": "#"
             },
             {
-                "amount": "5",
-                "text": "Hard Workers"
+                "topic": "Electronics",
+                "link": "#"
+            },
+            {
+                "topic": "Glasses",
+                "link": "#"
             }
         ]
     },
-    "callToAction": {
-        "title": "สร้างเว็บไซต์ของคุณกับเราเลยตอนนี้",
-        "text": "เพราะเราอยากให้คุณได้สิ่งที่ดีที่สุด",
-        "href": "https://meatseo.com/#footer",
-        "button": "สั่งทำเว็บไซต์"
-    },
-    "features": [
-        {
-            "image": "https://hapuk.org/wp-content/uploads/2020/05/Booking-website-design.png",
-            "content": "<h4>MEATSEO คือผู้นำด้านการพัฒนาเว็บไซต์<\/h4><p>ที่ MEATSEO พวกเรามุ่งมั่นสร้างสิ่งที่ดีที่สุดให้กับคุณ เรามั่นใจว่าเราสามารถสร้างเว็บไซต์ที่ดีที่สุดให้กับคุณได้ โดยคุณไม่ต้องกังวลว่า จะมีคนเข้าหรือไม่ เพราะเว็บไซต์ของเราจะมีระบบรองรับ SEO ที่ใช้ได้จริง ดูแลโดย SEO Specialist และ FullStack Developer มืออาชีพ <\/p>"
-        },
-        {
-            "image": "https://hapuk.org/wp-content/uploads/2020/05/Blog-website-design.png",
-            "content": "<h4>เว็บสำเร็จรูปของ MEATSEO ต่างจากที่อื่นยังไง ?<\/h4><p>เว็บไซต์สำเร็จรูปของเรา คือเว็บไซต์สำเร็จรูปที่ดีที่สุดเท่าที่ประเทศไทยเคยมีมา เร็วกว่า WordPress และเป็นเว็บไซต์ที่รองรับการทำ SEO อย่างเต็มรูปแบบ พวกเรา MEATSEO จะไม่หยุดพัฒนาจนกว่าคุณจะได้รับสิ่งที่ดีที่สุด<\/p>"
-        }
-    ],
     "blogs": {
-        "header": "แหล่งเรียนรู้",
-        "all": "ทั้งหมด",
-        "seo": "SEO",
-        "dev": "Developer",
-        "data": "Data Science"
+        "header": "Latest",
+        "subHeader": "on blog",
+        "parallaxText": "POPULAR"
     },
-    "testimonials": {
-        "header": "<h3>รีวิวจากพาร์ทเนอร์ของเรา<\/h3>",
-        "carousel": [
-            {
-                "image": "https://itp1.itopfile.com/ImageServer/d07ca248c44e821f/0/0/PatiparnAirLogoMonotonez-z671734754586.png",
-                "name": "คุณบอม",
-                "position": "CTO ( บริษัท ปฏิภาณ แอร์ แอนด์คอม จำกัด )",
-                "text": "บริการเยี่ยมเลยครับ ติดตามตลอด คอยให้ความช่วยเหลือ ช่วยคิดไอเดียใหม่ๆ มีการนำข้อมูลที่สำคัญมาให้ใช้ในการตัดสินใจ ขอบคุณครับ"
-            }
-        ]
-    },
-    "team": {
-        "header": "<h3>ทีมงาน MEATSEO<\/h3>",
-        "members": [
-            {
-                "image": "https://hapuk.org/wp-content/uploads/2020/05/16174435_1392268627458405_8082516269406263778_n.jpg",
-                "name": "N. Suteerapongpan",
-                "position": "SEO Specialist",
-                "twitter": "https://twitter.com/nutniti1",
-                "facebook": "https://www.facebook.com/nutnitinutniti",
-                "linkIn": ""
-            },
-            {
-                "image": "https://hapuk.org/wp-content/uploads/2020/05/14859934_10206728227235929_1759857509447257606_o.jpg",
-                "name": "P. Pojanart",
-                "position": "Web Developer",
-                "twitter": "",
-                "facebook": "",
-                "linkIn": ""
-            }
-        ]
-    },
-    "clients": {
-        "header": "<h3>พาร์ทเนอร์ของเรา<\/h3>",
-        "carousel": [
-            {
-                "image": "https://www.magiku.com/images/magiku_logo.png"
-            },
-            {
-                "image": "https://fastly.4sqi.net/img/general/200x200/526221305_B4vSysecRCm3uU7fUoi2otQipRGyQHnoft1AskCTCeY.jpg"
-            },
-            {
-                "image": "https://itp1.itopfile.com/ImageServer/d07ca248c44e821f/0/0/PatiparnAirLogoMonotonez-z671734754586.png"
-            },
-            {
-                "image": "img/clients/client-4.png"
-            },
-            {
-                "image": "img/clients/client-5.png"
-            },
-            {
-                "image": "img/clients/client-6.png"
-            },
-            {
-                "image": "img/clients/client-7.png"
-            },
-            {
-                "image": "img/clients/client-8.png"
-            }
-        ]
-    },
-    "pricing": {
-        "header": "<h3>ราคาทำเว็บไซต์สำเร็จรูป พร้อมบริการ SEO<\/h3>",
-        "packages": [
-            {
-                "currency": "",
-                "price": "15,000฿",
-                "period": "/เดือน",
-                "title": "Basic Plan",
-                "listGroup": "<li class='list-group-item'>ระบบ React เร็วกว่าเว็บสำเร็จรูปทั่วๆไป<\/li><li class='list-group-item'>ระบบจัดการข้อมูล (CMS)<\/li><li class='list-group-item'>ดูแลตลอดการใช้งาน<\/li><li class='list-group-item'>รองรับ SEO<\/li><li class='list-group-item'>ฟรี โฮสติ้งพื้นที่ไม่จำกัด<\/li><li class='list-group-item'>ฟรี ใบรับรอง SSL (https)<\/li><li class='list-group-item'>ระยะเวลาทำเว็บ 1 เดือน<\/li><li class='list-group-item'>ดูแล 5 Keyword<\/li>",
-                "href": "https://meatseo.com/#footer",
-                "button": "เลือก Basic"
-            },
-            {
-                "currency": "",
-                "price": "25,000฿",
-                "period": "/เดือน",
-                "title": "Regular Plan",
-                "listGroup": "<li class='list-group-item'>ระบบ React เร็วกว่าเว็บสำเร็จรูปทั่วๆไป<\/li><li class='list-group-item'>ระบบจัดการข้อมูล (CMS)<\/li><li class='list-group-item'>ดูแลตลอดการใช้งาน<\/li><li class='list-group-item'>รองรับ SEO<\/li><li class='list-group-item'>ฟรี โฮสติ้งพื้นที่ไม่จำกัด<\/li><li class='list-group-item'>ฟรี ใบรับรอง SSL (https)<\/li><li class='list-group-item'>ระยะเวลาทำเว็บ 1 เดือน<\/li><li class='list-group-item'>ดูแล 10 Keyword<\/li>",
-                "href": "https://meatseo.com/#footer",
-                "button": "เลือก Regular"
-            },
-            {
-                "currency": "",
-                "price": "35,000฿",
-                "period": "/เดือน",
-                "title": "Premium Plan",
-                "listGroup": "<li class='list-group-item'>ระบบ React เร็วกว่าเว็บสำเร็จรูปทั่วๆไป<\/li><li class='list-group-item'>ระบบจัดการข้อมูล (CMS)<\/li><li class='list-group-item'>ดูแลตลอดการใช้งาน<\/li><li class='list-group-item'>รองรับ SEO<\/li><li class='list-group-item'>ฟรี โฮสติ้งพื้นที่ไม่จำกัด<\/li><li class='list-group-item'>ฟรี ใบรับรอง SSL (https)<\/li><li class='list-group-item'>ระยะเวลาทำเว็บ 1 เดือน<\/li><li class='list-group-item'>ดูแล 20 Keyword<\/li>",
-                "href": "https://meatseo.com/#footer",
-                "button": "เลือก Premium"
-            }
-        ]
+    "information": {
+        "title": "Subscribe",
+        "text": "on latest news",
+        "parallaxImage": "/images/blocks/bg-02.jpg"
     }
 }

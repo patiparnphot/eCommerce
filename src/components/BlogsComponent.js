@@ -5,69 +5,69 @@ var initialContentState = require("../../initial_state/initialContentState.json"
 
 export default class Blog extends React.Component {
   
-  constructor(props) {
-    super(props);
-    this.onFilterChange = this.onFilterChange.bind(this);
-    this.state = {
-      allActive: 'filter-active',
-      seoActive: '',
-      devActive: '',
-      dataActive: ''
-    };
-  }
+  // constructor(props) {
+  //   super(props);
+  //   this.onFilterChange = this.onFilterChange.bind(this);
+  //   this.state = {
+  //     allActive: 'filter-active',
+  //     seoActive: '',
+  //     devActive: '',
+  //     dataActive: ''
+  //   };
+  // }
   
   componentDidMount() {
     this.props.fetchBlogs();
-    //this.props.blogsList.blogs = initialContentState.blogs.blogsList.blogs;
   }
-  
-  // Click Function
-  onFilterChange(newFilter) {
-    if (this.iso === undefined) {
-      this.iso = new Isotope('.blog-container', {
-        itemSelector: '.blog-item',
-        masonry: {
-          columnWidth: 5
-        }
-      });
-    }
-    if (newFilter === '*') {
-      this.iso.arrange({ filter: '*' });
-    } else {
-      this.iso.arrange({ filter: `.${newFilter}` });
-    }
-    this.setState({
-      allActive: '',
-      seoActive: '',
-      devActive: '',
-      dataActive: ''
+
+  componentDidUpdate() {
+    var owlCarousel = require('../../static/assets/js/owl.carousel.min.js');
+    // Blogs carousel (uses the Owl Carousel library)
+    $('.owl-carousel.latest-on-blog').owlCarousel({
+      loop            : false,
+      margin          : 0,
+      responsiveClass : true,
+      nav             : true,
+      navText         : ['<span class="arrow-left icofont icofont-curved-left">', '<span class="arrow-right icofont icofont-curved-right">'],
+      responsive: {
+          0:{
+              items: 2,
+              dots : false
+          },
+          321:{
+              items: 2,
+              dots : false
+          },
+          767:{
+              items: 3,
+              dots : false
+          },
+          1200:{
+              items: 3,
+              nav  : true,
+              dots : true
+          }
+      }
     });
-    if (newFilter === '*') {
-      this.setState({allActive: 'filter-active'});
-    } else if (newFilter === 'filter-seo') {
-      this.setState({seoActive: 'filter-active'});
-    } else if (newFilter === 'filter-dev') {
-      this.setState({devActive: 'filter-active'});
-    } else if (newFilter === 'filter-data') {
-      this.setState({dataActive: 'filter-active'});
-    }
+    var parallax = require('../../static/assets/js/jquery.TDParallax.min.js');
+    $('.parallax-block').TDParallax();
   }
 
   renderBlogs(blogs) {
     return blogs.map((blog) => {
       return (
-        <div key={blog.title} className={"col-lg-4 col-md-6 blog-item filter-" + blog.type}>
-          <div className="blog-wrap">
-            <img src={ blog.image } className="img-fluid" alt="" />
-            <div className="blog-info">
-              <h4><Link to={"/blogs/" + blog.title}>{ blog.title }</Link></h4>
-              <p>{blog.type}</p>
-              <div>
-                <a href={ blog.image } data-lightbox="blog" data-title={ blog.title } className="link-preview" title="Preview">
-                  <i className="ion ion-eye"></i>
-                </a>
-                <Link to={"/blogs/" + blog.slug} className="link-details" title="More Details"><i className="ion ion-android-open"></i></Link>
-              </div>
+        <div className="blog-item">
+          <div className="wrap">
+            <div className="image">
+              <img src={blog.image} alt=""/>
+            </div>                            
+            <div className="caption">
+              <h3 className="header">
+                <span className="text-uppercase">
+                  {blog.title}
+                </span>
+              </h3>
+              <Link to={"/blogs/" + blog.slug} className="more-info">More info</Link>
             </div>
           </div>
         </div>
@@ -102,7 +102,7 @@ export default class Blog extends React.Component {
                 data-default-pos="-400"
                 data-parallax-block="true">
                 <div className="text text-dark">
-                  POPULAR
+                  {content.parallaxText}
                 </div>
               </div>
             </div>
@@ -118,9 +118,9 @@ export default class Blog extends React.Component {
                 <div className="inblock padding-none">
                   <div className="wrap">
                     <span className="comp-header st-16 text-uppercase">
-                      Latest
+                      {content.header}
                       <span className="text-grey">
-                        on blog
+                        {content.subHeader}
                       </span>
                     </span>
                   </div>
@@ -130,30 +130,7 @@ export default class Blog extends React.Component {
               <div className="col-md-8 col-lg-9">
                 <div className="owl-carousel owl-default latest-on-blog nav-bottom-right">
                 
-                  <div className="blog-item">
-                    <div className="wrap">
-                      <div className="image">
-                        <img src="images/blog/img-01.jpg" alt=""/>
-                      </div>                            
-                      <div className="caption">
-                        <h3 className="header">
-                          <span className="date">
-                            10 january 2017
-                          </span>
-                          <span className="text-uppercase">
-                            Paper Bag
-                          </span>
-                        </h3>
-                        <p className="text">
-                          Fugiat mollitia vero, id eligendi non suscipit
-                          <span className="hidden-xs">
-                            laboriosam maiores, perspiciatis ullam eveniet molestiae, nesciunt est ipsa veniam consequuntur in totam.
-                          </span>
-                        </p>
-                        <a href="blog-item.html" className="more-info">More info</a>
-                      </div>
-                    </div>
-                  </div>
+                  {this.renderBlogs(blogs)}
     
                 </div>
               </div>

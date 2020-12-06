@@ -7,11 +7,9 @@ import {
 
 
 	const INITIAL_STATE = {
-	                        blogsList: {blogs: [], error:null, loading: false},  
-							            newBlog:{blog:null, error: null, loading: false}, 
-			            				activeBlog:{blog:null, error:null, loading: false}, 
-					            		deletedBlog: {blog: null, error:null, loading: false}
-						            };
+    blogsList: {blogs: [], error:null, loading: false},   
+    activeBlog:{blog:null, error:null, loading: false}
+  };
 
 export default function(state = INITIAL_STATE, action) {
   let error;
@@ -36,26 +34,6 @@ export default function(state = INITIAL_STATE, action) {
     return { ...state, activeBlog: {blog: null, error:error, loading:false}};
   case RESET_ACTIVE_BLOG:
     return { ...state, activeBlog: {blog: null, error:null, loading: false}};
-
-  case CREATE_BLOG:
-  	return {...state, newBlog: {...state.newBlog, loading: true}};
-  case CREATE_BLOG_SUCCESS:
-  	return {...state, newBlog: {blog:action.payload, error:null, loading: false}};
-  case CREATE_BLOG_FAILURE:
-    error = action.payload || {message: action.payload.message};
-  	return {...state, newBlog: {blog:null, error:error, loading: false}};
-  case RESET_NEW_BLOG:
-  	return {...state, newBlog: {blog:null, error:null, loading: false}};
-
-  case DELETE_BLOG:
-   	return {...state, deletedBlog: {...state.deletedBlog, loading: true}};
-  case DELETE_BLOG_SUCCESS:
-  	return {...state, deletedBlog: {blog:action.payload, error:null, loading: false}};
-  case DELETE_BLOG_FAILURE:
-    error = action.payload || {message: action.payload.message};
-  	return {...state, deletedBlog: {blog:null, error:error, loading: false}};
-  case RESET_DELETED_BLOG:
-  	return {...state, deletedBlog: {blog:null, error:null, loading: false}};
 
   default:
     return state;

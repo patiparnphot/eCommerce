@@ -13,12 +13,24 @@ var preAuthenticate = function (req,res,next){
 };
 
 
-//GOODS - get a list of goods
-router.get("/", function(req, res, next){
+//GOODS - get a recent list of goods
+router.get("/recent", function(req, res, next){
     Good.find(
         { postedTime: { $lt: Date.now() } },
         {},
         { sort: { postedTime: -1 }, limit: 20 }, function(err, listOfGoods){
+            if(err) return next(err);
+            res.json(listOfGoods);
+        }
+    );
+});
+
+//GOODS - get a popular list of goods
+router.get("/popular", function(req, res, next){
+    Good.find(
+        {},
+        {},
+        { sort: { rating: -1 }, limit: 20 }, function(err, listOfGoods){
             if(err) return next(err);
             res.json(listOfGoods);
         }

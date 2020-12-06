@@ -1,4 +1,4 @@
-import Faq from '../components/FaqComponent';
+import Information from '../components/InformationComponent';
 import { connect } from 'react-redux';
 
 
@@ -9,8 +9,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 function mapStateToProps(state, ownProps) {
   return {
-    faq: ownProps.faq
+    information: ownProps.information
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Faq);
+export default connect(mapStateToProps, mapDispatchToProps)(Information);

@@ -11,10 +11,10 @@ import {
 } from '../actions/contents';
 
 import Intro from '../containers/IntroContainer';
-import About from '../containers/AboutContainer';
-import Services from '../containers/ServicesContainer';
-import WhyUs from '../containers/WhyUsContainer';
-import CallToAction from '../containers/CallToActionContainer';
+import Recent from '../containers/RecentContainer';
+import Campaign from '../containers/CampaignContainer';
+import PopularOnShop from '../containers/PopularOnShopContainer';
+import Information from '../containers/InformationContainer';
 import Blogs from '../containers/BlogsContainer';
 import NotFoundPage from '../components/NotFoundPage.js';
 
@@ -47,11 +47,11 @@ class IndexPage extends Component {
         </Helmet>
         <Intro intro={content.intro} />
         <main id='main'>
-          <About about={content.about} />
-          <Services services={content.services} />
-          <WhyUs whyUs={content.whyUs} />
+          <Recent recent={content.recent} />
+          <Campaign campaign={content.campaign} />
+          <PopularOnShop popularOnShop={content.popularOnShop} />
           <Blogs blogs={content.blogs} />
-          <CallToAction callToAction={content.callToAction} />
+          <Information information={content.information} />
         </main>
       </div>
     );
