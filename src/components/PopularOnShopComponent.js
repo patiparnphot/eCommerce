@@ -2,23 +2,65 @@ import React from 'react';
 
 
 export default class PopularOnShop extends React.Component {
+
+  constructor(props) {
+    super(props);
+    // this.onFilterChange = this.onFilterChange.bind(this);
+    this.state = {
+      first: 1,
+      last: 4,
+      max: 5,
+      min: 0
+    };
+  }
   
   componentDidMount() {
     this.props.fetchGoods();
+    let _this = this;
+    $('.price-slider').each(function() {
+      var $block   = $(this),
+          $range   = $block.find('.range'),
+          // $amFirst = $block.find('.amoutn .first'),
+          // $amLast  = $block.find('.amoutn .last'),
+          data     = $block.data();
+      
+      $range.slider({
+          range: true,
+          min: _this.state.min,
+          max: _this.state.max,
+          values: [_this.state.first, _this.state.last],
+          slide: function(event, ui) {
+              // $amFirst.val(ui.values[0]);
+              // $amLast.val(ui.values[1]);
+              _this.setState({
+                first: ui.values[0],
+                last: ui.values[1]
+              });
+          }
+      });
+      
+      // $amFirst.val($range.slider("values", 0));
+      // $amLast.val($range.slider("values", 1));
+  });
   }
 
-  renderFeatures(features) {
-    return features.map((feature) => {
+  componentDidUpdate() {
+    console.log("first: ", this.state.first);
+    console.log("last: ", this.state.last);
+  }
+
+  renderFeatures(keys, features) {
+    return keys.map((key) => {
       return (
         <ul className="features" style={{marginBottom: '0px'}}>
           <li style={{width: 'auto'}}>
             <i className="icofont icofont-shield"></i>
-            <span>{feature.key}</span>
+            <span>{key}</span>
           </li>
           <li style={{width: 'auto'}}>
             <div className="rate" style={{paddingLeft: '70px', marginTop: '15px', marginBottom: '10px'}}>
               <ul className="stars">
-                {this.renderStars(feature.rating, 'feature')}
+                {this.renderStars(features[key], 'feature')}
               </ul>
             </div>
           </li>
@@ -86,6 +128,10 @@ export default class PopularOnShop extends React.Component {
 
   renderGoods(goods) {
     return goods.map((good) => {
+      let specialFeatureKeys
+      if (good.specialFeatures) {
+        specialFeatureKeys = Object.keys(good.specialFeatures);
+      }
       return (
         <div className="col-xs-6 col-sm-4 col-md-6 col-lg-4 shop-item hover-sdw">
           <div className="wrap">
@@ -126,7 +172,7 @@ export default class PopularOnShop extends React.Component {
                   ) ? (
                     <span></span>
                   ) : (
-                    this.renderFeatures(good.specialFeatures)
+                    this.renderFeatures(specialFeatureKeys, good.specialFeatures)
                   )
                 }
               </div>
@@ -183,6 +229,19 @@ export default class PopularOnShop extends React.Component {
 
           <div className="inblock sdw">
             <div className="wrap bg-white">
+              <h3 className="header text-uppercase">Aroma</h3>
+              <div class="price-slider">
+
+                <div class="range"></div>
+
+                <div class="amoutn">
+                  <input type="text" class="first" value={this.state.first} readonly/>
+                  <input type="text" class="last" value={this.state.last} readonly/>
+                </div>
+              </div>
+              <button onClick={() => this.props.test(this.props.popularGoods.goods, {key: "Aroma", first: this.state.first, last: this.state.last})}>
+                filtering Aroma
+              </button>
               <div className="sizer">
                 <h3 className="header text-uppercase">Size</h3>
                 <ul className="selecter">

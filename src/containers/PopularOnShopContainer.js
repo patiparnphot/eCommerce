@@ -28,6 +28,11 @@ const mapDispatchToProps = (dispatch, state, ownProps) => {
       let resetedGoods = initial.slice(0, 10);
       console.log('resetedGoods: ', resetedGoods);
       dispatch(fetchFilterGoodsSuccess(resetedGoods))
+    },
+    test: (initial, filter) => {
+      let filteredGood = initial.filter(good => good.specialFeatures[filter.key] >= filter.first);
+      filteredGood = filteredGood.filter(good => good.specialFeatures[filter.key] <= filter.last);
+      dispatch(fetchFilterGoodsSuccess(filteredGood))
     }
   };
 };
