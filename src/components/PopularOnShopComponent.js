@@ -17,36 +17,41 @@ export default class PopularOnShop extends React.Component {
   componentDidMount() {
     this.props.fetchGoods();
     let _this = this;
+
     $('.price-slider').each(function() {
       var $block   = $(this),
           $range   = $block.find('.range'),
-          // $amFirst = $block.find('.amoutn .first'),
-          // $amLast  = $block.find('.amoutn .last'),
           data     = $block.data();
-      
       $range.slider({
-          range: true,
-          min: _this.state.min,
-          max: _this.state.max,
-          values: [_this.state.first, _this.state.last],
-          slide: function(event, ui) {
-              // $amFirst.val(ui.values[0]);
-              // $amLast.val(ui.values[1]);
-              _this.setState({
-                first: ui.values[0],
-                last: ui.values[1]
-              });
-          }
+        range: true,
+        min: _this.state.min,
+        max: _this.state.max,
+        values: [_this.state.first, _this.state.last],
+        slide: function(event, ui) {
+          _this.setState({
+            first: ui.values[0],
+            last: ui.values[1]
+          });
+        }
       });
-      
-      // $amFirst.val($range.slider("values", 0));
-      // $amLast.val($range.slider("values", 1));
-  });
+    });
+
+    $('.mobile-category').each(function() {
+      var $this = $(this),
+          $btn  = $this.find('.btn-swither');
+      $btn.on('click', function() {
+        if($this.hasClass('nav-close')) {
+          $this.removeClass('nav-close')
+        } else {
+          $this.addClass('nav-close')
+        }
+      })
+    });
   }
 
   componentDidUpdate() {
-    console.log("first: ", this.state.first);
-    console.log("last: ", this.state.last);
+    // console.log("first: ", this.state.first);
+    // console.log("last: ", this.state.last);
   }
 
   renderFeatures(keys, features) {
@@ -180,7 +185,9 @@ export default class PopularOnShop extends React.Component {
             <div className="info">
               <a href={ '/goods/' + good.slug } className="btn-material btn-price">
                 <span className="price">
-                  {this.renderCost(good.options)}
+                  <span className="price">
+                    ฿ {good.options[0].cost}<small>.00 per Unit</small>
+                  </span>
                 </span>
               </a>
             </div>

@@ -111,7 +111,11 @@ export default class Recent extends React.Component {
             </div>
             <div className="info">
               <a href={ '/goods/' + good.slug } className="btn-material btn-price">
-                {this.renderCost(good.options)}
+                <span className="price">
+                  <span className="price">
+                    ฿ {good.options[0].cost}<small>.00</small>
+                  </span>
+                </span>
               </a>
             </div>
           </div>

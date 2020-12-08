@@ -1,16 +1,22 @@
 import Header from '../components/HeaderComponent';
-// import {
-//     resetPage,
-//     meFromPage,
-//     meFromPageSuccess,
-//     meFromPageFailure,
-//     logoutUser
-// } from '../actions/users';
+import {
+  signInUser,
+  signInUserSuccess,
+  signInUserFailure,
+  logoutUser
+} from '../actions/users';
 import { connect } from 'react-redux';
 
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    signIn: () => {
+      dispatch(signInUser()).then((response) => {
+        console.log('signInRes: ', response.payload);
+        !response.error ? dispatch(signInUserSuccess(response.payload)) : dispatch(signInUserFailure(response.payload));
+      });
+    },
+    logOut: () => dispatch(logoutUser())
     // resetPage: () => {
     //     dispatch(resetPage());
     // },
@@ -40,8 +46,8 @@ const mapDispatchToProps = (dispatch) => {
 
 function mapStateToProps(state, ownProps) {
   return {
-    headerTag: ownProps.headerTag
-    // member: state.member
+    headerTag: ownProps.headerTag,
+    member: state.member
   };
 }
 

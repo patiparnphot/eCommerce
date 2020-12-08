@@ -13,70 +13,12 @@ export default class Header extends React.Component {
     // this.props.loadUserFromPage();
   }
   
-//   renderMemberNav(user) {
-//     if(user) {
-//       return (
-//         <ul className="nav navbar-nav navbar-right">
-//           <li><Link to={"/users/" + user.userId}>Signed In As {user.username}</Link></li>
-//           <li><a role="button" href="#" onClick={this.props.signOut}>SignOut</a></li>
-//         </ul>
-//       );
-//     } else {
-//       return (
-//         <ul className="nav navbar-nav navbar-right">
-//           <li><Link to="/signin">SignIn</Link></li>
-//           <li><Link to="/signup">Signup</Link></li>
-//         </ul>
-//       );
-//     }
-//   }
-  
-  render() {
-    
-    // const { user } = this.props.member;
-    
-    const { headerTag } = this.props;
-    
-    if (!headerTag) {
-      return <div/>
-    }
-    
-    return (
-      <nav className="navbar navbar-default">
-  <div className="container">
-    <div className="navbar-header">
-      <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-        <span className="sr-only">Toggle navigation</span>
-        <span className="icon-bar"></span>
-        <span className="icon-bar"></span>
-        <span className="icon-bar"></span>
-      </button>
-      <a className="navbar-brand" href="#">
-        <img src="images/main-brand.png" alt="" className="brand"/>
-      </a>
-    </div>
-    <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <div className="top-panel">
-        <div className="phone text-blue">
-          <i className="icofont icofont-phone-circle"></i>
-          +1 234 567 89 10
-        </div>
-        <div className="btn-cols">
-          <ul className="list-btn-group">
-            <li>
-              <a href="#" data-toggle="modal" data-target="#myModal">
-                SignUp
-              </a>
-            </li>
-            <li>
-              <a href="register-page.html">
-                <b>SignIn</b>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>  
-      <ul className="nav navbar-nav navbar-right info-panel">
+  // <a role="button" href="#" onClick={this.props.signOut}>SignOut</a>
+
+  renderMemberNav(member) {
+    if(member.user) {
+      return (
+<ul className="nav navbar-nav navbar-right info-panel">
         <li className="profile">
           <span className="wrap">
             <span className="image bg-white">
@@ -85,7 +27,7 @@ export default class Header extends React.Component {
               </span>
             </span>
             <span className="info">
-              <span className="name text-uppercase">John Doe</span>
+              <span className="name text-uppercase">{member.user.firstname} {member.user.lastname}</span>
             </span>
           </span>
         </li>
@@ -131,7 +73,69 @@ export default class Header extends React.Component {
             </li>
           </ul>
         </li>
+        <li>
+          <a href="#" onClick={() => this.props.logOut()}>
+            <b>LogOut</b>
+          </a>
+        </li>
       </ul>
+      );
+    } else {
+      return (
+        <ul className="list-btn-group nav navbar-nav navbar-right info-panel">
+          <li>
+            <a href="#" onClick={() => this.props.signIn()}>
+              <b>SignIn</b>
+            </a>
+          </li>
+        </ul>
+      );
+    }
+  }
+  
+  render() {
+    
+    const { member } = this.props;
+    
+    const { headerTag } = this.props;
+    
+    if (!headerTag) {
+      return <div/>
+    }
+    
+    return (
+      <nav className="navbar navbar-default">
+  <div className="container">
+    <div className="navbar-header">
+      <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span className="sr-only">Toggle navigation</span>
+        <span className="icon-bar"></span>
+        <span className="icon-bar"></span>
+        <span className="icon-bar"></span>
+      </button>
+      <a className="navbar-brand" href="#">
+        <img src="images/main-brand.png" alt="" className="brand"/>
+      </a>
+    </div>
+    <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <div className="top-panel">
+        <div className="phone text-blue">
+          <i className="icofont icofont-phone-circle"></i>
+          +1 234 567 89 10
+        </div>
+        <div className="btn-cols">
+          <ul className="list-btn-group">
+            <li>
+              <a href="#">
+                <b>SignUp</b>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>  
+      
+      {this.renderMemberNav(member)}
+
       <ul className="nav navbar-nav">
         <li className="active">
           <a href="index.html">
