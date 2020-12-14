@@ -6,6 +6,8 @@ import Footer from './containers/FooterContainer';
 import NotFoundPage from './components/NotFoundPage.js';
 import IndexPage from './pages/IndexPage';
 import BlogPage from './pages/BlogPage';
+import TagPage from './pages/TagPage';
+import GoodPage from './pages/GoodPage';
 
 var initialContentState = require("../initial_state/initialContentState.json");
 
@@ -47,6 +49,9 @@ function App({fetchTemplatecontent, templateContent}) {
           <Route path="/blogs">
             <BlogsPage/>
           </Route>
+          <Route path="/goods">
+            <GoodsPage/>
+          </Route>
           <Route path="*" component={NotFoundPage}/>
         </Switch>
         <Footer footerTag={content.footerTag} />
@@ -62,6 +67,21 @@ function BlogsPage() {
     <Route path={`${path}/:title`}>
       <BlogPage />
     </Route>
+  );
+}
+
+function GoodsPage() {
+  let { path } = useRouteMatch();
+
+  return (
+    <Switch>
+      <Route exact path={`${path}/:tag`}>
+        <TagPage/>
+      </Route>
+      <Route path={`${path}/:tag/:slug`}>
+        <GoodPage />
+      </Route>
+    </Switch>
   );
 }
 

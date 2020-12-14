@@ -9,10 +9,10 @@ var goodObject = {
    options: [
       {
          cost: Number,
-         size: String
+         key: String
       }
    ],
-   specificOption: [ String ],
+   specificOptions: [ String ],
    image: String,
    category: String,
    rating: String,

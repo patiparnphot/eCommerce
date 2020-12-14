@@ -1,10 +1,11 @@
 var moment  = require("moment-timezone"),
     Good = require("../models/good");
 
-module.exports = async function(title) {
+module.exports = async function(slug) {
+   console.log(slug);
   try {
-     const currentlyGood = await Good.findOne({ title: title }).exec();
-     //console.log(currentlyGood);
+     const currentlyGood = await Good.findOne({ slug: slug }).exec();
+   //   console.log(currentlyGood);
 
      try {
         let sameCategoryGoods = await Good.find(
@@ -12,16 +13,15 @@ module.exports = async function(title) {
            { title: 1, image: 1, rating: 1, cost: 1 },
            { sort: { postedTime: -1 }, limit: 10 }).exec();
         let similarGoods = [];
-        
         if (sameCategoryGoods && sameCategoryGoods.length > 0) {
            for (let i = 0; i < sameCategoryGoods.length; i++) {
              if (sameCategoryGoods[i].title != currentlyGood.title) {
-                 similarGoods.push(sameCategoryGood[i]);
+                 similarGoods.push(sameCategoryGoods[i]);
              }
            }
         } else { similarGoods.push(currentlyGood); }
         //let finalSimilarGoods = await Promise.all(similarGoods);
-        //console.log(similarGoods);
+        //console.log("similar: ", similarGoods);
 
         try {
            let popularGoods;
@@ -57,13 +57,15 @@ module.exports = async function(title) {
                   'ratingAmount': currentlyGood.ratingAmount,
                   'raterAmount': currentlyGood.raterAmount,
                   'postedTime': currentlyGood.postedTime,
+                  'options': currentlyGood.options,
+                  'specificOptions': currentlyGood.specificOptions,
                   'similarGoods': similarGoods,
                   'popularGoods': popularGoods,
                   'recentGoods': recentGoods
                  };
-                 console.log(goodDetail);
+               //   console.log(goodDetail);
                  return({
-                    'title': currentlyGood.title,
+                    'slug': currentlyGood.slug,
                     'state': goodDetail
                  });
 

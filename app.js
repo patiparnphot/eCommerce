@@ -22,7 +22,8 @@ var express         = require("express"),
 var serverSideRender    = require("./src/serverSideRender"),
     template            = require("./static/template"),
     initialContentState = require("./initial_state/initialContentState.json"),
-    initialBlogState    = require("./initial_state/initialBlogState");
+    initialBlogState    = require("./initial_state/initialBlogState"),
+    initialGoodState    = require("./initial_state/initialGoodState");
 
 // Set Auto Reload due to file change
 fs.watchFile(require.resolve('./initial_state/initialContentState.json'), function () {
@@ -36,6 +37,12 @@ fs.watchFile(require.resolve('./initial_state/initialBlogState'), function () {
    delete require.cache[require.resolve('./initial_state/initialBlogState')]
    initialBlogState = require('./initial_state/initialBlogState');
    console.log("InitialBlogState has changed and Server has reloaded!!!");
+});
+fs.watchFile(require.resolve('./initial_state/initialGoodState'), function () {
+   console.log("InitialGoodState changed, reloading...");
+   delete require.cache[require.resolve('./initial_state/initialGoodState')]
+   initialGoodState = require('./initial_state/initialGoodState');
+   console.log("InitialGoodState has changed and Server has reloaded!!!");
 });
 
 // Point static path
@@ -128,6 +135,17 @@ app.get('*', async (req, res, next) => {
          };
          titleHtml = activeBlog.titleHtml;
          descriptionHtml = activeBlog.descriptionHtml;
+      }
+      if (urlArr.length >= 3 && urlArr[1] === 'goods') {
+         let activeGood = await initialGoodState(urlArr[3]);
+         // console.log('goodState', activeGood);
+         initialStateJson.goods.activeGood = {
+            "good": activeGood,
+            "error": null,
+            "loading": false
+         };
+         titleHtml = activeGood.titleHtml;
+         descriptionHtml = activeGood.descriptionHtml;
       }
       //const helmet = Helmet.renderStatic();
       const { preloadedState, content } = serverSideRender(initialStateJson, req.url);

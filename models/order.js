@@ -8,7 +8,7 @@ var orderObject = {
          description: String,
          image: String,
          category: String,
-         size: String,
+         key: String,
          specificDetail: String,
          amount: Number,
          costPerUnit: Number,

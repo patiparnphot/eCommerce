@@ -85,7 +85,7 @@ export default class Header extends React.Component {
         <ul className="list-btn-group nav navbar-nav navbar-right info-panel">
           <li>
             <a href="#" onClick={() => this.props.signIn()}>
-              <b>SignIn</b>
+              <b>LogIn</b>
             </a>
           </li>
         </ul>

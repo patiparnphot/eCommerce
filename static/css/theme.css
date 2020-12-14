@@ -5047,6 +5047,17 @@ a.ui-button:active,
   color: #8e8e8e;
   text-decoration: none;
 }
+.shop-item-page .buy-btn-panel .btns-wrap .qnt-select span{
+  font-size: 1.125em;
+  text-transform: uppercase;
+  font-weight: 800;
+  padding-left: 41px;
+  display: inline-block;
+  padding-top: 10px;
+  padding-bottom: 9px;
+  color: #8e8e8e;
+  text-decoration: none;
+}
 .shop-item-page .buy-btn-panel .btns-wrap a:nth-child(2) {
   padding-left: 0;
   float: right;

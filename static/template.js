@@ -39,7 +39,7 @@ module.exports = function template(title = "MEATSEO", initialState = {}, content
                     <link href="/lib/lightbox/css/lightbox.min.css" rel="stylesheet">-->
     
                     <!--Main Stylesheet File -->
-                    <link href="/css/theme.min.css" rel="stylesheet">
+                    <link href="/css/theme.css" rel="stylesheet">
     
                     <!-- Global site tag (gtag.js) - Google Analytics -->
                     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-155291561-5"></script>

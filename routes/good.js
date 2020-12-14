@@ -57,24 +57,24 @@ router.get("/:start/:end", function(req, res, next){
 //INITIALSTATE - update JSON file of initialState good
 router.get("/updateJsonFile", async function(req, res, next) {
 try {
-    Good.find({}, {title: 1, _id: 0}, {}, async function(err, listOfGoods){
+    Good.find({}, {slug: 1, _id: 0}, {}, async function(err, listOfGoods){
         if (err) return next(err);
         let goodStateArr = [];
         if (Array.isArray(listOfGoods) && (listOfGoods.length > 0)) {
             for (let i = 0; i < listOfGoods.length; i++) {
-                let goodTitle = listOfGoods[i].title;
-                goodStateArr.push(goodState(goodTitle));
+                let goodSlug = listOfGoods[i].slug;
+                goodStateArr.push(goodState(goodSlug));
             };
         };
         let finalGoodStateArr = await Promise.all(goodStateArr);
-        let goodStateJS = `module.exports = function(goodTitle) { `;
+        let goodStateJS = `module.exports = function(goodSlug) { `;
         for (let j = 0; j < finalGoodStateArr.length; j++) {
             if (j == 0) {
-                goodStateJS += `if ( goodTitle == `;
+                goodStateJS += `if ( goodSlug == `;
             } else {
-                goodStateJS += `else if ( goodTitle == `;
+                goodStateJS += `else if ( goodSlug == `;
             }
-            goodStateJS += JSON.stringify(finalGoodStateArr[j].title);
+            goodStateJS += JSON.stringify(finalGoodStateArr[j].slug);
             goodStateJS += ` ) { return `;
             goodStateJS += JSON.stringify(finalGoodStateArr[j].state);
             goodStateJS += `; } `;
@@ -153,6 +153,9 @@ router.get("/:slug", function(req, res, next) {
                                 'ratingAmount': currentlyGood.ratingAmount,
                                 'raterAmount': currentlyGood.raterAmount,
                                 'postedTime': currentlyGood.postedTime,
+                                'options': currentlyGood.options,
+                                'specificOptions': currentlyGood.specificOptions,
+                                'comments': currentlyGood.comments,
                                 'similarGoods': similarGoods,
                                 'popularGoods': popularGoods,
                                 'recentGoods': recentGoods,

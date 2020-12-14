@@ -2,6 +2,13 @@ import React from 'react';
 
 
 export default class Recent extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      numberOfStars: 5
+    };
+  }
   
   componentDidMount() {
     // this.props.fetchGoods();
@@ -56,9 +63,9 @@ export default class Recent extends React.Component {
   renderStars(rating) {
     let ratingNum = parseFloat(rating)
     let ratingRounded = Math.round(ratingNum);
-    let array = ['','','','',''];
-    return array.map((list, index) => {
-      if (index < ratingRounded) {
+    let array = [...Array(+this.state.numberOfStars).keys()];
+    return array.map(n => {
+      if (n < ratingRounded) {
         return (
           <li className='active'>
             <i className="icofont icofont-star"></i>

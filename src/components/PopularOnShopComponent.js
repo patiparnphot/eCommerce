@@ -7,6 +7,7 @@ export default class PopularOnShop extends React.Component {
     super(props);
     // this.onFilterChange = this.onFilterChange.bind(this);
     this.state = {
+      numberOfStars: 5,
       first: 1,
       last: 4,
       max: 5,
@@ -95,10 +96,10 @@ export default class PopularOnShop extends React.Component {
   renderStars(rating, option) {
     let ratingNum = parseFloat(rating)
     let ratingRounded = Math.round(ratingNum);
-    let array = ['','','','',''];
+    let array = [...Array(+this.state.numberOfStars).keys()];
     if (option && option == "feature") {
-      return array.map((list, index) => {
-        if (index < ratingRounded) {
+      return array.map(n => {
+        if (n < ratingRounded) {
           return (
             <li className='active' style={{width: 'auto'}}>
               <i className="icofont icofont-sun"></i>
@@ -113,8 +114,8 @@ export default class PopularOnShop extends React.Component {
         }
       });  
     } else {
-      return array.map((list, index) => {
-        if (index < ratingRounded) {
+      return array.map(n => {
+        if (n < ratingRounded) {
           return (
             <li className='active'>
               <i className="icofont icofont-star"></i>
