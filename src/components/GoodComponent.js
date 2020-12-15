@@ -35,7 +35,7 @@ export default class GoodPage extends React.Component {
   componentDidMount() {
     
     // this.props.fetchBlogdetailcontent();
-    
+
     this.props.fetchGood(this.props.goodSlug);
     //this.props.activeBlog.blog = initialBlogState(this.props.blogTitle);
     this.setState({
@@ -199,6 +199,7 @@ export default class GoodPage extends React.Component {
         cost: (+this.state.amount)*(+this.state.cost)
     }
     console.log("goodOrder: ", goodOrder);
+    this.props.addGoodInCart([...this.props.incartGoods.goods, goodOrder]);
   }
 
   addComment(event) {
@@ -459,20 +460,32 @@ export default class GoodPage extends React.Component {
                                                 <div class="cart-icon">
                                                     <i class="icofont icofont-basket"></i>
                                                 </div>
-                                                <div class="btns-wrap btn-material bg-white">
-                                                    <span class="qnt-select">
-                                                        <span class="plus" onClick={this.increaseAmount}>
-                                                            <i class="icofont icofont-plus"></i>
-                                                        </span>
-                                                        <span class="view-sum">
-                                                            {this.state.amount}
-                                                        </span>
-                                                        <span class="minus" onClick={this.decreaseAmount}>
-                                                            <i class="icofont icofont-minus"></i>
-                                                        </span>
-                                                    </span>
-                                                    <a class="text-blue" href="#" onClick={() => this.addToCart(good)}>Put in cart</a>
-                                                </div>
+                                                {
+                                                    (
+                                                        this.props.member && this.props.member.token
+                                                    ) ? (
+                                                        <div class="btns-wrap btn-material bg-white">
+                                                            <span class="qnt-select">
+                                                                <span class="plus" onClick={this.increaseAmount}>
+                                                                    <i class="icofont icofont-plus"></i>
+                                                                </span>
+                                                                <span class="view-sum">
+                                                                    {this.state.amount}
+                                                                </span>
+                                                                <span class="minus" onClick={this.decreaseAmount}>
+                                                                    <i class="icofont icofont-minus"></i>
+                                                                </span>
+                                                            </span>
+                                                            <a class="text-blue" href="#" onClick={() => this.addToCart(good)}>Put in cart</a>
+                                                        </div>
+                                                    ) : (
+                                                        <div class="btns-wrap btn-material bg-white">
+                                                            <a href="#" onClick={() => this.props.signIn()}><b>
+                                                                Please LogIn, Before buy this good.
+                                                            </b></a>
+                                                        </div>
+                                                    )
+                                                }
                                             </div>
                                         </div>
                                     </div>

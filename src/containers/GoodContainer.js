@@ -1,5 +1,11 @@
 import Good from '../components/GoodComponent';
-import { fetchGood, fetchGoodSuccess, fetchGoodFailure } from '../actions/goods';
+import {
+  fetchGood,
+  fetchGoodSuccess,
+  fetchGoodFailure,
+  fetchCartGoods,
+  addCartGoods
+} from '../actions/goods';
 import {
   createComment,
   createCommentSuccess,
@@ -17,6 +23,13 @@ const mapDispatchToProps = (dispatch) => {
         console.log('good: ', response.payload);
         !response.error ? dispatch(fetchGoodSuccess(response.payload)) : dispatch(fetchGoodFailure(response.payload));
       });
+    },
+    fetchGoodInCart: () => {
+      dispatch(fetchCartGoods());
+    },
+    addGoodInCart: (goodsInCart) => {
+      console.log('good in cart: ', goodsInCart);
+      dispatch(addCartGoods(goodsInCart));
     },
     signIn: () => {
       dispatch(signInUser()).then((response) => {
@@ -40,6 +53,7 @@ const mapDispatchToProps = (dispatch) => {
 function mapStateToProps(state, ownProps) {
   return {
     activeGood: state.goods.activeGood,
+    incartGoods: state.goods.incartGoods,
     goodSlug: ownProps.slug,
     goodTag: ownProps.tag,
     member: state.member,

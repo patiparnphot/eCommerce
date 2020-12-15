@@ -25,6 +25,10 @@ export const FETCH_GOOD_SUCCESS = 'FETCH_GOOD_SUCCESS';
 export const FETCH_GOOD_FAILURE = 'FETCH_GOOD_FAILURE';
 export const RESET_ACTIVE_GOOD = 'RESET_ACTIVE_GOOD';
 
+//Add good in-cart
+export const FETCH_CARTGOODS = 'FETCH_CARTGOODS';
+export const ADD_CARTGOODS = 'ADD_CARTGOODS';
+
 function receiver(type, json) {
   return {
     type: type,
@@ -78,8 +82,8 @@ export function fetchPopularGoodsFailure(error) {
 
 
 export function fetchFilterGoods(allGoods, filter) {
-  console.log("allgoods: ", allGoods);
-  console.log("filter: ", filter);
+  // console.log("allgoods: ", allGoods);
+  // console.log("filter: ", filter);
   let keys = Object.keys(filter);
   let filteredGood = allGoods;
   keys.forEach((key) => {
@@ -127,4 +131,17 @@ export function resetActiveGood() {
   return {
     type: RESET_ACTIVE_GOOD
   }
+}
+
+
+export function fetchCartGoods() {
+  return {
+    type: FETCH_CARTGOODS
+  }
+}
+export function addCartGoods(inCartGoods) {
+  return {
+    type: ADD_CARTGOODS,
+    payload: inCartGoods
+  };
 }

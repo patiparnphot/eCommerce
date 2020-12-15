@@ -5,11 +5,17 @@ import {
   signInUserFailure,
   logoutUser
 } from '../actions/users';
+import {
+  fetchCartGoods
+} from '../actions/goods'
 import { connect } from 'react-redux';
 
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    fetchGoodInCart: () => {
+      dispatch(fetchCartGoods());
+    },
     signIn: () => {
       dispatch(signInUser()).then((response) => {
         console.log('signInRes: ', response.payload);
@@ -47,6 +53,7 @@ const mapDispatchToProps = (dispatch) => {
 function mapStateToProps(state, ownProps) {
   return {
     headerTag: ownProps.headerTag,
+    incartGoods: state.goods.incartGoods,
     member: state.member
   };
 }

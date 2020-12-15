@@ -2,15 +2,17 @@ import {
   FETCH_RCTGOODS, FETCH_RCTGOODS_SUCCESS, FETCH_RCTGOODS_FAILURE, RESET_RCTGOODS,
   FETCH_POPGOODS, FETCH_POPGOODS_SUCCESS, FETCH_POPGOODS_FAILURE, RESET_POPGOODS,
   FETCH_FLTGOODS, FETCH_FLTGOODS_SUCCESS, FETCH_FLTGOODS_FAILURE, RESET_FLTGOODS,
-	FETCH_GOOD, FETCH_GOOD_SUCCESS,  FETCH_GOOD_FAILURE, RESET_ACTIVE_GOOD
+  FETCH_GOOD, FETCH_GOOD_SUCCESS,  FETCH_GOOD_FAILURE, RESET_ACTIVE_GOOD,
+  FETCH_CARTGOODS, ADD_CARTGOODS
 } from '../actions/goods';
 
 
 	const INITIAL_STATE = {
-    recentGoods:  {goods: [], error: null, loading: false}, 
-    popularGoods: {goods: [], error: null, loading: false}, 
+    recentGoods:  {goods: [], error: null, loading: false},
+    popularGoods: {goods: [], error: null, loading: false},
     filterGoods:  {goods: [], error: null, loading: false},
-    activeGood:   {good: null, error: null, loading: false}
+    activeGood:   {good: null, error: null, loading: false},
+    incartGoods:  {goods: [], error: null, loading: false}
   };
 
 export default function(state = INITIAL_STATE, action) {
@@ -56,6 +58,11 @@ export default function(state = INITIAL_STATE, action) {
     return { ...state, activeGood: {good: null, error: error, loading:false} };
   case RESET_ACTIVE_GOOD:
     return { ...state, activeGood: {good: null, error: null, loading: false}};
+
+  case FETCH_CARTGOODS:
+    return { ...state, incartGoods: {goods: [], error: null, loading: true} }; 
+  case ADD_CARTGOODS:
+    return { ...state, incartGoods: {goods: action.payload, error: null, loading: false} };
 
   default:
     return state;

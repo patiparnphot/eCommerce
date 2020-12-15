@@ -11,9 +11,44 @@ export default class Header extends React.Component {
 
   componentDidMount(){
     // this.props.loadUserFromPage();
+    if(!this.props.incartGoods) {
+      this.props.fetchGoodInCart();
+    }
   }
   
   // <a role="button" href="#" onClick={this.props.signOut}>SignOut</a>
+
+  renderGoodsInCart(goods) {
+    return goods.map((good) => {
+      return (
+        <li>
+          <div className="wrap">
+            <div className="image">
+              <img src={good.image} alt=""/>
+            </div>
+            <div className="caption">
+              <span className="comp-header st-1 text-uppercase">
+                {good.title}
+                <span>
+                  {good.category}
+                </span>
+                <span>
+                  {good.brand}
+                </span>
+              </span>
+              <span className="price">
+                <span className="text-grey-dark">$</span>
+                {good.costPerUnit} <small className="text-grey-dark">.00</small>
+              </span>
+            </div>
+            <span className="remove-btn bg-blue">
+              {good.amount}
+            </span>
+          </div>
+        </li>
+      )
+    })
+  }
 
   renderMemberNav(member) {
     if(member.user) {
@@ -33,7 +68,7 @@ export default class Header extends React.Component {
         </li>
         <li className="cart">
           <a href="#" className="cart-icon hidden-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-            <span className="badge bg-blue">3</span>
+            <span className="badge bg-blue">{this.props.incartGoods.goods.length}</span>
             <i className="icofont icofont-cart-alt"></i>
           </a>
           <a href="#" className="visible-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
@@ -41,36 +76,20 @@ export default class Header extends React.Component {
             Shopping cart
           </a>
           <ul className="dropdown-menu">
-            <li>
-              <div className="wrap">
-                <div className="image">
-                  <img src="images/shop/img-01.jpg" alt=""/>
-                </div>
-                <div className="caption">
-                  <span className="comp-header st-1 text-uppercase">
-                    T-SHIPT
-                    <span>
-                      MEN COLLECTION
-                    </span>
-                    <span>
-                      FAKE BRAND
-                    </span>
-                  </span>
-                  <span className="price">
-                    <span className="text-grey-dark">$</span>
-                    257 <small className="text-grey-dark">.00</small>
-                  </span>
-                </div>
-                <span className="remove-btn bg-blue">
-                  1
-                </span>
-              </div>
-            </li>
-            <li class="more-btn sdw">
-              <a href="card-page-step-1.html" className="btn-material btn-primary">
-                View order <i className="icofont icofont-check-circled"></i>
-              </a>
-            </li>
+            {this.renderGoodsInCart(this.props.incartGoods.goods)}
+            {
+              (
+                this.props.incartGoods.goods.length > 0
+              ) ? (
+                <li class="more-btn sdw">
+                  <a href="card-page-step-1.html" className="btn-material btn-primary">
+                    View order <i className="icofont icofont-check-circled"></i>
+                  </a>
+                </li>
+              ) : (
+                <li></li>
+              )
+            }
           </ul>
         </li>
         <li>
