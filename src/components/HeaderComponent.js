@@ -82,9 +82,9 @@ export default class Header extends React.Component {
                 this.props.incartGoods.goods.length > 0
               ) ? (
                 <li class="more-btn sdw">
-                  <a href="card-page-step-1.html" className="btn-material btn-primary">
+                  <Link to="/cart" className="btn-material btn-primary">
                     View order <i className="icofont icofont-check-circled"></i>
-                  </a>
+                  </Link>
                 </li>
               ) : (
                 <li></li>
@@ -157,9 +157,9 @@ export default class Header extends React.Component {
 
       <ul className="nav navbar-nav">
         <li className="active">
-          <a href="index.html">
+          <Link to="/">
             home
-          </a>
+          </Link>
         </li>
         <li>
           <a href="#">

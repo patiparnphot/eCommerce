@@ -347,8 +347,8 @@ export default class GoodPage extends React.Component {
             <div class="row">
                 <div class="col-xs-12">     
                     <ol class="breadcrumb bg-blue">
-                        <li><a href="#">Homepage</a></li>
-                        <li><a href="#">{this.props.goodTag}</a></li>
+                        <li><Link to="/">Homepage</Link></li>
+                        <li><Link to={"/goods/" + this.props.goodTag}>{this.props.goodTag}</Link></li>
                         <li class="active">{this.props.goodSlug}</li>
                     </ol>
                 </div>

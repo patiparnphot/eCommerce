@@ -58,7 +58,7 @@ var blogRoutes    = require("./routes/blog"),
     orderRoutes   = require("./routes/order");
     
 // Database setup
-mongoose.connect("mongodb://patiparn.phot:bomgeo57@ds052827.mlab.com:52827/ecommerce" || "mongodb://localhost/bnk48");
+mongoose.connect("mongodb+srv://bomgeo57:bomgeo57@cluster0.w7pxj.mongodb.net/e-commerce?retryWrites=true&w=majority" || "mongodb://localhost/bnk48");
 
 // Parsers for POST data
 app.use(bodyParser.json({limit: '50mb'}));

@@ -8,6 +8,7 @@ import IndexPage from './pages/IndexPage';
 import BlogPage from './pages/BlogPage';
 import TagPage from './pages/TagPage';
 import GoodPage from './pages/GoodPage';
+import CartPage from './pages/CartPage';
 
 var initialContentState = require("../initial_state/initialContentState.json");
 
@@ -51,6 +52,9 @@ function App({fetchTemplatecontent, templateContent}) {
           </Route>
           <Route path="/goods">
             <GoodsPage/>
+          </Route>
+          <Route path="/cart">
+            <CartPage/>
           </Route>
           <Route path="*" component={NotFoundPage}/>
         </Switch>

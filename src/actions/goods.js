@@ -25,9 +25,11 @@ export const FETCH_GOOD_SUCCESS = 'FETCH_GOOD_SUCCESS';
 export const FETCH_GOOD_FAILURE = 'FETCH_GOOD_FAILURE';
 export const RESET_ACTIVE_GOOD = 'RESET_ACTIVE_GOOD';
 
-//Add good in-cart
+//good in-cart
 export const FETCH_CARTGOODS = 'FETCH_CARTGOODS';
 export const ADD_CARTGOODS = 'ADD_CARTGOODS';
+export const EDIT_CARTGOODS = 'EDIT_CARTGOODS';
+export const DELETE_CARTGOODS = 'DELETE_CARTGOODS';
 
 function receiver(type, json) {
   return {
@@ -142,6 +144,18 @@ export function fetchCartGoods() {
 export function addCartGoods(inCartGoods) {
   return {
     type: ADD_CARTGOODS,
+    payload: inCartGoods
+  };
+}
+export function editCartGoods(inCartGoods) {
+  return {
+    type: EDIT_CARTGOODS,
+    payload: inCartGoods
+  };
+}
+export function deleteCartGoods(inCartGoods) {
+  return {
+    type: DELETE_CARTGOODS,
     payload: inCartGoods
   };
 }

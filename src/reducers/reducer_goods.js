@@ -3,7 +3,7 @@ import {
   FETCH_POPGOODS, FETCH_POPGOODS_SUCCESS, FETCH_POPGOODS_FAILURE, RESET_POPGOODS,
   FETCH_FLTGOODS, FETCH_FLTGOODS_SUCCESS, FETCH_FLTGOODS_FAILURE, RESET_FLTGOODS,
   FETCH_GOOD, FETCH_GOOD_SUCCESS,  FETCH_GOOD_FAILURE, RESET_ACTIVE_GOOD,
-  FETCH_CARTGOODS, ADD_CARTGOODS
+  FETCH_CARTGOODS, ADD_CARTGOODS, EDIT_CARTGOODS, DELETE_CARTGOODS
 } from '../actions/goods';
 
 
@@ -60,8 +60,12 @@ export default function(state = INITIAL_STATE, action) {
     return { ...state, activeGood: {good: null, error: null, loading: false}};
 
   case FETCH_CARTGOODS:
-    return { ...state, incartGoods: {goods: [], error: null, loading: true} }; 
+    return { ...state, incartGoods: {goods: [], error: null, loading: false} }; 
   case ADD_CARTGOODS:
+    return { ...state, incartGoods: {goods: action.payload, error: null, loading: false} };
+  case EDIT_CARTGOODS:
+    return { ...state, incartGoods: {goods: action.payload, error: null, loading: false} };
+  case DELETE_CARTGOODS:
     return { ...state, incartGoods: {goods: action.payload, error: null, loading: false} };
 
   default:
