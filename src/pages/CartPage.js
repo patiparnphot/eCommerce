@@ -20,20 +20,13 @@ class CartPage extends Component {
     this.nextMethod = this.nextMethod.bind(this);
     this.deleteGood = this.deleteGood.bind(this);
     this.state = { 
-      methodState: 1,
-      goods: []
+      methodState: 1
     };
   }
   
   componentDidMount() {
     // this.props.fetchIndexcontent();
     //this.props.indexContent.content = initialContentState.contents.index.content;
-  }
-
-  componentDidUpdate() {
-    this.setState({
-      goods: [...this.props.incartGoods.goods]
-    });
   }
 
   nextMethod() {
@@ -43,11 +36,9 @@ class CartPage extends Component {
   }
 
   deleteGood(index) {
-    // let deletedCartGoods = this.state.goods(index, 1);
+    // let beforeDelete = [...this.props.incartGoods.goods];
+    // let deletedCartGoods = beforeDelete(index, 1);
     // this.props.deleteGood(deletedCartGoods);
-    // this.setState({
-    //   goods: deletedCartGoods
-    // });
   }
 
   renderGoods(goods) {
