@@ -36,9 +36,7 @@ class CartPage extends Component {
   }
 
   deleteGood(index) {
-    // let beforeDelete = [...this.props.incartGoods.goods];
-    // let deletedCartGoods = beforeDelete(index, 1);
-    // this.props.deleteGood(deletedCartGoods);
+    this.props.deleteGood(index, [...this.props.incartGoods.goods]);
   }
 
   renderGoods(goods) {
@@ -348,8 +346,12 @@ const mapDispatchToProps = (dispatch) => {
         !response.error ? dispatch(fetchIndexcontentSuccess(response.payload)) : dispatch(fetchIndexcontentFailure(response.payload));
       });
     },
-    deleteGood: (cartGoods) => {
-      dispatch(deleteCartGoods(cartGoods));
+    deleteGood: (index, cartGoods) => {
+      let before = cartGoods.slice(0, index);
+      let after = cartGoods.slice(index + 1, cartGoods.length + 1);
+      let deletedGood = before.concat(after);
+      console.log("deletedGood: ", deletedGood);
+      dispatch(deleteCartGoods(deletedGood));
     }
   }
 };
