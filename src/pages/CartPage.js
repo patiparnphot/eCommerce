@@ -18,7 +18,7 @@ class CartPage extends Component {
   constructor(props) {
     super(props);
     this.nextMethod = this.nextMethod.bind(this);
-    this.deleteGood = this.deleteGood.bind(this);
+    // this.deleteGood = this.deleteGood.bind(this);
     this.state = { 
       methodState: 1
     };
@@ -37,6 +37,16 @@ class CartPage extends Component {
 
   deleteGood(index) {
     this.props.deleteGood(index, [...this.props.incartGoods.goods]);
+  }
+
+  addGood(index) {
+    this.props.addGood(index, [...this.props.incartGoods.goods]);
+  }
+
+  reduceGood(index) {
+    if ([...this.props.incartGoods.goods][index].amount > 1) {
+      this.props.reduceGood(index, [...this.props.incartGoods.goods]);
+    }
   }
 
   renderGoods(goods) {
@@ -68,13 +78,13 @@ class CartPage extends Component {
 
           <div class="qnt">
             <span>
-              <span class="minus">
+              <span class="minus" onClick={() => this.reduceGood(index)}>
                 <i class="icofont icofont-minus"></i>
               </span>
               <span class="input">
                 <input type="text" value={good.amount}/>
               </span>
-              <span class="plus">
+              <span class="plus" onClick={() => this.addGood(index)}>
                 <i class="icofont icofont-plus"></i>
               </span>
             </span>
@@ -169,7 +179,7 @@ class CartPage extends Component {
                               <label class="col-sm-3 control-label pd-none">Shipping address:</label>
                               <div class="col-sm-9">
                                 <span class="text">
-                                  12A Questen, Mt Vernon, NY 10550, US
+                                  {this.props.member.user.address}
                                 </span>
                               </div>
                             </div>
@@ -352,6 +362,24 @@ const mapDispatchToProps = (dispatch) => {
       let deletedGood = before.concat(after);
       console.log("deletedGood: ", deletedGood);
       dispatch(deleteCartGoods(deletedGood));
+    },
+    addGood: (index, cartGoods) => {
+      let addedAmount = (+cartGoods[index].amount) + 1;
+      let addedCost = (+cartGoods[index].costPerUnit) * addedAmount;
+      let addedGood = [...cartGoods];
+      addedGood[index].amount = addedAmount;
+      addedGood[index].cost = addedCost;
+      console.log("addedGood: ", addedGood);
+      dispatch(editCartGoods(addedGood));
+    },
+    reduceGood: (index, cartGoods) => {
+      let reducedAmount = (+cartGoods[index].amount) - 1;
+      let reducedCost = (+cartGoods[index].costPerUnit) * reducedAmount;
+      let reducedGood = [...cartGoods];
+      reducedGood[index].amount = reducedAmount;
+      reducedGood[index].cost = reducedCost;
+      console.log("reducedGood: ", reducedGood);
+      dispatch(editCartGoods(reducedGood));
     }
   }
 };
@@ -360,7 +388,8 @@ const mapDispatchToProps = (dispatch) => {
 function mapStateToProps(state) {
   return {
     indexContent: state.contents.index,
-    incartGoods: state.goods.incartGoods
+    incartGoods: state.goods.incartGoods,
+    member: state.member
   };
 }
 
