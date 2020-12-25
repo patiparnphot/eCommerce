@@ -18,20 +18,47 @@ class CartPage extends Component {
   constructor(props) {
     super(props);
     this.nextMethod = this.nextMethod.bind(this);
-    // this.deleteGood = this.deleteGood.bind(this);
+    this.previousMethod = this.previousMethod.bind(this);
+    this.changeInput = this.changeInput.bind(this);
+    this.calculateCost = this.calculateCost.bind(this);
     this.state = { 
-      methodState: 1
+      methodState: 1,
+      firstname: "",
+      lastname: "",
+      telephone: "",
+      email: "",
+      address: "",
+      subTotal: 0,
+      deliverCost: 0,
+      netCost: 0
     };
   }
   
   componentDidMount() {
     // this.props.fetchIndexcontent();
     //this.props.indexContent.content = initialContentState.contents.index.content;
+    let user = this.props.member.user;
+    this.setState({
+      firstname: user.firstname,
+      lastname: user.lastname,
+      telephone: user.telephone,
+      email: user.email,
+      address: user.address
+    });
   }
 
   nextMethod() {
+    if(this.state.methodState == 2) {
+      this.calculateCost([...this.props.incartGoods.goods]);
+    }
     this.setState({
       methodState: this.state.methodState + 1
+    })
+  }
+
+  previousMethod() {
+    this.setState({
+      methodState: this.state.methodState - 1
     })
   }
 
@@ -49,6 +76,48 @@ class CartPage extends Component {
     }
   }
 
+  changeInput(event, input) {
+    if( input == "firstname" ) {
+      this.setState({
+        firstname: event.target.value
+      });
+    } else if( input == "lastname" ) {
+      this.setState({
+        lastname: event.target.value
+      });
+    } else if( input == "telephone" ) {
+      this.setState({
+        telephone: event.target.value
+      });
+    } else if( input == "address" ) {
+      this.setState({
+        address: event.target.value
+      });
+    }
+  }
+
+  calculateCost(goods) {
+    let sum = 0;
+    goods.forEach((good, index) => {
+      sum += good.cost;
+      if(index == (goods.length - 1)) {
+        if(sum > 200) {
+          this.setState({
+            subTotal: sum,
+            deliverCost: 0,
+            netCost: sum
+          })
+        } else {
+          this.setState({
+            subTotal: sum,
+            deliverCost: 150,
+            netCost: sum + 150
+          })
+        }
+      }
+    })
+  }
+
   renderGoods(goods) {
     return goods.map((good, index) => {
       return (
@@ -62,7 +131,7 @@ class CartPage extends Component {
                 {good.category}
               </span>
               <span>
-                {good.brand}
+                {good.key}
               </span>
             </span>
           </div>
@@ -99,6 +168,51 @@ class CartPage extends Component {
             <button class="remove-btn" onClick={() => this.deleteGood(index)}>
               <i class="icofont icofont-close-line"></i>
             </button>
+          </div>
+
+        </div>
+      );
+    });
+  }
+
+  renderCFGoods(goods) {
+    return goods.map((good, index) => {
+      return (
+        <div class="item">
+
+          <div class="product">
+            <img src={good.image} alt=""/>
+            <span class="comp-header st-8 text-uppercase">
+              {good.title}
+              <span>
+                {good.category}
+              </span>
+              <span>
+                {good.key}
+              </span>
+            </span>
+          </div>
+
+          <div class="price hidden-xs">
+            <span class="price">
+              <i class="icofont icofont-cur-dollar"></i>
+              <span class="prc">
+                <span>{good.costPerUnit}</span><small>.00</small>
+              </span>
+            </span>
+          </div>
+
+          <div class="qnt">
+            <span>
+              <span class="input">
+                <input type="text" value={good.amount}/>
+              </span>
+            </span>
+          </div>
+
+          <div class="total">
+            <i class="icofont icofont-cur-dollar"></i>
+            <span>{good.cost}</span>
           </div>
 
         </div>
@@ -163,86 +277,78 @@ class CartPage extends Component {
 
                     <div class="panel panel-default">
 
-                      <div class="panel-heading" id="headingOne">
-                        <h4 class="panel-title">
-                          <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                            <span class="panel-indicator"></span>
-                            Use address from your profile
-                          </a>
-                        </h4>
-                      </div>
-
-                      <div id="collapseOne" class="panel-collapse collapse">
-                        <div class="panel-body">
-                          <form class="form-horizontal">
-                            <div class="form-group">
-                              <label class="col-sm-3 control-label pd-none">Shipping address:</label>
-                              <div class="col-sm-9">
-                                <span class="text">
-                                  {this.props.member.user.address}
-                                </span>
-                              </div>
+                      <h2>Please check your personal information</h2>
+                      
+                      <div class="panel-body">
+                        <form class="form-horizontal">
+                          <div class="form-group">
+                            <label for="firstname" class="col-sm-3 control-label">Firstname:</label>
+                            <div class="col-sm-9">
+                              <input
+                                type="text" class="form-control" id="firstname"
+                                placeholder="Enter your firstname"
+                                value={this.state.firstname}
+                                onChange={(e) => this.changeInput(e, "firstname")}
+                              />
                             </div>
-                            <div class="form-group padding">
-                              <label class="col-sm-3 control-label pd-none">Cost delivery:</label>
-                              <div class="col-sm-9">
-                                <span class="text">
-                                  <b>$456</b>.00
-                                </span>
-                              </div>
+                          </div>
+                          <div class="form-group">
+                            <label for="lastname" class="col-sm-3 control-label">Lastname:</label>
+                            <div class="col-sm-9">
+                              <input
+                                type="text" class="form-control" id="lastname"
+                                placeholder="Enter your lastname"
+                                value={this.state.lastname}
+                                onChange={(e) => this.changeInput(e, "lastname")}
+                              />
                             </div>
-                            <div class="form-group">
-                              <div class="col-sm-offset-3 col-sm-7">
-                                <a onClick={this.nextMethod} class="sdw-hover btn btn-material btn-yellow ripple-cont">Accept</a>
-                              </div>
+                          </div>
+                          <div class="form-group">
+                            <label for="telephone" class="col-sm-3 control-label">Telephone:</label>
+                            <div class="col-sm-9">
+                              <input
+                                type="text" class="form-control" id="telephone"
+                                placeholder="Enter your telephone number"
+                                value={this.state.telephone}
+                                onChange={(e) => this.changeInput(e, "telephone")}
+                              />
                             </div>
-                          </form>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="panel panel-default">
-
-                      <div class="panel-heading" id="headingTwo">
-                        <h4 class="panel-title">
-                          <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-                            <span class="panel-indicator"></span>
-                            Use the new address
-                          </a>
-                        </h4>
-                      </div>
-
-                      <div id="collapseTwo" class="panel-collapse collapse in">
-                        <div class="panel-body">
-                          <form class="form-horizontal">
-                            <div class="form-group">
-                              <label for="autocomplete" class="col-sm-2 control-label">Address</label>
-                              <div class="col-sm-10">
-                                <input type="text"
-                                  class="form-control"
-                                  id="autocomplete"
-                                  placeholder="Enter your address"
-                                  onFocus="geolocate()"/>
-                              </div>
+                          </div>
+                          <div class="form-group">
+                            <label for="email" class="col-sm-3 control-label">Email:</label>
+                            <div class="col-sm-9">
+                              <input
+                                type="text" class="form-control" id="email"
+                                placeholder="Enter your email"
+                                value={this.state.email}
+                                disabled
+                              />
                             </div>
-                            <div class="form-group padding">
-                              <label class="col-sm-3 control-label pd-none">Cost delivery:</label>
-                              <div class="col-sm-9">
-                                <span class="text">
-                                  <b>$456</b>.00
-                                </span>
-                              </div>
+                          </div>
+                          <div class="form-group padding">
+                            <label for="address" class="col-sm-3 control-label">Address:</label>
+                            <div class="col-sm-9">
+                              <textarea
+                                rows="3" class="form-control" id="address"
+                                placeholder="Enter your address"
+                                value={this.state.address}
+                                onChange={(e) => this.changeInput(e, "address")}
+                              />
                             </div>
-                            <div class="form-group">
-                              <div class="col-sm-offset-3 col-sm-8">
-                                <span class="sdw-wrap">
-                                  <a onClick={this.nextMethod} class="sdw-hover btn btn-material btn-yellow btn-lg ripple-cont">Go to next step</a>
-                                  <span class="sdw"></span>
-                                </span>
-                              </div>
+                          </div>
+                          <div class="form-group">
+                            <div class="col-sm-offset-3 col-sm-8">
+                              <span class="sdw-wrap">
+                                <a onClick={this.previousMethod} class="btn btn-default btn-material">
+                                  <i class="icofont icofont-cart-alt"></i>
+                                  <span class="body">Previous Method</span>
+                                </a>
+                                <a onClick={this.nextMethod} class="sdw-hover btn btn-material btn-yellow btn-lg ripple-cont">Go to next step</a>
+                                <span class="sdw"></span>
+                              </span>
                             </div>
-                          </form>
-                        </div>
+                          </div>
+                        </form>
                       </div>
 
                     </div>
@@ -250,6 +356,125 @@ class CartPage extends Component {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  renderThirdMethod() {
+    return (
+      <div class="row block none-padding-top">
+        <div class="col-xs-12">
+          <div class="product-list">
+            <div class="wrap bg-white">
+              
+              <div class="row" style={{margin: "0px"}}>
+                <div class="col-sm-12 control-label pd-none">
+                  <h3>
+                    <b>{this.state.firstname} {this.state.lastname}</b> ( {this.state.telephone} )
+                  </h3>
+                </div>
+                <label class="col-sm-3 control-label pd-none">Shipping Address:</label>
+                <div class="col-sm-9">
+                  <span class="text">
+                    {this.state.address}
+                  </span>
+                </div>
+              </div>
+
+              <hr/>
+
+              <div class="list-header text-uppercase">
+                <div class="product">
+                  Product
+                </div>
+                <div class="price hidden-xs hidden-sm">
+                  Price
+                </div>
+                <div class="qnt hidden-xs hidden-sm">
+                  Quantity
+                </div>
+                <div class="total hidden-xs hidden-sm">
+                  Total
+                </div>
+              </div>
+
+              <div class="list-body">
+
+                {this.renderCFGoods(this.props.incartGoods.goods)}
+
+                <div class="item">
+
+                  <div class="product">
+                    Sub Total:
+                  </div>
+
+                  <div class="price hidden-xs">
+                    <span class="price"></span>
+                  </div>
+
+                  <div class="qnt"></div>
+
+                  <div class="total">
+                    <i class="icofont icofont-cur-dollar"></i>
+                    <span><b>{this.state.subTotal}</b></span>
+                  </div>
+
+                </div>
+
+                <div class="item">
+
+                  <div class="product">
+                    Cost delivery:
+                  </div>
+
+                  <div class="qnt" style={{width: "32%"}}>
+                    If SubTotal is more than 200, then we will deliver <b>FREE!!!</b>
+                  </div>
+
+                  <div class="total">
+                    <i class="icofont icofont-cur-dollar"></i>
+                    <span><b>{this.state.deliverCost}</b></span>
+                  </div>
+
+                </div>
+                            
+              </div>
+
+              <div class="list-body">
+                <div class="item">
+
+                  <div class="product">
+                    Net Cost:
+                  </div>
+
+                  <div class="price hidden-xs">
+                    <span class="price"></span>
+                  </div>
+
+                  <div class="qnt"></div>
+
+                  <div class="total">
+                    <i class="icofont icofont-cur-dollar"></i>
+                    <span><b>{this.state.netCost}</b></span>
+                  </div>
+
+                </div>
+              </div>
+                        
+              <div class="list-footer bg-blue">
+                <a onClick={this.previousMethod} class="btn btn-default btn-material">
+                  <i class="icofont icofont-cart-alt"></i>
+                  <span class="body">Previous Method</span>
+                </a>
+                <a onClick={this.nextMethod} class="btn btn-default btn-material">
+                  <i class="icofont icofont-cart-alt"></i>
+                  <span class="body">Make a purchase</span>
+                </a>
+              </div>
+
             </div>
           </div>
         </div>
@@ -334,6 +559,8 @@ class CartPage extends Component {
               } else if (this.state.methodState == 2) {
                 return this.renderSecondMethod();
               } else if (this.state.methodState == 3) {
+                return this.renderThirdMethod();
+              } else if (this.state.methodState == 4) {
                 return <div/>
               }
             })()
