@@ -53,7 +53,7 @@ export default class Header extends React.Component {
   renderMemberNav(member) {
     if(member.user) {
       return (
-<ul className="nav navbar-nav navbar-right info-panel">
+      <ul className="nav navbar-nav navbar-right info-panel">
         <li className="profile">
           <span className="wrap">
             <span className="image bg-white">
@@ -103,9 +103,9 @@ export default class Header extends React.Component {
       return (
         <ul className="list-btn-group nav navbar-nav navbar-right info-panel">
           <li>
-            <a href="#" onClick={() => this.props.signIn()}>
+            <Link to={{pathname:"/signin", state:{from: this.props.location.pathname}}}>
               <b>LogIn</b>
-            </a>
+            </Link>
           </li>
         </ul>
       );

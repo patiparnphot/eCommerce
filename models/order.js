@@ -16,9 +16,15 @@ var orderObject = {
       }
    ],
    customer: {
+      id: {
+         type: mongoose.Schema.Types.ObjectId,
+         ref: "User"
+      },
+      username: String,
       firstname: String,
       lastname: String,
       address: String,
+      email: String,
       telephone: String,
       lineIdCustomer: String
    },

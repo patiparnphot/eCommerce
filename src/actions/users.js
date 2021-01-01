@@ -98,7 +98,7 @@ export function signUpUserFailure(error) {
 }
 
 
-export function signInUser() {
+export function signInUser(props) {
     return dispatch => {
         return fetch(`${ROOT_URL}/users/login/`, {
             method: "post",
@@ -106,10 +106,7 @@ export function signInUser() {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                username: "test3",
-                password: "pass3"
-            })
+            body: JSON.stringify(props)
         })
         .then(response => response.json(), error => console.log('An error occurred.', error))
         .then(json => dispatch(receiver(SIGNIN_USER, json)));

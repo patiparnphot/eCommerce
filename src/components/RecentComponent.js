@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 
 export default class Recent extends React.Component {
@@ -117,13 +118,13 @@ export default class Recent extends React.Component {
               </div>
             </div>
             <div className="info">
-              <a href={ '/goods/' + good.slug } className="btn-material btn-price">
+              <Link to={ '/goods/' + good.category + '/' + good.slug } className="btn-material btn-price">
                 <span className="price">
                   <span className="price">
                     ฿ {good.options[0].cost}<small>.00</small>
                   </span>
                 </span>
-              </a>
+              </Link>
             </div>
           </div>
         </div>

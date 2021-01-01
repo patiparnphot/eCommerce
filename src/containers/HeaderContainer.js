@@ -1,13 +1,9 @@
 import Header from '../components/HeaderComponent';
 import {
-  signInUser,
-  signInUserSuccess,
-  signInUserFailure,
-  logoutUser
-} from '../actions/users';
-import {
   fetchCartGoods
 } from '../actions/goods'
+import { logoutUser } from '../actions/users'
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 
@@ -15,12 +11,6 @@ const mapDispatchToProps = (dispatch) => {
   return {
     fetchGoodInCart: () => {
       dispatch(fetchCartGoods());
-    },
-    signIn: () => {
-      dispatch(signInUser()).then((response) => {
-        console.log('signInRes: ', response.payload);
-        !response.error ? dispatch(signInUserSuccess(response.payload)) : dispatch(signInUserFailure(response.payload));
-      });
     },
     logOut: () => dispatch(logoutUser())
     // resetPage: () => {
@@ -58,4 +48,4 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Header));

@@ -1,14 +1,16 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Route, Switch, useRouteMatch } from 'react-router-dom';
+import { Route, Switch, useRouteMatch, useParams, useHistory } from 'react-router-dom';
 import Header from './containers/HeaderContainer';
 import Footer from './containers/FooterContainer';
 import NotFoundPage from './components/NotFoundPage.js';
 import IndexPage from './pages/IndexPage';
 import BlogPage from './pages/BlogPage';
-import TagPage from './pages/TagPage';
+import CategoryPage from './pages/CategoryPage';
 import GoodPage from './pages/GoodPage';
 import CartPage from './pages/CartPage';
+import SignInPage from './pages/SignInPage';
+import InvoicePage from './pages/InvoicePage';
 
 var initialContentState = require("../initial_state/initialContentState.json");
 
@@ -56,6 +58,12 @@ function App({fetchTemplatecontent, templateContent}) {
           <Route path="/cart">
             <CartPage/>
           </Route>
+          <Route path="/signin">
+            <SignInPage/>
+          </Route>
+          <Route path="/invoice/:invoiceId">
+            <InvoicePage/>
+          </Route>
           <Route path="*" component={NotFoundPage}/>
         </Switch>
         <Footer footerTag={content.footerTag} />
@@ -79,10 +87,10 @@ function GoodsPage() {
 
   return (
     <Switch>
-      <Route exact path={`${path}/:tag`}>
-        <TagPage/>
+      <Route exact path={`${path}/:type`}>
+        <CategoryPage/>
       </Route>
-      <Route path={`${path}/:tag/:slug`}>
+      <Route path={`${path}/:type/:slug`}>
         <GoodPage />
       </Route>
     </Switch>

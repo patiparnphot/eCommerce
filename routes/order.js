@@ -22,11 +22,11 @@ function checkGoodDetail (good, subTotal) {
             } else {
                 let currentlyGoodOption = currentlyGood.options.filter(
                     goodOption => (
-                        goodOption.size == good.size
+                        goodOption.key == good.key
                     )
                 );
                 if (currentlyGoodOption.length < 1) {
-                    reject("Size is Invalid!!!");
+                    reject("Option is Invalid!!!");
                 } else {
                     if (currentlyGoodOption[0].cost != good.costPerUnit) {
                         reject("CostPerUnit is Invalid!!!");
@@ -95,6 +95,8 @@ router.post(
             order.invoiceId = "EC" + Date.now();
             Order.create(order, function (err, newlyOrder) {
                 if (err) return next(err);
+                newlyOrder.customer.id = req.user.id;
+                newlyOrder.customer.username = req.user.username;
                 newlyOrder.save();
                 console.log(newlyOrder);
                 res.json(newlyOrder);
