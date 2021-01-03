@@ -33,41 +33,40 @@ function GoodPage ({
 
   const ratingRef = React.useRef(null);
   const [goodSlugHistory, setGoodSlugHistory] = React.useState(slug);
-  const [cost, setCost] = React.useState(activeGood.good.options[0].cost);
-  const [option, setOption] = React.useState(activeGood.good.options[0].key);
+  const [cost, setCost] = React.useState("");
+  const [option, setOption] = React.useState("");
   const [specificOption, setSpecificOption] = React.useState("");
   const [amount, setAmount] = React.useState(1);
   const [numberOfStars, setNumberOfStars] = React.useState(5);
   const [currentRating, setCurrentRating] = React.useState(0);
   const [alreadyRate, setAlreadyRate] = React.useState(false);
   const [commentMessage, setCommentMessage] = React.useState('');
+  const [initial, setInitial] = React.useState("initial");
   
   React.useEffect(() => {
-    fetchGood(slug);
-    if(activeGood.good.specificOptions) {
-      setSpecificOption(activeGood.good.specificOptions[0]);
-    }
+    fetchGood(slug, setInitial);
   }, []);
+
+  React.useEffect(() => {
+    if(activeGood.good && (initial == "loading")) {
+      setCost(activeGood.good.options[0].cost);
+      setOption(activeGood.good.options[0].key);
+      if(activeGood.good.specificOptions) {
+        setSpecificOption(activeGood.good.specificOptions[0]);
+      }
+      setInitial("alreadyFetch");
+    }
+  }, [initial]);
 
   React.useEffect(() => {
     console.log("good slug: ", slug);
     console.log("good hisslug: ", goodSlugHistory);
     
     if ( slug != goodSlugHistory ) {
-      fetchGood(slug, setGoodSlugHistory);
+      fetchGood(slug, setInitial);
+      setGoodSlugHistory(slug);
     }
   }, [slug]);
-
-  React.useEffect(() => {
-    if ( goodSlugHistory == slug ) {
-      console.log("activeGoodSlug", activeGood.good);
-      setCost(activeGood.good.options[0].cost);
-      setOption(activeGood.good.options[0].key);
-      if(activeGood.good.specificOptions) {
-        setSpecificOption(activeGood.good.specificOptions[0]);
-      }
-    }
-  }, [goodSlugHistory]);
 
   React.useEffect(() => {
     if( member && member.token ) {
@@ -77,7 +76,7 @@ function GoodPage ({
 
   React.useEffect(() => {
     if( newComment.comment ) {
-      fetchGood(slug).then()
+      fetchGood(slug)
       resetNewComment();
     }
   }, [newComment]);
@@ -157,73 +156,77 @@ function GoodPage ({
     setCommentMessage(event.target.value);
   }
 
+  if(!activeGood.good) {
+    return <div/>
+  } else {
+    return (
+      <section id="goodPage">
+        <Helmet>
+          <title>{activeGood.good.titleHtml}</title>
+          <meta name='description' content={activeGood.good.descriptionHtml} />
+        </Helmet>
   
-  return (
-    <section id="goodPage">
-      <Helmet>
-        <title>{activeGood.good.titleHtml}</title>
-        <meta name='description' content={activeGood.good.descriptionHtml} />
-      </Helmet>
-
-      <div class="container">
-        <div class="row">
-          <div class="col-xs-12">     
-            <ol class="breadcrumb bg-blue">
-              <li><Link to="/">Homepage</Link></li>
-              <li><Link to={"/goods/" + type}>{type}</Link></li>
-              <li class="active"><Link to={"/goods/" + type + "/" + slug}>{slug}</Link></li>
-              <li class="active"><Link to={"/goods/" + type + "/10thGood"}>10thGood</Link></li>
-            </ol>
+        <div class="container">
+          <div class="row">
+            <div class="col-xs-12">     
+              <ol class="breadcrumb bg-blue">
+                <li><Link to="/">Homepage</Link></li>
+                <li><Link to={"/goods/" + type}>{type}</Link></li>
+                <li class="active"><Link to={"/goods/" + type + "/" + slug}>{slug}</Link></li>
+                <li class="active"><Link to={"/goods/" + type + "/10thGood"}>10thGood</Link></li>
+              </ol>
+            </div>
           </div>
         </div>
-      </div>
-
-      <div class="container-fluid ">
-        <div class="row">
-          <div class="container">
-            <div class="row">
-              <div class="col-xs-12">
-
-                <GoodDetail
-                  good={activeGood.good}
-                  cost={cost}
-                  option={option}
-                  selectOption={selectOption}
-                  specificOption={specificOption}
-                  selectSpecificOption={selectSpecificOption}
-                  member={member}
-                  numberOfStars={numberOfStars}
-                  amount={amount}
-                  increaseAmount={increaseAmount}
-                  decreaseAmount={decreaseAmount}
-                  addToCart={addToCart}
-                  location={location}
-                />
-
-                <GoodComment
-                  member={member}
-                  good={activeGood.good}
-                  ratingRef={ratingRef}
-                  currentRating={currentRating}
-                  setRating={setRating}
-                  numberOfStars={numberOfStars}
-                  hoverHandler={hoverHandler}
-                  starClickHandler={starClickHandler}
-                  alreadyRate={alreadyRate}
-                  commentMessage={commentMessage}
-                  changeTextarea={changeTextarea}
-                  addComment={addComment}
-                  location={location}
-                />
-
+  
+        <div class="container-fluid ">
+          <div class="row">
+            <div class="container">
+              <div class="row">
+                <div class="col-xs-12">
+  
+                  <GoodDetail
+                    good={activeGood.good}
+                    cost={cost}
+                    option={option}
+                    selectOption={selectOption}
+                    specificOption={specificOption}
+                    selectSpecificOption={selectSpecificOption}
+                    member={member}
+                    numberOfStars={numberOfStars}
+                    amount={amount}
+                    increaseAmount={increaseAmount}
+                    decreaseAmount={decreaseAmount}
+                    addToCart={addToCart}
+                    location={location}
+                  />
+  
+                  <GoodComment
+                    member={member}
+                    good={activeGood.good}
+                    ratingRef={ratingRef}
+                    currentRating={currentRating}
+                    setRating={setRating}
+                    numberOfStars={numberOfStars}
+                    hoverHandler={hoverHandler}
+                    starClickHandler={starClickHandler}
+                    alreadyRate={alreadyRate}
+                    commentMessage={commentMessage}
+                    changeTextarea={changeTextarea}
+                    addComment={addComment}
+                    location={location}
+                  />
+  
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-
-    </section>
-  );
+  
+      </section>
+    );
+  }
+  
 }
 
 function Stars({rating, numberOfStars}) {
@@ -656,12 +659,12 @@ function GoodComment({
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchGood: (slug, setGoodSlugHistory) => {
+    fetchGood: (slug, setInitial) => {
       dispatch(fetchGood(slug)).then((response) => {
         console.log('good: ', response.payload);
         !response.error ? dispatch(fetchGoodSuccess(response.payload)) : dispatch(fetchGoodFailure(response.payload))
-        if(setGoodSlugHistory) {
-          setGoodSlugHistory(slug);
+        if(setInitial) {
+          setInitial("loading");
         }
       });
     },
@@ -671,6 +674,7 @@ const mapDispatchToProps = (dispatch) => {
     addGoodInCart: (goodsInCart) => {
       console.log('good in cart: ', goodsInCart);
       dispatch(addCartGoods(goodsInCart));
+      localStorage.setItem('eCommerceIncart', JSON.stringify(goodsInCart));
     },
     createComment: (slug, comment, token) => {
       dispatch(createComment(slug, comment, token)).then((response) => {

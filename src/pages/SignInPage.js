@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { signInUser, signInUserSuccess, signInUserFailure } from '../actions/users';
 import { connect } from 'react-redux';
-import { useLocation, useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 function SignInPage ({signIn, member}) {
   
@@ -88,7 +88,7 @@ function SignInPage ({signIn, member}) {
 
                                 <ul class="addon-login-btn">
                                     <li>
-                                        <a href="#">register</a>
+                                        <Link to="/register">register</Link>
                                     </li>
                                     <li>or</li>
                                     <li>
@@ -109,6 +109,7 @@ const mapDispatchToProps = (dispatch) => {
         dispatch(signInUser(account)).then((response) => {
           console.log('signInRes: ', response.payload);
           !response.error ? dispatch(signInUserSuccess(response.payload)) : dispatch(signInUserFailure(response.payload));
+            localStorage.setItem('eCommerceAuth', JSON.stringify(response.payload));
         });
       }
     };

@@ -613,6 +613,7 @@ const mapDispatchToProps = (dispatch) => {
       let deletedGood = before.concat(after);
       console.log("deletedGood: ", deletedGood);
       dispatch(deleteCartGoods(deletedGood));
+      localStorage.setItem('eCommerceIncart', JSON.stringify(deletedGood));
     },
     addGood: (index, cartGoods) => {
       let addedAmount = (+cartGoods[index].amount) + 1;
@@ -622,6 +623,7 @@ const mapDispatchToProps = (dispatch) => {
       addedGood[index].cost = addedCost;
       console.log("addedGood: ", addedGood);
       dispatch(editCartGoods(addedGood));
+      localStorage.setItem('eCommerceIncart', JSON.stringify(addedGood));
     },
     reduceGood: (index, cartGoods) => {
       let reducedAmount = (+cartGoods[index].amount) - 1;
@@ -631,6 +633,7 @@ const mapDispatchToProps = (dispatch) => {
       reducedGood[index].cost = reducedCost;
       console.log("reducedGood: ", reducedGood);
       dispatch(editCartGoods(reducedGood));
+      localStorage.setItem('eCommerceIncart', JSON.stringify(reducedGood));
     },
     createNewOrder: (order, token) => {
       dispatch(createOrder(order, token)).then((response) => {
@@ -643,6 +646,7 @@ const mapDispatchToProps = (dispatch) => {
     },
     resetGoods: () => {
       dispatch(fetchCartGoods());
+      localStorage.removeItem('eCommerceIncart');
     }
   }
 };

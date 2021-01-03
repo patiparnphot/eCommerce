@@ -46,7 +46,7 @@ var smtpTransport = nodeMailer.createTransport({
 //SIGNUP - add new user to db
 router.post("/register", 
 //upload.single("image"), 
-function(req, res){
+function(req, res, next){
     //cloudinary.uploader.upload(req.file.path, function(result) {
         //var avatar = result.secure_url;
         var newUser = new User({
@@ -54,6 +54,7 @@ function(req, res){
             firstname: req.body.firstname,
             lastname: req.body.lastname,
             email: req.body.email,
+            telephone: req.body.telephone,
             avatar: req.body.avatar,
             address: req.body.address,
             paypal: req.body.paypal,
@@ -63,25 +64,27 @@ function(req, res){
             newUser.isAdmin = true;
         };
         User.register(newUser, req.body.password, function(err,user){
-            if(err){
-                // req.flash("error", err.message);
-                return res.send(err);
+            if(err) return next(err);
+            console.log(user);
+            if (user) {
+                let modUser = {
+                    id: user._id,
+                    username: user.username,
+                    firstname: user.firstname,
+                    lastname: user.lastname,
+                    email: user.email,
+                    telephone: user.telephone,
+                    avatar: user.avatar,
+                    isAdmin: user.isAdmin,
+                    address: user.address,
+                    paypal: user.paypal,
+                    creditCard: user.creditCard
+                };
+                let token = jwt.sign(modUser, 'bukunjom');
+                return res.json({modUser, token});
+            } else {
+                return res.status(422).send("cannot register with mongo atlas");
             }
-                    let modUser = {
-                        id: user._id,
-                        username: user.username,
-                        firstname: user.firstname,
-                        lastname: user.lastname,
-                        email: user.email,
-                        telephone: telephone,
-                        avatar: user.avatar,
-                        isAdmin: user.isAdmin,
-                        address: user.address,
-                        paypal: user.paypal,
-                        creditCard: user.creditCard
-                    };
-                    let token = jwt.sign(modUser, 'bukunjom');
-                    return res.json({modUser, token});
         });
 });
 

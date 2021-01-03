@@ -10,6 +10,7 @@ import CategoryPage from './pages/CategoryPage';
 import GoodPage from './pages/GoodPage';
 import CartPage from './pages/CartPage';
 import SignInPage from './pages/SignInPage';
+import RegisterPage from './pages/RegisterPage';
 import InvoicePage from './pages/InvoicePage';
 
 var initialContentState = require("../initial_state/initialContentState.json");
@@ -20,13 +21,26 @@ import {
   fetchTemplatecontentFailure
 } from './actions/contents';
 
+import { meFromPageSuccess, resetMeFromPage } from './actions/users'
+import { editCartGoods } from './actions/goods'
+
 //const history = createMemoryHistory();
 
 
-function App({fetchTemplatecontent, templateContent}) {
+function App({autoLogin, autoLogout, refreshIncart, fetchTemplatecontent, templateContent}) {
   
   React.useEffect(() => {
     fetchTemplatecontent();
+    autoLogin();
+    refreshIncart();
+    window.addEventListener('storage', function(event){
+      if(event.key == "eCommerceAuth") {
+        autoLogin();
+      }
+      if(event.key == "eCommerceLogout") {
+        autoLogout();
+      }
+    });
     //templateContent.content = initialContentState.contents.template.content;
   },[]);
   
@@ -60,6 +74,9 @@ function App({fetchTemplatecontent, templateContent}) {
           </Route>
           <Route path="/signin">
             <SignInPage/>
+          </Route>
+          <Route path="/register">
+            <RegisterPage/>
           </Route>
           <Route path="/invoice/:invoiceId">
             <InvoicePage/>
@@ -104,6 +121,22 @@ const mapDispatchToProps = (dispatch) => {
         console.log('templateContent: ', response.payload);
         !response.error ? dispatch(fetchTemplatecontentSuccess(response.payload)) : dispatch(fetchTemplatecontentFailure(response.payload));
       });
+    },
+    autoLogin: () => {
+      if(localStorage.getItem('eCommerceAuth')) {
+        dispatch(meFromPageSuccess(JSON.parse(localStorage.getItem('eCommerceAuth'))));
+      }
+    },
+    autoLogout: () => {
+      if(localStorage.getItem('eCommerceLogout')) {
+        dispatch(resetMeFromPage());
+        localStorage.removeItem('eCommerceLogout');
+      }
+    },
+    refreshIncart: () => {
+      if(localStorage.getItem('eCommerceIncart')) {
+        dispatch(editCartGoods(JSON.parse(localStorage.getItem('eCommerceIncart'))));
+      }
     }
   };
 };

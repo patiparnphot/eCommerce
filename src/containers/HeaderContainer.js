@@ -12,7 +12,10 @@ const mapDispatchToProps = (dispatch) => {
     fetchGoodInCart: () => {
       dispatch(fetchCartGoods());
     },
-    logOut: () => dispatch(logoutUser())
+    logOut: () => {
+      dispatch(logoutUser());
+      localStorage.setItem("eCommerceLogout", "logout");
+    }
     // resetPage: () => {
     //     dispatch(resetPage());
     // },

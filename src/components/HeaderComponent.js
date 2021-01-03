@@ -11,9 +11,6 @@ export default class Header extends React.Component {
 
   componentDidMount(){
     // this.props.loadUserFromPage();
-    if(!this.props.incartGoods) {
-      this.props.fetchGoodInCart();
-    }
   }
   
   // <a role="button" href="#" onClick={this.props.signOut}>SignOut</a>
@@ -82,7 +79,7 @@ export default class Header extends React.Component {
                 this.props.incartGoods.goods.length > 0
               ) ? (
                 <li class="more-btn sdw">
-                  <Link to="/cart" className="btn-material btn-primary">
+                  <Link to={{pathname:"/cart", state:{from: this.props.location.pathname}}} className="btn-material btn-primary">
                     View order <i className="icofont icofont-check-circled"></i>
                   </Link>
                 </li>
@@ -145,9 +142,9 @@ export default class Header extends React.Component {
         <div className="btn-cols">
           <ul className="list-btn-group">
             <li>
-              <a href="#">
+              <Link to={{pathname:"/register", state:{from: this.props.location.pathname}}}>
                 <b>SignUp</b>
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
@@ -157,29 +154,29 @@ export default class Header extends React.Component {
 
       <ul className="nav navbar-nav">
         <li className="active">
-          <Link to="/">
+          <Link to={{pathname:"/", state:{from: this.props.location.pathname}}}>
             home
           </Link>
         </li>
         <li>
-          <a href="#">
+          <Link to={{pathname:"/#recent", state:{from: this.props.location.pathname}}}>
             tags
-          </a>
+          </Link>
         </li>
         <li>
-          <a href="#">
+          <Link to={{pathname:"/#recent", state:{from: this.props.location.pathname}}}>
             popularOnShop
-          </a>
+          </Link>
         </li>
         <li>
-          <a href="#">
+          <Link to={{pathname:"/#recent", state:{from: this.props.location.pathname}}}>
             blogs
-          </a>
+          </Link>
         </li>
         <li>
-          <a href="#">
+          <Link to={{pathname:"/#recent", state:{from: this.props.location.pathname}}}>
             contactUs
-          </a>
+          </Link>
         </li>
       </ul>
     </div>

@@ -4,7 +4,7 @@ import fetch from 'cross-fetch';
 export const ME_FROM_PAGE = 'ME_FROM_PAGE';
 export const ME_FROM_PAGE_SUCCESS = 'ME_FROM_PAGE_SUCCESS';
 export const ME_FROM_PAGE_FAILURE = 'ME_FROM_PAGE_FAILURE';
-export const RESET_PAGE = 'RESET_PAGE';
+export const RESET_ME_FROM_PAGE = 'RESET_ME_FROM_PAGE';
 
 //Sign Up User
 export const SIGNUP_USER = 'SIGNUP_USER';
@@ -46,12 +46,12 @@ const ROOT_URL = '/api';
 //   };
 // }
 
-// export function meFromPageSuccess(currentUser) {
-//   return {
-//     type: ME_FROM_PAGE_SUCCESS,
-//     payload: currentUser
-//   };
-// }
+export function meFromPageSuccess(currentUser) {
+  return {
+    type: ME_FROM_PAGE_SUCCESS,
+    payload: currentUser
+  };
+}
 
 // export function meFromPageFailure(error) {
 //   return {
@@ -61,11 +61,11 @@ const ROOT_URL = '/api';
 // }
 
 
-// export function resetPage() {//used for logout
-//   return {
-//     type: RESET_PAGE
-//   };
-// }
+export function resetMeFromPage() {//used for logout
+  return {
+    type: RESET_ME_FROM_PAGE
+  };
+}
 
 
 export function signUpUser(formValues) {

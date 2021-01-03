@@ -57,14 +57,29 @@ module.exports = async function() {
                     },
                     "goods": {
                        "recentGoods": {
-                          "goods": [],
-                          "error": null,
-                          "loading": false
+                           "goods": [],
+                           "error": null,
+                           "loading": false
+                        },
+                        "popularGoods": {
+                           "goods": [],
+                           "error": null,
+                           "loading": false 
                         },
                         "filterGoods": {
-                          "goods": [],
-                          "error": null,
-                          "loading": false
+                           "goods": [],
+                           "error": null,
+                           "loading": false
+                        },
+                        "activeGood": {
+                           "good": null,
+                           "error": null,
+                           "loading": false
+                        },
+                        "incartGoods": {
+                           "goods": [],
+                           "error": null,
+                           "loading": false
                         }
                      },
                     "contents": {
