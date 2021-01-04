@@ -139,11 +139,13 @@ function GoodPage ({
   };
 
   function setRating() {
-    const stars = ratingRef.current.children;
-    [...stars].forEach(star => {
-      star.style.color =
-        currentRating >= star.dataset.value ? 'yellow' : 'gray';
-    });
+    if(ratingRef && ratingRef.current && ratingRef.current.children) {
+      const stars = ratingRef.current.children;
+      [...stars].forEach(star => {
+        star.style.color =
+          currentRating >= star.dataset.value ? 'yellow' : 'gray';
+      });
+    }
   };
 
   function starClickHandler(event) {

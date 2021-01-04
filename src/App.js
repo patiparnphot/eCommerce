@@ -130,6 +130,7 @@ const mapDispatchToProps = (dispatch) => {
     },
     autoLogout: () => {
       if(localStorage.getItem('eCommerceLogout')) {
+        // console.log("logout");
         dispatch(resetMeFromPage());
         localStorage.removeItem('eCommerceAuth');
         localStorage.removeItem('eCommerceLogout');
