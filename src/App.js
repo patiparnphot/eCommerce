@@ -31,6 +31,7 @@ function App({autoLogin, autoLogout, refreshIncart, fetchTemplatecontent, templa
   
   React.useEffect(() => {
     fetchTemplatecontent();
+    autoLogout();
     autoLogin();
     refreshIncart();
     window.addEventListener('storage', function(event){
@@ -130,6 +131,7 @@ const mapDispatchToProps = (dispatch) => {
     autoLogout: () => {
       if(localStorage.getItem('eCommerceLogout')) {
         dispatch(resetMeFromPage());
+        localStorage.removeItem('eCommerceAuth');
         localStorage.removeItem('eCommerceLogout');
       }
     },
