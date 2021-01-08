@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import Navbar from '../containers/NavbarContainer';
-import Create from '../containers/CreateContainer';
+import Create from '../containers/CreateBlogContainer';
 import NotFoundPage from '../components/NotFoundPage.js';
 
 function CreatePage () {  

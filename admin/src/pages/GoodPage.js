@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import Navbar from '../containers/NavbarContainer';
-import Blog from '../containers/BlogContainer';
+import Good from '../containers/GoodContainer';
 import NotFoundPage from '../components/NotFoundPage.js';
 
-function BlogPage () {
+function GoodPage () {
       
   //const { content, loading, error } = this.props.indexContent;
 
@@ -30,9 +30,9 @@ function BlogPage () {
 
   return (
     <div>
-      <Navbar pagename="CURRENT BLOG" />
+      <Navbar pagename="CURRENT GOOD" />
       <p>{slug}</p>
-      <Blog slug={slug}/>
+      <Good slug={slug}/>
     </div>
   );
 }
@@ -49,4 +49,4 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(BlogPage);
+export default connect(mapStateToProps, mapDispatchToProps)(GoodPage);

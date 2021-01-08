@@ -41,7 +41,7 @@ export default class Blogs extends React.Component {
           <div className="blog-wrap">
             <img src={ blog.image } className="img-fluid" alt="" />
             <div className="blog-info">
-              <h4><Link to={"/blogs/" + blog.title}>{ blog.title }</Link></h4>
+              <h4><Link to={"/admin/blogs/edit/" + blog.slug}>{ blog.title }</Link></h4>
               <p>{blog.type}</p>
               <div>
                 <a href={ blog.image } data-lightbox="blog" data-title={ blog.title } className="link-preview" title="Preview">

@@ -133,7 +133,8 @@
 }
 
 .blog-item .blog-wrap .blog-info .link-preview,
-.blog-item .blog-wrap .blog-info .link-details {
+.blog-item .blog-wrap .blog-info .link-details,
+.blog-item .blog-wrap .blog-info .link-delete {
   display: inline-block;
   line-height: 1;
   text-align: center;
@@ -145,19 +146,22 @@
 }
 
 .blog-item .blog-wrap .blog-info .link-preview i,
-.blog-item .blog-wrap .blog-info .link-details i {
+.blog-item .blog-wrap .blog-info .link-details i,
+.blog-item .blog-wrap .blog-info .link-delete i {
   padding-top: 6px;
   font-size: 22px;
   color: #fff;
 }
 
 .blog-item .blog-wrap .blog-info .link-preview:hover,
-.blog-item .blog-wrap .blog-info .link-details:hover {
+.blog-item .blog-wrap .blog-info .link-details:hover,
+.blog-item .blog-wrap .blog-info .link-delete:hover {
   background: #42c3e8;
 }
 
 .blog-item .blog-wrap .blog-info .link-preview:hover i,
-.blog-item .blog-wrap .blog-info .link-details:hover i {
+.blog-item .blog-wrap .blog-info .link-details:hover i,
+.blog-item .blog-wrap .blog-info .link-delete:hover i {
   color: #fff;
 }
 

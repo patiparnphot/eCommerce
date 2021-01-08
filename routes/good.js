@@ -155,6 +155,7 @@ router.get("/:slug", function(req, res, next) {
                                 'postedTime': currentlyGood.postedTime,
                                 'options': currentlyGood.options,
                                 'specificOptions': currentlyGood.specificOptions,
+                                'isAvailable': currentlyGood.isAvailable,
                                 'comments': currentlyGood.comments,
                                 'similarGoods': similarGoods,
                                 'popularGoods': popularGoods,

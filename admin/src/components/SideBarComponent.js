@@ -41,6 +41,12 @@ export default class SideBar extends React.Component {
                 <p>Blogs</p>
               </Link>
             </li>
+            <li className={pathname == "/admin/goods" ? "active" : ""}>
+              <Link to="/admin/goods">
+                <i className="now-ui-icons education_atom"></i>
+                <p>Goods</p>
+              </Link>
+            </li>
             <li className="active-pro">
               <a href="/">
                 <i className="now-ui-icons arrows-1_cloud-download-93"></i>

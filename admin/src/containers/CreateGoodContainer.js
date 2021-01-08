@@ -1,12 +1,12 @@
-import Create from '../components/CreateComponent';
-import { resetNewBlog } from '../actions/blogs';
+import Create from '../components/CreateGoodComponent';
+import { resetNewGood } from '../actions/goods';
 import { connect } from 'react-redux';
 
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    resetNewBlog: () => {
-      dispatch(resetNewBlog());
+    resetNewGood: () => {
+      dispatch(resetNewGood());
     },
   };
 };

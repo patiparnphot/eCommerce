@@ -4,8 +4,11 @@ import { Route, Switch, useRouteMatch, useLocation } from 'react-router-dom';
 import SideBar from './containers/SideBarContainer';
 import DashboardPage from './pages/DashboardPage';
 import BlogsPage from './pages/BlogsPage';
+import GoodsPage from './pages/GoodsPage';
 import BlogPage from './pages/BlogPage';
-import CreatePage from './pages/CreatePage';
+import GoodPage from './pages/GoodPage';
+import CreateBlogPage from './pages/CreateBlogPage';
+import CreateGoodPage from './pages/CreateGoodPage';
 import Footer from './containers/FooterContainer';
 import NotFoundPage from './components/NotFoundPage';
 import fetch from 'cross-fetch';
@@ -44,11 +47,20 @@ function App({fetchPreloadedblogdata, preloadedBlogData}) {
             <Route exact path="/admin/blogs">
               <BlogsPage blogAmount={data.blogAmount}/>
             </Route>
+            <Route exact path="/admin/goods">
+              <GoodsPage goodAmount={11}/>
+            </Route>
             <Route path="/admin/blogs/edit">
               <BlogRoute/>
             </Route>
             <Route path="/admin/blogs/create">
-              <CreatePage/>
+              <CreateBlogPage/>
+            </Route>
+            <Route path="/admin/goods/edit">
+              <GoodRoute/>
+            </Route>
+            <Route path="/admin/goods/create">
+              <CreateGoodPage/>
             </Route>
             <Route path="*" component={NotFoundPage}/>
           </Switch>
@@ -62,8 +74,18 @@ function BlogRoute() {
   let { path } = useRouteMatch();
 
   return (
-    <Route path={`${path}/:title`}>
+    <Route path={`${path}/:slug`}>
       <BlogPage />
+    </Route>
+  );
+}
+
+function GoodRoute() {
+  let { path } = useRouteMatch();
+
+  return (
+    <Route path={`${path}/:slug`}>
+      <GoodPage />
     </Route>
   );
 }

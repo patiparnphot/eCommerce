@@ -11,8 +11,8 @@ import { connect } from 'react-redux';
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchBlog: (title) => {
-      dispatch(fetchBlog(title)).then((response) => {
+    fetchBlog: (slug) => {
+      dispatch(fetchBlog(slug)).then((response) => {
         console.log('activeBlog: ', response.payload);
         !response.error ? dispatch(fetchBlogSuccess(response.payload)) : dispatch(fetchBlogFailure(response.payload));
       });
@@ -31,7 +31,7 @@ function mapStateToProps(state, ownProps) {
   return {
     activeBlog: state.blogs.activeBlog,
     editBlog: state.blogs.editBlog,
-    blogTitle: ownProps.title
+    blogSlug: ownProps.slug
   };
 }
 

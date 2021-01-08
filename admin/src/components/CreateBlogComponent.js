@@ -19,32 +19,70 @@ function Submit(values, dispatch) {
     name: "Harvard milan",
     description: "Second divided from form fish beast made. Every of seas all gathered use saying you're"
   };
-  let dt = new Date();
-  newForm.postedTime = dt.toISOString();
+  // let dt = new Date();
+  // newForm.postedTime = dt.toISOString();
   console.log('newForm', newForm);
   dispatch(createBlog(newForm)).then((response) => {
-    console.log('newBlogResponse: ', response.payload);
-    !response.error ? dispatch(createBlogSuccess(response.payload)) : dispatch(createBlogFailure(response.payload));
+    if(response.payload.slug && (response.payload.slug == newForm.slug)) {
+      console.log('newBlogResponse: ', response.payload);
+      dispatch(createBlogSuccess(response.payload));
+      alert("create blog successful");
+    } else if(response.error) {
+      dispatch(createBlogFailure(response.payload));
+      alert(response.error);
+    } else {
+      console.log("forDEV: ", response.payload);
+      alert("please check slug field that it's duplicated or not");
+    }
   });
 }
 
-const renderField = ({ input, label, type }) => {
+const validate = values => {
+  const errors = {}
+  if (!values.slug) {
+    errors.slug = 'Required'
+  }
+  if (!values.titleHtml) {
+    errors.titleHtml = 'Required'
+  }
+  if (!values.descriptionHtml) {
+    errors.descriptionHtml = 'Required'
+  }
+  if (!values.title) {
+    errors.title = 'Required'
+  }
+  if (!values.image) {
+    errors.image = 'Required'
+  }
+  if (!values.type) {
+    errors.type = 'Required'
+  }
+  
+  return errors
+}
+
+const renderField = ({ input, label, type, meta: { touched, error } }) => {
   if (type == "textarea") {
     return (
-      <div className={"form-group " + input.name}>
-        <textarea className="form-control summernote"/>
+      <div>
+        <label>{label}</label>
+        <div className={"form-group " + input.name}>
+          <textarea className="form-ctrl summernote"/>
+        </div>
       </div>
     );
   } else {
     return (
-      <div className="form-group">
-        <input {...input} type={type} placeholder={label} className="form-control"/>
+      <div className="row form-group">
+        <label className="col-sm-2">{label}</label>
+        <input {...input} type={type} placeholder={label} className="form-ctrl col-sm-6"/>
+        {touched && error && <span>{error}</span>}
       </div>
     );
   }
 }
 
-class SendUsMessage extends React.Component {
+class CreateBlogClass extends React.Component {
   render() {
     const {
       handleSubmit,
@@ -54,6 +92,7 @@ class SendUsMessage extends React.Component {
       placeholderDescHtml,
       placeholderTitle,
       placeholderImage,
+      placeholderText,
       placeholderType,
       formButton
     } = this.props;
@@ -64,7 +103,7 @@ class SendUsMessage extends React.Component {
         <Field name="descriptionHtml" type="text" label={placeholderDescHtml} component={renderField} />
         <Field name="title" type="text" label={placeholderTitle} component={renderField} />
         <Field name="image" type="text" label={placeholderImage} component={renderField} />
-        <Field name="text" type="textarea" component={renderField} />
+        <Field name="text" type="textarea" label={placeholderText} component={renderField} />
         <Field name="type" type="text" label={placeholderType} component={renderField} />
         <button type="submit" disabled={ submitting }>{formButton}</button>
       </form>
@@ -72,12 +111,13 @@ class SendUsMessage extends React.Component {
   }
 }
 
-const SendUsMessageForm = reduxForm({
-  form: "SendUsMessage"
-})(SendUsMessage);
+const CreateBlogForm = reduxForm({
+  form: "CreateBlogForm",
+  validate
+})(CreateBlogClass);
 
 
-export default class BlogPage extends React.Component {
+export default class CreateBlog extends React.Component {
   
   componentDidMount() {
     $(document).ready(function() {
@@ -96,16 +136,17 @@ export default class BlogPage extends React.Component {
   render() {
         
     return (
-        <div className="form">
+        <div className="form container">
           
           <h4>FormHead</h4>
           <p>Form Description</p>
-          <SendUsMessageForm
+          <CreateBlogForm
             placeholderSlug="slug param in url"
             placeholderTitleHtml="title for SEO"
             placeholderDescHtml="description for SEO"
             placeholderTitle="title of blog"
             placeholderImage="src of blog cover"
+            placeholderText="blog content"
             placeholderType="type of blog"
             formButton="Confirm"
           />

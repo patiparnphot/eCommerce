@@ -12,7 +12,7 @@ function mapStateToProps(state, ownProps) {
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchBlogs: (start, end) => {
-console.log('start ', start, ' and end ', end);
+      console.log('start ', start, ' and end ', end);
       dispatch(fetchBlogs(start, end)).then((response) => {
         console.log('allBlogs: ', response.payload);
         !response.error ? dispatch(fetchBlogsSuccess(response.payload)) : dispatch(fetchBlogsFailure(response.payload));

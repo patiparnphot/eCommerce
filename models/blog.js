@@ -1,6 +1,7 @@
 var mongoose = require("mongoose");
 
 var blogObject = {
+   slug: { type: String, unique: true, required: true },
    titleHtml: String,
    descriptionHtml: String,
    title: String,

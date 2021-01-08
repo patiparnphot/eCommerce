@@ -16,28 +16,66 @@ function Submit(values, dispatch) {
   editedForm.text = demo.executeSummernote("text");
   console.log('editedForm', editedForm);
   dispatch(editBlog(editedForm.id, editedForm)).then((response) => {
-    console.log('editBlogResponse: ', response.payload);
-    !response.error ? dispatch(editBlogSuccess(response.payload)) : dispatch(editBlogFailure(response.payload));
+    if(response.payload.slug && (response.payload.slug == editedForm.slug)) {
+      console.log('editBlogResponse: ', response.payload);
+      dispatch(editBlogSuccess(response.payload));
+      alert("edited blog successful");
+    } else if(response.error) {
+      dispatch(editBlogFailure(response.payload));
+      alert(response.error);
+    } else {
+      console.log("forDEV: ", response.payload);
+      alert("please check slug field that it's duplicated or not");
+    }
   });
 }
 
-const renderField = ({ input, label, type }) => {
+const validate = values => {
+  const errors = {}
+  if (!values.slug) {
+    errors.slug = 'Required'
+  }
+  if (!values.titleHtml) {
+    errors.titleHtml = 'Required'
+  }
+  if (!values.descriptionHtml) {
+    errors.descriptionHtml = 'Required'
+  }
+  if (!values.title) {
+    errors.title = 'Required'
+  }
+  if (!values.image) {
+    errors.image = 'Required'
+  }
+  if (!values.type) {
+    errors.type = 'Required'
+  }
+  
+  return errors
+}
+
+const renderField = ({ input, label, type, meta: { touched, error } }) => {
   if (type == "textarea") {
     return (
-      <div className={"form-group " + input.name}>
-        <textarea className="form-control summernote"/>
+      <div>
+        <label>{label}</label>
+        <div className={"form-group " + input.name}>
+          <textarea className="form-ctrl summernote"/>
+        </div>
       </div>
     );
   } else {
     return (
-      <div className="form-group">
-        <input {...input} type={type} placeholder={label} className="form-control"/>
+      <div className="row form-group">
+        <label className="col-sm-2">{label}</label>
+        <input {...input} type={type} placeholder={label} className="form-ctrl col-sm-6"/>
+        {touched && error && <span>{error}</span>}
       </div>
     );
   }
 }
 
-class SendUsMessage extends React.Component {
+class EditBlogClass extends React.Component {
   render() {
     const {
       handleSubmit,
@@ -47,6 +85,7 @@ class SendUsMessage extends React.Component {
       placeholderDescHtml,
       placeholderTitle,
       placeholderImage,
+      placeholderText,
       placeholderType,
       formButton
     } = this.props;
@@ -57,7 +96,7 @@ class SendUsMessage extends React.Component {
         <Field name="descriptionHtml" type="text" label={placeholderDescHtml} component={renderField} />
         <Field name="title" type="text" label={placeholderTitle} component={renderField} />
         <Field name="image" type="text" label={placeholderImage} component={renderField} />
-        <Field name="text" type="textarea" component={renderField} />
+        <Field name="text" type="textarea" label={placeholderText} component={renderField} />
         <Field name="type" type="text" label={placeholderType} component={renderField} />
         <button type="submit" disabled={ submitting }>{formButton}</button>
       </form>
@@ -65,15 +104,16 @@ class SendUsMessage extends React.Component {
   }
 }
 
-const SendUsMessageForm = reduxForm({
-  form: "SendUsMessage"
-})(SendUsMessage);
+const EditBlogForm = reduxForm({
+  form: "EditBlogForm",
+  validate
+})(EditBlogClass);
 
 
 export default class BlogPage extends React.Component {
   
   componentDidMount() {
-    this.props.fetchBlog(this.props.blogTitle);
+    this.props.fetchBlog(this.props.blogSlug);
   }
 
   componentWillUnmount() {
@@ -100,16 +140,17 @@ export default class BlogPage extends React.Component {
     }
     
     return (
-        <div className="form">
+        <div className="form container">
           
           <h4>FormHead</h4>
           <p>Form Description</p>
-          <SendUsMessageForm
+          <EditBlogForm
             placeholderSlug="slug param in url"
             placeholderTitleHtml="title for SEO"
             placeholderDescHtml="description for SEO"
             placeholderTitle="title of blog"
             placeholderImage="src of blog cover"
+            placeholderText="blog content"
             placeholderType="type of blog"
             initialValues={blog}
             formButton="Confirm"

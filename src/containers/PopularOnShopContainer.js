@@ -19,20 +19,18 @@ const mapDispatchToProps = (dispatch, state, ownProps) => {
       });
     },
     filteringGoods: (initial, filter) => {
-      dispatch(fetchFilterGoods(initial, filter)).then((response) => {
-        console.log('filterGoods: ', response.payload);
-        !response.error ? dispatch(fetchFilterGoodsSuccess(response.payload)) : dispatch(fetchFilterGoodsFailure(response.payload));
+      let keys = Object.keys(filter);
+      let filteredGood = initial;
+      keys.forEach((key) => {
+        filteredGood = filteredGood.filter(good => good[key] == filter[key]);
       });
+      console.log('filterGoods: ', filteredGood);
+      dispatch(fetchFilterGoodsSuccess(filteredGood));
     },
     resetGoods: (initial) => {
-      let resetedGoods = initial.slice(0, 10);
+      let resetedGoods = initial.slice(0, 20);
       console.log('resetedGoods: ', resetedGoods);
       dispatch(fetchFilterGoodsSuccess(resetedGoods))
-    },
-    test: (initial, filter) => {
-      let filteredGood = initial.filter(good => good.specialFeatures[filter.key] >= filter.first);
-      filteredGood = filteredGood.filter(good => good.specialFeatures[filter.key] <= filter.last);
-      dispatch(fetchFilterGoodsSuccess(filteredGood))
     }
   };
 };

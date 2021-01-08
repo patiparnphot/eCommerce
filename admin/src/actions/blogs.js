@@ -74,7 +74,16 @@ export function createBlog(newBlog) {
         },
         body: JSON.stringify({newBlog: newBlog})
       })
-      .then(response => response.json(), error => console.log('An error occurred.', error))
+      .then(
+        (response) => {
+          if (response.status >= 400) {
+            return response.text();
+          } else {
+            return response.json();
+          }
+        },
+        error => console.log('An error occurred.', error)
+      )
       .then(json => dispatch(receiver(CREATE_BLOG, json)));
   };
 }
@@ -107,7 +116,16 @@ export function editBlog(editedBlogId, editedBlogObj) {
         },
         body: JSON.stringify({editBlog: editedBlogObj})
       })
-      .then(response => response.json(), error => console.log('An error occurred.', error))
+      .then(
+        (response) => {
+          if (response.status >= 400) {
+            return response.text();
+          } else {
+            return response.json();
+          }
+        },
+        error => console.log('An error occurred.', error)
+      )
       .then(json => dispatch(receiver(EDIT_BLOG, json)));
   };
 }
@@ -130,9 +148,9 @@ export function resetEditedBlog() {
 }
 
 
-export function fetchBlog(title) {
+export function fetchBlog(slug) {
   return dispatch => {
-    return fetch(`${ROOT_URL}/blogs/active/${title}`)
+    return fetch(`${ROOT_URL}/blogs/active/${slug}`)
       .then(response => response.json(), error => console.log('An error occurred.', error))
       .then(json => dispatch(receiver(FETCH_BLOG, json)));
   };

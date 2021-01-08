@@ -1321,7 +1321,7 @@ fieldset[disabled] .btn-link.active {
   filter: alpha(opacity=100);
 }
 
-.form-control {
+.form-ctrl {
   background-color: transparent;
   border: 1px solid #E3E3E3;
   border-radius: 30px;
@@ -1528,8 +1528,8 @@ fieldset[disabled] .btn-link.active {
   padding: 11px 0 11px 19px;
 }
 
-.form-group .form-control,
-.input-group .form-control {
+.form-group .form-ctrl,
+.input-group .form-ctrl {
   padding: 10px 18px 10px 18px;
 }
 

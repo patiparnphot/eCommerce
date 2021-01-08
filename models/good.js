@@ -9,7 +9,10 @@ var goodObject = {
    options: [
       {
          cost: Number,
-         key: String
+         key: String,
+         aroma: Number,
+         acidity: Number,
+         fruity: Number
       }
    ],
    specificOptions: [ String ],
