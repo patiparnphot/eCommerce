@@ -12,10 +12,11 @@ import {
 
 const mapDispatchToProps = (dispatch, state, ownProps) => {
   return {
-    fetchGoods: () => {
+    fetchGoods: (setAlreadyFetch) => {
       dispatch(fetchPopularGoods()).then((response) => {
         console.log('popularGoods: ', response.payload);
         !response.error ? dispatch(fetchPopularGoodsSuccess(response.payload)) : dispatch(fetchPopularGoodsFailure(response.payload));
+        setAlreadyFetch(true);
       });
     },
     filteringGoods: (initial, filter) => {

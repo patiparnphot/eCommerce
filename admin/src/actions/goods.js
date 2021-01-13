@@ -107,9 +107,9 @@ export function resetNewGood() {
 }
 
 
-export function editGood(editedGoodSlug, editedGoodObj, token) {
+export function editGood(editedGoodId, editedGoodObj, token) {
   return dispatch => {
-    return fetch(`${ROOT_URL}/goods/${editedGoodSlug}`, {
+    return fetch(`${ROOT_URL}/goods/${editedGoodId}`, {
         method: "put",
         headers: {
           'Accept': 'application/json',

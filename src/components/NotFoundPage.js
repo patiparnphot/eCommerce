@@ -8,7 +8,7 @@ export default class NotFoundPage extends React.Component {
         <h1>404</h1>
         <h2>Page not found!</h2>
         <p>
-          <a href="/">Go back to the main page</a>
+          <Link to="/">Go back to the main page</Link>
         </p>
       </div>
     );

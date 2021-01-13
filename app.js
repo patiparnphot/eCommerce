@@ -133,8 +133,10 @@ app.get('*', async (req, res, next) => {
             "error": null,
             "loading": false
          };
-         titleHtml = activeBlog.titleHtml;
-         descriptionHtml = activeBlog.descriptionHtml;
+         if(activeBlog && activeBlog.title != "noSlug") {
+            titleHtml = activeBlog.titleHtml;
+            descriptionHtml = activeBlog.descriptionHtml;
+         }
       }
       if (urlArr.length >= 3 && urlArr[1] === 'goods') {
          let activeGood = await initialGoodState(urlArr[3]);
@@ -144,8 +146,10 @@ app.get('*', async (req, res, next) => {
             "error": null,
             "loading": false
          };
-         titleHtml = activeGood.titleHtml;
-         descriptionHtml = activeGood.descriptionHtml;
+         if(activeGood && activeGood.title != "noSlug") {
+            titleHtml = activeGood.titleHtml;
+            descriptionHtml = activeGood.descriptionHtml;
+         }
       }
       //const helmet = Helmet.renderStatic();
       const { preloadedState, content } = serverSideRender(initialStateJson, req.url);

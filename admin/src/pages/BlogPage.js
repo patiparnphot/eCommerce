@@ -1,21 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 
 import Navbar from '../containers/NavbarContainer';
 import Blog from '../containers/BlogContainer';
 import NotFoundPage from '../components/NotFoundPage.js';
 
-function BlogPage () {
+function BlogPage ({editBlog}) {
       
   //const { content, loading, error } = this.props.indexContent;
+  const history = useHistory();
 
   React.useEffect(() => {
-    //$(document).ready(function() {
-      // Summernote editor
-      //demo.initSummernote();
-    //});
-  },[]);
+    if(editBlog.blog) {
+      console.log("editBlog change!!!");
+      history.push("/admin/blogs/");
+    }
+  }, [editBlog]);
 
   const { slug } = useParams();
 
@@ -45,7 +46,7 @@ const mapDispatchToProps = (dispatch) => {
 
 function mapStateToProps(state, ownProps) {
   return {
-    //blogAmount: ownProps.blogAmount
+    editBlog: state.blogs.editBlog
   };
 }
 

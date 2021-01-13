@@ -13,7 +13,7 @@ var blogObject = {
       name: String,
       description: String
    },
-   postedTime: Date
+   postedTime: { type: Date, default: Date.now }
 };
 
 var blogSchema = new mongoose.Schema(blogObject);

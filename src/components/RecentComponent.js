@@ -2,54 +2,53 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 
-export default class Recent extends React.Component {
+export default function Recent ({recent, recentGoods, fetchGoods}) {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      numberOfStars: 5
-    };
-  }
+  const [numberOfStars, setNumberOfStars] = React.useState(5);
+  const [alreadyFetch, setAlreadyFetch] = React.useState(false);
   
-  componentDidMount() {
-    // this.props.fetchGoods();
-  // }
+  React.useEffect(() => {
+    fetchGoods(setAlreadyFetch);
+  }, []);
 
-  // componentDidUpdate(){
-    var owlCarousel = require('../../static/assets/js/owl.carousel.min.js');
-    // Features carousel (uses the Owl Carousel library)
-    $('.owl-carousel.features').owlCarousel({
-      loop            : false,
-      margin          : 0,
-      responsiveClass : true,
-      nav             : true,
-      navText         : ['<span class="arrow-left icofont icofont-curved-left">', '<span class="arrow-right icofont icofont-curved-right">'],
-      responsive: {
-        0:{
-          items: 2,
-          dots : false
-        },
-        321:{
-          items: 2,
-          dots : false
-        },
-        767:{
-          items: 3
-        },
-        1200:{
-          items: 4
+  React.useEffect(() => {
+    if(alreadyFetch && (recentGoods.goods.length > 0)) {
+      console.log("recentGoodLog: ", recentGoods.goods);
+      var owlCarousel = require('../../static/assets/js/owl.carousel.min.js');
+      // Features carousel (uses the Owl Carousel library)
+      $('.owl-carousel.features').owlCarousel({
+        loop            : false,
+        margin          : 0,
+        responsiveClass : true,
+        nav             : true,
+        navText         : ['<span class="arrow-left icofont icofont-curved-left">', '<span class="arrow-right icofont icofont-curved-right">'],
+        responsive: {
+          0:{
+            items: 2,
+            dots : false
+          },
+          321:{
+            items: 2,
+            dots : false
+          },
+          767:{
+            items: 3
+          },
+          1200:{
+            items: 4
+          }
         }
-      }
-    });
-    var parallax = require('../../static/assets/js/jquery.TDParallax.min.js');
-    $('.parallax-block').TDParallax();
-  }
+      });
+      var parallax = require('../../static/assets/js/jquery.TDParallax.min.js');
+      $('.parallax-block').TDParallax();
+    }
+  }, [alreadyFetch]);
    
-  getHTML(htmlCode) {
+  function getHTML(htmlCode) {
     return { __html: htmlCode };
   }
 
-  renderCost(options) {
+  function renderCost(options) {
     return options.map((option) => {
       return (
         <span className="price">
@@ -61,10 +60,10 @@ export default class Recent extends React.Component {
     });
   }
 
-  renderStars(rating) {
+  function renderStars(rating) {
     let ratingNum = parseFloat(rating)
     let ratingRounded = Math.round(ratingNum);
-    let array = [...Array(+this.state.numberOfStars).keys()];
+    let array = [...Array(+numberOfStars).keys()];
     return array.map(n => {
       if (n < ratingRounded) {
         return (
@@ -82,7 +81,7 @@ export default class Recent extends React.Component {
     });
   }
 
-  renderGoods(goods){
+  function renderGoods(goods){
     return goods.map((good) => {
       return (
         <div className="shop-item hover-sdw">
@@ -95,7 +94,7 @@ export default class Recent extends React.Component {
                 </span>
                 <div className="rate">
                   <ul className="stars">
-                    {this.renderStars(good.rating)}
+                    {renderStars(good.rating)}
                   </ul>
                   <div className="rate-info">
                     {good.raterAmount} members rate it
@@ -133,12 +132,9 @@ export default class Recent extends React.Component {
   }
   
   
-  render() {
+    // const { goods, loading, error } = recentGoods;
     
-    const { recent } = this.props;
-    const { goods, loading, error } = this.props.recentGoods;
-    
-    if (!recent || !goods) {
+    if (!recent || !recentGoods.goods) {
       return <div/>
     }
     
@@ -178,7 +174,7 @@ export default class Recent extends React.Component {
     <div className="col-xs-12">
       <div className="owl-carousel owl-default features nav-top-left">
 
-        {this.renderGoods(goods)}
+        {renderGoods(recentGoods.goods)}
       
       </div>
     </div>
@@ -188,6 +184,6 @@ export default class Recent extends React.Component {
 
 </section>
     )
-  }
+
 }
 

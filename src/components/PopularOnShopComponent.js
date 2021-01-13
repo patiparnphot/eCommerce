@@ -8,6 +8,7 @@ export default class PopularOnShop extends React.Component {
     super(props);
     this.selectOption = this.selectOption.bind(this);
     this.state = {
+      alreadyFetch: false,
       option: "size M",
       checkSizeS: false,
       checkSizeM: true,
@@ -36,7 +37,7 @@ export default class PopularOnShop extends React.Component {
   }
   
   componentDidMount() {
-    this.props.fetchGoods();
+    this.props.fetchGoods((arg) => this.setState({alreadyFetch: arg}));
     let _this = this;
 
     $('#aroma-slider').each(function() {
@@ -113,6 +114,10 @@ export default class PopularOnShop extends React.Component {
   }
 
   componentDidUpdate() {
+    if(this.state.alreadyFetch && this.props.popularGoods.goods && this.props.popularGoods.goods.length > 0) {
+      this.setState({alreadyFetch: false});
+      this.props.resetGoods(this.props.popularGoods.goods)
+    }
     // console.log("first: ", this.state.first);
     // console.log("last: ", this.state.last);
   }

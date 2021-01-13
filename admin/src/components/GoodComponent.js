@@ -8,14 +8,12 @@ import { Field, FieldArray, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { editGood, editGoodSuccess, editGoodFailure } from '../actions/goods';
 
-const ROOT_URL = '/api';
-
 
 function Submit(values, dispatch) {
   let editedForm = values;
   let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QzIiwiZmlyc3RuYW1lIjoiM3JkUGVvcGxlIiwibGFzdG5hbWUiOiJpc0hlcmUiLCJlbWFpbCI6IjNyZFBlb3BsZUBlbWFpbC5jb20iLCJhdmF0YXIiOiIzIHBhc3RlIGltZyBzcmMgaGVyZSIsImlzQWRtaW4iOmZhbHNlLCJhZGRyZXNzIjoiMTIzIHdvcnNoaW5ndG9uIG1hZGFnYXRnYSIsInBheXBhbCI6eyJ1c2VybmFtZSI6IjNyZHBheXBhbCJ9LCJjcmVkaXRDYXJkIjp7ImNhcmROdW1iZXIiOiIxMjM0NTY3ODkwMTIzNDU2IiwiZXhwaXJlZERhdGUiOiIxMi8yNCJ9LCJpYXQiOjE2MDUzNzMzMzd9.wfZxaBT6NWVjK6ydgVFmbLyQok2QjMZIDSeNo3rHE8E";
   console.log('editedForm', editedForm);
-  dispatch(editGood(editedForm.slug, editedForm, token)).then((response) => {
+  dispatch(editGood(editedForm._id, editedForm, token)).then((response) => {
     if(response.payload.slug && (response.payload.slug == editedForm.slug)) {
       console.log('editGoodResponse: ', response.payload);
       dispatch(editGoodSuccess(response.payload));
@@ -177,7 +175,7 @@ const EditGoodForm = reduxForm({
 
 
 export default class GoodPage extends React.Component {
-  
+
   componentDidMount() {
     this.props.fetchGood(this.props.goodSlug);
   }
@@ -193,6 +191,7 @@ export default class GoodPage extends React.Component {
   render() {
     
     const { good } = this.props.activeGood;
+    // const initialGood = { ...good, oldSlug: this.props.goodSlug };
     
     if (!good) {
       return <NotFoundPage/>

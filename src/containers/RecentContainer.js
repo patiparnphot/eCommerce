@@ -5,10 +5,11 @@ import { fetchRecentGoods, fetchRecentGoodsSuccess, fetchRecentGoodsFailure } fr
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    fetchGoods: () => {
+    fetchGoods: (setAlreadyFetch) => {
       dispatch(fetchRecentGoods()).then((response) => {
         console.log('recentGoods: ', response.payload);
         !response.error ? dispatch(fetchRecentGoodsSuccess(response.payload)) : dispatch(fetchRecentGoodsFailure(response.payload));
+        setAlreadyFetch(true);
       });
     }
   };

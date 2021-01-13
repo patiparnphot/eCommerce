@@ -4,6 +4,7 @@ var express   = require("express"),
     moment    = require("moment-timezone"),
     fs        = require("fs"),
     Good      = require("../models/good"),
+    Comment      = require("../models/comment"),
     goodState = require("../initial_state/good");
     // middleware = require("../middleware");
 
@@ -18,7 +19,8 @@ router.get("/recent", function(req, res, next){
     Good.find(
         { postedTime: { $lt: Date.now() } },
         {},
-        { sort: { postedTime: -1 }, limit: 20 }, function(err, listOfGoods){
+        { sort: { postedTime: -1 }, limit: 20 },
+        function(err, listOfGoods){
             if(err) return next(err);
             res.json(listOfGoods);
         }
@@ -30,7 +32,8 @@ router.get("/popular", function(req, res, next){
     Good.find(
         {},
         {},
-        { sort: { rating: -1 }, limit: 20 }, function(err, listOfGoods){
+        { sort: { rating: -1 }, limit: 20 },
+        function(err, listOfGoods){
             if(err) return next(err);
             res.json(listOfGoods);
         }
@@ -56,52 +59,52 @@ router.get("/:start/:end", function(req, res, next){
 
 //INITIALSTATE - update JSON file of initialState good
 router.get("/updateJsonFile", async function(req, res, next) {
-try {
-    Good.find({}, {slug: 1, _id: 0}, {}, async function(err, listOfGoods){
-        if (err) return next(err);
-        let goodStateArr = [];
-        if (Array.isArray(listOfGoods) && (listOfGoods.length > 0)) {
-            for (let i = 0; i < listOfGoods.length; i++) {
-                let goodSlug = listOfGoods[i].slug;
-                goodStateArr.push(goodState(goodSlug));
-            };
-        };
-        let finalGoodStateArr = await Promise.all(goodStateArr);
-        let goodStateJS = `module.exports = function(goodSlug) { `;
-        for (let j = 0; j < finalGoodStateArr.length; j++) {
-            if (j == 0) {
-                goodStateJS += `if ( goodSlug == `;
-            } else {
-                goodStateJS += `else if ( goodSlug == `;
-            }
-            goodStateJS += JSON.stringify(finalGoodStateArr[j].slug);
-            goodStateJS += ` ) { return `;
-            goodStateJS += JSON.stringify(finalGoodStateArr[j].state);
-            goodStateJS += `; } `;
-        };
-        goodStateJS += `else { return undefined; } }`;
-        if (fs.existsSync("./initial_state/initialGoodState.js")) {
-            fs.unlink("./initial_state/initialGoodState.js", function(err) {
-                if (err) return next(err);
-                console.log("The Javascript file which contains initial good state is deleted !!!");
-            });
-        };
-        fs.writeFile("./initial_state/initialGoodState.js", goodStateJS, function(err) {
+    try {
+        Good.find({}, {slug: 1, _id: 0}, {}, async function(err, listOfGoods){
             if (err) return next(err);
-            console.log("The Javascript file which contains initial good state is written !!!");
+            let goodStateArr = [];
+            if (Array.isArray(listOfGoods) && (listOfGoods.length > 0)) {
+                for (let i = 0; i < listOfGoods.length; i++) {
+                    let goodSlug = listOfGoods[i].slug;
+                    goodStateArr.push(goodState(goodSlug));
+                };
+            };
+            let finalGoodStateArr = await Promise.all(goodStateArr);
+            let goodStateJS = `module.exports = function(goodSlug) { `;
+            for (let j = 0; j < finalGoodStateArr.length; j++) {
+                if (j == 0) {
+                    goodStateJS += `if ( goodSlug == `;
+                } else {
+                    goodStateJS += `else if ( goodSlug == `;
+                }
+                goodStateJS += JSON.stringify(finalGoodStateArr[j].slug);
+                goodStateJS += ` ) { return `;
+                goodStateJS += JSON.stringify(finalGoodStateArr[j].state);
+                goodStateJS += `; } `;
+            };
+            goodStateJS += `else { return {"title": "noSlug"}; } }`;
+            if (fs.existsSync("./initial_state/initialGoodState.js")) {
+                fs.unlink("./initial_state/initialGoodState.js", function(err) {
+                    if (err) return next(err);
+                    console.log("The Javascript file which contains initial good state is deleted !!!");
+                });
+            };
+            fs.writeFile("./initial_state/initialGoodState.js", goodStateJS, function(err) {
+                if (err) return next(err);
+                console.log("The Javascript file which contains initial good state is written !!!");
+            });
+            res.send("The Javascript file which contains initial good state is updated !!!");
         });
-        res.send("The Javascript file which contains initial good state is updated !!!");
-    });
-} catch (err) {
-    res.send(err);
-}
+    } catch (err) {
+        res.send(err);
+    }
 })
 
 //GOOD - get a single good
 router.get("/:slug", function(req, res, next) {
   Good.findOne({ slug: req.params.slug }).populate("comments").exec(function(err, currentlyGood){
-    if (err) return next(err);
-    console.log(currentlyGood);
+    if (err || !currentlyGood) return res.json({'title': 'noSlug', 'err': err});
+    console.log("currently good: ", currentlyGood);
     
     Good.find(
         { category: currentlyGood.category },
@@ -182,24 +185,24 @@ router.post(
     preAuthenticate, 
     passport.authenticate('jwt', {session: false}), 
     function(req, res, next) {
-        Good.create(req.body.good, function (err, newlyGood) {
+        Good.create(req.body.good, function (err, newGood) {
             if (err) return next(err);
-            newlyGood.save();
-            console.log(newlyGood);
-            res.json(newlyGood);
+            newGood.save();
+            console.log(newGood);
+            res.json(newGood);
         });
     }
 );
 
 //UPDATE - edit a good in db
 router.put(
-    "/:slug", 
+    "/:id", 
     preAuthenticate, 
     passport.authenticate('jwt', {session: false}),
     //middleware.checkUserIdol, 
     function(req, res, next) {
-        Good.findOneAndUpdate(
-            { slug: req.params.slug }, 
+        Good.findByIdAndUpdate(
+            req.params.id, 
             req.body.editGood, 
             { new: true }, 
             function (err, editedGood) {
@@ -218,8 +221,17 @@ router.delete(
     passport.authenticate('jwt', {session: false}),
     //middleware.checkUserIdol, 
     function(req, res, next) {
-        Good.findOneAndRemove({ slug: req.params.slug }, function (err, deletedGood) {
+        Good.findOneAndRemove({ slug: req.params.slug }).populate("comments").exec(function(err, deletedGood) {
             if (err) return next(err);
+            deletedGood.comments.forEach((comment) => {
+                Comment.findByIdAndRemove(comment._id, function (err, removedComment) {
+                    if(!err && removedComment) {
+                        console.log("removed comment: ", removedComment._id);
+                    } else {
+                        console.log("cannot remove comment: ", comment._id);
+                    }
+                });
+            });
             res.json(deletedGood);
         });
     }

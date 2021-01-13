@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Route, Switch, useRouteMatch, useLocation } from 'react-router-dom';
 import SideBar from './containers/SideBarContainer';
 import DashboardPage from './pages/DashboardPage';
+import IndexContentPage from './pages/IndexContentPage';
 import BlogsPage from './pages/BlogsPage';
 import GoodsPage from './pages/GoodsPage';
 import BlogPage from './pages/BlogPage';
@@ -43,6 +44,9 @@ function App({fetchPreloadedblogdata, preloadedBlogData}) {
           <Switch>
             <Route exact path="/admin/">
               <DashboardPage/>
+            </Route>
+            <Route path="/admin/contents/index">
+              <IndexContentPage/>
             </Route>
             <Route exact path="/admin/blogs">
               <BlogsPage blogAmount={data.blogAmount}/>

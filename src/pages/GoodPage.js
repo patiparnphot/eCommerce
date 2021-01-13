@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useParams, useLocation } from 'react-router-dom';
+import NotFoundPage from '../components/NotFoundPage';
 import {
   fetchGood,
   fetchGoodSuccess,
@@ -48,7 +49,7 @@ function GoodPage ({
   }, []);
 
   React.useEffect(() => {
-    if(activeGood.good && (initial == "loading")) {
+    if(activeGood.good && (activeGood.good.title != "noSlug") && (initial == "loading")) {
       setCost(activeGood.good.options[0].cost);
       setOption(activeGood.good.options[0].key);
       if(activeGood.good.specificOptions) {
@@ -158,8 +159,8 @@ function GoodPage ({
     setCommentMessage(event.target.value);
   }
 
-  if(!activeGood.good) {
-    return <div/>
+  if(!activeGood.good || (activeGood.good.title == "noSlug")) {
+    return <NotFoundPage/>
   } else {
     return (
       <section id="goodPage">

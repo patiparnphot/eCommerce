@@ -99,7 +99,7 @@ export default class BlogPage extends React.Component {
       return  <div className="alert alert-danger">{blogError.message}</div>
     } else if(!content) {
       return <NotFoundPage/>
-    } else if(!blog) {
+    } else if(!blog || (blog.title == "noSlug")) {
       return <NotFoundPage/>
     }
 

@@ -8,14 +8,12 @@ import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { editBlog, editBlogSuccess, editBlogFailure } from '../actions/blogs';
 
-const ROOT_URL = '/api';
-
 
 function Submit(values, dispatch) {
   let editedForm = values;
   editedForm.text = demo.executeSummernote("text");
   console.log('editedForm', editedForm);
-  dispatch(editBlog(editedForm.id, editedForm)).then((response) => {
+  dispatch(editBlog(editedForm._id, editedForm)).then((response) => {
     if(response.payload.slug && (response.payload.slug == editedForm.slug)) {
       console.log('editBlogResponse: ', response.payload);
       dispatch(editBlogSuccess(response.payload));
