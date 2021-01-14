@@ -100,26 +100,31 @@ function SignInPage ({signIn, member}) {
                 </div>
             </div>
         </div>
-  );
+    );
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-      signIn: (account) => {
-        dispatch(signInUser(account)).then((response) => {
-          console.log('signInRes: ', response.payload);
-          !response.error ? dispatch(signInUserSuccess(response.payload)) : dispatch(signInUserFailure(response.payload));
-            localStorage.setItem('eCommerceAuth', JSON.stringify(response.payload));
-        });
-      }
+        signIn: (account) => {
+            dispatch(signInUser(account)).then((response) => {
+                console.log('signInRes: ', response.payload);
+                if(response.payload.modUser && (response.payload.modUser.username == account.username)) {
+                    !response.error ? dispatch(signInUserSuccess(response.payload)) : dispatch(signInUserFailure(response.payload));
+                    alert("Login Successfull!!!");
+                    localStorage.setItem('eCommerceAuth', JSON.stringify(response.payload));
+                } else {
+                    alert("Please check your username and password");
+                }
+            });
+        }
     };
-  };
+};
   
   
-  function mapStateToProps(state) {
+function mapStateToProps(state) {
     return {
-      member: state.member
+        member: state.member
     };
-  }
+}
   
   export default connect(mapStateToProps, mapDispatchToProps)(SignInPage);

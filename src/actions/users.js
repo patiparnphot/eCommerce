@@ -78,7 +78,16 @@ export function signUpUser(formValues) {
             },
             body: JSON.stringify(formValues)
         })
-        .then(response => response.json(), error => console.log('An error occurred.', error))
+        .then(
+          (response) => {
+            if (response.status >= 400) {
+              return response.text();
+            } else {
+              return response.json();
+            }
+          },
+          error => console.log('An error occurred.', error)
+        )
         .then(json => dispatch(receiver(SIGNUP_USER, json)));
     };
 }

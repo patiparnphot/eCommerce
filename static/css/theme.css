@@ -1949,6 +1949,9 @@ button {
 }
 .shop-item .wrap {
   position: relative;
+  border-bottom: 15px;
+  border-bottom-style: solid;
+  border-bottom-color: #ffffff;
   z-index: 2;
   background-color: #ffffff;
   border-radius: 3px;
@@ -2077,7 +2080,6 @@ button {
   min-height: 60px;
   padding-left: 40px;
   border-radius: 3px;
-  margin-bottom: 17px;
   color: #ffffff;
 }
 @media (max-width: 767px) {
@@ -6389,4 +6391,438 @@ textarea.form-control {
 }
 .bg-orange {
   background-color: #deac00;
+}
+
+/*============ Start Blog Single Styles  =============*/
+/* line 13, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_bradcam.scss */
+.bradcam_area {
+  background-size: cover;
+  background-position: bottom;
+  padding: 50px 0 50px 0;
+  background-repeat: no-repeat;
+  position: relative;
+  z-index: 0;
+}
+
+@media (max-width: 767px) {
+  /* line 13, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_bradcam.scss */
+  .bradcam_area {
+    padding: 120px 0;
+  }
+}
+
+/* line 35, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_bradcam.scss */
+.bradcam_area h3 {
+  font-size: 50px;
+  color: #001D38;
+  font-weight: 500;
+  margin-bottom: 2px;
+  text-transform: capitalize;
+}
+
+@media (max-width: 767px) {
+  /* line 35, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_bradcam.scss */
+  .bradcam_area h3 {
+    font-size: 30px;
+  }
+}
+
+/* line 45, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_bradcam.scss */
+.bradcam_area p {
+  font-size: 18px;
+  color: #fff;
+  font-weight: 400;
+  text-transform: capitalize;
+}
+
+/* line 50, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_bradcam.scss */
+.bradcam_area p a {
+  color: #fff;
+}
+
+/* line 52, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_bradcam.scss */
+.bradcam_area p a:hover {
+  color: #fff;
+}
+
+/* line 245, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_bradcam.scss */
+.bradcam_shap {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 21%;
+}
+
+/* line 250, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_bradcam.scss */
+.bradcam_shap img {
+  width: 100%;
+}
+
+/* line 215, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_bradcam.scss */
+.brad_cam_lists {
+  display: inline-block;
+}
+
+/* line 217, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_bradcam.scss */
+.brad_cam_lists ul {
+  background: transparent;
+  margin-bottom: 0;
+}
+
+/* line 220, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_bradcam.scss */
+.brad_cam_lists ul li {
+  font-size: 15px;
+}
+
+/* line 222, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_bradcam.scss */
+.brad_cam_lists ul li a {
+  color: #727272;
+  font-size: 15px;
+  font-weight: 400;
+}
+
+/* line 227, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_bradcam.scss */
+.brad_cam_lists ul li.active {
+  color: #727272;
+}
+
+/* line 230, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_bradcam.scss */
+.brad_cam_lists ul li:hover a {
+  color: #1bb1dc;
+}
+
+/* line 235, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_bradcam.scss */
+.brad_cam_lists .breadcrumb-item + .breadcrumb-item::before {
+  display: inline-block;
+  padding-right: .5rem;
+  padding-left: .5rem;
+  color: #727272;
+  content: "/";
+}
+
+/* line 1049, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_blog.scss */
+.single-post-area .blog_details {
+  box-shadow: none;
+  padding: 0;
+}
+
+/* line 1074, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_blog.scss */
+.single-post-area .blog_details {
+  padding-top: 26px;
+}
+
+/* line 1077, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_blog.scss */
+.single-post-area .blog_details p {
+  margin-bottom: 20px;
+  font-size: 15px;
+}
+
+.single-post-area .blog_details img {
+  width: 100%;
+}
+
+/* line 1087, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_blog.scss */
+.single-post-area .quote-wrapper {
+  background: rgba(130, 139, 178, 0.1);
+  padding: 15px;
+  line-height: 1.733;
+  color: #888888;
+  font-style: italic;
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+
+@media (min-width: 768px) {
+  /* line 1087, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_blog.scss */
+  .single-post-area .quote-wrapper {
+    padding: 30px;
+  }
+}
+
+/* line 1101, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_blog.scss */
+.single-post-area .quotes {
+  background: #fff;
+  padding: 15px 15px 15px 20px;
+  border-left: 2px solid;
+}
+
+@media (min-width: 768px) {
+  /* line 1101, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_blog.scss */
+  .single-post-area .quotes {
+    padding: 25px 25px 25px 30px;
+  }
+}
+
+/* line 1111, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_blog.scss */
+.single-post-area .arrow {
+  position: absolute;
+}
+
+/* line 1114, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_blog.scss */
+.single-post-area .arrow .lnr {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+/* line 1121, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_blog.scss */
+.single-post-area .thumb .overlay-bg {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+/* line 1126, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_blog.scss */
+.single-post-area .navigation-top {
+  padding-top: 15px;
+  border-top: 1px solid #f0e9ff;
+}
+
+/* line 1182, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_blog.scss */
+.single-post-area .blog-author {
+  padding: 40px 30px;
+  background: #fbf9ff;
+  margin-top: 50px;
+}
+
+@media (max-width: 600px) {
+  /* line 1182, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_blog.scss */
+  .single-post-area .blog-author {
+    padding: 20px 8px;
+  }
+}
+
+/* line 1191, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_blog.scss */
+.single-post-area .blog-author img {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  margin-right: 30px;
+}
+
+@media (max-width: 600px) {
+  /* line 1191, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_blog.scss */
+  .single-post-area .blog-author img {
+    margin-right: 15px;
+    width: 45px;
+    height: 45px;
+  }
+}
+
+/* line 1204, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_blog.scss */
+.single-post-area .blog-author a {
+  display: inline-block;
+}
+
+/* line 1208, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_blog.scss */
+.single-post-area .blog-author a:hover {
+  color: #FF008C;
+}
+
+/* line 1213, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_blog.scss */
+.single-post-area .blog-author p {
+  margin-bottom: 0;
+  font-size: 15px;
+}
+
+/* line 1218, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_blog.scss */
+.single-post-area .blog-author h4 {
+  font-size: 16px;
+}
+
+/* line 1225, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_blog.scss */
+.single-post-area .navigation-area {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 30px;
+  margin-top: 55px;
+}
+
+/* line 1230, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_blog.scss */
+.single-post-area .navigation-area p {
+  margin-bottom: 0px;
+}
+
+/* line 1234, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_blog.scss */
+.single-post-area .navigation-area h4 {
+  font-size: 18px;
+  line-height: 25px;
+}
+
+/* line 1240, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_blog.scss */
+.single-post-area .navigation-area .nav-left {
+  text-align: left;
+}
+
+/* line 1243, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_blog.scss */
+.single-post-area .navigation-area .nav-left .thumb {
+  margin-right: 20px;
+  background: #000;
+  width: 40%;
+}
+
+/* line 1247, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_blog.scss */
+.single-post-area .navigation-area .nav-left .thumb img {
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+}
+
+/* line 1252, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_blog.scss */
+.single-post-area .navigation-area .nav-left .lnr {
+  margin-left: 20px;
+  opacity: 0;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+}
+
+/* line 1259, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_blog.scss */
+.single-post-area .navigation-area .nav-left:hover .lnr {
+  opacity: 1;
+}
+
+/* line 1264, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_blog.scss */
+.single-post-area .navigation-area .nav-left:hover .thumb img {
+  opacity: .5;
+}
+
+@media (max-width: 767px) {
+   /*line 1240, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_blog.scss */
+  .single-post-area .navigation-area .nav-left {
+    margin-bottom: 30px;
+  }
+}
+
+/* line 1275, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_blog.scss */
+.single-post-area .navigation-area .nav-right {
+  text-align: right;
+}
+
+/* line 1278, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_blog.scss */
+.single-post-area .navigation-area .nav-right .thumb {
+  margin-left: 20px;
+  background: #000;
+  width: 40%;
+}
+
+/* line 1282, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_blog.scss */
+.single-post-area .navigation-area .nav-right .thumb img {
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+}
+
+/* line 1287, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_blog.scss */
+.single-post-area .navigation-area .nav-right .lnr {
+  margin-right: 20px;
+  opacity: 0;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+}
+
+/* line 1294, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_blog.scss */
+.single-post-area .navigation-area .nav-right:hover .lnr {
+  opacity: 1;
+}
+
+/* line 1299, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_blog.scss */
+.single-post-area .navigation-area .nav-right:hover .thumb img {
+  opacity: .5;
+}
+
+
+/* line 755, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_blog.scss */
+.blog_right_sidebar .post_category_widget .cat-list li {
+  border-bottom: 1px solid #f0e9ff;
+  transition: all 0.3s ease 0s;
+  padding-bottom: 12px;
+  list-style: circle;
+}
+
+/* line 760, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_blog.scss */
+.blog_right_sidebar .post_category_widget .cat-list li:last-child {
+  border-bottom: 0;
+}
+
+/* line 764, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_blog.scss */
+.blog_right_sidebar .post_category_widget .cat-list li a {
+  font-size: 14px;
+  line-height: 20px;
+  color: #888888;
+}
+
+/* line 769, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_blog.scss */
+.blog_right_sidebar .post_category_widget .cat-list li a p {
+  margin-bottom: 0px;
+}
+
+/* line 774, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_blog.scss */
+.blog_right_sidebar .post_category_widget .cat-list li + li {
+  padding-top: 15px;
+}
+
+/* line 791, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_blog.scss */
+.blog_right_sidebar .popular_post_widget .post_item .media-body {
+  justify-content: center;
+  align-self: center;
+  padding-left: 20px;
+}
+
+/* line 796, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_blog.scss */
+.blog_right_sidebar .popular_post_widget .post_item .media-body h3 {
+  font-size: 16px;
+  line-height: 20px;
+  margin-bottom: 6px;
+  transition: all 0.3s linear;
+}
+
+/* line 807, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_blog.scss */
+.blog_right_sidebar .popular_post_widget .post_item .media-body a:hover {
+  color: #0a98c0;
+}
+
+.blog_right_sidebar .popular_post_widget .post_item .media-body a h3 {
+  margin-top: 0;
+}
+
+/* line 813, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_blog.scss */
+.blog_right_sidebar .popular_post_widget .post_item .media-body p {
+  font-size: 14px;
+  line-height: 21px;
+  margin-bottom: 0px;
+}
+
+/* line 820, ../../Arafath/CL/CL October/219. SEO/HTML/scss/_blog.scss */
+.blog_right_sidebar .popular_post_widget .post_item + .post_item {
+  margin-top: 20px;
+}
+
+.blog_right_sidebar .popular_post_widget .post_item img {
+  width: 80px;
+}
+
+.img-fluid {
+  max-width: 100%;
+  height: auto;
+}
+
+.align-items-center {
+  -ms-flex-align: center!important;
+  align-items: center!important;
+}
+
+.flex-row {
+  -ms-flex-direction: row!important;
+  flex-direction: row!important;
+}
+
+.d-flex {
+  display: -ms-flexbox!important;
+  display: flex!important;
+}
+
+.justify-content-end {
+  -ms-flex-pack: end!important;
+  justify-content: flex-end!important;
+}
+
+.media {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: start;
+  align-items: flex-start;
 }

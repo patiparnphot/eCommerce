@@ -47,12 +47,14 @@ function CartPage({
   const [netCost, setNetCost] = React.useState(0);
   
   React.useEffect(() => {
-    setFirstname(member.user.firstname);
-    setLastname(member.user.lastname);
-    setTelephone(member.user.telephone);
-    setEmail(member.user.email);
-    setAddress(member.user.address);
-  }, []);
+    if(member.user) {
+      setFirstname(member.user.firstname);
+      setLastname(member.user.lastname);
+      setTelephone(member.user.telephone);
+      setEmail(member.user.email);
+      setAddress(member.user.address);
+    }
+  }, [member]);
 
   React.useEffect(() => {
     if(newOrder.order) {
@@ -142,7 +144,7 @@ function CartPage({
   // } else if(error) {
   //   return <div className="alert alert-danger">Error: {error.message}</div>
   // } else 
-  if(!incartGoods) {
+  if(!incartGoods.goods || !member.user) {
     return <div/>
   }
 

@@ -159,22 +159,22 @@ export default class Header extends React.Component {
           </Link>
         </li>
         <li>
-          <Link to={{pathname:"/#recent", state:{from: this.props.location.pathname}}}>
+          <Link to={{pathname: "/", hash: "#recent", state:{from: this.props.location.pathname}}}>
             tags
           </Link>
         </li>
         <li>
-          <Link to={{pathname:"/#recent", state:{from: this.props.location.pathname}}}>
+          <Link to={{pathname: "/", hash: "#recent", state:{from: this.props.location.pathname}}}>
             popularOnShop
           </Link>
         </li>
         <li>
-          <Link to={{pathname:"/#recent", state:{from: this.props.location.pathname}}}>
+          <Link to={{pathname: "/", hash: "#recent", state:{from: this.props.location.pathname}}}>
             blogs
           </Link>
         </li>
         <li>
-          <Link to={{pathname:"/#recent", state:{from: this.props.location.pathname}}}>
+          <Link to={{pathname: "/", hash: "#recent", state:{from: this.props.location.pathname}}}>
             contactUs
           </Link>
         </li>

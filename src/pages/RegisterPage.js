@@ -28,21 +28,35 @@ function SignUpPage ({signUp, member}) {
     }, [member])
 
     function register () {
-        if(password == confirmPassword) {
-            const logHistory = {...history};
-            const referer = logHistory.location.state && logHistory.location.state.from;
-            console.log("from register: ", logHistory);
-            console.log("referer: ", referer);
-            let account = {
-                username: username,
-                password: password,
-                firstname: firstname,
-                lastname: lastname,
-                email: email,
-                telephone: telephone,
-                address: address
+        if(
+            username != "" &&
+            password != "" &&
+            confirmPassword != "" &&
+            firstname != "" &&
+            lastname != "" &&
+            email != "" &&
+            address != "" 
+        ) {
+            if(password != confirmPassword) {
+                alert("password and confirmPassword must match!!!");
+            } else {
+                const logHistory = {...history};
+                const referer = logHistory.location.state && logHistory.location.state.from;
+                console.log("from register: ", logHistory);
+                console.log("referer: ", referer);
+                let account = {
+                    username: username,
+                    password: password,
+                    firstname: firstname,
+                    lastname: lastname,
+                    email: email,
+                    telephone: telephone,
+                    address: address
+                }
+                signUp(account);
             }
-            signUp(account);
+        } else {
+            alert("Please check required field!!!");
         }
     }
 
@@ -82,7 +96,7 @@ function SignUpPage ({signUp, member}) {
 
                         <div style={{margin: "30px 5%"}}>
                                 <div class="form-group row">
-                                    <label for="inputUsername" class="col-md-4">Username</label>
+                                    <label for="inputUsername" class="col-md-4">Username (Required)</label>
                                     <input
                                         type="text" class="form-control" class="col-md-6"
                                         id="inputUsername" placeholder="username"
@@ -90,7 +104,7 @@ function SignUpPage ({signUp, member}) {
                                     />
                                 </div>
                                 <div class="form-group row">
-                                    <label for="inputPassword" class="col-md-4">Password</label>
+                                    <label for="inputPassword" class="col-md-4">Password (Required)</label>
                                     <input
                                         type="password" class="form-control" class="col-md-6"
                                         id="inputPassword" placeholder="Password"
@@ -98,7 +112,7 @@ function SignUpPage ({signUp, member}) {
                                     />
                                 </div>
                                 <div class="form-group row">
-                                    <label for="inputConfirmPassword" class="col-md-4">Confirm Password</label>
+                                    <label for="inputConfirmPassword" class="col-md-4">Confirm Password (Required)</label>
                                     <input
                                         type="password" class="form-control" class="col-md-6"
                                         id="inputConfirmPassword" placeholder="Confirm Password"
@@ -106,7 +120,7 @@ function SignUpPage ({signUp, member}) {
                                     />
                                 </div>
                                 <div class="form-group row">
-                                    <label for="inputFirstname" class="col-md-4">Firstname</label>
+                                    <label for="inputFirstname" class="col-md-4">Firstname (Required)</label>
                                     <input
                                         type="text" class="form-control" class="col-md-6"
                                         id="inputFirstname" placeholder="firstname"
@@ -114,7 +128,7 @@ function SignUpPage ({signUp, member}) {
                                     />
                                 </div>
                                 <div class="form-group row">
-                                    <label for="inputLastname" class="col-md-4">Lastname</label>
+                                    <label for="inputLastname" class="col-md-4">Lastname (Required)</label>
                                     <input
                                         type="text" class="form-control" class="col-md-6"
                                         id="inputLastname" placeholder="lastname"
@@ -122,7 +136,7 @@ function SignUpPage ({signUp, member}) {
                                     />
                                 </div>
                                 <div class="form-group row">
-                                    <label for="inputEmail" class="col-md-4">Email</label>
+                                    <label for="inputEmail" class="col-md-4">Email (Required)</label>
                                     <input
                                         type="email" class="form-control" class="col-md-6"
                                         id="inputEmail" placeholder="email"
@@ -130,15 +144,15 @@ function SignUpPage ({signUp, member}) {
                                     />
                                 </div>
                                 <div class="form-group row">
-                                    <label for="inputTelephone" class="col-md-4">Telephone</label>
+                                    <label for="inputTelephone" class="col-md-4">Telephone (Optional)</label>
                                     <input
-                                        type="text" class="form-control" class="col-md-6"
+                                        type="number" class="form-control" class="col-md-6"
                                         id="inputTelephone" placeholder="telephone"
                                         value={telephone} onChange={(e) => changeInput(e, "telephone")}
                                     />
                                 </div>
                                 <div class="form-group row">
-                                    <label for="inputAddress" class="col-md-4">Address</label>
+                                    <label for="inputAddress" class="col-md-4">Address (Required)</label>
                                     <textarea
                                         rows="3" class="form-control" class="col-md-6"
                                         id="inputAddress" placeholder="address"
@@ -156,26 +170,31 @@ function SignUpPage ({signUp, member}) {
                 </div>
             </div>
         </div>
-  );
+    );
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-      signUp: (account) => {
-        dispatch(signUpUser(account)).then((response) => {
-          console.log('signUpRes: ', response.payload);
-          !response.error ? dispatch(signUpUserSuccess(response.payload)) : dispatch(signUpUserFailure(response.payload));
-            localStorage.setItem('eCommerceAuth', JSON.stringify(response.payload));
-        });
-      }
+        signUp: (account) => {
+            dispatch(signUpUser(account)).then((response) => {
+                console.log('signUpRes: ', response.payload);
+                if(response.payload.modUser && (response.payload.modUser.username == account.username)) {
+                    !response.error ? dispatch(signUpUserSuccess(response.payload)) : dispatch(signUpUserFailure(response.payload));
+                    alert("Sign up Successfull!!!");
+                    localStorage.setItem('eCommerceAuth', JSON.stringify(response.payload));
+                } else {
+                    alert("Cannot use this username or email");
+                }
+            });
+        }
     };
-  };
+};
   
   
-  function mapStateToProps(state) {
+function mapStateToProps(state) {
     return {
-      member: state.member
+        member: state.member
     };
-  }
+}
   
-  export default connect(mapStateToProps, mapDispatchToProps)(SignUpPage);
+export default connect(mapStateToProps, mapDispatchToProps)(SignUpPage);
