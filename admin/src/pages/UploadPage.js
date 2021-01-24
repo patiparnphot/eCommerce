@@ -41,8 +41,8 @@ function UploadPage ({member}) {
       fetch('/upload', {
         method: 'POST',
         headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
+          // 'Accept': 'application/json',
+          // 'Content-Type': 'application/json',
           'Authorization': `Bearer ${member.token}`
         },
         body: data
