@@ -21,7 +21,7 @@ import {
   fetchTemplatecontentFailure
 } from './actions/contents';
 
-import { meFromPageSuccess, resetMeFromPage } from './actions/users'
+import { meFromPage, resetMeFromPage } from './actions/users'
 import { editCartGoods } from './actions/goods'
 
 //const history = createMemoryHistory();
@@ -125,7 +125,7 @@ const mapDispatchToProps = (dispatch) => {
     },
     autoLogin: () => {
       if(localStorage.getItem('eCommerceAuth')) {
-        dispatch(meFromPageSuccess(JSON.parse(localStorage.getItem('eCommerceAuth'))));
+        dispatch(meFromPage(JSON.parse(localStorage.getItem('eCommerceAuth'))));
       }
     },
     autoLogout: () => {

@@ -10,10 +10,10 @@ import { editGood, editGoodSuccess, editGoodFailure } from '../actions/goods';
 
 
 function Submit(values, dispatch) {
-  let editedForm = values;
+  let editedForm = { ...values };
   let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QzIiwiZmlyc3RuYW1lIjoiM3JkUGVvcGxlIiwibGFzdG5hbWUiOiJpc0hlcmUiLCJlbWFpbCI6IjNyZFBlb3BsZUBlbWFpbC5jb20iLCJhdmF0YXIiOiIzIHBhc3RlIGltZyBzcmMgaGVyZSIsImlzQWRtaW4iOmZhbHNlLCJhZGRyZXNzIjoiMTIzIHdvcnNoaW5ndG9uIG1hZGFnYXRnYSIsInBheXBhbCI6eyJ1c2VybmFtZSI6IjNyZHBheXBhbCJ9LCJjcmVkaXRDYXJkIjp7ImNhcmROdW1iZXIiOiIxMjM0NTY3ODkwMTIzNDU2IiwiZXhwaXJlZERhdGUiOiIxMi8yNCJ9LCJpYXQiOjE2MDUzNzMzMzd9.wfZxaBT6NWVjK6ydgVFmbLyQok2QjMZIDSeNo3rHE8E";
   console.log('editedForm', editedForm);
-  dispatch(editGood(editedForm._id, editedForm, token)).then((response) => {
+  dispatch(editGood(editedForm._id, editedForm, editedForm.token)).then((response) => {
     if(response.payload.slug && (response.payload.slug == editedForm.slug)) {
       console.log('editGoodResponse: ', response.payload);
       dispatch(editGoodSuccess(response.payload));
@@ -191,9 +191,10 @@ export default class GoodPage extends React.Component {
   render() {
     
     const { good } = this.props.activeGood;
-    // const initialGood = { ...good, oldSlug: this.props.goodSlug };
+    const { token } = this.props.member;
+    const initialGood = { ...good, token: token };
     
-    if (!good) {
+    if (!good || !token) {
       return <NotFoundPage/>
     }
 
@@ -212,7 +213,7 @@ export default class GoodPage extends React.Component {
             placeholderDesc="description of good"
             placeholderCat="category of good"
             placeholderAvai="show this good"
-            initialValues={good}
+            initialValues={initialGood}
             formButton="Confirm"
           />
         </div>

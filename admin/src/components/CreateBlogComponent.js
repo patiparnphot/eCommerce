@@ -12,17 +12,18 @@ const ROOT_URL = '/api';
 
 
 function Submit(values, dispatch) {
-  let newForm = values;
+  let newForm = { ...values };
   newForm.text = demo.executeSummernote("text");
   newForm.author = {
     image: "/img/team-1.jpg",
     name: "Harvard milan",
     description: "Second divided from form fish beast made. Every of seas all gathered use saying you're"
   };
+  newForm.token = undefined;
   // let dt = new Date();
   // newForm.postedTime = dt.toISOString();
   console.log('newForm', newForm);
-  dispatch(createBlog(newForm)).then((response) => {
+  dispatch(createBlog(newForm, values.token)).then((response) => {
     if(response.payload.slug && (response.payload.slug == newForm.slug)) {
       console.log('newBlogResponse: ', response.payload);
       dispatch(createBlogSuccess(response.payload));
@@ -148,6 +149,7 @@ export default class CreateBlog extends React.Component {
             placeholderImage="src of blog cover"
             placeholderText="blog content"
             placeholderType="type of blog"
+            initialValues={{token: this.props.member.token}}
             formButton="Confirm"
           />
         </div>

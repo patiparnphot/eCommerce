@@ -95,7 +95,7 @@ router.post(
             order.invoiceId = "EC" + Date.now();
             Order.create(order, function (err, newlyOrder) {
                 if (err) return next(err);
-                newlyOrder.customer.id = req.user.id;
+                newlyOrder.customer.id = req.user._id;
                 newlyOrder.customer.username = req.user.username;
                 newlyOrder.save();
                 console.log(newlyOrder);
@@ -121,7 +121,7 @@ router.put(
             function (err, approvedOrder) {
                 if (err) return next(err);
                 console.log(approvedOrder);
-                res.json(approvedOrder)
+                res.json(approvedOrder);
             }
         );
     }

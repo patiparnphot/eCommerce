@@ -64,13 +64,14 @@ export function fetchBlogsFailure(error) {
 }
 
 
-export function createBlog(newBlog) {
+export function createBlog(newBlog, token) {
   return dispatch => {
     return fetch(`${ROOT_URL}/blogs/create`, {
         method: "post",
         headers: {
           'Accept': 'application/json',
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({newBlog: newBlog})
       })
@@ -106,13 +107,14 @@ export function resetNewBlog() {
 }
 
 
-export function editBlog(editedBlogId, editedBlogObj) {
+export function editBlog(editedBlogId, editedBlogObj, token) {
   return dispatch => {
     return fetch(`${ROOT_URL}/blogs/edit/${editedBlogId}`, {
         method: "put",
         headers: {
           'Accept': 'application/json',
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({editBlog: editedBlogObj})
       })

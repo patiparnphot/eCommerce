@@ -4,10 +4,14 @@ import { Route, Switch, useRouteMatch, useLocation } from 'react-router-dom';
 import SideBar from './containers/SideBarContainer';
 import DashboardPage from './pages/DashboardPage';
 import IndexContentPage from './pages/IndexContentPage';
+import UploadPage from './pages/UploadPage';
+import SignInPage from './pages/SignInPage';
 import BlogsPage from './pages/BlogsPage';
 import GoodsPage from './pages/GoodsPage';
+import OrdersPage from './pages/OrdersPage';
 import BlogPage from './pages/BlogPage';
 import GoodPage from './pages/GoodPage';
+import OrderPage from './pages/OrderPage';
 import CreateBlogPage from './pages/CreateBlogPage';
 import CreateGoodPage from './pages/CreateGoodPage';
 import Footer from './containers/FooterContainer';
@@ -21,7 +25,7 @@ import {
 } from './actions/preloadedData';
 
 
-function App({fetchPreloadedblogdata, preloadedBlogData}) {
+function App({fetchPreloadedblogdata, preloadedBlogData, member}) {
 
   React.useEffect(() => {
     fetchPreloadedblogdata();
@@ -35,6 +39,8 @@ function App({fetchPreloadedblogdata, preloadedBlogData}) {
     return <div className="alert alert-danger">Error: {error.message}</div>
   } else if(!data) {
     return <NotFoundPage/>
+  } else if(!member.user || !member.token) {
+    return <SignInPage/>
   }
 
   return (
@@ -45,6 +51,9 @@ function App({fetchPreloadedblogdata, preloadedBlogData}) {
             <Route exact path="/admin/">
               <DashboardPage/>
             </Route>
+            <Route path="/admin/upload">
+              <UploadPage/>
+            </Route>
             <Route path="/admin/contents/index">
               <IndexContentPage/>
             </Route>
@@ -53,6 +62,9 @@ function App({fetchPreloadedblogdata, preloadedBlogData}) {
             </Route>
             <Route exact path="/admin/goods">
               <GoodsPage goodAmount={11}/>
+            </Route>
+            <Route exact path="/admin/orders">
+              <OrdersPage orderAmount={11}/>
             </Route>
             <Route path="/admin/blogs/edit">
               <BlogRoute/>
@@ -65,6 +77,9 @@ function App({fetchPreloadedblogdata, preloadedBlogData}) {
             </Route>
             <Route path="/admin/goods/create">
               <CreateGoodPage/>
+            </Route>
+            <Route path="/admin/orders">
+              <OrderRoute/>
             </Route>
             <Route path="*" component={NotFoundPage}/>
           </Switch>
@@ -94,6 +109,16 @@ function GoodRoute() {
   );
 }
 
+function OrderRoute() {
+  let { path } = useRouteMatch();
+
+  return (
+    <Route path={`${path}/:invoiceId`}>
+      <OrderPage />
+    </Route>
+  );
+}
+
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchPreloadedblogdata: () => {
@@ -107,7 +132,8 @@ const mapDispatchToProps = (dispatch) => {
 
 function mapStateToProps(state) {
   return {
-    preloadedBlogData: state.preloadedData.blogData
+    preloadedBlogData: state.preloadedData.blogData,
+    member: state.member
   };
 }
 

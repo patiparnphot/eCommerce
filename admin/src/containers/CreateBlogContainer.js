@@ -13,7 +13,9 @@ const mapDispatchToProps = (dispatch) => {
 
 
 function mapStateToProps(state, ownProps) {
-  return {};
+  return {
+    member: state.member
+  };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Create);

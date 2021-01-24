@@ -58,7 +58,7 @@ export default class Goods extends React.Component {
                 <Link to={"/admin/goods/edit/" + good.slug} className="link-details" title="More Details">
                   <i className="now-ui-icons travel_info"></i>
                 </Link>
-                <a onClick={() => this.props.deleteGood(good.slug, this.token, this.state.start, this.state.end)} href="#" className="link-delete" title="Delete">
+                <a onClick={() => this.props.deleteGood(good.slug, this.props.member.token, this.state.start, this.state.end)} href="#" className="link-delete" title="Delete">
                 <i className="now-ui-icons ui-1_simple-remove"></i>
                 </a>
               </div>

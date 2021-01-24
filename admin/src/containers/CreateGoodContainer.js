@@ -7,13 +7,15 @@ const mapDispatchToProps = (dispatch) => {
   return {
     resetNewGood: () => {
       dispatch(resetNewGood());
-    },
+    }
   };
 };
 
 
 function mapStateToProps(state, ownProps) {
-  return {};
+  return {
+    member: state.member
+  };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Create);

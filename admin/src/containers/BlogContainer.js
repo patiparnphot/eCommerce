@@ -31,6 +31,7 @@ function mapStateToProps(state, ownProps) {
   return {
     activeBlog: state.blogs.activeBlog,
     editBlog: state.blogs.editBlog,
+    member: state.member,
     blogSlug: ownProps.slug
   };
 }

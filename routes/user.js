@@ -34,7 +34,7 @@ var smtpTransport = nodeMailer.createTransport({
 //     }
 //     cb(null, true);
 // };
-//var upload = multer({ storage: storage, fileFilter: imageFilter})
+// var upload = multer({ storage: storage, fileFilter: imageFilter})
 
 //var cloudinary = require('cloudinary');
 //cloudinary.config({ 
@@ -71,14 +71,7 @@ function(req, res, next){
                     id: user._id,
                     username: user.username,
                     firstname: user.firstname,
-                    lastname: user.lastname,
-                    email: user.email,
-                    telephone: user.telephone,
-                    avatar: user.avatar,
-                    isAdmin: user.isAdmin,
-                    address: user.address,
-                    paypal: user.paypal,
-                    creditCard: user.creditCard
+                    lastname: user.lastname
                 };
                 let token = jwt.sign(modUser, 'bukunjom');
                 return res.json({modUser, token});
@@ -98,17 +91,38 @@ router.post("/login", function(req, res, next){
                 id: user._id,
                 username: user.username,
                 firstname: user.firstname,
-                lastname: user.lastname,
-                email: user.email,
-                telephone: user.telephone,
-                avatar: user.avatar,
-                isAdmin: user.isAdmin,
-                address: user.address,
-                paypal: user.paypal,
-                creditCard: user.creditCard
+                lastname: user.lastname
             };
             let token = jwt.sign(modUser, 'bukunjom');
             return res.json({modUser, token});
+        } else {
+            return res.status(422).json(info);
+        }
+    })(req, res, next);
+});
+
+//SIGNIN - matching data and user db and admin
+router.post("/login/admin", function(req, res, next){
+    passport.authenticate('local', {session: false}, (err, user, info) => {
+        if(err) return next(err);
+        console.log(user);
+        if(user) {
+            if(user.isAdmin) {
+                let modUser = {
+                    id: user._id,
+                    username: user.username,
+                    firstname: user.firstname,
+                    lastname: user.lastname
+                };
+                let token = jwt.sign(modUser, 'bukunjom');
+                return res.json({modUser, token});
+            } else {
+                let notAdminMsg = {
+                    message: "This user is not allowed to access admin part",
+                    name: "IncorrectAdminError"
+                };
+                return res.json(notAdminMsg);
+            }
         } else {
             return res.status(422).json(info);
         }
@@ -223,6 +237,7 @@ router.get(
     "/profile",
     passport.authenticate('jwt', {session: false}),
     function(req, res){
+        // console.log(req.user);
         res.json(req.user);
     // User.findById(req.params.authorId, function(err, currentlyUser){
     //     if(err){
@@ -238,5 +253,34 @@ router.get(
     //     });
     // });
 });
+
+//USER UPDATE - update information of user
+router.put(
+    "/update",
+    passport.authenticate('jwt', {session: false}),
+    function(req, res, next){
+        User.findByIdAndUpdate(
+            req.user._id,
+            req.body.editUser,
+            { new: true },
+            function(err, editedUser){
+                if(err) next(err);
+                console.log(editedUser);
+                if(editedUser) {
+                    let modUser = {
+                        id: editedUser._id,
+                        username: editedUser.username,
+                        firstname: editedUser.firstname,
+                        lastname: editedUser.lastname
+                    };
+                    let token = jwt.sign(modUser, 'bukunjom');
+                    return res.json({modUser, token});
+                } else {
+                    return res.status(422).json("cannot update user");
+                }
+            }
+        );
+    }
+);
 
 module.exports = router;

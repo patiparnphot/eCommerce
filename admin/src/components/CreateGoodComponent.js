@@ -12,15 +12,16 @@ const ROOT_URL = '/api';
 
 
 function Submit(values, dispatch) {
-  let newForm = values;
+  let newForm = { ...values };
   newForm.rating = "0";
   newForm.ratingAmount = "0";
   newForm.raterAmount = "0";
+  newForm.token = undefined;
   // let dt = new Date();
   // newForm.postedTime = dt.toISOString();
   let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QzIiwiZmlyc3RuYW1lIjoiM3JkUGVvcGxlIiwibGFzdG5hbWUiOiJpc0hlcmUiLCJlbWFpbCI6IjNyZFBlb3BsZUBlbWFpbC5jb20iLCJhdmF0YXIiOiIzIHBhc3RlIGltZyBzcmMgaGVyZSIsImlzQWRtaW4iOmZhbHNlLCJhZGRyZXNzIjoiMTIzIHdvcnNoaW5ndG9uIG1hZGFnYXRnYSIsInBheXBhbCI6eyJ1c2VybmFtZSI6IjNyZHBheXBhbCJ9LCJjcmVkaXRDYXJkIjp7ImNhcmROdW1iZXIiOiIxMjM0NTY3ODkwMTIzNDU2IiwiZXhwaXJlZERhdGUiOiIxMi8yNCJ9LCJpYXQiOjE2MDUzNzMzMzd9.wfZxaBT6NWVjK6ydgVFmbLyQok2QjMZIDSeNo3rHE8E";
   console.log('newForm', newForm);
-  dispatch(createGood(newForm, token)).then((response) => {
+  dispatch(createGood(newForm, values.token)).then((response) => {
     if(response.payload.slug && (response.payload.slug == newForm.slug)) {
       console.log('newGoodResponse: ', response.payload);
       dispatch(createGoodSuccess(response.payload));
@@ -156,6 +157,7 @@ class CreateGoodClass extends React.Component {
       placeholderCat,
       formButton
     } = this.props;
+    console.log(JSON.stringify(handleSubmit));
     return (
       <form onSubmit={handleSubmit(Submit)}>
         <Field name="slug" type="text" label={placeholderSlug} component={renderField} />
@@ -206,6 +208,7 @@ export default class CreateGood extends React.Component {
             placeholderImage="src of good cover"
             placeholderDesc="description of good"
             placeholderCat="category of good"
+            initialValues={{token: this.props.member.token}}
             formButton="Confirm"
           />
         </div>

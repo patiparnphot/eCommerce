@@ -9,6 +9,13 @@ import {
 } from '../actions/contents';
 
 import {
+  meFromToken,
+  updateUser,
+  updateUserSuccess,
+  updateUserFailure
+} from '../actions/users'
+
+import {
   fetchCartGoods,
   editCartGoods,
   deleteCartGoods
@@ -23,6 +30,8 @@ import {
 
 
 function CartPage({
+  meFromToken,
+  updateUser,
   deleteGood,
   addGood,
   reduceGood,
@@ -42,6 +51,9 @@ function CartPage({
   const [telephone, setTelephone] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [address, setAddress] = React.useState("");
+  const [hisTelephone, setHisTelephone] = React.useState("");
+  const [hisAddress, setHisAddress] = React.useState("");
+  const [checkUserData, setCheckUserData] = React.useState(false);
   const [subTotal, setSubTotal] = React.useState(0);
   const [deliverCost, setDeliverCost] = React.useState(0);
   const [netCost, setNetCost] = React.useState(0);
@@ -50,9 +62,6 @@ function CartPage({
     if(member.user) {
       setFirstname(member.user.firstname);
       setLastname(member.user.lastname);
-      setTelephone(member.user.telephone);
-      setEmail(member.user.email);
-      setAddress(member.user.address);
     }
   }, [member]);
 
@@ -65,14 +74,31 @@ function CartPage({
     }
   }, [newOrder]);
 
+  React.useEffect(() => {
+    if(hisTelephone && (hisTelephone != "")) {
+      setTelephone(hisTelephone);
+    }
+  }, [hisTelephone]);
+
+  React.useEffect(() => {
+    if(hisAddress && (hisAddress != "")) {
+      setAddress(hisAddress);
+    }
+  }, [hisAddress]);
+
   function nextMethod() {
-    if(methodState == 2) {
+    if((methodState == 1) && member.token && !checkUserData) {
+      meFromToken(member.token, setHisTelephone, setEmail, setHisAddress, setCheckUserData);
+    } else if(methodState == 2) {
       calculateCost([...incartGoods.goods]);
     }
     setMethodState(methodState + 1);
   }
 
   function previousMethod() {
+    if((methodState == 3) && member.token && !checkUserData) {
+      meFromToken(member.token, setHisTelephone, setEmail, setHisAddress, setCheckUserData);
+    }
     setMethodState(methodState - 1);
   }
 
@@ -134,6 +160,21 @@ function CartPage({
       total: netCost
     };
     createNewOrder(order, member.token);
+    if(
+      (firstname != member.user.firstname) ||
+      (lastname != member.user.lastname) ||
+      (telephone != hisTelephone) ||
+      (address != hisAddress)
+    ) {
+      let editUser = {
+        username: member.user.username,
+        firstname: firstname,
+        lastname: lastname,
+        telephone: telephone,
+        address: address
+      };
+      updateUser(member.token, editUser);
+    }
   }
   
     
@@ -603,6 +644,27 @@ function ThirdMethod(props) {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    meFromToken: (token, setTelephone, setEmail, setAddress, setCheckUserData) => {
+      dispatch(meFromToken(token)).then((response) => {
+        console.log('meFromToken: ', response.payload);
+        let user = response.payload;
+        if(user && user.telephone) setTelephone(user.telephone);
+        if(user && user.email) setEmail(user.email);
+        if(user && user.address) setAddress(user.address);
+        if(user) setCheckUserData(true);
+      });
+    },
+    updateUser: (token, editUser) => {
+      dispatch(updateUser(token, editUser)).then((response) => {
+        console.log('editedUser: ', response.payload);
+        if(response.payload.modUser && (response.payload.modUser.username == editUser.username)) {
+          !response.error ? dispatch(updateUserSuccess(response.payload)) : dispatch(updateUserFailure(response.payload));
+          localStorage.setItem('eCommerceAuth', JSON.stringify(response.payload));
+        } else {
+          console.log("Cannot update this user");
+        }
+      });
+    },
     fetchIndexcontent: () => {
       dispatch(fetchIndexcontent()).then((response) => {
         console.log('indexContent: ', response.payload);

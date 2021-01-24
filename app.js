@@ -8,6 +8,7 @@ var express         = require("express"),
     LocalStrategy   = require("passport-local"),
     JWTStrategy     = require("passport-jwt").Strategy,
     ExtractJWT      = require("passport-jwt").ExtractJwt,
+    multer          = require("multer"),
     // FacebookStrategy= require("passport-facebook").Strategy,
     // flash           = require("connect-flash"),
     //session         = require("express-session"),
@@ -82,7 +83,7 @@ passport.use(new JWTStrategy(
       secretOrKey   : 'bukunjom'
    },
    (jwtPayload, cb) => {
-      // console.log(jwtPayload);
+      // console.log("jwtPayload: ", jwtPayload);
       return User.findOne({ username: jwtPayload.username })
          .then(user => {
             return cb(null, user);
@@ -95,7 +96,40 @@ passport.use(new JWTStrategy(
 // passport.serializeUser(function(user, done){ done(null, user) });
 // passport.deserializeUser(function(user, done){ done(null, user) });
 
-// Set our api routes
+// Upload file configuration
+var storage = multer.diskStorage({
+   filename: function(req, file, cb) {
+      cb(null, Date.now() + '-' + file.originalname);
+   },
+   destination: function (req, file, cb) {
+      cb(null, './static/upload');
+   },
+});
+var imageFilter = function (req, file, cb) {
+   // accept image files only
+   if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
+      return cb(new Error('Only image files are allowed!'), false);
+   } else {
+      return cb(null, true);
+   }
+};
+var upload = multer({ storage: storage, fileFilter: imageFilter})
+
+// Set upload API
+app.post(
+   '/upload',
+   passport.authenticate('jwt', {session: false}),
+   upload.single('image'),
+   function(req, res, next){
+      if(req.user.isAdmin) {
+         return res.json(req.file);
+      } else {
+         return res.status(422).send("this user isn't admin");
+      }
+   }
+);
+
+// Set our API routes
 app.use("/api/contents", contentRoutes);
 app.use("/api/blogs", blogRoutes);
 app.use("/api/goods", goodRoutes);
@@ -103,13 +137,12 @@ app.use("/api/users", userRoutes);
 app.use("/api/comments", commentRoutes);
 app.use("/api/orders", orderRoutes);
 
-// Catch all other routes and return the index file
+// Catch all admin sub-routes and return the index file of admin folder
 app.get('/admin/*', async (req, res, next) => {
    try {
       //res.sendFile(path.join(__dirname, 'static/example.html'));
       var adminServerSideRender    = require("./admin/src/serverSideRender"),
           adminTemplate            = require("./admin/static/template");
-      //let initialStateJson = initialContentState;
       const { preloadedState, content } = adminServerSideRender({}, req.url);
       const response = adminTemplate("ADMINISTRATOR", preloadedState, content);
       res.send(response);
@@ -118,6 +151,7 @@ app.get('/admin/*', async (req, res, next) => {
    }
 });
 
+// Catch all other routes and return the index file
 app.get('*', async (req, res, next) => {
    try {
       //res.sendFile(path.join(__dirname, 'static/example.html'));

@@ -10,10 +10,10 @@ import { editBlog, editBlogSuccess, editBlogFailure } from '../actions/blogs';
 
 
 function Submit(values, dispatch) {
-  let editedForm = values;
+  let editedForm = { ...values };
   editedForm.text = demo.executeSummernote("text");
   console.log('editedForm', editedForm);
-  dispatch(editBlog(editedForm._id, editedForm)).then((response) => {
+  dispatch(editBlog(editedForm._id, editedForm, editedForm.token)).then((response) => {
     if(response.payload.slug && (response.payload.slug == editedForm.slug)) {
       console.log('editBlogResponse: ', response.payload);
       dispatch(editBlogSuccess(response.payload));
@@ -125,8 +125,10 @@ export default class BlogPage extends React.Component {
   render() {
     
     const { blog } = this.props.activeBlog;
+    const { token } = this.props.member;
+    const initialBlog = { ...blog, token: token };
     
-    if (!blog) {
+    if (!blog || !token) {
       return <NotFoundPage/>
     }
 
@@ -150,7 +152,7 @@ export default class BlogPage extends React.Component {
             placeholderImage="src of blog cover"
             placeholderText="blog content"
             placeholderType="type of blog"
-            initialValues={blog}
+            initialValues={initialBlog}
             formButton="Confirm"
           />
         </div>

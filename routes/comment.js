@@ -22,7 +22,7 @@ router.post(
             if (err) return next(err);
             Comment.create(req.body.comment, function(err, comment){
                 if (err) return next(err);
-                comment.rater.id = req.user.id;
+                comment.rater.id = req.user._id;
                 comment.rater.username = req.user.username;
                 comment.save();
                 let newRatingAmount = Number(good.ratingAmount) + Number(comment.rating);

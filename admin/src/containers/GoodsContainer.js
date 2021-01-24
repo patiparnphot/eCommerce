@@ -13,7 +13,8 @@ import Goods from '../components/GoodsComponent';
 function mapStateToProps(state, ownProps) {
   return {
     goodAmount: ownProps.goodAmount,
-    goodsList: state.goods.goodsList
+    goodsList: state.goods.goodsList,
+    member: state.member
   };
 }
 

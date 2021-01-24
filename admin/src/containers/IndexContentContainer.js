@@ -30,7 +30,8 @@ const mapDispatchToProps = (dispatch) => {
 function mapStateToProps(state, ownProps) {
   return {
     activeContent: state.contents.activeContent,
-    newContent: state.contents.newContent
+    newContent: state.contents.newContent,
+    member: state.member
   };
 }
 

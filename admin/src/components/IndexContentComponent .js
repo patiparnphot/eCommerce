@@ -45,7 +45,7 @@ function Submit(values, dispatch) {
   };
   let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QzIiwiZmlyc3RuYW1lIjoiM3JkUGVvcGxlIiwibGFzdG5hbWUiOiJpc0hlcmUiLCJlbWFpbCI6IjNyZFBlb3BsZUBlbWFpbC5jb20iLCJhdmF0YXIiOiIzIHBhc3RlIGltZyBzcmMgaGVyZSIsImlzQWRtaW4iOmZhbHNlLCJhZGRyZXNzIjoiMTIzIHdvcnNoaW5ndG9uIG1hZGFnYXRnYSIsInBheXBhbCI6eyJ1c2VybmFtZSI6IjNyZHBheXBhbCJ9LCJjcmVkaXRDYXJkIjp7ImNhcmROdW1iZXIiOiIxMjM0NTY3ODkwMTIzNDU2IiwiZXhwaXJlZERhdGUiOiIxMi8yNCJ9LCJpYXQiOjE2MDUzNzMzMzd9.wfZxaBT6NWVjK6ydgVFmbLyQok2QjMZIDSeNo3rHE8E";
   console.log('indexContent form', indexContent);
-  dispatch(createContent({contentType: "index", content: indexContent}, token)).then((response) => {
+  dispatch(createContent({contentType: "index", content: indexContent}, values.token)).then((response) => {
     // !response.error ? dispatch(createContentSuccess(response.payload)) : dispatch(createContentFailure(response.payload));
     if(!response.error) {
       console.log('new indexContent: ', response.payload);
@@ -278,8 +278,9 @@ export default class GoodPage extends React.Component {
   render() {
     
     const { content } = this.props.activeContent;
+    const { token } = this.props.member;
     
-    if (!content) {
+    if (!content || !token) {
       return <NotFoundPage/>
     } else {
 
@@ -302,7 +303,8 @@ export default class GoodPage extends React.Component {
         blogsParallaxText: content.blogs.parallaxText,
         informationTitle: content.information.title,
         informationText: content.information.text,
-        informationParallaxImage: content.information.parallaxImage
+        informationParallaxImage: content.information.parallaxImage,
+        token: token
       };
     
       return (

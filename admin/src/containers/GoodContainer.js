@@ -31,6 +31,7 @@ function mapStateToProps(state, ownProps) {
   return {
     activeGood: state.goods.activeGood,
     editGood: state.goods.editGood,
+    member: state.member,
     goodSlug: ownProps.slug
   };
 }
