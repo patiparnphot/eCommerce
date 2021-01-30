@@ -14,14 +14,14 @@ var handler = require('../data_handler');
 // };
 
 
-//PRELOADEDBLOGDATA - get preloaded blog data
-router.get("/preloadedData", async function(req, res, next){
-    let allBlogs = await Blog.find({}).exec();
-    res.json(
-      {
-        "blogAmount": allBlogs.length,
-        "blogCategories": handler.blogCategories()
-      }
+//BLOGAMOUNT - get blog amount
+router.get("/amount", function(req, res, next){
+    Blog.count(
+        { postedTime: { $lt: Date.now() } },
+        function(err, blogAmount){
+            if(err) return next(err);
+            res.json(blogAmount);
+        }
     );
 });
 

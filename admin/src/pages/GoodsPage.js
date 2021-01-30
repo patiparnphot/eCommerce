@@ -16,15 +16,13 @@ class GoodsPage extends Component {
     
     //const { content, loading, error } = this.props.indexContent;
 
-    const { goodAmount } = this.props;
-
-    if(!goodAmount) {
-      return <div className="container"><h1>MeatSEO</h1><h3>Loading...</h3></div>      
+    // if() {
+    //   return <div className="container"><h1>MeatSEO</h1><h3>Loading...</h3></div>      
     //} else if(error) {
     //  return <div className="alert alert-danger">Error: {error.message}</div>
     //} else if(!content) {
     //  return <NotFoundPage/>
-    }
+    // }
     
     // console.log('enter indexPage: ', this.props);
     
@@ -36,7 +34,7 @@ class GoodsPage extends Component {
 
         </p>
         <Link to="/admin/goods/create/">Create New Good</Link>
-        <Goods goodAmount={goodAmount} />
+        <Goods/>
       </div>
     );
   }
@@ -49,9 +47,7 @@ const mapDispatchToProps = (dispatch) => {
 
 
 function mapStateToProps(state, ownProps) {
-  return {
-    goodAmount: ownProps.goodAmount
-  };
+  return {};
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(GoodsPage);

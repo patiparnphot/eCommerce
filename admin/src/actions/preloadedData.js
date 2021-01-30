@@ -1,16 +1,30 @@
 import fetch from 'cross-fetch';
 
 
-//Fetch preloaded blogs data
-export const FETCH_PRELOADEDBLOGDATA = 'FETCH_PRELOADEDBLOGDATA';
-export const FETCH_PRELOADEDBLOGDATA_SUCCESS = 'FETCH_PRELOADEDBLOGDATA_SUCCESS';
-export const FETCH_PRELOADEDBLOGDATA_FAILURE = 'FETCH_PRELOADEDBLOGDATA_FAILURE';
+//Fetch preloaded blog amount
+export const FETCH_BLOGAMOUNT = 'FETCH_BLOGAMOUNT';
+export const FETCH_BLOGAMOUNT_SUCCESS = 'FETCH_BLOGAMOUNT_SUCCESS';
+export const FETCH_BLOGAMOUNT_FAILURE = 'FETCH_BLOGAMOUNT_FAILURE';
 
-//Blog list
-export const FETCH_BLOGS = 'FETCH_BLOGS';
-export const FETCH_BLOGS_SUCCESS = 'FETCH_BLOGS_SUCCESS';
-export const FETCH_BLOGS_FAILURE = 'FETCH_BLOGS_FAILURE';
-export const RESET_BLOGS = 'RESET_BLOGS';
+//Fetch preloaded good amount
+export const FETCH_GOODAMOUNT = 'FETCH_GOODAMOUNT';
+export const FETCH_GOODAMOUNT_SUCCESS = 'FETCH_GOODAMOUNT_SUCCESS';
+export const FETCH_GOODAMOUNT_FAILURE = 'FETCH_GOODAMOUNT_FAILURE';
+
+//Fetch preloaded order amount
+export const FETCH_ORDERAMOUNT = 'FETCH_ORDERAMOUNT';
+export const FETCH_ORDERAMOUNT_SUCCESS = 'FETCH_ORDERAMOUNT_SUCCESS';
+export const FETCH_ORDERAMOUNT_FAILURE = 'FETCH_ORDERAMOUNT_FAILURE';
+
+//Fetch preloaded good category amount
+export const FETCH_GOODCATAMT = 'FETCH_GOODCATAMT';
+export const FETCH_GOODCATAMT_SUCCESS = 'FETCH_GOODCATAMT_SUCCESS';
+export const FETCH_GOODCATAMT_FAILURE = 'FETCH_GOODCATAMT_FAILURE';
+
+//Fetch preloaded good categories
+export const FETCH_GOODCATT = 'FETCH_GOODCATT';
+export const FETCH_GOODCATT_SUCCESS = 'FETCH_GOODCATT_SUCCESS';
+export const FETCH_GOODCATT_FAILURE = 'FETCH_GOODCATT_FAILURE';
 
 
 function receiver(type, json) {
@@ -24,43 +38,102 @@ function receiver(type, json) {
 //const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost/api' : '/api';
 const ROOT_URL = '/api';
 
-export function fetchPreloadedblogdata() {
+export function fetchBlogamount() {
   return dispatch => {
-    return fetch(`${ROOT_URL}/blogs/preloadedData`)
+    return fetch(`${ROOT_URL}/blogs/amount/`)
       .then(response => response.json(), error => console.log('An error occurred.', error))
-      .then(json => dispatch(receiver(FETCH_PRELOADEDBLOGDATA, json)));
+      .then(json => dispatch(receiver(FETCH_BLOGAMOUNT, json)));
   };
 }
-export function fetchPreloadedblogdataSuccess(preloadedData) {
+export function fetchBlogamountSuccess(blogAmount) {
   return {
-    type: FETCH_PRELOADEDBLOGDATA_SUCCESS,
-    payload: preloadedData
+    type: FETCH_BLOGAMOUNT_SUCCESS,
+    payload: blogAmount
   };
 }
-export function fetchPreloadedblogdataFailure(error) {
+export function fetchBlogamountFailure(error) {
   return {
-    type: FETCH_PRELOADEDBLOGDATA_FAILURE,
+    type: FETCH_BLOGAMOUNT_FAILURE,
     payload: error
   };
 }
 
-export function fetchBlogs(start, end) {
+export function fetchGoodamount() {
   return dispatch => {
-    console.log(`${ROOT_URL}/blogs/pagination/${start}/${end}/`);
-    return fetch(`${ROOT_URL}/blogs/pagination/${start}/${end}/`)
+    return fetch(`${ROOT_URL}/goods/amount/`)
       .then(response => response.json(), error => console.log('An error occurred.', error))
-      .then(json => dispatch(receiver(FETCH_BLOGS, json)));
+      .then(json => dispatch(receiver(FETCH_GOODAMOUNT, json)));
   };
 }
-export function fetchBlogsSuccess(blogs) {
+export function fetchGoodamountSuccess(goodAmount) {
   return {
-    type: FETCH_BLOGS_SUCCESS,
-    payload: blogs
+    type: FETCH_GOODAMOUNT_SUCCESS,
+    payload: goodAmount
   };
 }
-export function fetchBlogsFailure(error) {
+export function fetchGoodamountFailure(error) {
   return {
-    type: FETCH_BLOGS_FAILURE,
+    type: FETCH_GOODAMOUNT_FAILURE,
+    payload: error
+  };
+}
+
+export function fetchOrderamount() {
+  return dispatch => {
+    return fetch(`${ROOT_URL}/orders/amount/`)
+      .then(response => response.json(), error => console.log('An error occurred.', error))
+      .then(json => dispatch(receiver(FETCH_ORDERAMOUNT, json)));
+  };
+}
+export function fetchOrderamountSuccess(orderAmount) {
+  return {
+    type: FETCH_ORDERAMOUNT_SUCCESS,
+    payload: orderAmount
+  };
+}
+export function fetchOrderamountFailure(error) {
+  return {
+    type: FETCH_ORDERAMOUNT_FAILURE,
+    payload: error
+  };
+}
+
+export function fetchGoodcategoryamount() {
+  return dispatch => {
+    return fetch(`${ROOT_URL}/goods/categories/amount/`)
+      .then(response => response.json(), error => console.log('An error occurred.', error))
+      .then(json => dispatch(receiver(FETCH_GOODCATAMT, json)));
+  };
+}
+export function fetchGoodcategoryamountSuccess(goodcategoryAmount) {
+  return {
+    type: FETCH_GOODCATAMT_SUCCESS,
+    payload: goodcategoryAmount
+  };
+}
+export function fetchGoodcategoryamountFailure(error) {
+  return {
+    type: FETCH_GOODCATAMT_FAILURE,
+    payload: error
+  };
+}
+
+export function fetchGoodcategorytitles() {
+  return dispatch => {
+    return fetch(`${ROOT_URL}/goods/categories/allTitle/`)
+      .then(response => response.json(), error => console.log('An error occurred.', error))
+      .then(json => dispatch(receiver(FETCH_GOODCATT, json)));
+  };
+}
+export function fetchGoodcategorytitlesSuccess(allCategoryTitle) {
+  return {
+    type: FETCH_GOODCATT_SUCCESS,
+    payload: allCategoryTitle
+  };
+}
+export function fetchGoodcategorytitlesFailure(error) {
+  return {
+    type: FETCH_GOODCATT_FAILURE,
     payload: error
   };
 }

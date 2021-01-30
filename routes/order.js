@@ -44,6 +44,17 @@ function checkGoodDetail (good, subTotal) {
 }
 
 
+//ORDERAMOUNT - get order amount
+router.get("/amount", function(req, res, next){
+    Order.count(
+        { createdAt: { $lt: Date.now() } },
+        function(err, orderAmount){
+            if(err) return next(err);
+            res.json(orderAmount);
+        }
+    );
+});
+
 //ORDERS - get a paginate list of orders
 router.get("/:start/:end", function(req, res, next){
     Order.find(

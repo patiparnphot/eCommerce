@@ -19,6 +19,7 @@ export default class Goods extends React.Component {
   
   componentDidMount() {
     this.props.fetchGoods(this.state.start, this.state.end);
+    this.props.fetchGoodAmount();
     //this.props.blogsList.blogs = initialContentState.blogs.blogsList.blogs;
 
     $(document).ready(function() {
@@ -74,15 +75,15 @@ export default class Goods extends React.Component {
     
     const { goods, loading, error } = this.props.goodsList;
     
-    const { goodAmount } = this.props;
+    const { data } = this.props.goodAmount;
 
     const buttons = [];
-    const pageNumber = Math.ceil(goodAmount / 3);
+    const pageNumber = Math.ceil(Number(data) / 3);
     for (let i=0; i<pageNumber; i++) {
       buttons.push(<button onClick={() => this.onChange(i)} >{i+1}</button>)
     }
 
-    if(!goodAmount || !goods) {
+    if(!data || !goods) {
       return <div className="container"><h1>MeatSEO</h1><h3>Loading...</h3></div>      
     //} else if(error) {
     //  return <div className="alert alert-danger">Error: {error.message}</div>

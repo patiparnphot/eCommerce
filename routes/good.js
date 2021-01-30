@@ -4,7 +4,8 @@ var express   = require("express"),
     moment    = require("moment-timezone"),
     fs        = require("fs"),
     Good      = require("../models/good"),
-    Comment      = require("../models/comment"),
+    Comment   = require("../models/comment"),
+    Category  = require("../models/category"),
     goodState = require("../initial_state/good");
     // middleware = require("../middleware");
 
@@ -13,6 +14,78 @@ var preAuthenticate = function (req,res,next){
     return next();
 };
 
+function getAndDeleteGood(category, callback) {
+    Good.find({category: category}).populate("comments").exec( function (err, data) {
+        if (err) {
+            callback(err);
+        } else {
+            Good.deleteMany({category: category}, function (err, r) {
+                if (err) {
+                    callback(err);
+                } else if(r.n == 0) {
+                    console.log(`no delete good of delete ${category} category`);
+                    callback("no deleted good");
+                } else if(r.n != r.deletedCount) {
+                    console.log(`success on delete ${r.deletedCount} of ${r.n} good of delete ${category} category`);
+                    callback("deleted some good");
+                } else if(r.n == r.deletedCount) {
+                    console.log(`success on delete ${r.deletedCount} good of delete ${category} category`);
+                    callback(null, data);
+                }
+            });
+        }
+    });
+}
+
+
+//GOODAMOUNT - get good amount
+router.get("/amount", function(req, res, next){
+    Good.count(
+        { postedTime: { $lt: Date.now() } },
+        function(err, goodAmount){
+            if(err) return next(err);
+            res.json(goodAmount);
+        }
+    );
+});
+
+//GOODCATAMT - get good category amount
+router.get("/categories/amount", function(req, res, next){
+    Category.count(
+        {
+            categoryType: "good", 
+            postedTime: { $lt: Date.now() }
+        },
+        function(err, goodCategoryAmount){
+            if(err) return next(err);
+            res.json(goodCategoryAmount);
+        }
+    );
+});
+
+//GOODCATT - get good category titles
+router.get("/categories/allTitle", async function(req, res, next){
+    Category.find(
+        {
+            categoryType: "good", 
+            postedTime: { $lt: Date.now() }
+        },
+        {
+            title: 1,
+            _id: 0
+        },
+        async function(err, goodCategoryTitles){
+            if(err) return next(err);
+            let allTitle = [];
+            for (let i = 0; i < goodCategoryTitles.length; i++) {
+                let goodCategoryTitle = goodCategoryTitles[i].title;
+                allTitle.push(goodCategoryTitle);
+            };
+            let finalAllTitle = await Promise.all(allTitle);
+            res.json(finalAllTitle);
+        }
+    );
+});
 
 //GOODS - get a recent list of goods
 router.get("/recent", function(req, res, next){
@@ -33,23 +106,6 @@ router.get("/popular", function(req, res, next){
         {},
         {},
         { sort: { rating: -1 }, limit: 20 },
-        function(err, listOfGoods){
-            if(err) return next(err);
-            res.json(listOfGoods);
-        }
-    );
-});
-
-//GOOD PAGINATION - get a paginate list of goods
-router.get("/:start/:end", function(req, res, next){
-    Good.find(
-        { postedTime: { $lt: Date.now() } },
-        {},
-        { 
-            sort: { postedTime: -1 }, 
-            skip: Number(req.params.start) - 1, 
-            limit: (Number(req.params.end) - Number(req.params.start)) + 1 
-        }, 
         function(err, listOfGoods){
             if(err) return next(err);
             res.json(listOfGoods);
@@ -179,7 +235,58 @@ router.get("/:slug", function(req, res, next) {
  
 });
 
-//CREATE - add a new good to db
+//ACTIVE GOOD CATEGORY - get a single good category
+router.get("/categories/:title", async function(req, res, next) {
+    if(!req.params.title || typeof(req.params.title) != "string") next("title is invalid");
+    let title = req.params.title;
+    console.log("title: ", title);
+    Category.findOne(
+        {
+            categoryType: "good",
+            title: title
+        },
+        function(err, category){
+            if(err) return next(err);
+            res.json(category);
+        }
+    );
+})
+
+//GOOD PAGINATION - get a paginate list of goods
+router.get("/:start/:end", function(req, res, next){
+    Good.find(
+        { postedTime: { $lt: Date.now() } },
+        {},
+        { 
+            sort: { postedTime: -1 }, 
+            skip: Number(req.params.start) - 1, 
+            limit: (Number(req.params.end) - Number(req.params.start)) + 1 
+        }, 
+        function(err, listOfGoods){
+            if(err) return next(err);
+            res.json(listOfGoods);
+        }
+    );
+});
+
+//GOOD CATEGORY PAGINATION - get a paginate list of good categories
+router.get("/categories/:start/:end", function(req, res, next){
+    Category.find(
+        { categoryType: "good" },
+        {},
+        { 
+            sort: { postedTime: -1 }, 
+            skip: Number(req.params.start) - 1, 
+            limit: (Number(req.params.end) - Number(req.params.start)) + 1 
+        }, 
+        function(err, listOfCategories){
+            if(err) return next(err);
+            res.json(listOfCategories);
+        }
+    );
+});
+
+//CREATE GOOD - add a new good to db
 router.post(
     "/", 
     preAuthenticate, 
@@ -194,7 +301,22 @@ router.post(
     }
 );
 
-//UPDATE - edit a good in db
+//CREATE GOOD CATEGORY - add a new good category to db
+router.post(
+    "/categories/", 
+    preAuthenticate, 
+    passport.authenticate('jwt', {session: false}), 
+    function(req, res, next) {
+        Category.create(req.body.category, function (err, newCategory) {
+            if (err) return next(err);
+            newCategory.save();
+            console.log(newCategory);
+            res.json(newCategory);
+        });
+    }
+);
+
+//UPDATE GOOD - edit a good in db
 router.put(
     "/:id", 
     preAuthenticate, 
@@ -208,13 +330,56 @@ router.put(
             function (err, editedGood) {
                 if (err) return next(err);
                 console.log(editedGood);
-                res.json(editedGood)
+                res.json(editedGood);
             }
         );
     }
 );
 
-//DESTROY - delete a good from db
+//UPDATE GOOD CATEGORY - edit a good category in db
+router.put(
+    "/categories/:id", 
+    preAuthenticate, 
+    passport.authenticate('jwt', {session: false}),
+    //middleware.checkUserIdol, 
+    function(req, res, next) {
+        Category.findByIdAndUpdate(
+            req.params.id,
+            req.body.editCategory,
+            function (err, editedCategory) {
+                if (err) return next(err);
+                Good.updateMany(
+                    { category: editedCategory._doc.title },
+                    { category: req.body.editCategory.title },
+                    function (err, editedGoods) {
+                        if (err) {
+                            console.log(`error on update good of update ${editedCategory._doc.title} category: `, err);
+                        } else if (editedGoods) {
+                            if(editedGoods.n == 0) {
+                                console.log(`no update good of update ${editedCategory._doc.title} category`);
+                            } else if(editedGoods.n != editedGoods.nModified) {
+                                console.log(`success on update ${editedGoods.nModified} of ${editedGoods.n} good of update ${editedCategory._doc.title} category`);
+                            } else if(editedGoods.n == editedGoods.nModified) {
+                                console.log(`success on update good of update ${editedCategory._doc.title} category`);
+                            }
+                        }
+                    }
+                );
+                let newCategory = { 
+                    ...editedCategory._doc,
+                    title: req.body.editCategory.title,
+                    text: req.body.editCategory.text,
+                    categoryType: req.body.editCategory.categoryType,
+                    titleHtml: req.body.editCategory.titleHtml,
+                    descriptionHtml: req.body.editCategory.descriptionHtml
+                };
+                res.json(newCategory);
+            }
+        );
+    }
+);
+
+//DESTROY GOOD - delete a good from db
 router.delete(
     "/:slug", 
     preAuthenticate, 
@@ -234,6 +399,37 @@ router.delete(
             });
             res.json(deletedGood);
         });
+    }
+);
+
+//DESTROY GOOD CATEGORY - delete a good category from db
+router.delete(
+    "/categories/:title", 
+    preAuthenticate, 
+    passport.authenticate('jwt', {session: false}),
+    //middleware.checkUserIdol, 
+    function(req, res, next) {
+        Good.find(
+            { category: req.params.title },
+            function (err, goodCategory) {
+                if (err) return next(err);
+                let hasGoodMsg = {
+                    message: "Delete all of goods in this category before delete this category",
+                    name: "HasGoodError"
+                };
+                if (!goodCategory || (goodCategory.length > 0)) return res.status(422).json(hasGoodMsg);
+                Category.findOneAndRemove(
+                    {
+                        title: req.params.title,
+                        categoryType: "good"
+                    },
+                    function(err, deletedCategory) {
+                        if (err) return next(err);
+                        res.json(deletedCategory);
+                    }
+                );
+            }
+        );
     }
 );
 

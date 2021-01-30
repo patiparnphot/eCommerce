@@ -85,14 +85,28 @@ const validate = values => {
   return errors
 }
 
-const renderField = ({ input, label, type, meta: { touched, error } }) => {
-  return (
-    <div className="row form-group">
-      <label className="col-sm-2">{label}</label>
-      <input {...input} type={type} placeholder={label} className="form-ctrl col-sm-6"/>
-      {touched && error && <span>{error}</span>}
-    </div>
-  );
+const renderField = ({ input, label, allCat, type, meta: { touched, error } }) => {
+  if (type == "select") {
+    return (
+      <div className="row form-group">
+        <label className="col-sm-2">{label}</label>
+        <select {...input} className="form-ctrl col-sm-6">
+          {allCat.map((cat) => {
+            return (<option value={cat}>{cat}</option>);
+          })}
+        </select>
+        {touched && error && <span>{error}</span>}
+      </div>
+    );
+  } else {
+    return (
+      <div className="row form-group">
+        <label className="col-sm-2">{label}</label>
+        <input {...input} type={type} placeholder={label} className="form-ctrl col-sm-6"/>
+        {touched && error && <span>{error}</span>}
+      </div>
+    );
+  }
 }
 
 const renderOptions = ({fields, meta: {error, submitFailed}}) => (
@@ -148,6 +162,7 @@ class EditGoodClass extends React.Component {
       placeholderDesc,
       placeholderCat,
       placeholderAvai,
+      allCat,
       formButton
     } = this.props;
     return (
@@ -158,7 +173,7 @@ class EditGoodClass extends React.Component {
         <Field name="title" type="text" label={placeholderTitle} component={renderField} />
         <Field name="image" type="text" label={placeholderImage} component={renderField} />
         <Field name="description" type="text" label={placeholderDesc} component={renderField} />
-        <Field name="category" type="text" label={placeholderCat} component={renderField} />
+        <Field name="category" type="select" label={placeholderCat} allCat={allCat} component={renderField} />
         <FieldArray name="options" component={renderOptions} />
         <FieldArray name="specificOptions" component={renderSpecificOptions} />
         <Field name="isAvailable" type="checkbox" label={placeholderAvai} component={renderField} />
@@ -178,6 +193,7 @@ export default class GoodPage extends React.Component {
 
   componentDidMount() {
     this.props.fetchGood(this.props.goodSlug);
+    this.props.fetchGoodCategoryTitles();
   }
 
   componentWillUnmount() {
@@ -193,8 +209,9 @@ export default class GoodPage extends React.Component {
     const { good } = this.props.activeGood;
     const { token } = this.props.member;
     const initialGood = { ...good, token: token };
-    
-    if (!good || !token) {
+    const { data } = this.props.allCat;
+
+    if (!good || !token || !data) {
       return <NotFoundPage/>
     }
 
@@ -214,6 +231,7 @@ export default class GoodPage extends React.Component {
             placeholderCat="category of good"
             placeholderAvai="show this good"
             initialValues={initialGood}
+            allCat={data}
             formButton="Confirm"
           />
         </div>

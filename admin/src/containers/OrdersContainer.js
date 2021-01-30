@@ -8,11 +8,16 @@ import {
   approveOrderFailure,
   resetApprovedOrder
 } from '../actions/orders';
+import {
+  fetchOrderamount,
+  fetchOrderamountSuccess,
+  fetchOrderamountFailure
+} from '../actions/preloadedData'
 import Orders from '../components/OrdersComponent ';
 
 function mapStateToProps(state, ownProps) {
   return {
-    orderAmount: ownProps.orderAmount,
+    orderAmount: state.preloadedData.orderAmount,
     ordersList: state.orders.ordersList,
     member: state.member
   };
@@ -25,6 +30,12 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(fetchOrders(start, end)).then((response) => {
         console.log('allOrders: ', response.payload);
         !response.error ? dispatch(fetchOrdersSuccess(response.payload)) : dispatch(fetchOrdersFailure(response.payload));
+      });
+    },
+    fetchOrderAmount: () => {
+      dispatch(fetchOrderamount()).then((response) => {
+        console.log('orderAmount: ', response.payload);
+        !response.error ? dispatch(fetchOrderamountSuccess(response.payload)) : dispatch(fetchOrderamountFailure(response.payload));
       });
     },
     approveOrder: (invoiceId, token, start, end) => {

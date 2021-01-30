@@ -186,7 +186,16 @@ export function deleteGood(deleteGoodSlug, token) {
           'Authorization': `Bearer ${token}`
         }
       })
-      .then(response => response.json(), error => console.log('An error occurred.', error))
+      .then(
+        (response) => {
+          if (response.status >= 400) {
+            return response.text();
+          } else {
+            return response.json();
+          }
+        },
+        error => console.log('An error occurred.', error)
+      )
       .then(json => dispatch(receiver(DELETE_GOOD, json)));
   };
 }

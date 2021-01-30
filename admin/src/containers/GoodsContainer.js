@@ -8,11 +8,16 @@ import {
   deleteGoodFailure,
   resetDeletedGood
 } from '../actions/goods';
+import {
+  fetchGoodamount,
+  fetchGoodamountSuccess,
+  fetchGoodamountFailure
+} from '../actions/preloadedData'
 import Goods from '../components/GoodsComponent';
 
 function mapStateToProps(state, ownProps) {
   return {
-    goodAmount: ownProps.goodAmount,
+    goodAmount: state.preloadedData.goodAmount,
     goodsList: state.goods.goodsList,
     member: state.member
   };
@@ -25,6 +30,12 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(fetchGoods(start, end)).then((response) => {
         console.log('allGoods: ', response.payload);
         !response.error ? dispatch(fetchGoodsSuccess(response.payload)) : dispatch(fetchGoodsFailure(response.payload));
+      });
+    },
+    fetchGoodAmount: () => {
+      dispatch(fetchGoodamount()).then((response) => {
+        console.log('goodAmount: ', response.payload);
+        !response.error ? dispatch(fetchGoodamountSuccess(response.payload)) : dispatch(fetchGoodamountFailure(response.payload));
       });
     },
     deleteGood: (deleteGoodSlug, token, start, end) => {

@@ -16,15 +16,13 @@ class BlogsPage extends Component {
     
     //const { content, loading, error } = this.props.indexContent;
 
-    const { blogAmount } = this.props;
-
-    if(!blogAmount) {
-      return <div className="container"><h1>MeatSEO</h1><h3>Loading...</h3></div>      
+    // if() {
+    //   return <div className="container"><h1>MeatSEO</h1><h3>Loading...</h3></div>      
     //} else if(error) {
     //  return <div className="alert alert-danger">Error: {error.message}</div>
     //} else if(!content) {
     //  return <NotFoundPage/>
-    }
+    // }
     
     // console.log('enter indexPage: ', this.props);
     
@@ -36,7 +34,7 @@ class BlogsPage extends Component {
 
         </p>
         <Link to="/admin/blogs/create/">Create New Blog</Link>
-        <Blogs blogAmount={blogAmount} />
+        <Blogs/>
       </div>
     );
   }
@@ -49,9 +47,7 @@ const mapDispatchToProps = (dispatch) => {
 
 
 function mapStateToProps(state, ownProps) {
-  return {
-    blogAmount: ownProps.blogAmount
-  };
+  return {};
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(BlogsPage);

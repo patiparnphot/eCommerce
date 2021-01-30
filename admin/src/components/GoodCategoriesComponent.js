@@ -1,11 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import order from '../../../models/order';
 
 
 //var initialContentState = require("../../initial_state/initialContentState.json");
 
-export default class Orders extends React.Component {
+export default class GoodCategories extends React.Component {
   
   constructor(props) {
     super(props);
@@ -19,16 +18,15 @@ export default class Orders extends React.Component {
 
   
   componentDidMount() {
-    this.props.fetchOrders(this.state.start, this.state.end);
-    this.props.fetchOrderAmount();
+    this.props.fetchGoodCategories(this.state.start, this.state.end);
+    this.props.fetchGoodCategoryAmount();
     //this.props.blogsList.blogs = initialContentState.blogs.blogsList.blogs;
-
   }
 
   componentWillUnmount() {
     //Important! If your component is navigating based on some global state(from say componentWillReceiveProps)
     //always reset that global state back to null when you REMOUNT
-    this.props.resetApprovedOrder();
+    this.props.resetDeletedGoodCategory();
   }
 
   // Click Function
@@ -37,27 +35,21 @@ export default class Orders extends React.Component {
       start: 1+(3*i),
       end: 3+(3*i)
     });
-    this.props.fetchOrders(1+(3*i), 3+(3*i));
+    this.props.fetchGoodCategories(1+(3*i), 3+(3*i));
   }
   
-  renderOrders(orders) {
-    return orders.map((order, index) => {
+  renderGoodCategories(goodCategories) {
+    return goodCategories.map((goodCategory, index) => {
       return (
         <div className="row" style={index%2 == 1 ? {color: "white", backgroundColor: "gray"} : {backgroundColor: "white"}}>
-          <div className="col-sm-3">
-            {order.invoiceId}
+          <div className="col-sm-4">
+            {goodCategory.title}
           </div>
-          <div className="col-sm-3">
-            {order.customer.firstname + "  " + order.customer.lastname}
+          <div className="col-sm-4">
+            <Link to={"/admin/goodCategories/edit/" + goodCategory.title}>Edit</Link>
           </div>
-          <div className="col-sm-3">
-            {order.createdAt}
-          </div>
-          <div className="col-sm-1">
-            <Link to={"/admin/orders/" + order.invoiceId}>Detail</Link>
-          </div>
-          <div className="col-sm-2" style={{color: 'black'}}>
-            {order.approve ? "Approved" : <button onClick={() => this.props.approveOrder(order.invoiceId, this.props.member.token, this.state.start, this.state.end)}>Approve</button>}
+          <div className="col-sm-4" style={{color: 'black'}}>
+            <button onClick={() => this.props.deleteGoodCategory(goodCategory.title, this.props.member.token, this.state.start, this.state.end)}>Delete</button>
           </div>
           <br/>
         </div>
@@ -68,9 +60,9 @@ export default class Orders extends React.Component {
   
   render() {
     
-    const { orders, loading, error } = this.props.ordersList;
+    const { good, loading, error } = this.props.categoriesList;
     
-    const { data } = this.props.orderAmount;
+    const { data } = this.props.goodCategoryAmount;
 
     const buttons = [];
     const pageNumber = Math.ceil(Number(data) / 3);
@@ -78,7 +70,7 @@ export default class Orders extends React.Component {
       buttons.push(<button onClick={() => this.onChange(i)} >{i+1}</button>)
     }
 
-    if(!data || !orders) {
+    if(!data || !good) {
       return <div className="container"><h1>MeatSEO</h1><h3>Loading...</h3></div>      
     //} else if(error) {
     //  return <div className="alert alert-danger">Error: {error.message}</div>
@@ -90,33 +82,28 @@ export default class Orders extends React.Component {
       <div className="container">
         <div className="card">
           <div className="card-header">
-            <h5 className="title">List of Orders</h5>
-            <p className="category">Orders about Datascience, Search Engine Optimiser and Developer</p>
+            <h5 className="title">List of Good Categories</h5>
+            <p className="category">Good Categories about Datascience, Search Engine Optimiser and Developer</p>
           </div>
+          <Link to="/admin/goodCategories/create/">Create New Good Category</Link>
           <div className="card-body all-icons">
             <div className="row blog-container">
               
               <div className="row">
-                <div className="col-sm-3">
-                  Invoice Id
+                <div className="col-sm-4">
+                  Category Title
                 </div>
-                <div className="col-sm-3">
-                  Customer Name
+                <div className="col-sm-4">
+                  Edit Category
                 </div>
-                <div className="col-sm-3">
-                  Created At
-                </div>
-                <div className="col-sm-1">
-                  Show
-                </div>
-                <div className="col-sm-2">
-                  Approve
+                <div className="col-sm-4">
+                  Delete Category
                 </div>
               </div>
 
               <hr/>
 
-              {this.renderOrders(orders)}
+              {this.renderGoodCategories(good)}
 
             </div>
           </div>

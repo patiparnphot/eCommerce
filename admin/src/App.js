@@ -8,38 +8,30 @@ import UploadPage from './pages/UploadPage';
 import SignInPage from './pages/SignInPage';
 import BlogsPage from './pages/BlogsPage';
 import GoodsPage from './pages/GoodsPage';
+import GoodCategoriesPage from './pages/GoodCategoriesPage';
 import OrdersPage from './pages/OrdersPage';
 import BlogPage from './pages/BlogPage';
 import GoodPage from './pages/GoodPage';
+import GoodCategoryPage from './pages/GoodCategoryPage';
 import OrderPage from './pages/OrderPage';
 import CreateBlogPage from './pages/CreateBlogPage';
 import CreateGoodPage from './pages/CreateGoodPage';
+import CreateGoodCategoryPage from './pages/CreateGoodCategoryPage';
 import Footer from './containers/FooterContainer';
 import NotFoundPage from './components/NotFoundPage';
 import fetch from 'cross-fetch';
 
-import {
-  fetchPreloadedblogdata,
-  fetchPreloadedblogdataSuccess,
-  fetchPreloadedblogdataFailure
-} from './actions/preloadedData';
 
+function App({member}) {
 
-function App({fetchPreloadedblogdata, preloadedBlogData, member}) {
-
-  React.useEffect(() => {
-    fetchPreloadedblogdata();
-  },[]);
-
-  const {data, error, loading} = preloadedBlogData;
-
-  if(loading) {
-    return <div className="container"><h1>MeatSEO</h1><h3>Loading...</h3></div>      
-  } else if(error) {
-    return <div className="alert alert-danger">Error: {error.message}</div>
-  } else if(!data) {
-    return <NotFoundPage/>
-  } else if(!member.user || !member.token) {
+  // if(loading) {
+  //   return <div className="container"><h1>MeatSEO</h1><h3>Loading...</h3></div>      
+  // } else if(error) {
+  //   return <div className="alert alert-danger">Error: {error.message}</div>
+  // } else if(!data) {
+  //   return <NotFoundPage/>
+  // } else
+  if(!member.user || !member.token) {
     return <SignInPage/>
   }
 
@@ -58,13 +50,16 @@ function App({fetchPreloadedblogdata, preloadedBlogData, member}) {
               <IndexContentPage/>
             </Route>
             <Route exact path="/admin/blogs">
-              <BlogsPage blogAmount={data.blogAmount}/>
+              <BlogsPage/>
             </Route>
             <Route exact path="/admin/goods">
-              <GoodsPage goodAmount={11}/>
+              <GoodsPage/>
+            </Route>
+            <Route exact path="/admin/goodCategories">
+              <GoodCategoriesPage/>
             </Route>
             <Route exact path="/admin/orders">
-              <OrdersPage orderAmount={11}/>
+              <OrdersPage/>
             </Route>
             <Route path="/admin/blogs/edit">
               <BlogRoute/>
@@ -77,6 +72,12 @@ function App({fetchPreloadedblogdata, preloadedBlogData, member}) {
             </Route>
             <Route path="/admin/goods/create">
               <CreateGoodPage/>
+            </Route>
+            <Route path="/admin/goodCategories/edit">
+              <GoodCategoryRoute/>
+            </Route>
+            <Route path="/admin/goodCategories/create">
+              <CreateGoodCategoryPage/>
             </Route>
             <Route path="/admin/orders">
               <OrderRoute/>
@@ -109,6 +110,16 @@ function GoodRoute() {
   );
 }
 
+function GoodCategoryRoute() {
+  let { path } = useRouteMatch();
+
+  return (
+    <Route path={`${path}/:categoryTitle`}>
+      <GoodCategoryPage />
+    </Route>
+  );
+}
+
 function OrderRoute() {
   let { path } = useRouteMatch();
 
@@ -120,19 +131,11 @@ function OrderRoute() {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    fetchPreloadedblogdata: () => {
-      dispatch(fetchPreloadedblogdata()).then((response) => {
-        console.log('preloadedblogdata: ', response.payload);
-        !response.error ? dispatch(fetchPreloadedblogdataSuccess(response.payload)) : dispatch(fetchPreloadedblogdataFailure(response.payload));
-      });
-    }
-  };
+  return {};
 };
 
 function mapStateToProps(state) {
   return {
-    preloadedBlogData: state.preloadedData.blogData,
     member: state.member
   };
 }

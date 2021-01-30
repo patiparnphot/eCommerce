@@ -93,14 +93,28 @@ const validate = values => {
   return errors
 }
 
-const renderField = ({ input, label, type, meta: { touched, error } }) => {
-  return (
-    <div className="row form-group">
-      <label className="col-sm-2">{label}</label>
-      <input {...input} type={type} placeholder={label} className="form-ctrl col-sm-6"/>
-      {touched && error && <span>{error}</span>}
-    </div>
-  );
+const renderField = ({ input, label, allCat, type, meta: { touched, error } }) => {
+  if (type == "select") {
+    return (
+      <div className="row form-group">
+        <label className="col-sm-2">{label}</label>
+        <select {...input} className="form-ctrl col-sm-6">
+          {allCat.map((cat) => {
+            return (<option value={cat}>{cat}</option>);
+          })}
+        </select>
+        {touched && error && <span>{error}</span>}
+      </div>
+    );
+  } else {
+    return (
+      <div className="row form-group">
+        <label className="col-sm-2">{label}</label>
+        <input {...input} type={type} placeholder={label} className="form-ctrl col-sm-6"/>
+        {touched && error && <span>{error}</span>}
+      </div>
+    );
+  }
 }
 
 const renderOptions = ({fields, meta: {error, submitFailed}}) => (
@@ -155,6 +169,7 @@ class CreateGoodClass extends React.Component {
       placeholderImage,
       placeholderDesc,
       placeholderCat,
+      allCat,
       formButton
     } = this.props;
     console.log(JSON.stringify(handleSubmit));
@@ -166,7 +181,7 @@ class CreateGoodClass extends React.Component {
         <Field name="title" type="text" label={placeholderTitle} component={renderField} />
         <Field name="image" type="text" label={placeholderImage} component={renderField} />
         <Field name="description" type="text" label={placeholderDesc} component={renderField} />
-        <Field name="category" type="text" label={placeholderCat} component={renderField} />
+        <Field name="category" type="select" label={placeholderCat} allCat={allCat} component={renderField} />
         <FieldArray name="options" component={renderOptions} />
         <FieldArray name="specificOptions" component={renderSpecificOptions} />
         <button type="submit" disabled={ submitting }>{formButton}</button>
@@ -184,6 +199,7 @@ const CreateGoodForm = reduxForm({
 export default class CreateGood extends React.Component {
   
   componentDidMount() {
+    this.props.fetchGoodCategoryTitles();
   }
 
   componentWillUnmount() {
@@ -194,7 +210,14 @@ export default class CreateGood extends React.Component {
   
   
   render() {
-        
+
+    const { data } = this.props.allCat;
+
+    if (!data) {
+      return <NotFoundPage/>
+    }
+
+       
     return (
         <div className="form container">
           
@@ -209,6 +232,7 @@ export default class CreateGood extends React.Component {
             placeholderDesc="description of good"
             placeholderCat="category of good"
             initialValues={{token: this.props.member.token}}
+            allCat={data}
             formButton="Confirm"
           />
         </div>

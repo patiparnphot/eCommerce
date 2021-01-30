@@ -109,7 +109,7 @@
 
 .blog-item .blog-wrap .blog-info h4 {
   font-size: 22px;
-  line-height: 1px;
+  /* line-height: 1px; */
   font-weight: 700;
   margin-bottom: 14px;
   padding-bottom: 0;

@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import Navbar from '../containers/NavbarContainer';
-import Orders from '../containers/OrdersContainer';
+import GoodCategories from '../containers/GoodCategoriesContainer';
 import NotFoundPage from '../components/NotFoundPage.js';
 
-class OrdersPage extends Component {
+class GoodCategoriesPage extends Component {
   
   componentDidMount() {
     //this.props.fetchIndexcontent();
@@ -28,12 +28,13 @@ class OrdersPage extends Component {
     
     return (
       <div>
-        <Navbar pagename="ALL ORDERS" />
+        <Navbar pagename="ALL GOOD CATEGORIES" />
         <p>
 
 
         </p>
-        <Orders/>
+        <Link to="/admin/goodCategories/create/">Create New Good Category</Link>
+        <GoodCategories/>
       </div>
     );
   }
@@ -49,4 +50,4 @@ function mapStateToProps(state, ownProps) {
   return {};
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(OrdersPage);
+export default connect(mapStateToProps, mapDispatchToProps)(GoodCategoriesPage);
