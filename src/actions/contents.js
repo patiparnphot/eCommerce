@@ -16,6 +16,11 @@ export const FETCH_BLOGDETAILCONTENT = 'FETCH_BLOGDETAILCONTENT';
 export const FETCH_BLOGDETAILCONTENT_SUCCESS = 'FETCH_BLOGDETAILCONTENT_SUCCESS';
 export const FETCH_BLOGDETAILCONTENT_FAILURE = 'FETCH_BLOGDETAILCONTENT_FAILURE';
 
+//Fetch good category content
+export const FETCH_GOODCATEGORYCONTENT = 'FETCH_GOODCATEGORYCONTENT';
+export const FETCH_GOODCATEGORYCONTENT_SUCCESS = 'FETCH_GOODCATEGORYCONTENT_SUCCESS';
+export const FETCH_GOODCATEGORYCONTENT_FAILURE = 'FETCH_GOODCATEGORYCONTENT_FAILURE';
+
 function receiver(type, json) {
   return {
     type: type,
@@ -83,6 +88,27 @@ export function fetchBlogdetailcontentSuccess(blogdetailContent) {
 export function fetchBlogdetailcontentFailure(error) {
   return {
     type: FETCH_BLOGDETAILCONTENT_FAILURE,
+    payload: error
+  };
+}
+
+export function fetchGoodcategorycontent(category) {
+  return dispatch => {
+    console.log(`${ROOT_URL}/goods/categories/${category}/`);
+    return fetch(`${ROOT_URL}/goods/categories/${category}/`)
+      .then(response => response.json(), error => console.log('An error occurred.', error))
+      .then(json => dispatch(receiver(FETCH_GOODCATEGORYCONTENT, json)));
+  };
+}
+export function fetchGoodcategorycontentSuccess(goodcategoryContent) {
+  return {
+    type: FETCH_GOODCATEGORYCONTENT_SUCCESS,
+    payload: goodcategoryContent
+  };
+}
+export function fetchGoodcategorycontentFailure(error) {
+  return {
+    type: FETCH_GOODCATEGORYCONTENT_FAILURE,
     payload: error
   };
 }

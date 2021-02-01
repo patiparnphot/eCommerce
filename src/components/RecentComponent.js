@@ -139,50 +139,50 @@ export default function Recent ({recent, recentGoods, fetchGoods}) {
     }
     
     return (
-<section id="recent">
+      <section id="recent">
 
-<div className="container-fluid">
-  <div className="row">
-    <div className="clearfix">
-      <div className="substrate-wrap">
+        <div className="container-fluid">
+          <div className="row">
+            <div className="clearfix">
+              <div className="substrate-wrap">
 
-        <div className="substrate parallax-block"
-          data-speed-direction=".3"
-          data-default-pos="-600"
-          data-parallax-block="true">
-          <div className="text text-darkness">
-            {recent.parallaxText}
+                <div className="substrate parallax-block"
+                  data-speed-direction=".3"
+                  data-default-pos="-600"
+                  data-parallax-block="true">
+                  <div className="text text-darkness">
+                    {recent.parallaxText}
+                  </div>
+                </div>
+
+              </div>
+            </div>
           </div>
         </div>
 
-      </div>
-    </div>
-  </div>
-</div>
+        <div className="container block">
 
-<div className="container block">
+          <div className="row">
+            <div className="col-xs-12">
+              <div className="block-header text-uppercase">
+                <h2 className="header">{recent.header}</h2>
+              </div>
+            </div>
+          </div>
 
-  <div className="row">
-    <div className="col-xs-12">
-      <div className="block-header text-uppercase">
-        <h2 className="header">{recent.header}</h2>
-      </div>
-    </div>
-  </div>
+          <div className="row">
+            <div className="col-xs-12">
+              <div className="owl-carousel owl-default features nav-top-left">
 
-  <div className="row">
-    <div className="col-xs-12">
-      <div className="owl-carousel owl-default features nav-top-left">
+                {renderGoods(recentGoods.goods)}
+              
+              </div>
+            </div>
+          </div>
 
-        {renderGoods(recentGoods.goods)}
-      
-      </div>
-    </div>
-  </div>
+        </div>
 
-</div>
-
-</section>
+      </section>
     )
 
 }

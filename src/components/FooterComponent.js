@@ -157,7 +157,7 @@ export default class Footer extends React.Component {
 
               <div className="col-md-6">
                 <div className="footer-brand">
-                  <img src="images/main-brand.png" alt=""/>
+                  <img src="/images/main-brand.png" alt=""/>
                 </div>
                 <span className="comp-header st-12 text-uppercase">
                   Komotto

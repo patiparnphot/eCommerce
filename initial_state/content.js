@@ -110,6 +110,11 @@ module.exports = async function() {
                            "content": {},
                            "error": null,
                            "loading": false
+                        },
+                        "goodCategory": {
+                           "content": {},
+                           "error": null,
+                           "loading": false
                         }
                      },
                      "form": {}

@@ -24,7 +24,8 @@ var serverSideRender    = require("./src/serverSideRender"),
     template            = require("./static/template"),
     initialContentState = require("./initial_state/initialContentState.json"),
     initialBlogState    = require("./initial_state/initialBlogState"),
-    initialGoodState    = require("./initial_state/initialGoodState");
+    initialGoodState    = require("./initial_state/initialGoodState"),
+    initialGoodCatState = require("./initial_state/initialGoodCatState");
 
 // Set Auto Reload due to file change
 fs.watchFile(require.resolve('./initial_state/initialContentState.json'), function () {
@@ -44,6 +45,12 @@ fs.watchFile(require.resolve('./initial_state/initialGoodState'), function () {
    delete require.cache[require.resolve('./initial_state/initialGoodState')]
    initialGoodState = require('./initial_state/initialGoodState');
    console.log("InitialGoodState has changed and Server has reloaded!!!");
+});
+fs.watchFile(require.resolve('./initial_state/initialGoodCatState'), function () {
+   console.log("InitialGoodCatState changed, reloading...");
+   delete require.cache[require.resolve('./initial_state/initialGoodCatState')]
+   initialGoodState = require('./initial_state/initialGoodCatState');
+   console.log("InitialGoodCatState has changed and Server has reloaded!!!");
 });
 
 // Point static path
@@ -159,9 +166,9 @@ app.get('*', async (req, res, next) => {
       let titleHtml = initialStateJson.contents.index.content.titleHtml;
       let descriptionHtml = initialStateJson.contents.index.content.descriptionHtml;
       let urlArr = (req.url).split("/");
-      if (urlArr.length >= 3 && urlArr[1] === 'blogs') {
+      if (urlArr.length == 3 && (urlArr[2] != '') && urlArr[1] == 'blogs') {
          let activeBlog = await initialBlogState(urlArr[2]);
-         //console.log('blogState', activeBlog);
+         // console.log('blogState', activeBlog);
          initialStateJson.blogs.activeBlog = {
             "blog": activeBlog,
             "error": null,
@@ -171,8 +178,19 @@ app.get('*', async (req, res, next) => {
             titleHtml = activeBlog.titleHtml;
             descriptionHtml = activeBlog.descriptionHtml;
          }
-      }
-      if (urlArr.length >= 3 && urlArr[1] === 'goods') {
+      } else if (urlArr.length == 3 && (urlArr[2] != '') && (urlArr[1] == 'goods')) {
+         let goodCategory = await initialGoodCatState(urlArr[2]);
+         // console.log('goodCategoryState', goodCategory);
+         initialStateJson.contents.goodCategory = {
+            "content": goodCategory,
+            "error": null,
+            "loading": false
+         };
+         if(goodCategory && goodCategory.title != "noTitle") {
+            titleHtml = goodCategory.titleHtml;
+            descriptionHtml = goodCategory.descriptionHtml;
+         }
+      } else if (urlArr.length == 4 && (urlArr[3] != '') && urlArr[1] == 'goods') {
          let activeGood = await initialGoodState(urlArr[3]);
          // console.log('goodState', activeGood);
          initialStateJson.goods.activeGood = {

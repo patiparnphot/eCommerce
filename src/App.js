@@ -105,7 +105,7 @@ function GoodsPage() {
 
   return (
     <Switch>
-      <Route exact path={`${path}/:type`}>
+      <Route exact path={`${path}/:category`}>
         <CategoryPage/>
       </Route>
       <Route path={`${path}/:type/:slug`}>

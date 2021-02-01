@@ -83,18 +83,28 @@ export function fetchPopularGoodsFailure(error) {
 }
 
 
-export function fetchFilterGoods(allGoods, filter) {
-  // console.log("allgoods: ", allGoods);
-  // console.log("filter: ", filter);
-  let keys = Object.keys(filter);
-  let filteredGood = allGoods;
-  keys.forEach((key) => {
-    filteredGood = filteredGood.filter(good => good[key] == filter[key]);
-  });
-  return {
-    type: FETCH_FLTGOODS_SUCCESS,
-    payload: filteredGood
-  };
+export function fetchFilterGoods(filter) {
+  return dispatch => {
+    return fetch(`${ROOT_URL}/goods/filter/`, {
+        method: "post",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({filter: filter})
+      })
+      .then(
+        (response) => {
+          if (response.status >= 400) {
+            return response.text();
+          } else {
+            return response.json();
+          }
+        },
+        error => console.log('An error occurred.', error)
+      )
+      .then(json => dispatch(receiver(FETCH_FLTGOODS, json)));
+  }
 }
 export function fetchFilterGoodsSuccess(goods) {
   return {

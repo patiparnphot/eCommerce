@@ -1,12 +1,13 @@
-var express   = require("express"),
-    router    = express.Router(),
-    passport = require("passport"),
-    moment    = require("moment-timezone"),
-    fs        = require("fs"),
-    Good      = require("../models/good"),
-    Comment   = require("../models/comment"),
-    Category  = require("../models/category"),
-    goodState = require("../initial_state/good");
+var express      = require("express"),
+    router       = express.Router(),
+    passport     = require("passport"),
+    moment       = require("moment-timezone"),
+    fs           = require("fs"),
+    Good         = require("../models/good"),
+    Comment      = require("../models/comment"),
+    Category     = require("../models/category"),
+    goodState    = require("../initial_state/good"),
+    goodCatState = require("../initial_state/goodCategory");
     // middleware = require("../middleware");
 
 var preAuthenticate = function (req,res,next){
@@ -38,7 +39,7 @@ function getAndDeleteGood(category, callback) {
 }
 
 
-//GOODAMOUNT - get good amount
+//GOOD AMOUNT - get good amount
 router.get("/amount", function(req, res, next){
     Good.count(
         { postedTime: { $lt: Date.now() } },
@@ -49,7 +50,7 @@ router.get("/amount", function(req, res, next){
     );
 });
 
-//GOODCATAMT - get good category amount
+//GOOD CATEGORY AMOUNT - get good category amount
 router.get("/categories/amount", function(req, res, next){
     Category.count(
         {
@@ -63,7 +64,7 @@ router.get("/categories/amount", function(req, res, next){
     );
 });
 
-//GOODCATT - get good category titles
+//GOOD CATEGORY TITLES - get good category titles
 router.get("/categories/allTitle", async function(req, res, next){
     Category.find(
         {
@@ -87,7 +88,7 @@ router.get("/categories/allTitle", async function(req, res, next){
     );
 });
 
-//GOODS - get a recent list of goods
+//RECENT GOODS - get a recent list of goods
 router.get("/recent", function(req, res, next){
     Good.find(
         { postedTime: { $lt: Date.now() } },
@@ -100,12 +101,25 @@ router.get("/recent", function(req, res, next){
     );
 });
 
-//GOODS - get a popular list of goods
+//POPULAR GOODS - get a popular list of goods
 router.get("/popular", function(req, res, next){
     Good.find(
         {},
         {},
         { sort: { rating: -1 }, limit: 20 },
+        function(err, listOfGoods){
+            if(err) return next(err);
+            res.json(listOfGoods);
+        }
+    );
+});
+
+//FILTER GOODS - get a filtered list of goods
+router.post("/filter", function(req, res, next){
+    Good.find(
+        req.body.filter,
+        {},
+        { sort: { postedTime: -1 } },
         function(err, listOfGoods){
             if(err) return next(err);
             res.json(listOfGoods);
@@ -150,6 +164,49 @@ router.get("/updateJsonFile", async function(req, res, next) {
                 console.log("The Javascript file which contains initial good state is written !!!");
             });
             res.send("The Javascript file which contains initial good state is updated !!!");
+        });
+    } catch (err) {
+        res.send(err);
+    }
+})
+
+//INITIALCATEGORYSTATE - update JSON file of initialState good category
+router.get("/categories/updateJsonFile", async function(req, res, next) {
+    try {
+        Category.find({}, {title: 1, _id: 0}, {}, async function(err, listOfGoodCats){
+            if (err) return next(err);
+            let goodCatStateArr = [];
+            if (Array.isArray(listOfGoodCats) && (listOfGoodCats.length > 0)) {
+                for (let i = 0; i < listOfGoodCats.length; i++) {
+                    let goodCatTitle = listOfGoodCats[i].title;
+                    goodCatStateArr.push(goodCatState(goodCatTitle));
+                };
+            };
+            let finalGoodCatStateArr = await Promise.all(goodCatStateArr);
+            let goodCatStateJS = `module.exports = function(goodCatTitle) { `;
+            for (let j = 0; j < finalGoodCatStateArr.length; j++) {
+                if (j == 0) {
+                    goodCatStateJS += `if ( goodCatTitle == `;
+                } else {
+                    goodCatStateJS += `else if ( goodCatTitle == `;
+                }
+                goodCatStateJS += JSON.stringify(finalGoodCatStateArr[j].title);
+                goodCatStateJS += ` ) { return `;
+                goodCatStateJS += JSON.stringify(finalGoodCatStateArr[j].state);
+                goodCatStateJS += `; } `;
+            };
+            goodCatStateJS += `else { return {"title": "noTitle"}; } }`;
+            if (fs.existsSync("./initial_state/initialGoodCatState.js")) {
+                fs.unlink("./initial_state/initialGoodCatState.js", function(err) {
+                    if (err) return next(err);
+                    console.log("The Javascript file which contains initial good category state is deleted !!!");
+                });
+            };
+            fs.writeFile("./initial_state/initialGoodCatState.js", goodCatStateJS, function(err) {
+                if (err) return next(err);
+                console.log("The Javascript file which contains initial good category state is written !!!");
+            });
+            res.send("The Javascript file which contains initial good catefory state is updated !!!");
         });
     } catch (err) {
         res.send(err);
