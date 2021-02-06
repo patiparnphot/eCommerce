@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 
 export default function Recent ({recent, recentGoods, fetchGoods}) {
 
-  const [numberOfStars, setNumberOfStars] = React.useState(5);
   const [alreadyFetch, setAlreadyFetch] = React.useState(false);
   
   React.useEffect(() => {
@@ -43,101 +42,13 @@ export default function Recent ({recent, recentGoods, fetchGoods}) {
       $('.parallax-block').TDParallax();
     }
   }, [alreadyFetch]);
-   
-  function getHTML(htmlCode) {
-    return { __html: htmlCode };
-  }
-
-  function renderCost(options) {
-    return options.map((option) => {
-      return (
-        <span className="price">
-          <span className="price">
-            <small>{option.key}</small>: {option.cost}<small>.00</small>
-          </span>
-        </span>
-      );
-    });
-  }
-
-  function renderStars(rating) {
-    let ratingNum = parseFloat(rating)
-    let ratingRounded = Math.round(ratingNum);
-    let array = [...Array(+numberOfStars).keys()];
-    return array.map(n => {
-      if (n < ratingRounded) {
-        return (
-          <li className='active'>
-            <i className="icofont icofont-star"></i>
-          </li>
-        );
-      } else {
-        return (
-          <li>
-            <i className="icofont icofont-star"></i>
-          </li>
-        );
-      }
-    });
-  }
-
-  function renderGoods(goods){
-    return goods.map((good) => {
-      return (
-        <div className="shop-item hover-sdw">
-          <div className="wrap">
-            <div className="body">
-              <div className="comp-header st-4 text-uppercase">
-                {good.title}
-                <span>
-                  {good.brand}
-                </span>
-                <div className="rate">
-                  <ul className="stars">
-                    {renderStars(good.rating)}
-                  </ul>
-                  <div className="rate-info">
-                    {good.raterAmount} members rate it
-                  </div>
-                </div>
-                {
-                  (
-                    !good.campaign
-                  ) ? (
-                    <span></span>
-                  ) : (
-                    <span className="sale-badge item-badge text-uppercase bg-green">
-                      {good.campaign}
-                    </span>
-                  )
-                }
-              </div>
-              <div className="image">
-                <img className="main" src={good.image} alt=""/>
-              </div>
-            </div>
-            <div className="info">
-              <Link to={ '/goods/' + good.category + '/' + good.slug } className="btn-material btn-price">
-                <span className="price">
-                  <span className="price">
-                    ฿ {good.options[0].cost}<small>.00</small>
-                  </span>
-                </span>
-              </Link>
-            </div>
-          </div>
-        </div>
-      );
-    });
-  }
   
   
-    // const { goods, loading, error } = recentGoods;
-    
-    if (!recent || !recentGoods.goods) {
-      return <div/>
-    }
-    
+  // const { goods, loading, error } = recentGoods;
+  
+  if (!recent || !recentGoods.goods) {
+    return <div/>
+  } else {
     return (
       <section id="recent">
 
@@ -174,7 +85,7 @@ export default function Recent ({recent, recentGoods, fetchGoods}) {
             <div className="col-xs-12">
               <div className="owl-carousel owl-default features nav-top-left">
 
-                {renderGoods(recentGoods.goods)}
+                <Goods goods={recentGoods.goods}/>
               
               </div>
             </div>
@@ -183,7 +94,77 @@ export default function Recent ({recent, recentGoods, fetchGoods}) {
         </div>
 
       </section>
-    )
-
+    );
+  }
 }
 
+function Stars({rating, numberOfStars=5}) {
+  let ratingNum = parseFloat(rating)
+  let ratingRounded = Math.round(ratingNum);
+  let array = [...Array(+numberOfStars).keys()];
+  return array.map(n => {
+    if (n < ratingRounded) {
+      return (
+        <li className='active'>
+          <i className="icofont icofont-star"></i>
+        </li>
+      );
+    } else {
+      return (
+        <li>
+          <i className="icofont icofont-star"></i>
+        </li>
+      );
+    }
+  });
+}
+
+function Goods({goods}) {
+  return goods.map((good) => {
+    return (
+      <div className="shop-item hover-sdw">
+        <div className="wrap">
+          <div className="body">
+            <div className="comp-header st-4 text-uppercase">
+              {good.title}
+              <span>
+                {good.brand}
+              </span>
+              <div className="rate">
+                <ul className="stars">
+                  <Stars rating={good.rating}/>
+                </ul>
+                <div className="rate-info">
+                  {good.raterAmount} members rate it
+                </div>
+              </div>
+              {
+                (
+                  !good.campaign || (good.campaign == "")
+                ) ? (
+                  <span></span>
+                ) : (
+                  <span className="sale-badge item-badge text-uppercase bg-green">
+                    {good.campaign}
+                  </span>
+                )
+              }
+            </div>
+            <div className="image">
+              <img className="main" src={good.image} alt=""/>
+            </div>
+          </div>
+          <div className="info">
+            <Link to={ '/goods/' + good.category + '/' + good.slug } className="btn-material btn-price">
+              <span className="price">
+                <span className="price">
+                  ฿ {good.options[0].cost}<small>.00</small>
+                </span>
+              </span>
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  });
+}

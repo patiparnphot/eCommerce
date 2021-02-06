@@ -6,6 +6,8 @@ var categoryObject = {
    categoryType: String,
    title: { type: String, unique: true, required: true },
    text: String,
+   options: [ String ],
+   features: [ { type: Object } ],
    postedTime: { type: Date, default: Date.now }
 };
 

@@ -64,8 +64,8 @@ router.get("/categories/amount", function(req, res, next){
     );
 });
 
-//GOOD CATEGORY TITLES - get good category titles
-router.get("/categories/allTitle", async function(req, res, next){
+//GOOD CATEGORY PROPS - get good category properties
+router.get("/categories/allProps", async function(req, res, next){
     Category.find(
         {
             categoryType: "good", 
@@ -73,17 +73,13 @@ router.get("/categories/allTitle", async function(req, res, next){
         },
         {
             title: 1,
+            options: 1,
+            features: 1,
             _id: 0
         },
-        async function(err, goodCategoryTitles){
+        async function(err, goodCategoryProps){
             if(err) return next(err);
-            let allTitle = [];
-            for (let i = 0; i < goodCategoryTitles.length; i++) {
-                let goodCategoryTitle = goodCategoryTitles[i].title;
-                allTitle.push(goodCategoryTitle);
-            };
-            let finalAllTitle = await Promise.all(allTitle);
-            res.json(finalAllTitle);
+            res.json(goodCategoryProps);
         }
     );
 });

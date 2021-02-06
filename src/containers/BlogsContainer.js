@@ -11,10 +11,11 @@ function mapStateToProps(state, ownProps) {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchBlogs: () => {
+    fetchBlogs: (setAlreadyFetch) => {
       dispatch(fetchBlogs()).then((response) => {
         console.log('allBlogs: ', response.payload);
         !response.error ? dispatch(fetchBlogsSuccess(response.payload)) : dispatch(fetchBlogsFailure(response.payload));
+        setAlreadyFetch(true);
       });
     }
   };

@@ -6,15 +6,7 @@ var goodObject = {
    slug: { type: String, unique: true, required: true },
    title: { type: String, required: true },
    description: String,
-   options: [
-      {
-         cost: Number,
-         key: String,
-         aroma: Number,
-         acidity: Number,
-         fruity: Number
-      }
-   ],
+   options: [ { type: Object } ],
    specificOptions: [ String ],
    image: String,
    category: String,

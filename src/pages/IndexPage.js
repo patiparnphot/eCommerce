@@ -2,19 +2,17 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 
-var initialContentState = require("../../initial_state/initialContentState.json");
-
 import {
   fetchIndexcontent,
   fetchIndexcontentSuccess,
   fetchIndexcontentFailure
 } from '../actions/contents';
 
-import Intro from '../containers/IntroContainer';
+import Intro from '../components/IntroComponent';
 import Recent from '../containers/RecentContainer';
-import Campaign from '../containers/CampaignContainer';
+import Campaign from '../components/CampaignComponent';
 import PopularOnShop from '../containers/PopularOnShopContainer';
-import Information from '../containers/InformationContainer';
+import Information from '../components/InformationComponent';
 import Blogs from '../containers/BlogsContainer';
 import NotFoundPage from '../components/NotFoundPage.js';
 
@@ -22,7 +20,6 @@ class IndexPage extends Component {
   
   componentDidMount() {
     this.props.fetchIndexcontent();
-    //this.props.indexContent.content = initialContentState.contents.index.content;
   }
   
   render() {
@@ -42,8 +39,8 @@ class IndexPage extends Component {
     return (
       <div>
         <Helmet>
-                   <title>{content.titleHtml}</title>
-                   <meta name='description' content={content.descriptonHtml} />
+            <title>{content.titleHtml}</title>
+            <meta name='description' content={content.descriptonHtml} />
         </Helmet>
         <Intro intro={content.intro} />
         <main id='main'>

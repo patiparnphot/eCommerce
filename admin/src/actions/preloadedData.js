@@ -120,7 +120,7 @@ export function fetchGoodcategoryamountFailure(error) {
 
 export function fetchGoodcategorytitles() {
   return dispatch => {
-    return fetch(`${ROOT_URL}/goods/categories/allTitle/`)
+    return fetch(`${ROOT_URL}/goods/categories/allProps/`)
       .then(response => response.json(), error => console.log('An error occurred.', error))
       .then(json => dispatch(receiver(FETCH_GOODCATT, json)));
   };

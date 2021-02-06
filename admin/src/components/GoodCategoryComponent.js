@@ -44,6 +44,48 @@ const validate = values => {
   if (!values.title) {
     errors.title = 'Required'
   }
+  if (values.features && values.features.length) {
+    const featuresArrayErrors = []
+    values.features.forEach((feature, featureIndex) => {
+      const featureErrors = {}
+      if (!feature || !feature.name) {
+        featureErrors.name = 'Required'
+        featuresArrayErrors[featureIndex] = featureErrors
+      }
+      if (!feature || !feature.first) {
+        featureErrors.first = 'Required'
+        featuresArrayErrors[featureIndex] = featureErrors
+      }
+      if (!feature || !feature.last) {
+        featureErrors.last = 'Required'
+        featuresArrayErrors[featureIndex] = featureErrors
+      }
+      if (!feature || !feature.min) {
+        featureErrors.min = 'Required'
+        featuresArrayErrors[featureIndex] = featureErrors
+      }
+      if (!feature || !feature.max) {
+        featureErrors.max = 'Required'
+        featuresArrayErrors[featureIndex] = featureErrors
+      }
+    })
+    if (featuresArrayErrors.length) {
+      errors.features = featuresArrayErrors
+    }
+  }
+  if (!values.options || !values.options.length) {
+    errors.options = { _error: 'At least one option must be entered' }
+  } else {
+    const optionsArrayErrors = []
+    values.options.forEach((option, optionIndex) => {
+      if (!option || !option.length) {
+        optionsArrayErrors[optionIndex] = 'Required'
+      }
+    })
+    if (optionsArrayErrors.length) {
+      errors.options = optionsArrayErrors
+    }
+  }
   return errors
 }
 
@@ -68,6 +110,46 @@ const renderField = ({ input, label, type, meta: { touched, error } }) => {
   }
 }
 
+const renderFeatures = ({fields, meta: {error, submitFailed}}) => (
+  <ul>
+    <li>
+      <button type="button" onClick={() => fields.push({})}>
+        Add Feature
+      </button>
+      {submitFailed && error && <span>{error}</span>}
+    </li>
+    {fields.map((field, index) => (
+      <li key={index}>
+        <button type="button" title="Remove Feature" onClick={() => fields.remove(index)}>X</button>
+        <h4>Feature #{index + 1}</h4>
+        <Field name={`${field}.name`} type="text" label="feature name" component={renderField}/>
+        <Field name={`${field}.first`} type="number" label="feature first" component={renderField}/>
+        <Field name={`${field}.last`} type="number" label="feature last" component={renderField}/>
+        <Field name={`${field}.min`} type="number" label="feature min" component={renderField}/>
+        <Field name={`${field}.max`} type="number" label="feature max" component={renderField}/>
+      </li>
+    ))}
+  </ul>
+);
+
+const renderOptions = ({fields, meta: {error, submitFailed}}) => (
+  <ul>
+    <li>
+      <button type="button" onClick={() => fields.push()}>
+        Add Option
+      </button>
+      {submitFailed && error && <span>{error}</span>}
+    </li>
+    {fields.map((option, index) => (
+      <li key={index}>
+        <button type="button" title="Remove Option" onClick={() => fields.remove(index)}>X</button>
+        <Field name={option} type="text" label={`Option #${index + 1}`} component={renderField}/>
+      </li>
+    ))}
+    {error && <li className="error">{error}</li>}
+  </ul>
+);
+
 class EditGoodClass extends React.Component {
   render() {
     const {
@@ -85,6 +167,8 @@ class EditGoodClass extends React.Component {
         <Field name="descriptionHtml" type="text" label={placeholderDescHtml} component={renderField} />
         <Field name="title" type="text" label={placeholderTitle} component={renderField} />
         <Field name="text" type="textarea" label={placeholderText} component={renderField} />
+        <FieldArray name="options" component={renderOptions} />
+        <FieldArray name="features" component={renderFeatures} />
         <button type="submit" disabled={ submitting }>{formButton}</button>
       </form>
     )

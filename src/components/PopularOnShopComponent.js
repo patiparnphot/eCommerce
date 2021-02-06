@@ -2,101 +2,59 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 
-export default class PopularOnShop extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.selectOption = this.selectOption.bind(this);
-    this.state = {
-      alreadyFetch: false,
-      option: "size M",
-      checkSizeS: false,
-      checkSizeM: true,
-      checkSizeL: false,
-      checkSizeXL: false,
-      numberOfStars: 5,
-      aroma: {
-        first: 1,
-        last: 4,
-        max: 5,
-        min: 0
-      },
-      acidity: {
-        first: 1,
-        last: 4,
-        max: 5,
-        min: 0
-      },
-      fruity: {
-        first: 1,
-        last: 4,
-        max: 5,
-        min: 0
-      }
-    };
+let initialFeatures = [
+  {
+    name: "aroma",
+    first: 1,
+    last: 5,
+    min: 0,
+    max: 5
+  },
+  {
+    name: "acidity",
+    first: 1,
+    last: 5,
+    min: 0,
+    max: 5
+  },
+  {
+    name: "fruity",
+    first: 1,
+    last: 5,
+    min: 0,
+    max: 5
   }
+];
+
+let initialOptions = ["size S", "size M", "size L", "size XL"]
+
+export default function PopularOnShop({fetchGoods, resetGoods, filteringGoods, popularGoods, filterGoods, popularOnShop}) {
+    
+  const [alreadyFetch, setAlreadyFetch] = React.useState(false);
+  const [optionState, setOptionState] = React.useState("size M");
+  const [features, setFeatures] = React.useState(initialFeatures);
   
-  componentDidMount() {
-    this.props.fetchGoods((arg) => this.setState({alreadyFetch: arg}));
-    let _this = this;
+  React.useEffect(() => {
+    fetchGoods(setAlreadyFetch);
 
-    $('#aroma-slider').each(function() {
-      var $block   = $(this),
-          $range   = $block.find('.range'),
-          data     = $block.data();
-      $range.slider({
-        range: true,
-        min: _this.state.aroma.min,
-        max: _this.state.aroma.max,
-        values: [_this.state.aroma.first, _this.state.aroma.last],
-        slide: function(event, ui) {
-          _this.setState({
-            aroma: {
-              first: ui.values[0],
-              last: ui.values[1]
-            }
-          });
-        }
-      });
-    });
-
-    $('#acidity-slider').each(function() {
-      var $block   = $(this),
-          $range   = $block.find('.range'),
-          data     = $block.data();
-      $range.slider({
-        range: true,
-        min: _this.state.acidity.min,
-        max: _this.state.acidity.max,
-        values: [_this.state.acidity.first, _this.state.acidity.last],
-        slide: function(event, ui) {
-          _this.setState({
-            acidity: {
-              first: ui.values[0],
-              last: ui.values[1]
-            }
-          });
-        }
-      });
-    });
-
-    $('#fruity-slider').each(function() {
-      var $block   = $(this),
-          $range   = $block.find('.range'),
-          data     = $block.data();
-      $range.slider({
-        range: true,
-        min: _this.state.fruity.min,
-        max: _this.state.fruity.max,
-        values: [_this.state.fruity.first, _this.state.fruity.last],
-        slide: function(event, ui) {
-          _this.setState({
-            fruity: {
-              first: ui.values[0],
-              last: ui.values[1]
-            }
-          });
-        }
+    features.forEach((feature) => {
+      $(`#${feature.name}-slider`).each(function() {
+        var $block   = $(this),
+            $range   = $block.find('.range'),
+            data     = $block.data();
+        $range.slider({
+          range: true,
+          min: feature.min,
+          max: feature.max,
+          values: [feature.first, feature.last],
+          slide: function(event, ui) {
+            let tempFeatures = [...features];
+            let targetIndex = tempFeatures.map((tempFeature, i) => [i, tempFeature])
+              .filter(x => x[1].name == feature.name)[0][0];
+            tempFeatures[targetIndex] = {...feature, first: ui.values[0], last: ui.values[1]};
+            setFeatures(tempFeatures);
+          }
+        });
       });
     });
 
@@ -111,148 +69,271 @@ export default class PopularOnShop extends React.Component {
         }
       })
     });
-  }
+  }, []);
 
-  componentDidUpdate() {
-    if(this.state.alreadyFetch && this.props.popularGoods.goods && this.props.popularGoods.goods.length > 0) {
-      this.setState({alreadyFetch: false});
-      this.props.resetGoods(this.props.popularGoods.goods)
+  React.useEffect(() => {
+    if(alreadyFetch && popularGoods.goods && popularGoods.goods.length > 0) {
+      resetGoods(popularGoods.goods)
     }
-    // console.log("first: ", this.state.first);
-    // console.log("last: ", this.state.last);
-  }
+  }, [alreadyFetch]);
 
-  selectOption(option) {
-    this.setState({
-      option: option
-    });
-    if(option == "size S") {
-      this.setState({
-        checkSizeS: true,
-        checkSizeM: false,
-        checkSizeL: false,
-        checkSizeXL: false
-      })
-    } else if(option == "size M") {
-      this.setState({
-        checkSizeS: false,
-        checkSizeM: true,
-        checkSizeL: false,
-        checkSizeXL: false
-      })
-    } else if(option == "size L") {
-      this.setState({
-        checkSizeS: false,
-        checkSizeM: false,
-        checkSizeL: true,
-        checkSizeXL: false
-      })
-    } else if(option == "size XL") {
-      this.setState({
-        checkSizeS: false,
-        checkSizeM: false,
-        checkSizeL: false,
-        checkSizeXL: true
-      })
-    }
+  function selectOption(option) {
+    setOptionState(option);
   }
+  
+    
+  const { goods, loading, error } = filterGoods;
+  
+  if (!popularOnShop || !goods) {
+    return <div/>
+  } else {
+    return (
+      <section id="popularOnShop">
+        <div className="container-fluid block bg-grey-lightness space-top">
+          <div className="row">
+            <div className="container space-top">
 
-  renderFeatures(keys, features) {
-    return keys.map((key) => {
-      if(key != "key" && key != "cost" && key != "_id") {
-        return (
-          <ul className="features" style={{marginBottom: '0px'}}>
-            <li style={{width: 'auto'}}>
-              <i className="icofont icofont-shield"></i>
-              <span>{key}</span>
-            </li>
-            <li style={{width: 'auto'}}>
-              <div className="rate" style={{paddingLeft: '70px', marginTop: '15px', marginBottom: '10px'}}>
-                <ul className="stars">
-                  {this.renderStars(features[key], 'feature')}
-                </ul>
+              <div className="row hidden-xs">
+                <div className="col-xs-12 img-on-bg">
+                  <img src={popularOnShop.sidebarImage} alt=""/>
+                </div>
               </div>
-            </li>
-          </ul>
-        )
-      }
-    })
-  }
+              
+              <div className="row">
 
-  renderCost(options) {
-    return options.map((option, index) => {
-      if (index == 0) {
+                <div className="col-md-4 col-lg-3 asside">
+
+                  <div className="inblock sdw">
+                    <div className="wrap bg-white">
+
+                      <Slider features={features}/>
+
+                      <Options options={initialOptions} optionState={optionState} selectOption={selectOption}/>
+
+                      <hr/>
+                      <button onClick={() => resetGoods(popularGoods.goods)}>
+                        Reset
+                      </button>
+                      <hr/>
+                      <button onClick={() => filteringGoods(popularGoods.goods, {category: "car"})}>
+                        filtering car
+                      </button>
+                      <button onClick={() => filteringGoods(popularGoods.goods, {category: "garbage"})}>
+                        filtering garbage
+                      </button>
+                      <button onClick={() => filteringGoods(popularGoods.goods, {category: "cloth"})}>
+                        filtering cloth
+                      </button>
+                      <button onClick={() => filteringGoods(popularGoods.goods, {category: "cock"})}>
+                        filtering cock
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="asside-nav bg-white hidden-xs">
+                    <div className="header text-uppercase text-white bg-blue">
+                      {popularOnShop.categoryHead}
+                    </div>
+                    <ul className="nav-vrt bg-white">
+                      <Categories categories={popularOnShop.categories}/>
+                    </ul>
+                  </div>
+
+                  <div className="inblock padding-none visible-xs">
+                    <div className="mobile-category nav-close">
+                      <div className="header bg-blue">
+                        <span className="head">{popularOnShop.categoryHead}</span>
+                        <span className="btn-swither" >
+                          <span></span>
+                          <span></span>
+                          <span></span>
+                        </span>
+                      </div>
+                      <ul className="nav-vrt bg-white">
+                        <Categories categories={popularOnShop.categories}/>
+                      </ul>
+                    </div>
+                  </div>
+
+                </div>
+
+                <div className="col-md-8 col-lg-9 shop-items-set shop-items-full">
+                  
+                  <div className="row pagination-block hidden-xs">
+                    <div className="col-xs-12">
+                      <div className="wrap">
+                        <ul className="swither">
+                          <li className="rows active">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                                        
+                  <div className="row item-wrapper">
+
+                    <Goods goods={goods} optionState={optionState} features={features}/>
+
+                  </div>
+
+                </div>
+                
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+}
+
+function Options({options, optionState, selectOption}) {
+  return options.map((option) => {
+    if(optionState == option) {
+      return (
+        <div>
+          <input type="radio" id={option} name="option"
+            onClick={() => selectOption(option)}
+            checked
+          />
+          <label for={option}>{option}</label>
+          <br/>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <input type="radio" id={option} name="option"
+            onClick={() => selectOption(option)}
+          />
+          <label for={option}>{option}</label>
+          <br/>
+        </div>
+      );
+    }
+  });
+}
+
+function Slider({features}) {
+  return features.map((feature) => {
+    return (
+      <div>
+        <h3 className="header text-uppercase">{feature.name}</h3>
+        <div id={`${feature.name}-slider`} class="price-slider">
+
+          <div class="range"></div>
+
+          <div class="amoutn">
+            <input type="text" class="first" value={feature.first} readOnly/>
+            <input type="text" class="last" value={feature.last} readOnly/>
+          </div>
+
+        </div>
+        
+        <div className="divider"></div>
+      </div>
+    );
+  });
+}
+
+function Features({keys, features}) {
+  return keys.map((key) => {
+    if(key != "key" && key != "cost" && key != "_id") {
+      return (
+        <ul className="features" style={{marginBottom: '0px'}}>
+          <li style={{width: 'auto'}}>
+            <i className="icofont icofont-shield"></i>
+            <span>{key}</span>
+          </li>
+          <li style={{width: 'auto'}}>
+            <div className="rate" style={{paddingLeft: '70px', marginTop: '15px', marginBottom: '10px'}}>
+              <ul className="stars">
+                <Stars rating={features[key]} option='feature'/>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      )
+    }
+  })
+}
+
+function Cost({options}) {
+  return options.map((option, index) => {
+    if (index == 0) {
+      return (
+        <span className="price">
+          <small>{option.key}</small>: {option.cost}<small>.00</small>
+        </span>
+      );
+    } else {
+      return (
+        <span className="price" style={{paddingLeft: '5px'}}>
+          <small>{option.key}</small>: {option.cost}<small>.00</small>
+        </span>
+      );
+    }
+  });
+}
+
+function Stars({rating, option, numberOfStars=5}) {
+  let ratingNum = parseFloat(rating)
+  let ratingRounded = Math.round(ratingNum);
+  let array = [...Array(+numberOfStars).keys()];
+  if (option && option == "feature") {
+    return array.map(n => {
+      if (n < ratingRounded) {
         return (
-          <span className="price">
-            <small>{option.key}</small>: {option.cost}<small>.00</small>
-          </span>
+          <li className='active' style={{width: 'auto'}}>
+            <i className="icofont icofont-sun"></i>
+          </li>
         );
       } else {
         return (
-          <span className="price" style={{paddingLeft: '5px'}}>
-            <small>{option.key}</small>: {option.cost}<small>.00</small>
-          </span>
+          <li style={{width: 'auto'}}>
+            <i className="icofont icofont-sun"></i>
+          </li>
+        );
+      }
+    });  
+  } else {
+    return array.map(n => {
+      if (n < ratingRounded) {
+        return (
+          <li className='active'>
+            <i className="icofont icofont-star"></i>
+          </li>
+        );
+      } else {
+        return (
+          <li>
+            <i className="icofont icofont-star"></i>
+          </li>
         );
       }
     });
   }
+}
 
-  renderStars(rating, option) {
-    let ratingNum = parseFloat(rating)
-    let ratingRounded = Math.round(ratingNum);
-    let array = [...Array(+this.state.numberOfStars).keys()];
-    if (option && option == "feature") {
-      return array.map(n => {
-        if (n < ratingRounded) {
-          return (
-            <li className='active' style={{width: 'auto'}}>
-              <i className="icofont icofont-sun"></i>
-            </li>
-          );
-        } else {
-          return (
-            <li style={{width: 'auto'}}>
-              <i className="icofont icofont-sun"></i>
-            </li>
-          );
-        }
-      });  
-    } else {
-      return array.map(n => {
-        if (n < ratingRounded) {
-          return (
-            <li className='active'>
-              <i className="icofont icofont-star"></i>
-            </li>
-          );
-        } else {
-          return (
-            <li>
-              <i className="icofont icofont-star"></i>
-            </li>
-          );
-        }
-      });
-    }
-  }
-
-  renderGoods(goods) {
-    return goods.map((good) => {
-      let filteredOption = good.options.filter((option) => option.key == this.state.option);
-      if(filteredOption.length == 1) {
-        let optionKeys = Object.keys(filteredOption[0]);
-        if(
-          filteredOption[0].aroma &&
-          filteredOption[0].aroma >= this.state.aroma.first &&
-          filteredOption[0].aroma <= this.state.aroma.last &&
-          filteredOption[0].acidity &&
-          filteredOption[0].acidity >= this.state.acidity.first &&
-          filteredOption[0].acidity <= this.state.acidity.last &&
-          filteredOption[0].fruity &&
-          filteredOption[0].fruity >= this.state.fruity.first &&
-          filteredOption[0].fruity <= this.state.fruity.last
-        ) {
-
+function Goods({goods, optionState, features}) {
+  return goods.map((good) => {
+    let filteredOption = good.options.filter((option) => option.key == optionState);
+    if(filteredOption.length == 1) {
+      let optionKeys = Object.keys(filteredOption[0]);
+      for(let i = 0; i <= features.length; i++) {
+        if(i < features.length) {
+          if(
+            !filteredOption[0][features[i].name] ||
+            +(filteredOption[0][features[i].name]) < +(features[i].first) ||
+            +(filteredOption[0][features[i].name]) > +(features[i].last)
+          ) {
+            return <div/>
+          }
+        } else if(i == features.length) {
           return (
             <div className="col-xs-6 col-sm-4 col-md-6 col-lg-4 shop-item hover-sdw">
               <div className="wrap">
@@ -264,7 +345,7 @@ export default class PopularOnShop extends React.Component {
                     </span>
                     {
                       (
-                        !good.campaign
+                        !good.campaign || (good.campaign == "")
                       ) ? (
                         <span></span>
                       ) : (
@@ -280,7 +361,7 @@ export default class PopularOnShop extends React.Component {
                   <div className="caption">
                     <div className="rate">
                       <ul className="stars">
-                        {this.renderStars(good.rating)}
+                        <Stars rating={good.rating}/>
                       </ul>
                       <div className="rate-info">
                         {good.raterAmount} members
@@ -293,7 +374,7 @@ export default class PopularOnShop extends React.Component {
                       ) ? (
                         <span></span>
                       ) : (
-                        this.renderFeatures(optionKeys, filteredOption[0])
+                        <Features keys={optionKeys} features={filteredOption[0]}/>
                       )
                     }
                   </div>
@@ -312,224 +393,18 @@ export default class PopularOnShop extends React.Component {
           );
         }
       }
-    });
-  }
-
-  renderCategories(categories) {
-    return categories.map((category) => {
-      return (
-        <li>
-          <a href={category.link} className="btn-material">
-            {category.topic}
-          </a>
-        </li>
-      )
-    })
-  }
-  
-  
-  render() {
-    
-    const { popularOnShop } = this.props;
-    const { goods, loading, error } = this.props.filterGoods;
-    
-    if (!popularOnShop || !goods) {
-      return <div/>
     }
-    
-    return (
-      <div className="container-fluid block bg-grey-lightness space-top">
-  <div className="row">
-    <div className="container space-top">
-
-      <div className="row hidden-xs">
-        <div className="col-xs-12 img-on-bg">
-          <img src={popularOnShop.sidebarImage} alt=""/>
-        </div>
-      </div>
-      
-      <div className="row">
-
-        <div className="col-md-4 col-lg-3 asside">
-
-          <div className="inblock sdw">
-            <div className="wrap bg-white">
-
-              <h3 className="header text-uppercase">AROMA</h3>
-              <div id="aroma-slider" class="price-slider">
-
-                <div class="range"></div>
-
-                <div class="amoutn">
-                  <input type="text" class="first" value={this.state.aroma.first} readOnly/>
-                  <input type="text" class="last" value={this.state.aroma.last} readOnly/>
-                </div>
-
-              </div>
-              
-              <div className="divider"></div>
-
-              <h3 className="header text-uppercase">ACIDITY</h3>
-              <div id="acidity-slider" class="price-slider">
-
-                <div class="range"></div>
-
-                <div class="amoutn">
-                  <input type="text" class="first" value={this.state.acidity.first} readOnly/>
-                  <input type="text" class="last" value={this.state.acidity.last} readOnly/>
-                </div>
-
-              </div>
-
-              <div className="divider"></div>
-
-              <h3 className="header text-uppercase">FRUITY</h3>
-              <div id="fruity-slider" class="price-slider">
-
-                <div class="range"></div>
-
-                <div class="amoutn">
-                  <input type="text" class="first" value={this.state.fruity.first} readOnly/>
-                  <input type="text" class="last" value={this.state.fruity.last} readOnly/>
-                </div>
-
-              </div>
-              
-              <div className="divider"></div>
-
-              {(
-                this.state.checkSizeS
-              ) ? (
-                <input type="radio" id="size S" name="option"
-                  onClick={() => this.selectOption("size S")}
-                  checked
-                />
-              ) : (
-                <input type="radio" id="size S" name="option"
-                  onClick={() => this.selectOption("size S")}
-                />
-              )}
-              <label for="size S">Size S</label>
-              <br/>
-              {(
-                this.state.checkSizeM
-              ) ? (
-                <input type="radio" id="size M" name="option"
-                  onClick={() => this.selectOption("size M")}
-                  checked
-                />
-              ) : (
-                <input type="radio" id="size M" name="option"
-                  onClick={() => this.selectOption("size M")}
-                />
-              )}
-              <label for="size M">Size M</label>
-              <br/>
-              {(
-                this.state.checkSizeL
-              ) ? (
-                <input type="radio" id="size L" name="option"
-                  onClick={() => this.selectOption("size L")}
-                  checked
-                />
-              ) : (
-                <input type="radio" id="size L" name="option"
-                  onClick={() => this.selectOption("size L")}
-                />
-              )}
-              <label for="size L">Size L</label>
-              <br/>
-              {(
-                this.state.checkSizeXL
-              ) ? (
-                <input type="radio" id="size XL" name="option"
-                  onClick={() => this.selectOption("size XL")}
-                  checked
-                />
-              ) : (
-                <input type="radio" id="size XL" name="option"
-                  onClick={() => this.selectOption("size XL")}
-                />
-              )}
-              <label for="size XL">Size XL</label>
-
-              <hr/>
-              <button onClick={() => this.props.resetGoods(this.props.popularGoods.goods)}>
-                Reset
-              </button>
-              <hr/>
-              <button onClick={() => this.props.filteringGoods(this.props.popularGoods.goods, {category: "car"})}>
-                filtering car
-              </button>
-              <button onClick={() => this.props.filteringGoods(this.props.popularGoods.goods, {category: "garbage"})}>
-                filtering garbage
-              </button>
-              <button onClick={() => this.props.filteringGoods(this.props.popularGoods.goods, {category: "cloth"})}>
-                filtering cloth
-              </button>
-              <button onClick={() => this.props.filteringGoods(this.props.popularGoods.goods, {category: "cock"})}>
-                filtering cock
-              </button>
-            </div>
-          </div>
-
-          <div className="asside-nav bg-white hidden-xs">
-            <div className="header text-uppercase text-white bg-blue">
-              {popularOnShop.categoryHead}
-            </div>
-            <ul className="nav-vrt bg-white">
-              {this.renderCategories(popularOnShop.categories)}
-            </ul>
-          </div>
-
-          <div className="inblock padding-none visible-xs">
-            <div className="mobile-category nav-close">
-              <div className="header bg-blue">
-                <span className="head">{popularOnShop.categoryHead}</span>
-                <span className="btn-swither" >
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                </span>
-              </div>
-              <ul className="nav-vrt bg-white">
-                {this.renderCategories(popularOnShop.categories)}
-              </ul>
-            </div>
-          </div>
-
-        </div>
-
-        <div className="col-md-8 col-lg-9 shop-items-set shop-items-full">
-          
-          <div className="row pagination-block hidden-xs">
-            <div className="col-xs-12">
-              <div className="wrap">
-                <ul className="swither">
-                  <li className="rows active">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-                                
-          <div className="row item-wrapper">
-
-            {this.renderGoods(goods)}
-
-          </div>
-
-        </div>
-        
-      </div>
-
-    </div>
-  </div>
-</div>
-    )
-  }
+  });
 }
 
+function Categories({categories}) {
+  return categories.map((category) => {
+    return (
+      <li>
+        <a href={category.link} className="btn-material">
+          {category.topic}
+        </a>
+      </li>
+    )
+  })
+}

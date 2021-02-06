@@ -9,9 +9,10 @@ import { connect } from 'react-redux';
 import { editGood, editGoodSuccess, editGoodFailure } from '../actions/goods';
 
 
+let category = "";
+
 function Submit(values, dispatch) {
-  let editedForm = { ...values };
-  let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QzIiwiZmlyc3RuYW1lIjoiM3JkUGVvcGxlIiwibGFzdG5hbWUiOiJpc0hlcmUiLCJlbWFpbCI6IjNyZFBlb3BsZUBlbWFpbC5jb20iLCJhdmF0YXIiOiIzIHBhc3RlIGltZyBzcmMgaGVyZSIsImlzQWRtaW4iOmZhbHNlLCJhZGRyZXNzIjoiMTIzIHdvcnNoaW5ndG9uIG1hZGFnYXRnYSIsInBheXBhbCI6eyJ1c2VybmFtZSI6IjNyZHBheXBhbCJ9LCJjcmVkaXRDYXJkIjp7ImNhcmROdW1iZXIiOiIxMjM0NTY3ODkwMTIzNDU2IiwiZXhwaXJlZERhdGUiOiIxMi8yNCJ9LCJpYXQiOjE2MDUzNzMzMzd9.wfZxaBT6NWVjK6ydgVFmbLyQok2QjMZIDSeNo3rHE8E";
+  let editedForm = { ...values, category: category };
   console.log('editedForm', editedForm);
   dispatch(editGood(editedForm._id, editedForm, editedForm.token)).then((response) => {
     if(response.payload.slug && (response.payload.slug == editedForm.slug)) {
@@ -48,9 +49,9 @@ const validate = values => {
   if (!values.image) {
     errors.image = 'Required'
   }
-  if (!values.category) {
-    errors.category = 'Required'
-  }
+  // if (!values.category) {
+  //   errors.category = 'Required'
+  // }
   if (!values.options || !values.options.length) {
     errors.options = { _error: 'At least one option must be entered' }
   } else {
@@ -65,18 +66,18 @@ const validate = values => {
         optionErrors.cost = 'Required'
         optionsArrayErrors[optionIndex] = optionErrors
       }
-      if (!option || !option.aroma) {
-        optionErrors.aroma = 'Required'
-        optionsArrayErrors[optionIndex] = optionErrors
-      }
-      if (!option || !option.acidity) {
-        optionErrors.acidity = 'Required'
-        optionsArrayErrors[optionIndex] = optionErrors
-      }
-      if (!option || !option.fruity) {
-        optionErrors.fruity = 'Required'
-        optionsArrayErrors[optionIndex] = optionErrors
-      }
+      // if (!option || !option.aroma) {
+      //   optionErrors.aroma = 'Required'
+      //   optionsArrayErrors[optionIndex] = optionErrors
+      // }
+      // if (!option || !option.acidity) {
+      //   optionErrors.acidity = 'Required'
+      //   optionsArrayErrors[optionIndex] = optionErrors
+      // }
+      // if (!option || !option.fruity) {
+      //   optionErrors.fruity = 'Required'
+      //   optionsArrayErrors[optionIndex] = optionErrors
+      // }
     })
     if (optionsArrayErrors.length) {
       errors.options = optionsArrayErrors
@@ -85,14 +86,14 @@ const validate = values => {
   return errors
 }
 
-const renderField = ({ input, label, allCat, type, meta: { touched, error } }) => {
+const renderField = ({ input, label, choices, type, meta: { touched, error } }) => {
   if (type == "select") {
     return (
       <div className="row form-group">
         <label className="col-sm-2">{label}</label>
         <select {...input} className="form-ctrl col-sm-6">
-          {allCat.map((cat) => {
-            return (<option value={cat}>{cat}</option>);
+          {choices.map((choice) => {
+            return (<option value={choice}>{choice}</option>);
           })}
         </select>
         {touched && error && <span>{error}</span>}
@@ -109,27 +110,37 @@ const renderField = ({ input, label, allCat, type, meta: { touched, error } }) =
   }
 }
 
-const renderOptions = ({fields, meta: {error, submitFailed}}) => (
-  <ul>
-    <li>
-      <button type="button" onClick={() => fields.push({})}>
-        Add Option
-      </button>
-      {submitFailed && error && <span>{error}</span>}
-    </li>
-    {fields.map((option, index) => (
-      <li key={index}>
-        <button type="button" title="Remove Option" onClick={() => fields.remove(index)}>X</button>
-        <h4>Option #{index + 1}</h4>
-        <Field name={`${option}.key`} type="text" label="option key" component={renderField}/>
-        <Field name={`${option}.cost`} type="number" label="cost" component={renderField}/>
-        <Field name={`${option}.aroma`} type="number" label="aroma score" component={renderField}/>
-        <Field name={`${option}.acidity`} type="number" label="acidity score" component={renderField}/>
-        <Field name={`${option}.fruity`} type="number" label="fruity score" component={renderField}/>
-      </li>
-    ))}
-  </ul>
-);
+const renderOptions = ({fields, allCat, cat, meta: {error, submitFailed}}) => {
+  if(cat != "") {
+    let targetIndex = allCat.map((cat, i) => [i, cat])
+      .filter(x => x[1].title == cat)[0][0];
+    let options = allCat[targetIndex].options;
+    let features = allCat[targetIndex].features;
+    return (
+      <ul>
+        <li>
+          <button type="button" onClick={() => fields.push({})}>
+            Add Option
+          </button>
+          {submitFailed && error && <span>{error}</span>}
+        </li>
+        {fields.map((field, index) => (
+          <li key={index}>
+            <button type="button" title="Remove Option" onClick={() => fields.remove(index)}>X</button>
+            <h4>Option #{index + 1}</h4>
+            <Field name={`${field}.key`} type="select" choices={options} label="option key" component={renderField}/>
+            <Field name={`${field}.cost`} type="number" label="cost" component={renderField}/>
+            {features.map((feature) => {
+              return (
+                <Field name={`${field}.${feature.name}`} type="number" label={`${feature.name} score`} component={renderField}/>
+              );
+            })}
+          </li>
+        ))}
+      </ul>
+    );
+  }
+}
 
 const renderSpecificOptions = ({fields, meta: {error, submitFailed}}) => (
   <ul>
@@ -160,11 +171,12 @@ class EditGoodClass extends React.Component {
       placeholderTitle,
       placeholderImage,
       placeholderDesc,
-      placeholderCat,
       placeholderAvai,
       allCat,
+      cat,
       formButton
     } = this.props;
+    console.log("category: ", cat);
     return (
       <form onSubmit={handleSubmit(Submit)}>
         <Field name="slug" type="text" label={placeholderSlug} component={renderField} />
@@ -173,8 +185,7 @@ class EditGoodClass extends React.Component {
         <Field name="title" type="text" label={placeholderTitle} component={renderField} />
         <Field name="image" type="text" label={placeholderImage} component={renderField} />
         <Field name="description" type="text" label={placeholderDesc} component={renderField} />
-        <Field name="category" type="select" label={placeholderCat} allCat={allCat} component={renderField} />
-        <FieldArray name="options" component={renderOptions} />
+        <FieldArray name="options" component={renderOptions} allCat={allCat} cat={cat} />
         <FieldArray name="specificOptions" component={renderSpecificOptions} />
         <Field name="isAvailable" type="checkbox" label={placeholderAvai} component={renderField} />
         <button type="submit" disabled={ submitting }>{formButton}</button>
@@ -190,6 +201,14 @@ const EditGoodForm = reduxForm({
 
 
 export default class GoodPage extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      category: "",
+      alreadySelect: false
+    };
+  }
 
   componentDidMount() {
     this.props.fetchGood(this.props.goodSlug);
@@ -208,19 +227,58 @@ export default class GoodPage extends React.Component {
     
     const { good } = this.props.activeGood;
     const { token } = this.props.member;
-    const initialGood = { ...good, token: token };
+    const initialGood = { ...good, token: token, category: undefined };
     const { data } = this.props.allCat;
+    
 
     if (!good || !token || !data) {
       return <NotFoundPage/>
-    }
-
-    
-    return (
+    } else if (good && (this.state.category == "")) {
+      this.setState({category: good.category});
+      return <NotFoundPage/>
+    } else if (good && (this.state.category != "") && !this.state.alreadySelect) {
+      return (
         <div className="form container">
           
           <h4>FormHead</h4>
           <p>Form Description</p>
+
+          <div className="row form-group">
+            <label className="col-sm-2">Category of good</label>
+            <select
+              className="form-ctrl col-sm-6"
+              value={this.state.category}
+              onChange={(e) => this.setState({category: e.target.value})}
+            >
+              {data.map((cat) => {
+                return (<option value={cat.title}>{cat.title}</option>);
+              })}
+            </select>
+          </div>
+          {
+            (
+              data.length > 0
+            ) ? (
+              <button type="submit" onClick={() => this.setState({alreadySelect: true})}>Edit Good</button>
+            ) : (
+              <div>Please create some category!!!</div>
+            )
+          }
+        </div>
+      );
+    } else if (good && (this.state.category != "") && this.state.alreadySelect) {
+
+      category = this.state.category;
+
+      return (
+        <div className="form container">
+          
+          <h4>FormHead</h4>
+          <p>Form Description</p>
+
+          <button type="submit" onClick={() => this.setState({alreadySelect: false})}>Select Category</button>
+          <br/>
+
           <EditGoodForm
             placeholderSlug="slug param in url"
             placeholderTitleHtml="title for SEO"
@@ -228,13 +286,14 @@ export default class GoodPage extends React.Component {
             placeholderTitle="title of good"
             placeholderImage="src of good cover"
             placeholderDesc="description of good"
-            placeholderCat="category of good"
             placeholderAvai="show this good"
             initialValues={initialGood}
             allCat={data}
+            cat={category}
             formButton="Confirm"
           />
         </div>
-    )
+      );
+    }
   }
 }
