@@ -10,7 +10,7 @@ module.exports = async function(slug) {
      try {
         let sameCategoryGoods = await Good.find(
            { category: currentlyGood.category },
-           { title: 1, image: 1, rating: 1, cost: 1 },
+           {},
            { sort: { postedTime: -1 }, limit: 10 }).exec();
         let similarGoods = [];
         if (sameCategoryGoods && sameCategoryGoods.length > 0) {
@@ -27,7 +27,7 @@ module.exports = async function(slug) {
            let popularGoods;
            popularGoods = await Good.find(
               {},
-              { title: 1, image: 1, rating: 1, cost: 1 },
+              {},
               { sort: { rating: -1 }, limit: 10 }).exec();
            if (!popularGoods || popularGoods.length < 1) {
               popularGoods = [];
@@ -38,7 +38,7 @@ module.exports = async function(slug) {
            try {
               const recentGoods = await Good.find(
                  { postedTime: { $lt: Date.now() } },
-                 { title: 1, image: 1, rating: 1, cost: 1 },
+                 {},
                  { sort: { postedTime: -1 }, limit: 10 }).exec();
               //console.log(recentGoods);
            

@@ -234,6 +234,9 @@ ul {
 ul li {
   list-style: none;
 }
+.description ul li {
+  list-style: disc;
+}
 /**
 * Terms list
 */
@@ -6825,4 +6828,8 @@ textarea.form-control {
   display: flex;
   -ms-flex-align: start;
   align-items: flex-start;
+}
+
+.cat-bar {
+  float: right;
 }

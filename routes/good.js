@@ -217,7 +217,7 @@ router.get("/:slug", function(req, res, next) {
     
     Good.find(
         { category: currentlyGood.category },
-        { title: 1, image: 1, rating: 1, cost: 1 },
+        {},
         { sort: { postedTime: -1 }, limit: 10 },
         function(err, sameCategoryGoods) {
             if(err) return next(err);
@@ -233,7 +233,7 @@ router.get("/:slug", function(req, res, next) {
             
             Good.find(
                 {},
-                { title: 1, image: 1, rating: 1, cost: 1 },
+                {},
                 { sort: { rating: -1 }, limit: 10 },
                 function(err, popularGoods) {
                     if(err) return next(err);
@@ -245,7 +245,7 @@ router.get("/:slug", function(req, res, next) {
                     
                     Good.find(
                         { postedTime: { $lt: Date.now() } },
-                        { title: 1, image: 1, rating: 1, cost: 1 },
+                        {},
                         { sort: { postedTime: -1 }, limit: 10 },
                         function(err, recentGoods) {
                             if(err) return next(err);

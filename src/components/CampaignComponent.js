@@ -18,9 +18,6 @@ export default function Campaign ({campaign}) {
           <div className="row parallax-wrap">
             <div className="container">
               <div className="row">
-                <div className="bnr-frame-top">
-                  &nbsp;
-                </div>
                 <div className="col-xs-12">
                   <div className="row">
                     <div className="col-sm-6">
@@ -30,17 +27,22 @@ export default function Campaign ({campaign}) {
                       </span>
                       <p>
                         <span className="sdw-wrap">
-                          <a href={campaign.btnLink} className="sdw-hover btn btn-material btn-yellow btn-lg ripple-cont">
-                            {campaign.btnText}
-                          </a>
+                          {
+                            (
+                              !campaign.btnText || (campaign.btnText == "")
+                            ) ? (
+                              <span></span>
+                            ) : (
+                              <a href={campaign.btnLink} className="sdw-hover btn btn-material btn-yellow btn-lg ripple-cont">
+                                {campaign.btnText}
+                              </a>
+                            )
+                          }
                         </span>
                       </p>
                     </div>
                     <div className="col-sm-6"></div>
                   </div>
-                </div>
-                <div className="bnr-frame-bottom">
-                  &nbsp;
                 </div>
               </div>
             </div>

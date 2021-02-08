@@ -13,6 +13,7 @@ let category = "";
 
 function Submit(values, dispatch) {
   let newForm = { ...values };
+  newForm.description = demo.executeSummernote("description");
   newForm.category = category;
   newForm.rating = "0";
   newForm.ratingAmount = "0";
@@ -48,9 +49,9 @@ const validate = values => {
   if (!values.title) {
     errors.title = 'Required'
   }
-  if (!values.description) {
-    errors.description = 'Required'
-  }
+  // if (!values.description) {
+  //   errors.description = 'Required'
+  // }
   if (!values.image) {
     errors.image = 'Required'
   }
@@ -92,7 +93,16 @@ const validate = values => {
 }
 
 const renderField = ({ input, label, choices, type, meta: { touched, error } }) => {
-  if (type == "select") {
+  if (type == "textarea") {
+    return (
+      <div>
+        <label>{label}</label>
+        <div className={"form-group " + input.name}>
+          <textarea className="form-ctrl summernote"/>
+        </div>
+      </div>
+    );
+  } else if (type == "select") {
     return (
       <div className="row form-group">
         <label className="col-sm-2">{label}</label>
@@ -187,7 +197,7 @@ class CreateGoodClass extends React.Component {
         <Field name="descriptionHtml" type="text" label={placeholderDescHtml} component={renderField} />
         <Field name="title" type="text" label={placeholderTitle} component={renderField} />
         <Field name="image" type="text" label={placeholderImage} component={renderField} />
-        <Field name="description" type="text" label={placeholderDesc} component={renderField} />
+        <Field name="description" type="textarea" label={placeholderDesc} component={renderField} />
         <FieldArray name="options" component={renderOptions} allCat={allCat} cat={cat} />
         <FieldArray name="specificOptions" component={renderSpecificOptions} />
         <button type="submit" disabled={ submitting }>{formButton}</button>
@@ -207,12 +217,16 @@ export default class CreateGood extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      category: allCat[0].title,
+      category: "",
       alreadySelect: false
     };
   }
   
   componentDidMount() {
+    $(document).ready(function() {
+      // Summernote editor
+      demo.initSummernote("description");
+    });
     this.props.fetchGoodCategoryTitles();
   }
 
@@ -229,7 +243,10 @@ export default class CreateGood extends React.Component {
 
     if (!data) {
       return <NotFoundPage/>
-    } else if ((this.state.category != "") && !this.state.alreadySelect) {
+    } else if (data && (this.state.category == "")) {
+      this.setState({category: data[0].title});
+      return <NotFoundPage/>
+    } else if (data && (this.state.category != "") && !this.state.alreadySelect) {
       return (
         <div className="form container">
           
@@ -259,7 +276,7 @@ export default class CreateGood extends React.Component {
           }
         </div>
       );
-    } else if ((this.state.category != "") && this.state.alreadySelect) {
+    } else if (data && (this.state.category != "") && this.state.alreadySelect) {
 
       category = this.state.category;
        

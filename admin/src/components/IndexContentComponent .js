@@ -14,6 +14,7 @@ function Submit(values, dispatch) {
     titleHtml: values.titleHtml,
     descriptionHtml: values.descriptionHtml,
     intro: {
+      background: values.introBackground,
       slideshows: values.introSlideshows
     },
     recent: {
@@ -25,7 +26,8 @@ function Submit(values, dispatch) {
       subTitle: values.campaignSubTitle,
       btnText: values.campaignBtnText,
       btnLink: values.campaignBtnLink,
-      parallaxImage: values.campaignParallaxImage
+      parallaxImage: values.campaignParallaxImage,
+      background: values.campaignBackground
     },
     popularOnShop: {
       sidebarImage: values.popularOnShopSidebarImage,
@@ -40,10 +42,10 @@ function Submit(values, dispatch) {
     information: {
       title: values.informationTitle,
       text: values.informationText,
-      parallaxImage: values.informationParallaxImage
+      parallaxImage: values.informationParallaxImage,
+      background: values.informationBackground
     }
   };
-  let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QzIiwiZmlyc3RuYW1lIjoiM3JkUGVvcGxlIiwibGFzdG5hbWUiOiJpc0hlcmUiLCJlbWFpbCI6IjNyZFBlb3BsZUBlbWFpbC5jb20iLCJhdmF0YXIiOiIzIHBhc3RlIGltZyBzcmMgaGVyZSIsImlzQWRtaW4iOmZhbHNlLCJhZGRyZXNzIjoiMTIzIHdvcnNoaW5ndG9uIG1hZGFnYXRnYSIsInBheXBhbCI6eyJ1c2VybmFtZSI6IjNyZHBheXBhbCJ9LCJjcmVkaXRDYXJkIjp7ImNhcmROdW1iZXIiOiIxMjM0NTY3ODkwMTIzNDU2IiwiZXhwaXJlZERhdGUiOiIxMi8yNCJ9LCJpYXQiOjE2MDUzNzMzMzd9.wfZxaBT6NWVjK6ydgVFmbLyQok2QjMZIDSeNo3rHE8E";
   console.log('indexContent form', indexContent);
   dispatch(createContent({contentType: "index", content: indexContent}, values.token)).then((response) => {
     // !response.error ? dispatch(createContentSuccess(response.payload)) : dispatch(createContentFailure(response.payload));
@@ -66,6 +68,9 @@ const validate = values => {
   if (!values.descriptionHtml) {
     errors.descriptionHtml = 'Required'
   }
+  // if (!values.introBackground) {
+  //   errors.introBackground = 'Required'
+  // }
   if (!values.introSlideshows || !values.introSlideshows.length) {
     errors.introSlideshows = { _error: 'At least one slideshow must be entered' }
   } else {
@@ -84,18 +89,22 @@ const validate = values => {
         optionErrors.link = 'Required'
         optionsArrayErrors[optionIndex] = optionErrors
       }
-      if (!option || !option.btnLink) {
-        optionErrors.btnLink = 'Required'
-        optionsArrayErrors[optionIndex] = optionErrors
-      }
-      if (!option || !option.image) {
-        optionErrors.image = 'Required'
-        optionsArrayErrors[optionIndex] = optionErrors
-      }
-      if (!option || !option.tag) {
-        optionErrors.tag = 'Required'
-        optionsArrayErrors[optionIndex] = optionErrors
-      }
+      // if (!option || !option.btnLink) {
+      //   optionErrors.btnLink = 'Required'
+      //   optionsArrayErrors[optionIndex] = optionErrors
+      // }
+      // if (!option || !option.image) {
+      //   optionErrors.image = 'Required'
+      //   optionsArrayErrors[optionIndex] = optionErrors
+      // }
+      // if (!option || !option.campaign) {
+      //   optionErrors.campaign = 'Required'
+      //   optionsArrayErrors[optionIndex] = optionErrors
+      // }
+      // if (!option || !option.tag) {
+      //   optionErrors.tag = 'Required'
+      //   optionsArrayErrors[optionIndex] = optionErrors
+      // }
     })
     if (optionsArrayErrors.length) {
       errors.introSlideshows = optionsArrayErrors
@@ -113,18 +122,21 @@ const validate = values => {
   if (!values.campaignSubTitle) {
     errors.campaignSubTitle = 'Required'
   }
-  if (!values.campaignBtnText) {
-    errors.campaignBtnText = 'Required'
-  }
+  // if (!values.campaignBtnText) {
+  //   errors.campaignBtnText = 'Required'
+  // }
   if (!values.campaignBtnLink) {
     errors.campaignBtnLink = 'Required'
   }
   if (!values.campaignParallaxImage) {
     errors.campaignParallaxImage = 'Required'
   }
-  if (!values.popularOnShopSidebarImage) {
-    errors.popularOnShopSidebarImage = 'Required'
-  }
+  // if (!values.campaignBackground) {
+  //   errors.campaignBackground = 'Required'
+  // }
+  // if (!values.popularOnShopSidebarImage) {
+  //   errors.popularOnShopSidebarImage = 'Required'
+  // }
   if (!values.popularOnShopCategoryHead) {
     errors.popularOnShopCategoryHead = 'Required'
   }
@@ -156,15 +168,18 @@ const validate = values => {
   if (!values.blogsParallaxText) {
     errors.blogsParallaxText = 'Required'
   }
-  if (!values.informationTitle) {
-    errors.informationTitle = 'Required'
-  }
+  // if (!values.informationTitle) {
+  //   errors.informationTitle = 'Required'
+  // }
   if (!values.informationText) {
     errors.informationText = 'Required'
   }
   if (!values.informationParallaxImage) {
     errors.informationParallaxImage = 'Required'
   }
+  // if (!values.informationBackground) {
+  //   errors.informationBackground = 'Required'
+  // }
   return errors
 }
 
@@ -221,7 +236,7 @@ const renderCategories = ({fields, meta: {error, submitFailed}}) => (
   </ul>
 );
 
-class EditGoodClass extends React.Component {
+class IndexContentClass extends React.Component {
   render() {
     const {
       handleSubmit,
@@ -232,6 +247,7 @@ class EditGoodClass extends React.Component {
       <form onSubmit={handleSubmit(Submit)}>
         <Field name="titleHtml" type="text" label="title of index page for seo" component={renderField} />
         <Field name="descriptionHtml" type="text" label="desc of index page for seo" component={renderField} />
+        <Field name="introBackground" type="text" label="background of intro section" component={renderField} />
         <FieldArray name="introSlideshows" component={renderSlideshows} />
         <Field name="recentParallaxText" type="text" label="parallaxText of recent section" component={renderField} />
         <Field name="recentHeader" type="text" label="header of recent section" component={renderField} />
@@ -240,6 +256,7 @@ class EditGoodClass extends React.Component {
         <Field name="campaignBtnText" type="text" label="btnText of campaign section" component={renderField} />
         <Field name="campaignBtnLink" type="text" label="btnLink of campaign section" component={renderField} />
         <Field name="campaignParallaxImage" type="text" label="parallaxImage of campaign section" component={renderField} />
+        <Field name="campaignBackground" type="text" label="background of campaign section" component={renderField} />
         <Field name="popularOnShopSidebarImage" type="text" label="sidebarImage of popularOnShop section" component={renderField} />
         <Field name="popularOnShopCategoryHead" type="text" label="categoryHead of popularOnShop section" component={renderField} />
         <FieldArray name="popularOnShopCategories" component={renderCategories} />
@@ -249,19 +266,20 @@ class EditGoodClass extends React.Component {
         <Field name="informationTitle" type="text" label="title of information section" component={renderField} />
         <Field name="informationText" type="text" label="text of information section" component={renderField} />
         <Field name="informationParallaxImage" type="text" label="parallaxImage of information section" component={renderField} />
+        <Field name="informationBackground" type="text" label="background of information section" component={renderField} />
         <button type="submit" disabled={ submitting }>{formButton}</button>
       </form>
     )
   }
 }
 
-const EditGoodForm = reduxForm({
-  form: "EditGoodForm",
+const IndexContentForm = reduxForm({
+  form: "IndexContentForm",
   validate
-})(EditGoodClass);
+})(IndexContentClass);
 
 
-export default class GoodPage extends React.Component {
+export default class IndexContentPage extends React.Component {
 
   componentDidMount() {
     this.props.fetchContent("index");
@@ -287,6 +305,7 @@ export default class GoodPage extends React.Component {
       const initialContent = {
         titleHtml: content.titleHtml,
         descriptionHtml: content.descriptionHtml,
+        introBackground: content.intro.background,
         introSlideshows: content.intro.slideshows,
         recentParallaxText: content.recent.parallaxText,
         recentHeader: content.recent.header,
@@ -295,6 +314,7 @@ export default class GoodPage extends React.Component {
         campaignBtnText: content.campaign.btnText,
         campaignBtnLink: content.campaign.btnLink,
         campaignParallaxImage: content.campaign.parallaxImage,
+        campaignBackground: content.campaign.background,
         popularOnShopSidebarImage: content.popularOnShop.sidebarImage,
         popularOnShopCategoryHead: content.popularOnShop.categoryHead,
         popularOnShopCategories: content.popularOnShop.categories,
@@ -304,6 +324,7 @@ export default class GoodPage extends React.Component {
         informationTitle: content.information.title,
         informationText: content.information.text,
         informationParallaxImage: content.information.parallaxImage,
+        informationBackground: content.information.background,
         token: token
       };
     
@@ -312,7 +333,7 @@ export default class GoodPage extends React.Component {
             
             <h4>FormHead</h4>
             <p>Form Description</p>
-            <EditGoodForm
+            <IndexContentForm
               initialValues={initialContent}
               formButton="Confirm"
             />

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useParams, useLocation } from 'react-router-dom';
 import NotFoundPage from '../components/NotFoundPage';
+import RecentComponent from '../components/RecentComponent';
 import {
   fetchGood,
   fetchGoodSuccess,
@@ -45,6 +46,7 @@ function GoodPage ({
   const [initial, setInitial] = React.useState("initial");
   
   React.useEffect(() => {
+    window.scrollTo(0, 0);
     fetchGood(slug, setInitial);
   }, []);
 
@@ -176,7 +178,6 @@ function GoodPage ({
                 <li><Link to="/">Homepage</Link></li>
                 <li><Link to={"/goods/" + type}>{type}</Link></li>
                 <li class="active"><Link to={"/goods/" + type + "/" + slug}>{slug}</Link></li>
-                <li class="active"><Link to={"/goods/" + type + "/10thGood"}>10thGood</Link></li>
               </ol>
             </div>
           </div>
@@ -203,7 +204,19 @@ function GoodPage ({
                     addToCart={addToCart}
                     location={location}
                   />
-  
+
+                  <RecentComponent
+                    recent={{header: "Recent", parallaxText: ""}}
+                    recentGoods={activeGood.good.recentGoods}
+                    initial={initial}
+                  />
+                  
+                  <RecentComponent
+                    recent={{header: "Popular", parallaxText: ""}}
+                    recentGoods={activeGood.good.popularGoods}
+                    initial={initial}
+                  />
+
                   <GoodComment
                     member={member}
                     good={activeGood.good}
@@ -231,6 +244,12 @@ function GoodPage ({
   }
   
 }
+
+/* <RecentComponent
+  recent={{header: "Same Category", parallaxText: ""}}
+  recentGoods={activeGood.good.similarGoods}
+  initial={initial}
+/> */
 
 function Stars({rating, numberOfStars}) {
   let ratingNum = parseFloat(rating)
@@ -361,6 +380,10 @@ function GoodDetail({
       }
     });
   }, [good]);
+
+  function getHTML(htmlCode) {
+    return { __html: htmlCode };
+  }
 
   return (
     <div class="row shop-item-page">
@@ -496,35 +519,7 @@ function GoodDetail({
             <h2 class="header">
               Description:
             </h2>
-            <p>
-              {good.description}
-            </p>
-            <dl class="dl-horizontal terms">
-              <dt><span class="body">Leather</span></dt><dd>30%</dd>
-              <dt><span class="body">Polyester</span></dt><dd>25%</dd>
-              <dt><span class="body">Guarantee</span></dt><dd>36 month</dd>
-              <dt><span class="body">Leather</span></dt><dd>30%</dd>
-              <dt><span class="body">Polyester</span></dt><dd>25%</dd>
-              <dt><span class="body">Guarantee</span></dt><dd>36 month</dd>
-            </dl>
-          </div>
-        </div>
-        <div class="row features-pan hidden-xs">
-          <div class="col-xs-12">
-            <ul class="row features-list">
-              <li class="col-md-4">
-                <i class="icofont icofont-shield"></i>
-                <span>24 days. Money Back Guarantee</span>
-              </li>
-              <li class="col-md-4">
-                <i class="icofont icofont-ship"></i>
-                <span>Free shipping</span>
-              </li>
-              <li class="col-md-4">
-                <i class="icofont icofont-hand"></i>
-                <span>Free help and setup</span>
-              </li>
-            </ul>
+            <div dangerouslySetInnerHTML={getHTML(good.description)} />
           </div>
         </div>
           

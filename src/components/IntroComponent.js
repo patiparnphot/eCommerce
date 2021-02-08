@@ -72,9 +72,17 @@ function Slideshow({items}) {
               </span>
             </div>
             <div className="col-xs-10 col-xs-offset-1 col-md-7 col-md-offset-0">
-              <div className="img">
-                <img src={item.image} alt=""/>
-              </div>
+              {
+                (
+                  !item.image || (item.image == "")
+                ) ? (
+                  <div></div>
+                ) : (
+                  <div className="img">
+                    <img src={item.image} alt=""/>
+                  </div>
+                )
+              }
               {
                 (
                   !item.campaign || (item.campaign == "")

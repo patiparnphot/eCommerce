@@ -2,17 +2,17 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 
-export default function Recent ({recent, recentGoods, fetchGoods}) {
+export default function Recent ({recent, recentGoods, initial, setInitial}) {
 
-  const [alreadyFetch, setAlreadyFetch] = React.useState(false);
+  // const [alreadyFetch, setAlreadyFetch] = React.useState(false);
   
-  React.useEffect(() => {
-    fetchGoods(setAlreadyFetch);
-  }, []);
+  // React.useEffect(() => {
+  //   fetchGoods(setAlreadyFetch);
+  // }, []);
 
   React.useEffect(() => {
-    if(alreadyFetch && (recentGoods.goods.length > 0)) {
-      console.log("recentGoodLog: ", recentGoods.goods);
+    if((initial == "loading") && (recentGoods.length > 0)) {
+      console.log("recentGoodLog: ", recentGoods);
       var owlCarousel = require('../../static/assets/js/owl.carousel.min.js');
       // Features carousel (uses the Owl Carousel library)
       $('.owl-carousel.features').owlCarousel({
@@ -41,12 +41,12 @@ export default function Recent ({recent, recentGoods, fetchGoods}) {
       var parallax = require('../../static/assets/js/jquery.TDParallax.min.js');
       $('.parallax-block').TDParallax();
     }
-  }, [alreadyFetch]);
+  }, [initial]);
   
   
   // const { goods, loading, error } = recentGoods;
   
-  if (!recent || !recentGoods.goods) {
+  if (!recent || !recentGoods || (recentGoods.length == 0)) {
     return <div/>
   } else {
     return (
@@ -85,7 +85,7 @@ export default function Recent ({recent, recentGoods, fetchGoods}) {
             <div className="col-xs-12">
               <div className="owl-carousel owl-default features nav-top-left">
 
-                <Goods goods={recentGoods.goods}/>
+                <Goods goods={recentGoods}/>
               
               </div>
             </div>
