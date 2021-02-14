@@ -6,6 +6,7 @@ import NotFoundPage from './NotFoundPage';
 import React from 'react';
 import { Field, FieldArray, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
+import UploadPage from '../pages/UploadPage';
 import { createContent, createContentSuccess, createContentFailure } from '../actions/contents';
 
 
@@ -280,9 +281,15 @@ const IndexContentForm = reduxForm({
 
 
 export default class IndexContentPage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      alreadyFetch: false
+    }
+  }
 
   componentDidMount() {
-    this.props.fetchContent("index");
+    this.props.fetchContent("index", (e) => this.setState({alreadyFetch: e}));
   }
 
   componentWillUnmount() {
@@ -298,7 +305,7 @@ export default class IndexContentPage extends React.Component {
     const { content } = this.props.activeContent;
     const { token } = this.props.member;
     
-    if (!content || !token) {
+    if (!content || !token || !this.state.alreadyFetch) {
       return <NotFoundPage/>
     } else {
 
@@ -333,6 +340,7 @@ export default class IndexContentPage extends React.Component {
             
             <h4>FormHead</h4>
             <p>Form Description</p>
+            <UploadPage/>
             <IndexContentForm
               initialValues={initialContent}
               formButton="Confirm"

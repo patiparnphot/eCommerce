@@ -71,6 +71,21 @@ router.get("/blogdetail", function(req, res, next){
     );
 });
 
+//CONTACTUSCONTENT - get content of contact us
+router.get("/contactus", function(req, res, next){
+    // res.json(handler.blogDetailContents());
+
+    Content.findOne(
+        { contentType: "contactus" },
+        {},
+        { sort: { postedTime: -1 }, limit: 1 },
+        function(err, contactusContent){
+            if(err) return next(err);
+            res.json(contactusContent.content);
+        }
+    );
+});
+
 //INITIALSTATE - update JSON file of initialState content
 router.get("/updateJsonFile", async function(req, res, next) {
     try {

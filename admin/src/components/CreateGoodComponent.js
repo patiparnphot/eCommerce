@@ -6,6 +6,7 @@ import NotFoundPage from './NotFoundPage';
 import React from 'react';
 import { Field, FieldArray, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
+import UploadPage from '../pages/UploadPage';
 import { createGood, createGoodSuccess, createGoodFailure } from '../actions/goods';
 
 
@@ -285,6 +286,8 @@ export default class CreateGood extends React.Component {
           
           <h4>FormHead</h4>
           <p>Form Description</p>
+
+          <UploadPage/>
           
           <button type="submit" onClick={() => this.setState({alreadySelect: false})}>Select Category</button>
           <br/>

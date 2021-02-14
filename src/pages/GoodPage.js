@@ -205,18 +205,6 @@ function GoodPage ({
                     location={location}
                   />
 
-                  <RecentComponent
-                    recent={{header: "Recent", parallaxText: ""}}
-                    recentGoods={activeGood.good.recentGoods}
-                    initial={initial}
-                  />
-                  
-                  <RecentComponent
-                    recent={{header: "Popular", parallaxText: ""}}
-                    recentGoods={activeGood.good.popularGoods}
-                    initial={initial}
-                  />
-
                   <GoodComment
                     member={member}
                     good={activeGood.good}
@@ -231,6 +219,18 @@ function GoodPage ({
                     changeTextarea={changeTextarea}
                     addComment={addComment}
                     location={location}
+                  />
+
+                  <RecentComponent
+                    recent={{header: "Recent", parallaxText: ""}}
+                    recentGoods={activeGood.good.recentGoods}
+                    initial={initial}
+                  />
+                  
+                  <RecentComponent
+                    recent={{header: "Popular", parallaxText: ""}}
+                    recentGoods={activeGood.good.popularGoods}
+                    initial={initial}
                   />
   
                 </div>

@@ -6,6 +6,7 @@ import NotFoundPage from './NotFoundPage';
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
+import UploadPage from '../pages/UploadPage';
 import { editBlog, editBlogSuccess, editBlogFailure } from '../actions/blogs';
 
 
@@ -144,6 +145,7 @@ export default class BlogPage extends React.Component {
           
           <h4>FormHead</h4>
           <p>Form Description</p>
+          <UploadPage/>
           <EditBlogForm
             placeholderSlug="slug param in url"
             placeholderTitleHtml="title for SEO"

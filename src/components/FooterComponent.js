@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Field, reduxForm} from 'redux-form';
 import { sendMessage } from '../actions/contents';
 
@@ -80,158 +81,178 @@ export default class Footer extends React.Component {
     
     if (!footerTag) {
       return <div/>
-    }
+    } else {
     
-    return (
-      <footer>
-
-  <div className="container-fluid bg-blue footer text-white">
-    <div className="row">
-      <div className="container">
-        <div className="row">
-
-          <div className="col-sm-6 col-md-3">
-            <h3 className="header text-uppercase">
-              Buyer information
-            </h3>
-            <ul className="nav-vrt white opc none-padding">
-              <li>
-                <a href="#" className="btn-material">Support service</a>
-              </li>
-              <li>
-                <a href="#" className="btn-material">Technical proposals</a>
-              </li>
-              <li>
-                <a href="#" className="btn-material">Affiliate program</a>
-              </li>
-            </ul>
-          </div>
-
-          <div className="col-sm-6 col-md-3">
-            <h3 className="header text-uppercase">
-              Service
-            </h3>
-            <ul className="nav-vrt white opc none-padding">
-              <li>
-                <a href="#" className="btn-material">About us</a>
-              </li>
-              <li>
-                <a href="#" className="btn-material">Contact us</a>
-              </li>
-              <li>
-                <a href="#" className="btn-material">My account</a>
-              </li>
-            </ul>
-          </div>
-
-          <div className="col-sm-12 col-md-6">
-
+      return (
+        <footer id="footer">
+          <div className="container-fluid bg-blue footer text-white">
             <div className="row">
+              <div className="container">
+                <div className="row">
 
-              <div className="col-md-6">
-                <h3 className="header text-uppercase">
-                  Our contacts
-                </h3>
-                <ul className="list-icon white ">
-                  <li>
-                    <i className="icon icofont icofont-location-pin"></i>
-                    12A Questen, Mt Vernon, NY 10550, US
-                  </li>
-                  <li>
-                    <a href="mailto:info@example.com">
-                      <i className="icon icofont icofont-email"></i>
-                      info@example.com
-                    </a>
-                  </li>
-                  <li>
-                    <i className="icon icofont icofont-phone-circle"></i>
-                    +1 (234) 567-89-10
-                  </li>
-                  <li>
-                    <i className="icon icofont icofont-clock-time"></i>
-                    Working Days/Hours:
-                    Mon - Sun / 9:00AM - 8:00PM
-                  </li>
-                </ul>
-              </div>
+                  <div className="col-sm-6 col-md-3">
+                    <h3 className="header text-uppercase">
+                      {footerTag.informationHead}
+                    </h3>
+                    <ul className="nav-vrt white opc none-padding">
+                      {footerTag.informations.map((information) => {
+                        return (
+                          <li>
+                            <Link 
+                              to={{
+                                pathname: information.pathname,
+                                state:{from: this.props.location.pathname}
+                              }}
+                              className="btn-material"
+                            >
+                              {information.text}
+                            </Link>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
 
-              <div className="col-md-6">
-                <div className="footer-brand">
-                  <img src="/images/main-brand.png" alt=""/>
+                  <div className="col-sm-6 col-md-3">
+                    <h3 className="header text-uppercase">
+                      {footerTag.serviceHead}
+                    </h3>
+                    <ul className="nav-vrt white opc none-padding">
+                      {footerTag.services.map((service) => {
+                        return (
+                          <li>
+                            <Link 
+                              to={{
+                                pathname: service.pathname,
+                                state:{from: this.props.location.pathname}
+                              }}
+                              className="btn-material"
+                            >
+                              {service.text}
+                            </Link>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+
+                  <div className="col-sm-12 col-md-6">
+
+                    <div className="row">
+
+                      <div className="col-md-6">
+                        <h3 className="header text-uppercase">
+                          {footerTag.contactHead}
+                        </h3>
+                        <ul className="list-icon white ">
+                          <li>
+                            <i className="icon icofont icofont-location-pin"></i>
+                            {footerTag.contact}
+                          </li>
+                          <li>
+                            <a href={`mailto:${footerTag.email}`}>
+                              <i className="icon icofont icofont-email"></i>
+                              {footerTag.email}
+                            </a>
+                          </li>
+                          <li>
+                            <i className="icon icofont icofont-phone-circle"></i>
+                            {footerTag.telephone}
+                          </li>
+                          <li>
+                            <i className="icon icofont icofont-clock-time"></i>
+                            {footerTag.workingtimeHead}<br/>
+                            {footerTag.workingtimes.map((workingTime) => {
+                              return (<div>{workingTime}<br/></div>);
+                            })}
+                          </li>
+                        </ul>
+                      </div>
+
+                      <div className="col-md-6">
+                        <div className="footer-brand">
+                          <img src={footerTag.brandImage} alt=""/>
+                        </div>
+                        <span className="comp-header st-12 text-uppercase">
+                          {footerTag.brandName}
+                        </span>
+                        <p>
+                          {footerTag.brandDesc}
+                        </p>
+                      </div>
+
+                    </div>
+
+                    <div className="row">
+                      <div className="col-md-12">
+                        <ul className="social ">
+                          {
+                            (
+                              footerTag.facebook
+                            ) ? (
+                              <li>
+                                <a href={footerTag.facebook}>
+                                  <i className="icofont icofont-social-facebook"></i>
+                                </a>
+                              </li>
+                            ) : (
+                              ""
+                            )
+                          }
+                          {
+                            (
+                              footerTag.twitter
+                            ) ? (
+                              <li>
+                                <a href={footerTag.twitter}>
+                                  <i className="icofont icofont-social-twitter"></i>
+                                </a>
+                              </li>
+                            ) : (
+                              ""
+                            )
+                          }
+                          {
+                            (
+                              footerTag.instagram
+                            ) ? (
+                              <li>
+                                <a href={footerTag.instagram}>
+                                  <i className="icofont icofont-social-instagram"></i>
+                                </a>
+                              </li>
+                            ) : (
+                              ""
+                            )
+                          }
+                        </ul>
+                      </div>
+                    </div>
+
+                  </div>
+
                 </div>
-                <span className="comp-header st-12 text-uppercase">
-                  Komotto
-                  <span>
-                    Bootstrap theme
-                  </span>
-                </span>
-                <p>
-                  Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor nisi elit consequat ipsum, nec sagittis sem nibh id elit.
-                </p>
               </div>
-
             </div>
+          </div>
 
+          <div className="container-fluid copiright">
             <div className="row">
-              <div className="col-md-12">
-                <ul className="social ">
-                  <li>
-                    <a href="#">
-                      <i className="icofont icofont-social-facebook"></i>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <i className="icofont icofont-social-google-plus"></i>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <i className="icofont icofont-social-twitter"></i>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <i className="icofont icofont-social-vk"></i>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <i className="icofont icofont-social-instagram"></i>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <i className="icofont icofont-social-youtube-play"></i>
-                    </a>
-                  </li>
-                </ul>
+              <div className="container">
+                <div className="row">
+                  <div className="col-md-6">
+                    <span className="copy">
+                      © 2020 e-Commerce by MEATSEO. All rights reserved.
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
-
           </div>
 
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div className="container-fluid copiright">
-    <div className="row">
-      <div className="container">
-        <div className="row">
-          <div className="col-md-6">
-            <span className="copy">
-              © 2020 e-Commerce by MEATSEO. All rights reserved.
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-</footer>
-    )
+        </footer>
+      );
+    }
   }
 }
 

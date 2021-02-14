@@ -47,6 +47,18 @@ export default class SideBar extends React.Component {
                 <p>Index Content</p>
               </Link>
             </li>
+            <li className={pathname == "/admin/contents/template" ? "active" : ""}>
+              <Link to="/admin/contents/template">
+                <i className="now-ui-icons education_atom"></i>
+                <p>Template Content</p>
+              </Link>
+            </li>
+            <li className={pathname == "/admin/contents/contactUs" ? "active" : ""}>
+              <Link to="/admin/contents/contactUs">
+                <i className="now-ui-icons education_atom"></i>
+                <p>ContactUs Content</p>
+              </Link>
+            </li>
             <li className={pathname == "/admin/blogs" ? "active" : ""}>
               <Link to="/admin/blogs">
                 <i className="now-ui-icons education_atom"></i>
@@ -71,7 +83,7 @@ export default class SideBar extends React.Component {
                 <p>Orders</p>
               </Link>
             </li>
-            <li className="active-pro">
+            <li>
               <a href="/">
                 <i className="now-ui-icons arrows-1_cloud-download-93"></i>
                 <p>Back to your Site</p>

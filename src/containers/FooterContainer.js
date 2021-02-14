@@ -1,4 +1,5 @@
 import Footer from '../components/FooterComponent';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 
@@ -13,4 +14,4 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Footer);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Footer));

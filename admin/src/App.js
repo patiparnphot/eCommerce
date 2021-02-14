@@ -4,6 +4,8 @@ import { Route, Switch, useRouteMatch, useLocation } from 'react-router-dom';
 import SideBar from './containers/SideBarContainer';
 import DashboardPage from './pages/DashboardPage';
 import IndexContentPage from './pages/IndexContentPage';
+import TemplateContentPage from './pages/TemplateContentPage';
+import ContactUsContentPage from './pages/ContactUsContentPage';
 import UploadPage from './pages/UploadPage';
 import SignInPage from './pages/SignInPage';
 import BlogsPage from './pages/BlogsPage';
@@ -48,6 +50,12 @@ function App({member}) {
             </Route>
             <Route path="/admin/contents/index">
               <IndexContentPage/>
+            </Route>
+            <Route path="/admin/contents/template">
+              <TemplateContentPage/>
+            </Route>
+            <Route path="/admin/contents/contactUs">
+              <ContactUsContentPage/>
             </Route>
             <Route exact path="/admin/blogs">
               <BlogsPage/>

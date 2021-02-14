@@ -6,6 +6,7 @@ import NotFoundPage from './NotFoundPage';
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
+import UploadPage from '../pages/UploadPage';
 import { createBlog, createBlogSuccess, createBlogFailure } from '../actions/blogs';
 
 const ROOT_URL = '/api';
@@ -141,6 +142,7 @@ export default class CreateBlog extends React.Component {
           
           <h4>FormHead</h4>
           <p>Form Description</p>
+          <UploadPage/>
           <CreateBlogForm
             placeholderSlug="slug param in url"
             placeholderTitleHtml="title for SEO"

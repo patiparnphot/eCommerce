@@ -6,6 +6,7 @@ import NotFoundPage from './NotFoundPage';
 import React from 'react';
 import { Field, FieldArray, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
+import UploadPage from '../pages/UploadPage';
 import { editGood, editGoodSuccess, editGoodFailure } from '../actions/goods';
 
 
@@ -283,12 +284,44 @@ export default class GoodPage extends React.Component {
         demo.initSummernote("description", good.description);
       });
       category = this.state.category;
+      let targetIndex = data.map((cat, i) => [i, cat])
+        .filter(x => x[1].title == this.state.category)[0][0];
+      let features = [];
+      features.push("key");
+      features.push("cost");
+      data[targetIndex].features.forEach((feature) => {
+        features.push(feature.name);
+      });
+      let checkFeatures = [];
+      for(let i=0; i <= initialGood.options.length; i++) {
+        if(i < initialGood.options.length) {
+          let optionKeys = Object.keys(initialGood.options[i]);
+          let checkArray = [];
+          for(let j=0; j <= optionKeys.length; j++) {
+            if(j == optionKeys.length) {
+              checkFeatures.push(checkArray);
+            } else if(!features.includes(optionKeys[j])) {
+              checkArray.push(optionKeys[j]);
+            }
+          }
+        } else {
+          for(let k=0; k < checkFeatures.length; k++) {
+            if(checkFeatures[k].length > 0) {
+              checkFeatures[k].forEach((feature) => {
+                initialGood.options[k][feature] = undefined;
+              });
+            }
+          }
+        }
+      }
 
       return (
         <div className="form container">
           
           <h4>FormHead</h4>
           <p>Form Description</p>
+
+          <UploadPage/>
 
           <button type="submit" onClick={() => this.setState({alreadySelect: false})}>Select Category</button>
           <br/>

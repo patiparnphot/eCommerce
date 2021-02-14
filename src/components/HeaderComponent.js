@@ -48,6 +48,7 @@ export default class Header extends React.Component {
   }
 
   renderMemberNav(member) {
+    let { headerTag } = this.props;
     if(member.user) {
       return (
       <ul className="nav navbar-nav navbar-right info-panel">
@@ -70,7 +71,7 @@ export default class Header extends React.Component {
           </a>
           <a href="#" className="visible-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
             <i className="icofont icofont-cart-alt"></i>
-            Shopping cart
+            {headerTag.cartText}
           </a>
           <ul className="dropdown-menu">
             {this.renderGoodsInCart(this.props.incartGoods.goods)}
@@ -80,7 +81,7 @@ export default class Header extends React.Component {
               ) ? (
                 <li class="more-btn sdw">
                   <Link to={{pathname:"/cart", state:{from: this.props.location.pathname}}} className="btn-material btn-primary">
-                    View order <i className="icofont icofont-check-circled"></i>
+                    {headerTag.cartBtn} <i className="icofont icofont-check-circled"></i>
                   </Link>
                 </li>
               ) : (
@@ -91,7 +92,7 @@ export default class Header extends React.Component {
         </li>
         <li>
           <a href="#" onClick={() => this.props.logOut()}>
-            <b>LogOut</b>
+            <b>{headerTag.logout}</b>
           </a>
         </li>
       </ul>
@@ -101,7 +102,7 @@ export default class Header extends React.Component {
         <ul className="list-btn-group nav navbar-nav navbar-right info-panel">
           <li>
             <Link to={{pathname:"/signin", state:{from: this.props.location.pathname}}}>
-              <b>LogIn</b>
+              <b>{headerTag.login}</b>
             </Link>
           </li>
         </ul>
@@ -117,72 +118,56 @@ export default class Header extends React.Component {
     
     if (!headerTag) {
       return <div/>
-    }
-    
-    return (
-      <nav className="navbar navbar-default">
-  <div className="container">
-    <div className="navbar-header">
-      <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-        <span className="sr-only">Toggle navigation</span>
-        <span className="icon-bar"></span>
-        <span className="icon-bar"></span>
-        <span className="icon-bar"></span>
-      </button>
-      <a className="navbar-brand" href="#">
-        <img src="/images/main-brand.png" alt="" className="brand"/>
-      </a>
-    </div>
-    <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <div className="top-panel">
-        <div className="phone text-blue">
-          <i className="icofont icofont-phone-circle"></i>
-          +1 234 567 89 10
-        </div>
-        <div className="btn-cols">
-          <ul className="list-btn-group">
-            <li>
-              <Link to={{pathname:"/register", state:{from: this.props.location.pathname}}}>
-                <b>SignUp</b>
+    } else {
+      return (
+        <nav className="navbar navbar-default" id="header">
+          <div className="container">
+            <div className="navbar-header">
+              <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span className="sr-only">Toggle navigation</span>
+                <span className="icon-bar"></span>
+                <span className="icon-bar"></span>
+                <span className="icon-bar"></span>
+              </button>
+              <Link className="navbar-brand" to={{pathname:"/", state:{from: this.props.location.pathname}}}>
+                <img src={headerTag.brandImage} alt="" className="brand"/>
               </Link>
-            </li>
-          </ul>
-        </div>
-      </div>  
-      
-      {this.renderMemberNav(member)}
+            </div>
+            <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+              <div className="top-panel">
+                <div className="phone text-blue">
+                  <i className="icofont icofont-phone-circle"></i>
+                  {headerTag.telephone}
+                </div>
+                <div className="btn-cols">
+                  <ul className="list-btn-group">
+                    <li>
+                      <Link to={{pathname:"/register", state:{from: this.props.location.pathname}}}>
+                        <b>{headerTag.signup}</b>
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+              </div>  
+              
+              {this.renderMemberNav(member)}
 
-      <ul className="nav navbar-nav">
-        <li className="active">
-          <Link to={{pathname:"/", state:{from: this.props.location.pathname}}}>
-            home
-          </Link>
-        </li>
-        <li>
-          <Link to={{pathname: "/", hash: "#recent", state:{from: this.props.location.pathname}}}>
-            tags
-          </Link>
-        </li>
-        <li>
-          <Link to={{pathname: "/", hash: "#recent", state:{from: this.props.location.pathname}}}>
-            popularOnShop
-          </Link>
-        </li>
-        <li>
-          <Link to={{pathname: "/", hash: "#recent", state:{from: this.props.location.pathname}}}>
-            blogs
-          </Link>
-        </li>
-        <li>
-          <Link to={{pathname: "/", hash: "#recent", state:{from: this.props.location.pathname}}}>
-            contactUs
-          </Link>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
-    );
+              <ul className="nav navbar-nav">
+                {headerTag.navBar.map((nav, index) => {
+                  return (
+                    <li className={index=0?"active":""}>
+                      <Link to={{pathname: nav.pathname, hash: nav.hash, state:{from: this.props.location.pathname}}}>
+                        {nav.text}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          </div>
+        </nav>
+      );
+    }
   }
 }
 

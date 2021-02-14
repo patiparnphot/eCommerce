@@ -1,4 +1,4 @@
-import IndexContent from '../components/IndexContentComponent ';
+import ContactUsContent from '../components/ContactUsContentComponent';
 import { 
   fetchContent,
   fetchContentSuccess,
@@ -13,7 +13,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     fetchContent: (contentType, setAlreadyFetch) => {
       dispatch(fetchContent(contentType)).then((response) => {
-        console.log('active indexContent: ', response.payload);
+        console.log('active contactUsContent: ', response.payload);
         !response.error ? dispatch(fetchContentSuccess(response.payload)) : dispatch(fetchContentFailure(response.payload));
         setAlreadyFetch(true);
       });
@@ -36,4 +36,4 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(IndexContent);
+export default connect(mapStateToProps, mapDispatchToProps)(ContactUsContent);

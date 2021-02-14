@@ -12,6 +12,7 @@ import CartPage from './pages/CartPage';
 import SignInPage from './pages/SignInPage';
 import RegisterPage from './pages/RegisterPage';
 import InvoicePage from './pages/InvoicePage';
+import ContactUsPage from './pages/ContactUsPage';
 
 var initialContentState = require("../initial_state/initialContentState.json");
 
@@ -60,6 +61,7 @@ function App({autoLogin, autoLogout, refreshIncart, fetchTemplatecontent, templa
   return (
       <div>
         <Header headerTag={content.headerTag} />
+        <div id="content">
         <Switch>
           <Route exact path="/">
             <IndexPage/>
@@ -82,8 +84,12 @@ function App({autoLogin, autoLogout, refreshIncart, fetchTemplatecontent, templa
           <Route path="/invoice/:invoiceId">
             <InvoicePage/>
           </Route>
+          <Route path="/contactUs">
+            <ContactUsPage/>
+          </Route>
           <Route path="*" component={NotFoundPage}/>
         </Switch>
+        </div>
         <Footer footerTag={content.footerTag} />
         <a href="#" className="back-to-top"><i className="fa fa-chevron-up"></i></a>
       </div>

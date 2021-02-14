@@ -1,6 +1,7 @@
 import {
   FETCH_INDEXCONTENT, FETCH_INDEXCONTENT_SUCCESS, FETCH_INDEXCONTENT_FAILURE,
   FETCH_TEMPLATECONTENT, FETCH_TEMPLATECONTENT_SUCCESS, FETCH_TEMPLATECONTENT_FAILURE,
+  FETCH_CONTACTUSCONTENT, FETCH_CONTACTUSCONTENT_SUCCESS, FETCH_CONTACTUSCONTENT_FAILURE,
   FETCH_BLOGDETAILCONTENT, FETCH_BLOGDETAILCONTENT_SUCCESS, FETCH_BLOGDETAILCONTENT_FAILURE,
   FETCH_GOODCATEGORYCONTENT, FETCH_GOODCATEGORYCONTENT_SUCCESS, FETCH_GOODCATEGORYCONTENT_FAILURE
 } from '../actions/contents';
@@ -8,7 +9,8 @@ import {
 
 	const INITIAL_STATE = {
 	    index:        {content:null, error:null, loading: false},
-	    template:     {content:null, error:null, loading: false},
+      template:     {content:null, error:null, loading: false},
+      contactUs:    {content:null, error:null, loading: false},
       blogDetail:   {content:null, error:null, loading: false},
       goodCategory: {content:null, error:null, loading: false}
 	};
@@ -32,6 +34,14 @@ export default function(state = INITIAL_STATE, action) {
   case FETCH_TEMPLATECONTENT_FAILURE:
     error = action.payload || {message: action.payload.message};
     return { ...state, template: {content: null, error:error, loading:false} };
+
+  case FETCH_CONTACTUSCONTENT:
+    return { ...state, contactUs: {...state.contactUs, loading: true} }; 
+  case FETCH_CONTACTUSCONTENT_SUCCESS:
+    return { ...state, contactUs: {content: action.payload, error:null, loading: false} };
+  case FETCH_CONTACTUSCONTENT_FAILURE:
+    error = action.payload || {message: action.payload.message};
+    return { ...state, contactUs: {content: null, error:error, loading:false} };
     
   case FETCH_BLOGDETAILCONTENT:
   	return { ...state, blogDetail: {...state.blogDetail, loading: true} }; 

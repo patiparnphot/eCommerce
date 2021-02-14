@@ -18,6 +18,12 @@ module.exports = async function() {
             { sort: { postedTime: -1 }, limit: 1 }
          ).exec();
 
+         const contactUsContent = await Content.findOne(
+            { contentType: "contactus" },
+            {},
+            { sort: { postedTime: -1 }, limit: 1 }
+         ).exec();
+
          try {
             const blogDetailContent = await Content.findOne(
                { contentType: "blogdetail" },
@@ -106,6 +112,11 @@ module.exports = async function() {
                            "error": null,
                            "loading": false
                         },
+                        "contactUs": {
+                           "content": {},
+                           "error": null,
+                           "loading": false
+                        },
                         "blogDetail": {
                            "content": {},
                            "error": null,
@@ -124,6 +135,7 @@ module.exports = async function() {
                   initialState.goods.filterGoods.goods = filterGoods;
                   initialState.contents.index.content = indexContent.content;
                   initialState.contents.template.content = templateContent.content;
+                  initialState.contents.contactUs.content = contactUsContent.content;
                   initialState.contents.blogDetail.content = blogDetailContent.content;
 
                   return(initialState);

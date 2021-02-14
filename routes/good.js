@@ -401,30 +401,104 @@ router.put(
             req.body.editCategory,
             function (err, editedCategory) {
                 if (err) return next(err);
-                Good.updateMany(
-                    { category: editedCategory._doc.title },
-                    { category: req.body.editCategory.title },
-                    function (err, editedGoods) {
-                        if (err) {
-                            console.log(`error on update good of update ${editedCategory._doc.title} category: `, err);
-                        } else if (editedGoods) {
-                            if(editedGoods.n == 0) {
-                                console.log(`no update good of update ${editedCategory._doc.title} category`);
-                            } else if(editedGoods.n != editedGoods.nModified) {
-                                console.log(`success on update ${editedGoods.nModified} of ${editedGoods.n} good of update ${editedCategory._doc.title} category`);
-                            } else if(editedGoods.n == editedGoods.nModified) {
-                                console.log(`success on update good of update ${editedCategory._doc.title} category`);
+                if(req.body.editCategory.title != editedCategory._doc.title) {
+                    Good.updateMany(
+                        { category: editedCategory._doc.title },
+                        { category: req.body.editCategory.title },
+                        function (err, editedGoods) {
+                            if (err) {
+                                console.log(`error on update good of update ${editedCategory._doc.title} category: `, err);
+                            } else if (editedGoods) {
+                                if(editedGoods.n == 0) {
+                                    console.log(`no update good of update ${editedCategory._doc.title} category`);
+                                } else if(editedGoods.n != editedGoods.nModified) {
+                                    console.log(`success on update ${editedGoods.nModified} of ${editedGoods.n} good of update ${editedCategory._doc.title} category`);
+                                } else if(editedGoods.n == editedGoods.nModified) {
+                                    console.log(`success on update good of update ${editedCategory._doc.title} category`);
+                                }
                             }
                         }
+                    );
+                }
+                if(String(req.body.editCategory.options) != String(editedCategory._doc.options)) {
+                    console.log(req.body.editCategory.options);
+                    console.log(editedCategory._doc.options);
+                    let editedOptions = req.body.editCategory.options;
+                    let queryOrNotArrayMatch = [];
+                    let queryAndArrayNotMatch = [];
+                    for(let i=0; i <= editedOptions.length; i++) {
+                        if (i != editedOptions.length) {
+                            queryOrNotArrayMatch.push({
+                                options: {
+                                    $not: {
+                                        $elemMatch: {
+                                            key: editedOptions[i]
+                                        }
+                                    }
+                                }
+                            });
+                            queryAndArrayNotMatch.push({
+                                options: {
+                                    $elemMatch: {
+                                        key: {
+                                            $ne: editedOptions[i]
+                                        }
+                                    }
+                                }
+                            });
+                        } else {
+                            Good.aggregate([
+                                {
+                                    $match: {
+                                        category: editedCategory._doc.title
+                                    }
+                                },
+                                {
+                                    $match: {
+                                        $or: queryOrNotArrayMatch
+                                    }
+                                },
+                                {
+                                    $match: {
+                                        $and: queryAndArrayNotMatch
+                                    }
+                                },
+                                {
+                                    $project: { _id: 1, options: 1 }
+                                }
+                            ], function (err, queryOptionsArray) {
+                                if (!err && queryOptionsArray && (queryOptionsArray.length > 0)) {
+                                    queryOptionsArray.forEach((queryOptions) => {
+                                        let changedOptions = queryOptions.options.filter(x => editedOptions.includes(x.key));
+                                        Good.findByIdAndUpdate(
+                                            queryOptions._id,
+                                            {
+                                                options: changedOptions
+                                            },
+                                            { new: true },
+                                            function (err, editedGood) {
+                                                if (err) {
+                                                    console.log(`error on update good of update ${editedCategory._doc.title} category: `, err);
+                                                } else if (editedGood) {
+                                                    console.log(`success on update good ${queryOptions._id} options of update ${editedCategory._doc.title} category: `, editedGood.options);
+                                                }
+                                            }
+                                        );
+                                    });
+                                }
+                            });
+                        }
                     }
-                );
+                }
                 let newCategory = { 
                     ...editedCategory._doc,
                     title: req.body.editCategory.title,
                     text: req.body.editCategory.text,
                     categoryType: req.body.editCategory.categoryType,
                     titleHtml: req.body.editCategory.titleHtml,
-                    descriptionHtml: req.body.editCategory.descriptionHtml
+                    descriptionHtml: req.body.editCategory.descriptionHtml,
+                    options: req.body.editCategory.options,
+                    features: req.body.editCategory.features
                 };
                 res.json(newCategory);
             }

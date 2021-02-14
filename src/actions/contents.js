@@ -11,6 +11,11 @@ export const FETCH_TEMPLATECONTENT = 'FETCH_TEMPLATECONTENT';
 export const FETCH_TEMPLATECONTENT_SUCCESS = 'FETCH_TEMPLATECONTENT_SUCCESS';
 export const FETCH_TEMPLATECONTENT_FAILURE = 'FETCH_TEMPLATECONTENT_FAILURE';
 
+//Fetch contact us content
+export const FETCH_CONTACTUSCONTENT = 'FETCH_CONTACTUSCONTENT';
+export const FETCH_CONTACTUSCONTENT_SUCCESS = 'FETCH_CONTACTUSCONTENT_SUCCESS';
+export const FETCH_CONTACTUSCONTENT_FAILURE = 'FETCH_CONTACTUSCONTENT_FAILURE';
+
 //Fetch blog detail content
 export const FETCH_BLOGDETAILCONTENT = 'FETCH_BLOGDETAILCONTENT';
 export const FETCH_BLOGDETAILCONTENT_SUCCESS = 'FETCH_BLOGDETAILCONTENT_SUCCESS';
@@ -68,6 +73,26 @@ export function fetchTemplatecontentSuccess(templateContent) {
 export function fetchTemplatecontentFailure(error) {
   return {
     type: FETCH_TEMPLATECONTENT_FAILURE,
+    payload: error
+  };
+}
+
+export function fetchContactuscontent() {
+  return dispatch => {
+    return fetch(`${ROOT_URL}/contents/contactus`)
+      .then(response => response.json(), error => console.log('An error occurred.', error))
+      .then(json => dispatch(receiver(FETCH_CONTACTUSCONTENT, json)));
+  };
+}
+export function fetchContactuscontentSuccess(contactusContent) {
+  return {
+    type: FETCH_CONTACTUSCONTENT_SUCCESS,
+    payload: contactusContent
+  };
+}
+export function fetchContactuscontentFailure(error) {
+  return {
+    type: FETCH_CONTACTUSCONTENT_FAILURE,
     payload: error
   };
 }
