@@ -19,8 +19,6 @@ function CreatePage ({newGood}) {
 
   return (
     <div>
-      <Navbar pagename="CREATE GOOD" />
-      <p>Write your good content here!!!</p>
       <Create/>
     </div>
   );

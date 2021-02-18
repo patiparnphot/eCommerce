@@ -72,8 +72,6 @@ function UploadPage ({member}) {
 
   return (
     <div className="container">
-      <Navbar pagename="UPLOAD IMAGE" />
-      <hr/>
       <div className="row">
         <div className="offset-md-3 col-md-6">
           <label>Upload your Image File</label>

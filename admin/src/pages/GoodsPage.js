@@ -28,12 +28,10 @@ class GoodsPage extends Component {
     
     return (
       <div>
-        <Navbar pagename="ALL GOODS" />
         <p>
 
 
         </p>
-        <Link to="/admin/goods/create/">Create New Good</Link>
         <Goods/>
       </div>
     );

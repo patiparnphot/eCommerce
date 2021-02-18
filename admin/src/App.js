@@ -43,7 +43,7 @@ function App({member}) {
         <div className="main-panel" id="main-panel">
           <Switch>
             <Route exact path="/admin/">
-              <DashboardPage/>
+              <OrdersPage/>
             </Route>
             <Route path="/admin/upload">
               <UploadPage/>

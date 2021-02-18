@@ -96,10 +96,10 @@ const validate = values => {
 
 const renderField = ({ input, label, type, meta: { touched, error } }) => {
   return (
-    <div className="row form-group">
+    <div className="row form-group" style={{backgroundColor: "lightblue", width: "90%", marginLeft: "10px"}}>
       <label className="col-sm-3">{label}</label>
-      <input {...input} type={type} placeholder={label} className="form-ctrl col-sm-6"/>
-      {touched && error && <span>{error}</span>}
+      <input {...input} type={type} placeholder={label} className="form-ctrl col-sm-9"/>
+      {touched && error && <span style={{color: "red"}}><b>{error}</b></span>}
     </div>
   );
 }
@@ -107,15 +107,15 @@ const renderField = ({ input, label, type, meta: { touched, error } }) => {
 const renderArray = ({fields, meta: {error, submitFailed}}) => (
   <ul>
     <li>
-      <button type="button" onClick={() => fields.push()}>
+      <button type="button" style={{backgroundColor: "lightgreen"}} onClick={() => fields.push()}>
         Add Item
       </button>
       {submitFailed && error && <span>{error}</span>}
     </li>
     {fields.map((item, index) => (
       <li key={index}>
-        <button type="button" title="Remove Item" onClick={() => fields.remove(index)}>X</button>
-        <Field name={item} type="text" label={`Item #${index + 1}`} component={renderField}/>
+        <button type="button" style={{backgroundColor: "orange"}} title="Remove Item" onClick={() => fields.remove(index)}>X</button>
+        <Field name={item} type="text" label={`ITEM #${index + 1}`} component={renderField}/>
       </li>
     ))}
     {error && <li className="error">{error}</li>}
@@ -131,15 +131,27 @@ class ContactUsContentClass extends React.Component {
     } = this.props;
     return (
       <form onSubmit={handleSubmit(Submit)}>
-        <Field name="locationHead" type="text" label="head text of location" component={renderField} />
-        <FieldArray name="locations" component={renderArray} />
-        <Field name="telephoneHead" type="text" label="head text of location" component={renderField} />
-        <FieldArray name="telephones" component={renderArray} />
-        <Field name="emailHead" type="text" label="head text of location" component={renderField} />
-        <FieldArray name="emails" component={renderArray} />
-        <Field name="latitude" type="text" label="latitude of shop" component={renderField} />
-        <Field name="longitude" type="text" label="longitude of shop" component={renderField} />
-        <button type="submit" disabled={ submitting }>{formButton}</button>
+        <div className="col-sm-12" style={{backgroundColor: "white", margin: "10px"}}>
+          <h4>LOCATION</h4>
+          <Field name="locationHead" type="text" label="HEADER" component={renderField} />
+          <FieldArray name="locations" component={renderArray} />
+        </div>
+        <div className="col-sm-12" style={{backgroundColor: "white", margin: "10px"}}>
+          <h4>CONTACT</h4>
+          <Field name="telephoneHead" type="text" label="HEADER" component={renderField} />
+          <FieldArray name="telephones" component={renderArray} />
+        </div>
+        <div className="col-sm-12" style={{backgroundColor: "white", margin: "10px"}}>
+          <h4>EMAIL</h4>
+          <Field name="emailHead" type="text" label="HEADER" component={renderField} />
+          <FieldArray name="emails" component={renderArray} />
+        </div>
+        <div className="col-sm-12" style={{backgroundColor: "white", margin: "10px"}}>
+          <h4>GOOGLE MAPS</h4>
+          <Field name="latitude" type="text" label="LATITUDE" component={renderField} />
+          <Field name="longitude" type="text" label="LONGITUDE" component={renderField} />
+        </div>
+        <button type="submit" style={{backgroundColor: "orange"}} disabled={ submitting }>{formButton}</button>
       </form>
     )
   }
@@ -185,8 +197,7 @@ export default class TemplateContentPage extends React.Component {
       return (
           <div className="form container">
             
-            <h4>FormHead</h4>
-            <p>Form Description</p>
+            <h4>CONTACT</h4>
             <UploadPage/>
             <ContactUsContentForm
               initialValues={initialContent}

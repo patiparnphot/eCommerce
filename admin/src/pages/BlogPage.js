@@ -31,8 +31,6 @@ function BlogPage ({editBlog}) {
 
   return (
     <div>
-      <Navbar pagename="CURRENT BLOG" />
-      <p>{slug}</p>
       <Blog slug={slug}/>
     </div>
   );

@@ -192,10 +192,10 @@ const validate = values => {
 
 const renderField = ({ input, label, type, meta: { touched, error } }) => {
   return (
-    <div className="row form-group">
+    <div className="row form-group" style={{backgroundColor: "lightblue", width: "90%", marginLeft: "10px"}}>
       <label className="col-sm-3">{label}</label>
-      <input {...input} type={type} placeholder={label} className="form-ctrl col-sm-6"/>
-      {touched && error && <span>{error}</span>}
+      <input {...input} type={type} placeholder={label} className="form-ctrl col-sm-9"/>
+      {touched && error && <span style={{color: "red"}}><b>{error}</b></span>}
     </div>
   );
 }
@@ -203,18 +203,18 @@ const renderField = ({ input, label, type, meta: { touched, error } }) => {
 const renderNavBar = ({fields, meta: {error, submitFailed}}) => (
   <ul>
     <li>
-      <button type="button" onClick={() => fields.push({})}>
-        Add NavBar
+      <button type="button" style={{backgroundColor: "lightgreen"}} onClick={() => fields.push({})}>
+        Add More
       </button>
       {submitFailed && error && <span>{error}</span>}
     </li>
     {fields.map((navBar, index) => (
       <li key={index}>
-        <button type="button" title="Remove NavBar" onClick={() => fields.remove(index)}>X</button>
+        <button type="button" style={{backgroundColor: "orange"}} title="Remove NavBar" onClick={() => fields.remove(index)}>X</button>
         <h4>NavBar #{index + 1}</h4>
-        <Field name={`${navBar}.pathname`} type="text" label="src of link" component={renderField}/>
-        <Field name={`${navBar}.hash`} type="text" label="section in link" component={renderField}/>
-        <Field name={`${navBar}.text`} type="text" label="text of link" component={renderField}/>
+        <Field name={`${navBar}.pathname`} type="text" label="LINK" component={renderField}/>
+        <Field name={`${navBar}.hash`} type="text" label="SECTION" component={renderField}/>
+        <Field name={`${navBar}.text`} type="text" label="TEXT" component={renderField}/>
       </li>
     ))}
   </ul>
@@ -223,17 +223,17 @@ const renderNavBar = ({fields, meta: {error, submitFailed}}) => (
 const renderFooterLink = ({fields, meta: {error, submitFailed}}) => (
   <ul>
     <li>
-      <button type="button" onClick={() => fields.push({})}>
+      <button type="button" style={{backgroundColor: "lightgreen"}} onClick={() => fields.push({})}>
         Add Link
       </button>
       {submitFailed && error && <span>{error}</span>}
     </li>
     {fields.map((link, index) => (
       <li key={index}>
-        <button type="button" title="Remove Link" onClick={() => fields.remove(index)}>X</button>
+        <button type="button" style={{backgroundColor: "orange"}} title="Remove Link" onClick={() => fields.remove(index)}>X</button>
         <h4>Link #{index + 1}</h4>
-        <Field name={`${link}.pathname`} type="text" label="src of link" component={renderField}/>
-        <Field name={`${link}.text`} type="text" label="text of link" component={renderField}/>
+        <Field name={`${link}.pathname`} type="text" label="LINK" component={renderField}/>
+        <Field name={`${link}.text`} type="text" label="TEXT" component={renderField}/>
       </li>
     ))}
   </ul>
@@ -242,14 +242,14 @@ const renderFooterLink = ({fields, meta: {error, submitFailed}}) => (
 const renderWorkingTime = ({fields, meta: {error, submitFailed}}) => (
   <ul>
     <li>
-      <button type="button" onClick={() => fields.push()}>
-        Add Working Time
+      <button type="button" style={{backgroundColor: "lightgreen"}} onClick={() => fields.push()}>
+        Add Time
       </button>
       {submitFailed && error && <span>{error}</span>}
     </li>
     {fields.map((workingTime, index) => (
       <li key={index}>
-        <button type="button" title="Remove WorkingTime" onClick={() => fields.remove(index)}>X</button>
+        <button type="button" style={{backgroundColor: "orange"}} title="Remove WorkingTime" onClick={() => fields.remove(index)}>X</button>
         <Field name={workingTime} type="text" label={`Working Time #${index + 1}`} component={renderField}/>
       </li>
     ))}
@@ -266,31 +266,49 @@ class TemplateContentClass extends React.Component {
     } = this.props;
     return (
       <form onSubmit={handleSubmit(Submit)}>
-        <Field name="headerBrandImage" type="text" label="brand image of header" component={renderField} />
-        <Field name="headerTelephone" type="text" label="telephone image of header" component={renderField} />
-        <Field name="headerSignup" type="text" label="signup text of header" component={renderField} />
-        <Field name="headerCartText" type="text" label="cart head text of header" component={renderField} />
-        <Field name="headerCartBtn" type="text" label="cart button text of header" component={renderField} />
-        <Field name="headerLogout" type="text" label="logout text of header" component={renderField} />
-        <Field name="headerLogin" type="text" label="login text of header" component={renderField} />
-        <FieldArray name="headerNavBar" component={renderNavBar} />
-        <Field name="footerInformationHead" type="text" label="information head text of footer" component={renderField} />
-        <FieldArray name="footerInformations" component={renderFooterLink} />
-        <Field name="footerServiceHead" type="text" label="service head text of footer" component={renderField} />
-        <FieldArray name="footerServices" component={renderFooterLink} />
-        <Field name="footerContactHead" type="text" label="contact head text of footer" component={renderField} />
-        <Field name="footerContact" type="text" label="contact location of footer" component={renderField} />
-        <Field name="footerEmail" type="text" label="contact email of footer" component={renderField} />
-        <Field name="footerTelephone" type="text" label="contact telephone of footer" component={renderField} />
-        <Field name="footerWorkingtimeHead" type="text" label="workingTime head text of footer" component={renderField} />
-        <FieldArray name="footerWorkingtimes" component={renderWorkingTime} />
-        <Field name="footerBrandImage" type="text" label="brand image of footer" component={renderField} />
-        <Field name="footerBrandName" type="text" label="brand name of footer" component={renderField} />
-        <Field name="footerBrandDesc" type="text" label="brand description of footer" component={renderField} />
-        <Field name="footerFacebook" type="text" label="facebook link of footer" component={renderField} />
-        <Field name="footerTwitter" type="text" label="twitter link of footer" component={renderField} />
-        <Field name="footerInstagram" type="text" label="instagram link of footer" component={renderField} />
-        <button type="submit" disabled={ submitting }>{formButton}</button>
+        <div className="col-sm-12" style={{backgroundColor: "white", margin: "10px"}}>
+          <h4>TOP BAR MENU</h4>
+          <Field name="headerTelephone" type="text" label="TELEPHONE NUMBER" component={renderField} />
+          <Field name="headerSignup" type="text" label="SIGN UP" component={renderField} />
+        </div>
+        <div className="col-sm-12" style={{backgroundColor: "white", margin: "10px"}}>
+          <h4>NAVIGATION BAR</h4>
+          <Field name="headerBrandImage" type="text" label="LOGO PICTURE" component={renderField} />
+          <Field name="headerLogin" type="text" label="SIGN IN" component={renderField} />
+          <Field name="headerLogout" type="text" label="SIGN OUT" component={renderField} />
+          <Field name="headerCartText" type="text" label="CART" component={renderField} />
+          <Field name="headerCartBtn" type="text" label="VIEW ORDER" component={renderField} />
+          <FieldArray name="headerNavBar" component={renderNavBar} />
+        </div>
+        <div className="col-sm-12" style={{backgroundColor: "white", margin: "10px"}}>
+          <h4>FOOTER COLUMN 1</h4>
+          <Field name="footerInformationHead" type="text" label="HEADER" component={renderField} />
+          <FieldArray name="footerInformations" component={renderFooterLink} />
+        </div>
+        <div className="col-sm-12" style={{backgroundColor: "white", margin: "10px"}}>
+          <h4>FOOTER COLUMN 2</h4>
+          <Field name="footerServiceHead" type="text" label="HEADER" component={renderField} />
+          <FieldArray name="footerServices" component={renderFooterLink} />
+        </div>
+        <div className="col-sm-12" style={{backgroundColor: "white", margin: "10px"}}>
+          <h4>FOOTER COLUMN 3 (CONTACT INFO.)</h4>
+          <Field name="footerContactHead" type="text" label="HEADER" component={renderField} />
+          <Field name="footerContact" type="text" label="LOCATION" component={renderField} />
+          <Field name="footerEmail" type="text" label="EMAIL" component={renderField} />
+          <Field name="footerTelephone" type="text" label="TELEPHONE" component={renderField} />
+          <Field name="footerWorkingtimeHead" type="text" label="WORKING TIME" component={renderField} />
+          <FieldArray name="footerWorkingtimes" component={renderWorkingTime} />
+        </div>
+        <div className="col-sm-12" style={{backgroundColor: "white", margin: "10px"}}>
+          <h4>FOOTER COLUMN 4 (IDENTITY)</h4>
+          <Field name="footerBrandImage" type="text" label="LOGO PICTURE" component={renderField} />
+          <Field name="footerBrandName" type="text" label="NAME" component={renderField} />
+          <Field name="footerBrandDesc" type="text" label="DESCRIPTION" component={renderField} />
+          <Field name="footerFacebook" type="text" label="FACEBOOK" component={renderField} />
+          <Field name="footerInstagram" type="text" label="INSTAGRAM" component={renderField} />
+          <Field name="footerTwitter" type="text" label="TWITTER" component={renderField} />
+        </div>
+        <button type="submit" style={{backgroundColor: "orange"}} disabled={ submitting }>{formButton}</button>
       </form>
     )
   }
@@ -362,8 +380,7 @@ export default class TemplateContentPage extends React.Component {
       return (
           <div className="form container">
             
-            <h4>FormHead</h4>
-            <p>Form Description</p>
+            <h4>MENU & FOOTER</h4>
             <UploadPage/>
             <TemplateContentForm
               initialValues={initialContent}

@@ -487,28 +487,38 @@ function GoodDetail({
               </div>
               {
                 (
-                  member && member.token
+                  !good.isAvailable
                 ) ? (
                   <div class="btns-wrap btn-material bg-white">
-                    <span class="qnt-select">
-                      <span class="plus" onClick={increaseAmount}>
-                        <i class="icofont icofont-plus"></i>
-                      </span>
-                      <span class="view-sum">
-                        {amount}
-                      </span>
-                      <span class="minus" onClick={decreaseAmount}>
-                        <i class="icofont icofont-minus"></i>
-                      </span>
-                    </span>
-                    <a class="text-blue" href="#" onClick={() => addToCart(good)}>Put in cart</a>
+                    <b>
+                      NOT AVAILABLE
+                    </b>
                   </div>
                 ) : (
-                  <div class="btns-wrap btn-material bg-white">
-                    <Link to={{pathname:"/signin", state:{from: location.pathname}}}><b>
-                      Please LogIn, Before buy this good.
-                    </b></Link>
-                  </div>
+                  (
+                    member && member.token
+                  ) ? (
+                    <div class="btns-wrap btn-material bg-white">
+                      <span class="qnt-select">
+                        <span class="plus" onClick={increaseAmount}>
+                          <i class="icofont icofont-plus"></i>
+                        </span>
+                        <span class="view-sum">
+                          {amount}
+                        </span>
+                        <span class="minus" onClick={decreaseAmount}>
+                          <i class="icofont icofont-minus"></i>
+                        </span>
+                      </span>
+                      <a class="text-blue" href="#" onClick={() => addToCart(good)}>Put in cart</a>
+                    </div>
+                  ) : (
+                    <div class="btns-wrap btn-material bg-white">
+                      <Link to={{pathname:"/signin", state:{from: location.pathname}}}><b>
+                        Please LogIn, Before buy this good.
+                      </b></Link>
+                    </div>
+                  )
                 )
               }
             </div>

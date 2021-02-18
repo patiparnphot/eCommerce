@@ -19,8 +19,6 @@ function CreateCategoryPage ({newCategory}) {
 
   return (
     <div>
-      <Navbar pagename="CREATE GOOD CATEGORY" />
-      <p>Write your good category here!!!</p>
       <CreateCategory/>
     </div>
   );

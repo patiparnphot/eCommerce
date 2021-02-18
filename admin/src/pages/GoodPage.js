@@ -31,8 +31,6 @@ function GoodPage ({editGood}) {
 
   return (
     <div>
-      <Navbar pagename="CURRENT GOOD" />
-      <p>{slug}</p>
       <Good slug={slug}/>
     </div>
   );

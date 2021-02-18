@@ -29,8 +29,6 @@ function TemplateContentPage ({newContent}) {
 
   return (
     <div>
-      <Navbar pagename="TEMPLATE CONTENT" />
-      <p>Template Content</p>
       <TemplateContent/>
     </div>
   );

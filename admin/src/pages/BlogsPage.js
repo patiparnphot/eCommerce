@@ -28,12 +28,10 @@ class BlogsPage extends Component {
     
     return (
       <div>
-        <Navbar pagename="ALL BLOGS" />
         <p>
 
 
         </p>
-        <Link to="/admin/blogs/create/">Create New Blog</Link>
         <Blogs/>
       </div>
     );

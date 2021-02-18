@@ -28,7 +28,6 @@ class OrdersPage extends Component {
     
     return (
       <div>
-        <Navbar pagename="ALL ORDERS" />
         <p>
 
 

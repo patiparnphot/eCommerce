@@ -11,7 +11,7 @@ export default class Goods extends React.Component {
     this.onChange = this.onChange.bind(this)
     this.state = {
       start: 1,
-      end: 3
+      end: 9
     };
     this.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QzIiwiZmlyc3RuYW1lIjoiM3JkUGVvcGxlIiwibGFzdG5hbWUiOiJpc0hlcmUiLCJlbWFpbCI6IjNyZFBlb3BsZUBlbWFpbC5jb20iLCJhdmF0YXIiOiIzIHBhc3RlIGltZyBzcmMgaGVyZSIsImlzQWRtaW4iOmZhbHNlLCJhZGRyZXNzIjoiMTIzIHdvcnNoaW5ndG9uIG1hZGFnYXRnYSIsInBheXBhbCI6eyJ1c2VybmFtZSI6IjNyZHBheXBhbCJ9LCJjcmVkaXRDYXJkIjp7ImNhcmROdW1iZXIiOiIxMjM0NTY3ODkwMTIzNDU2IiwiZXhwaXJlZERhdGUiOiIxMi8yNCJ9LCJpYXQiOjE2MDUzNzMzMzd9.wfZxaBT6NWVjK6ydgVFmbLyQok2QjMZIDSeNo3rHE8E";
   }
@@ -21,11 +21,15 @@ export default class Goods extends React.Component {
     this.props.fetchGoods(this.state.start, this.state.end);
     this.props.fetchGoodAmount();
     //this.props.blogsList.blogs = initialContentState.blogs.blogsList.blogs;
+  }
 
-    $(document).ready(function() {
-      // Blog isotope
-      demo.initIsotope();
-    });
+  componentDidUpdate() {
+    if(this.props.goodsList.goods) {
+      $(document).ready(function() {
+        // Blog isotope
+        demo.initIsotope();
+      });
+    }
   }
 
   componentWillUnmount() {
@@ -37,10 +41,10 @@ export default class Goods extends React.Component {
   // Click Function
   onChange(i) {
     this.setState({
-      start: 1+(3*i),
-      end: 3+(3*i)
+      start: 1+(9*i),
+      end: 9+(9*i)
     });
-    this.props.fetchGoods(1+(3*i), 3+(3*i));
+    this.props.fetchGoods(1+(9*i), 9+(9*i));
   }
   
   renderGoods(goods) {
@@ -78,7 +82,7 @@ export default class Goods extends React.Component {
     const { data } = this.props.goodAmount;
 
     const buttons = [];
-    const pageNumber = Math.ceil(Number(data) / 3);
+    const pageNumber = Math.ceil(Number(data) / 9);
     for (let i=0; i<pageNumber; i++) {
       buttons.push(<button onClick={() => this.onChange(i)} >{i+1}</button>)
     }
@@ -94,11 +98,10 @@ export default class Goods extends React.Component {
     return (
       <div className="content">
         <div className="row">
-          <div className="col-md-12">
+          <div className="col-sm-12">
             <div className="card">
               <div className="card-header">
-                <h5 className="title">List of Goods</h5>
-                <p className="category">Goods about Datascience, Search Engine Optimiser and Developer</p>
+                <h5 className="title">{`List Of Goods (${data})`}</h5>
               </div>
               <Link to="/admin/goods/create/">Create New Good</Link>
               <div className="card-body all-icons">
@@ -106,8 +109,10 @@ export default class Goods extends React.Component {
                   {this.renderGoods(goods)}
                 </div>
               </div>
-              {buttons}
             </div>
+          </div>
+          <div className="col-sm-12">
+            {buttons}
           </div>
         </div>
       </div>

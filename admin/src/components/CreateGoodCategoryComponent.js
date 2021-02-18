@@ -105,10 +105,10 @@ const renderField = ({ input, label, type, meta: { touched, error } }) => {
     );
   } else {
     return (
-      <div className="row form-group">
-        <label className="col-sm-2">{label}</label>
-        <input {...input} type={type} placeholder={label} className="form-ctrl col-sm-6"/>
-        {touched && error && <span>{error}</span>}
+      <div className="row form-group" style={{backgroundColor: "lightblue", width: "90%", marginLeft: "10px"}}>
+        <label className="col-sm-3">{label}</label>
+        <input {...input} type={type} placeholder={label} className="form-ctrl col-sm-9"/>
+        {touched && error && <span style={{color: "red"}}><b>{error}</b></span>}
       </div>
     );
   }
@@ -117,20 +117,20 @@ const renderField = ({ input, label, type, meta: { touched, error } }) => {
 const renderFeatures = ({fields, meta: {error, submitFailed}}) => (
   <ul>
     <li>
-      <button type="button" onClick={() => fields.push({})}>
+      <button type="button" style={{backgroundColor: "lightgreen"}} onClick={() => fields.push({})}>
         Add Feature
       </button>
       {submitFailed && error && <span>{error}</span>}
     </li>
     {fields.map((field, index) => (
       <li key={index}>
-        <button type="button" title="Remove Feature" onClick={() => fields.remove(index)}>X</button>
-        <h4>Feature #{index + 1}</h4>
-        <Field name={`${field}.name`} type="text" label="feature name" component={renderField}/>
-        <Field name={`${field}.first`} type="number" label="feature first" component={renderField}/>
-        <Field name={`${field}.last`} type="number" label="feature last" component={renderField}/>
-        <Field name={`${field}.min`} type="number" label="feature min" component={renderField}/>
-        <Field name={`${field}.max`} type="number" label="feature max" component={renderField}/>
+        <button type="button" style={{backgroundColor: "orange"}} title="Remove Feature" onClick={() => fields.remove(index)}>X</button>
+        <h4>FEATURE #{index + 1}</h4>
+        <Field name={`${field}.name`} type="text" label="NAME" component={renderField}/>
+        <Field name={`${field}.first`} type="number" label="FIRST" component={renderField}/>
+        <Field name={`${field}.last`} type="number" label="LAST" component={renderField}/>
+        <Field name={`${field}.min`} type="number" label="MIN" component={renderField}/>
+        <Field name={`${field}.max`} type="number" label="MAX" component={renderField}/>
       </li>
     ))}
   </ul>
@@ -139,15 +139,15 @@ const renderFeatures = ({fields, meta: {error, submitFailed}}) => (
 const renderOptions = ({fields, meta: {error, submitFailed}}) => (
   <ul>
     <li>
-      <button type="button" onClick={() => fields.push()}>
+      <button type="button" style={{backgroundColor: "lightgreen"}} onClick={() => fields.push()}>
         Add Option
       </button>
       {submitFailed && error && <span>{error}</span>}
     </li>
     {fields.map((option, index) => (
       <li key={index}>
-        <button type="button" title="Remove Option" onClick={() => fields.remove(index)}>X</button>
-        <Field name={option} type="text" label={`Option #${index + 1}`} component={renderField}/>
+        <button type="button" style={{backgroundColor: "orange"}} title="Remove Option" onClick={() => fields.remove(index)}>X</button>
+        <Field name={option} type="text" label={`OPTION #${index + 1}`} component={renderField}/>
       </li>
     ))}
     {error && <li className="error">{error}</li>}
@@ -165,16 +165,21 @@ class CreateGoodClass extends React.Component {
       placeholderText,
       formButton
     } = this.props;
-    console.log(JSON.stringify(handleSubmit));
     return (
       <form onSubmit={handleSubmit(Submit)}>
-        <Field name="titleHtml" type="text" label={placeholderTitleHtml} component={renderField} />
-        <Field name="descriptionHtml" type="text" label={placeholderDescHtml} component={renderField} />
-        <Field name="title" type="text" label={placeholderTitle} component={renderField} />
-        <Field name="text" type="textarea" label={placeholderText} component={renderField} />
-        <FieldArray name="options" component={renderOptions} />
-        <FieldArray name="features" component={renderFeatures} />
-        <button type="submit" disabled={ submitting }>{formButton}</button>
+        <div className="col-sm-12" style={{backgroundColor: "white", margin: "10px"}}>
+          <h4>SEO</h4>
+          <Field name="titleHtml" type="text" label={placeholderTitleHtml} component={renderField} />
+          <Field name="descriptionHtml" type="text" label={placeholderDescHtml} component={renderField} />
+        </div>
+        <div className="col-sm-12" style={{backgroundColor: "white", margin: "10px"}}>
+          <h4>PRODUCT CATEGORY INFO.</h4>
+          <Field name="title" type="text" label={placeholderTitle} component={renderField} />
+          <Field name="text" type="textarea" label={placeholderText} component={renderField} />
+          <FieldArray name="options" component={renderOptions} />
+          <FieldArray name="features" component={renderFeatures} />
+        </div>
+        <button type="submit" style={{backgroundColor: "orange"}} disabled={ submitting }>{formButton}</button>
       </form>
     )
   }
@@ -207,13 +212,12 @@ export default class CreateGood extends React.Component {
     return (
         <div className="form container">
           
-          <h4>FormHead</h4>
-          <p>Form Description</p>
+          <h4>CREATE PRODUCT CATEGORY</h4>
           <CreateGoodForm
-            placeholderTitleHtml="title for SEO"
-            placeholderDescHtml="description for SEO"
-            placeholderTitle="title of good"
-            placeholderText="Category content"
+            placeholderTitleHtml="SEO Title"
+            placeholderDescHtml="Meta Description"
+            placeholderTitle="TITLE"
+            placeholderText="DESCRIPTION"
             initialValues={{token: this.props.member.token}}
             formButton="Confirm"
           />

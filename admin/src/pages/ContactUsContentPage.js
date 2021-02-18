@@ -29,8 +29,6 @@ function ContactUsContentPage ({newContent}) {
 
   return (
     <div>
-      <Navbar pagename="CONTACT US CONTENT" />
-      <p>ContactUs Content</p>
       <ContactUsContent/>
     </div>
   );

@@ -12,7 +12,7 @@ export default class Orders extends React.Component {
     this.onChange = this.onChange.bind(this)
     this.state = {
       start: 1,
-      end: 3
+      end: 15
     };
     this.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QzIiwiZmlyc3RuYW1lIjoiM3JkUGVvcGxlIiwibGFzdG5hbWUiOiJpc0hlcmUiLCJlbWFpbCI6IjNyZFBlb3BsZUBlbWFpbC5jb20iLCJhdmF0YXIiOiIzIHBhc3RlIGltZyBzcmMgaGVyZSIsImlzQWRtaW4iOmZhbHNlLCJhZGRyZXNzIjoiMTIzIHdvcnNoaW5ndG9uIG1hZGFnYXRnYSIsInBheXBhbCI6eyJ1c2VybmFtZSI6IjNyZHBheXBhbCJ9LCJjcmVkaXRDYXJkIjp7ImNhcmROdW1iZXIiOiIxMjM0NTY3ODkwMTIzNDU2IiwiZXhwaXJlZERhdGUiOiIxMi8yNCJ9LCJpYXQiOjE2MDUzNzMzMzd9.wfZxaBT6NWVjK6ydgVFmbLyQok2QjMZIDSeNo3rHE8E";
   }
@@ -34,10 +34,10 @@ export default class Orders extends React.Component {
   // Click Function
   onChange(i) {
     this.setState({
-      start: 1+(3*i),
-      end: 3+(3*i)
+      start: 1+(15*i),
+      end: 15+(15*i)
     });
-    this.props.fetchOrders(1+(3*i), 3+(3*i));
+    this.props.fetchOrders(1+(15*i), 15+(15*i));
   }
   
   renderOrders(orders) {
@@ -56,8 +56,28 @@ export default class Orders extends React.Component {
           <div className="col-sm-1">
             <Link to={"/admin/orders/" + order.invoiceId}>Detail</Link>
           </div>
-          <div className="col-sm-2" style={{color: 'black'}}>
-            {order.approve ? "Approved" : <button onClick={() => this.props.approveOrder(order.invoiceId, this.props.member.token, this.state.start, this.state.end)}>Approve</button>}
+          <div className="col-sm-2">
+            {
+              (
+                order.approve
+              ) ? (
+                <button
+                  style = {{backgroundColor: "lightgreen", color: "black"}}
+                  disabled
+                >
+                  Approved
+                </button>
+              ) : (
+                <button
+                  style = {{backgroundColor: "lightyellow", color: "black"}}
+                  onClick = {
+                    () => this.props.approveOrder(order.invoiceId, this.props.member.token, this.state.start, this.state.end)
+                  }
+                >
+                  Approve
+                </button>
+              )
+            }
           </div>
           <br/>
         </div>
@@ -73,7 +93,7 @@ export default class Orders extends React.Component {
     const { data } = this.props.orderAmount;
 
     const buttons = [];
-    const pageNumber = Math.ceil(Number(data) / 3);
+    const pageNumber = Math.ceil(Number(data) / 15);
     for (let i=0; i<pageNumber; i++) {
       buttons.push(<button onClick={() => this.onChange(i)} >{i+1}</button>)
     }
@@ -90,8 +110,7 @@ export default class Orders extends React.Component {
       <div className="container">
         <div className="card">
           <div className="card-header">
-            <h5 className="title">List of Orders</h5>
-            <p className="category">Orders about Datascience, Search Engine Optimiser and Developer</p>
+            <h5 className="title">{`OREDERS LIST (${data})`}</h5>
           </div>
           <div className="card-body all-icons">
             <div className="row blog-container">

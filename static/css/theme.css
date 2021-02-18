@@ -5026,6 +5026,7 @@ a.ui-button:active,
   position: relative;
   border-radius: 3px;
   margin-top: 28px;
+  text-align: center;
 }
 .shop-item-page .buy-btn-panel .cart-icon {
   font-size: 1.875em;

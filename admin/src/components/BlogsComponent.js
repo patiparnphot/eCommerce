@@ -19,11 +19,15 @@ export default class Blogs extends React.Component {
     this.props.fetchBlogs(this.state.start, this.state.end);
     this.props.fetchBlogAmount();
     //this.props.blogsList.blogs = initialContentState.blogs.blogsList.blogs;
+  }
 
-    $(document).ready(function() {
-      // Blog isotope
-      demo.initIsotope();
-    });
+  componentDidUpdate() {
+    if(this.props.blogsList.blogs) {
+      $(document).ready(function() {
+        // Blog isotope
+        demo.initIsotope();
+      });
+    }
   }
 
   // Click Function
@@ -83,11 +87,10 @@ export default class Blogs extends React.Component {
     return (
       <div className="content">
         <div className="row">
-          <div className="col-md-12">
+          <div className="col-sm-12">
             <div className="card">
               <div className="card-header">
                 <h5 className="title">List of Blogs</h5>
-                <p className="category">Blogs about Datascience, Search Engine Optimiser and Developer</p>
               </div>
               <Link to="/admin/blogs/create/">Create New Blog</Link>
               <div className="card-body all-icons">
@@ -95,8 +98,10 @@ export default class Blogs extends React.Component {
                   {this.renderBlogs(blogs)}
                 </div>
               </div>
-              {buttons}
             </div>
+          </div>
+          <div className="col-sm-12">
+            {buttons}
           </div>
         </div>
       </div>

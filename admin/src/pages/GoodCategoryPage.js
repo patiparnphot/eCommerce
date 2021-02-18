@@ -31,8 +31,6 @@ function GoodCategoryPage ({editCategory}) {
 
   return (
     <div>
-      <Navbar pagename="CURRENT GOOD CATEGORY" />
-      <p>{categoryTitle}</p>
       <GoodCategory categoryTitle={categoryTitle}/>
     </div>
   );

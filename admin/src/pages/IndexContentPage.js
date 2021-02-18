@@ -29,8 +29,6 @@ function IndexContentPage ({newContent}) {
 
   return (
     <div>
-      <Navbar pagename="CURRENT GOOD" />
-      <p>Index Content</p>
       <IndexContent/>
     </div>
   );

@@ -186,10 +186,10 @@ const validate = values => {
 
 const renderField = ({ input, label, type, meta: { touched, error } }) => {
   return (
-    <div className="row form-group">
+    <div className="row form-group" style={{backgroundColor: "lightblue", width: "90%", marginLeft: "10px"}}>
       <label className="col-sm-3">{label}</label>
-      <input {...input} type={type} placeholder={label} className="form-ctrl col-sm-6"/>
-      {touched && error && <span>{error}</span>}
+      <input {...input} type={type} placeholder={label} className="form-ctrl col-sm-9"/>
+      {touched && error && <span style={{color: "red"}}><b>{error}</b></span>}
     </div>
   );
 }
@@ -197,22 +197,20 @@ const renderField = ({ input, label, type, meta: { touched, error } }) => {
 const renderSlideshows = ({fields, meta: {error, submitFailed}}) => (
   <ul>
     <li>
-      <button type="button" onClick={() => fields.push({})}>
+      <button type="button" style={{backgroundColor: "lightgreen"}} onClick={() => fields.push({})}>
         Add Slideshow
       </button>
       {submitFailed && error && <span>{error}</span>}
     </li>
     {fields.map((slideshow, index) => (
       <li key={index}>
-        <button type="button" title="Remove Option" onClick={() => fields.remove(index)}>X</button>
+        <button type="button" style={{backgroundColor: "orange"}} title="Remove Slideshow" onClick={() => fields.remove(index)}>X</button>
         <h4>Slideshow #{index + 1}</h4>
-        <Field name={`${slideshow}.header`} type="text" label="header" component={renderField}/>
-        <Field name={`${slideshow}.description`} type="text" label="description" component={renderField}/>
-        <Field name={`${slideshow}.link`} type="text" label="link" component={renderField}/>
-        <Field name={`${slideshow}.btnLink`} type="text" label="btnLink" component={renderField}/>
-        <Field name={`${slideshow}.image`} type="text" label="image" component={renderField}/>
-        <Field name={`${slideshow}.campaign`} type="text" label="campaign" component={renderField}/>
-        <Field name={`${slideshow}.tag`} type="text" label="tag" component={renderField}/>
+        <Field name={`${slideshow}.header`} type="text" label="HEADER" component={renderField}/>
+        <Field name={`${slideshow}.description`} type="text" label="DESCRIPTION" component={renderField}/>
+        <Field name={`${slideshow}.link`} type="text" label="BUTTON TEXT" component={renderField}/>
+        <Field name={`${slideshow}.btnLink`} type="text" label="BUTTON LINK" component={renderField}/>
+        <Field name={`${slideshow}.image`} type="text" label="IMAGE" component={renderField}/>
       </li>
     ))}
   </ul>
@@ -221,17 +219,17 @@ const renderSlideshows = ({fields, meta: {error, submitFailed}}) => (
 const renderCategories = ({fields, meta: {error, submitFailed}}) => (
   <ul>
     <li>
-      <button type="button" onClick={() => fields.push({})}>
+      <button type="button" style={{backgroundColor: "lightgreen"}} onClick={() => fields.push({})}>
         Add Category
       </button>
       {submitFailed && error && <span>{error}</span>}
     </li>
     {fields.map((category, index) => (
       <li key={index}>
-        <button type="button" title="Remove Option" onClick={() => fields.remove(index)}>X</button>
+        <button type="button" style={{backgroundColor: "orange"}} title="Remove Category" onClick={() => fields.remove(index)}>X</button>
         <h4>Category #{index + 1}</h4>
-        <Field name={`${category}.topic`} type="text" label="topic" component={renderField}/>
-        <Field name={`${category}.link`} type="text" label="link" component={renderField}/>
+        <Field name={`${category}.topic`} type="text" label="CATEGORY" component={renderField}/>
+        <Field name={`${category}.link`} type="text" label="LINK" component={renderField}/>
       </li>
     ))}
   </ul>
@@ -246,29 +244,41 @@ class IndexContentClass extends React.Component {
     } = this.props;
     return (
       <form onSubmit={handleSubmit(Submit)}>
-        <Field name="titleHtml" type="text" label="title of index page for seo" component={renderField} />
-        <Field name="descriptionHtml" type="text" label="desc of index page for seo" component={renderField} />
-        <Field name="introBackground" type="text" label="background of intro section" component={renderField} />
-        <FieldArray name="introSlideshows" component={renderSlideshows} />
-        <Field name="recentParallaxText" type="text" label="parallaxText of recent section" component={renderField} />
-        <Field name="recentHeader" type="text" label="header of recent section" component={renderField} />
-        <Field name="campaignTitle" type="text" label="title of campaign section" component={renderField} />
-        <Field name="campaignSubTitle" type="text" label="subTitle of campaign section" component={renderField} />
-        <Field name="campaignBtnText" type="text" label="btnText of campaign section" component={renderField} />
-        <Field name="campaignBtnLink" type="text" label="btnLink of campaign section" component={renderField} />
-        <Field name="campaignParallaxImage" type="text" label="parallaxImage of campaign section" component={renderField} />
-        <Field name="campaignBackground" type="text" label="background of campaign section" component={renderField} />
-        <Field name="popularOnShopSidebarImage" type="text" label="sidebarImage of popularOnShop section" component={renderField} />
-        <Field name="popularOnShopCategoryHead" type="text" label="categoryHead of popularOnShop section" component={renderField} />
-        <FieldArray name="popularOnShopCategories" component={renderCategories} />
-        <Field name="blogsHeader" type="text" label="header of blogs section" component={renderField} />
-        <Field name="blogsSubHeader" type="text" label="subHeader of blogs section" component={renderField} />
-        <Field name="blogsParallaxText" type="text" label="parallaxText of blogs section" component={renderField} />
-        <Field name="informationTitle" type="text" label="title of information section" component={renderField} />
-        <Field name="informationText" type="text" label="text of information section" component={renderField} />
-        <Field name="informationParallaxImage" type="text" label="parallaxImage of information section" component={renderField} />
-        <Field name="informationBackground" type="text" label="background of information section" component={renderField} />
-        <button type="submit" disabled={ submitting }>{formButton}</button>
+        <div className="col-sm-12" style={{backgroundColor: "white", margin: "10px"}}>
+          <h4>SEO</h4>
+          <Field name="titleHtml" type="text" label="SEO title" component={renderField} />
+          <Field name="descriptionHtml" type="text" label="Meta Description" component={renderField} />
+        </div>
+        <div className="col-sm-12" style={{backgroundColor: "white", margin: "10px"}}>
+          <h4>INTRO SECTION</h4>
+          <Field name="introBackground" type="text" label="BACKGROUND" component={renderField} />
+          <FieldArray name="introSlideshows" component={renderSlideshows} />
+        </div>
+        <div className="col-sm-12" style={{backgroundColor: "white", margin: "10px"}}>
+          <h4>BANNER 1</h4>
+          <Field name="campaignTitle" type="text" label="HEADER" component={renderField} />
+          <Field name="campaignSubTitle" type="text" label="DESCRIPTION" component={renderField} />
+          <Field name="campaignBtnText" type="text" label="BUTTON TEXT" component={renderField} />
+          <Field name="campaignBtnLink" type="text" label="BUTTON LINK" component={renderField} />
+          <Field name="campaignParallaxImage" type="text" label="IMAGE" component={renderField} />
+        </div>
+        <div className="col-sm-12" style={{backgroundColor: "white", margin: "10px"}}>
+          <h4>CATEGORY SECTION</h4>
+          <Field name="popularOnShopCategoryHead" type="text" label="TITLE" component={renderField} />
+          <FieldArray name="popularOnShopCategories" component={renderCategories} />
+        </div>
+        <div className="col-sm-12" style={{backgroundColor: "white", margin: "10px"}}>
+          <h4>BLOG</h4>
+          <Field name="blogsHeader" type="text" label="TITLE" component={renderField} />
+          <Field name="blogsSubHeader" type="text" label="DESCRIPTION" component={renderField} />
+        </div>
+        <div className="col-sm-12" style={{backgroundColor: "white", margin: "10px"}}>
+          <h4>BANNER 2</h4>
+          <Field name="informationTitle" type="text" label="HEADER" component={renderField} />
+          <Field name="informationText" type="text" label="DESCRIPTION" component={renderField} />
+          <Field name="informationParallaxImage" type="text" label="IMAGE" component={renderField} />
+        </div>
+        <button type="submit" style={{backgroundColor: "orange"}} disabled={ submitting }>{formButton}</button>
       </form>
     )
   }
@@ -338,8 +348,7 @@ export default class IndexContentPage extends React.Component {
       return (
           <div className="form container">
             
-            <h4>FormHead</h4>
-            <p>Form Description</p>
+            <h4>HOMEPAGE</h4>
             <UploadPage/>
             <IndexContentForm
               initialValues={initialContent}

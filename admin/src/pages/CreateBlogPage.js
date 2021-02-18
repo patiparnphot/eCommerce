@@ -19,8 +19,6 @@ function CreatePage ({newBlog}) {
 
   return (
     <div>
-      <Navbar pagename="CREATE BLOG" />
-      <p>Write your blog content here!!!</p>
       <Create/>
     </div>
   );

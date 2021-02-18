@@ -65,10 +65,10 @@ const renderField = ({ input, label, type, meta: { touched, error } }) => {
     );
   } else {
     return (
-      <div className="row form-group">
-        <label className="col-sm-2">{label}</label>
-        <input {...input} type={type} placeholder={label} className="form-ctrl col-sm-6"/>
-        {touched && error && <span>{error}</span>}
+      <div className="row form-group" style={{backgroundColor: "lightblue", width: "90%", marginLeft: "10px"}}>
+        <label className="col-sm-3">{label}</label>
+        <input {...input} type={type} placeholder={label} className="form-ctrl col-sm-9"/>
+        {touched && error && <span style={{color: "red"}}><b>{error}</b></span>}
       </div>
     );
   }
@@ -90,14 +90,20 @@ class EditBlogClass extends React.Component {
     } = this.props;
     return (
       <form onSubmit={handleSubmit(Submit)}>
-        <Field name="slug" type="text" label={placeholderSlug} component={renderField} />
-        <Field name="titleHtml" type="text" label={placeholderTitleHtml} component={renderField} />
-        <Field name="descriptionHtml" type="text" label={placeholderDescHtml} component={renderField} />
-        <Field name="title" type="text" label={placeholderTitle} component={renderField} />
-        <Field name="image" type="text" label={placeholderImage} component={renderField} />
-        <Field name="text" type="textarea" label={placeholderText} component={renderField} />
-        <Field name="type" type="text" label={placeholderType} component={renderField} />
-        <button type="submit" disabled={ submitting }>{formButton}</button>
+        <div className="col-sm-12" style={{backgroundColor: "white", margin: "10px"}}>
+          <h4>SEO</h4>
+          <Field name="titleHtml" type="text" label={placeholderTitleHtml} component={renderField} />
+          <Field name="descriptionHtml" type="text" label={placeholderDescHtml} component={renderField} />
+          <Field name="slug" type="text" label={placeholderSlug} component={renderField} />
+        </div>
+        <div className="col-sm-12" style={{backgroundColor: "white", margin: "10px"}}>
+          <h4>BLOG INFO.</h4>
+          <Field name="title" type="text" label={placeholderTitle} component={renderField} />
+          <Field name="image" type="text" label={placeholderImage} component={renderField} />
+          <Field name="text" type="textarea" label={placeholderText} component={renderField} />
+          <Field name="type" type="text" label={placeholderType} component={renderField} />
+        </div>
+        <button type="submit" style={{backgroundColor: "orange"}} disabled={ submitting }>{formButton}</button>
       </form>
     )
   }
@@ -143,17 +149,16 @@ export default class BlogPage extends React.Component {
     return (
         <div className="form container">
           
-          <h4>FormHead</h4>
-          <p>Form Description</p>
+          <h4>{`Blog: ${this.props.blogSlug}`}</h4>
           <UploadPage/>
           <EditBlogForm
-            placeholderSlug="slug param in url"
-            placeholderTitleHtml="title for SEO"
-            placeholderDescHtml="description for SEO"
-            placeholderTitle="title of blog"
-            placeholderImage="src of blog cover"
-            placeholderText="blog content"
-            placeholderType="type of blog"
+            placeholderSlug="SLUG"
+            placeholderTitleHtml="SEO Title"
+            placeholderDescHtml="Meta Description"
+            placeholderTitle="TITLE"
+            placeholderImage="BLOG COVER IMG"
+            placeholderText="BLOG CONTENT"
+            placeholderType="CATEGORY"
             initialValues={initialBlog}
             formButton="Confirm"
           />

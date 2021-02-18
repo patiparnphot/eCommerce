@@ -20,11 +20,11 @@ export default class SideBar extends React.Component {
     return (
       <div className="sidebar" data-color="orange">
         <div className="logo">
-          <a href="http://www.creative-tim.com" className="simple-text logo-mini">
-            CT
+          <a className="simple-text logo-mini">
+            OC
           </a>
-          <a href="http://www.creative-tim.com" className="simple-text logo-normal">
-            Creative Tim
+          <a className="simple-text logo-normal">
+            OCTORAX
           </a>
         </div>
         <div className="sidebar-wrapper" id="sidebar-wrapper">
@@ -32,31 +32,31 @@ export default class SideBar extends React.Component {
             <li className={pathname == "/admin/" ? "active" : ""}>
               <Link to="/admin/">
                 <i className="now-ui-icons design_app"></i>
-                <p>Dashboard</p>
-              </Link>
-            </li>
-            <li className={pathname == "/admin/upload" ? "active" : ""}>
-              <Link to="/admin/upload">
-                <i className="now-ui-icons education_atom"></i>
-                <p>Upload</p>
+                <p>Orders</p>
               </Link>
             </li>
             <li className={pathname == "/admin/contents/index" ? "active" : ""}>
               <Link to="/admin/contents/index">
                 <i className="now-ui-icons education_atom"></i>
-                <p>Index Content</p>
+                <p>Homepage</p>
               </Link>
             </li>
             <li className={pathname == "/admin/contents/template" ? "active" : ""}>
               <Link to="/admin/contents/template">
                 <i className="now-ui-icons education_atom"></i>
-                <p>Template Content</p>
+                <p>Menu & Footer</p>
               </Link>
             </li>
-            <li className={pathname == "/admin/contents/contactUs" ? "active" : ""}>
-              <Link to="/admin/contents/contactUs">
+            <li className={pathname == "/admin/goods" ? "active" : ""}>
+              <Link to="/admin/goods">
                 <i className="now-ui-icons education_atom"></i>
-                <p>ContactUs Content</p>
+                <p>Products</p>
+              </Link>
+            </li>
+            <li className={pathname == "/admin/goodCategories" ? "active" : ""}>
+              <Link to="/admin/goodCategories">
+                <i className="now-ui-icons education_atom"></i>
+                <p>Product Categories</p>
               </Link>
             </li>
             <li className={pathname == "/admin/blogs" ? "active" : ""}>
@@ -65,26 +65,14 @@ export default class SideBar extends React.Component {
                 <p>Blogs</p>
               </Link>
             </li>
-            <li className={pathname == "/admin/goods" ? "active" : ""}>
-              <Link to="/admin/goods">
+            <li className={pathname == "/admin/contents/contactUs" ? "active" : ""}>
+              <Link to="/admin/contents/contactUs">
                 <i className="now-ui-icons education_atom"></i>
-                <p>Goods</p>
-              </Link>
-            </li>
-            <li className={pathname == "/admin/goodCategories" ? "active" : ""}>
-              <Link to="/admin/goodCategories">
-                <i className="now-ui-icons education_atom"></i>
-                <p>Good Categories</p>
-              </Link>
-            </li>
-            <li className={pathname == "/admin/orders" ? "active" : ""}>
-              <Link to="/admin/orders">
-                <i className="now-ui-icons education_atom"></i>
-                <p>Orders</p>
+                <p>Contact</p>
               </Link>
             </li>
             <li>
-              <a href="/">
+              <a href="/" className="active-pro">
                 <i className="now-ui-icons arrows-1_cloud-download-93"></i>
                 <p>Back to your Site</p>
               </a>

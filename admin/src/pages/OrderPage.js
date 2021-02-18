@@ -31,7 +31,6 @@ function OrderPage () {
 
   return (
     <div>
-      <Navbar pagename="CURRENT ORDER" />
       <h2 style={{textAlign: "center"}}><b>InvoiceId: {invoiceId}</b></h2>
       <hr/>
       <Order invoiceId={invoiceId}/>

@@ -11,7 +11,7 @@ export default class GoodCategories extends React.Component {
     this.onChange = this.onChange.bind(this)
     this.state = {
       start: 1,
-      end: 3
+      end: 9
     };
     this.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QzIiwiZmlyc3RuYW1lIjoiM3JkUGVvcGxlIiwibGFzdG5hbWUiOiJpc0hlcmUiLCJlbWFpbCI6IjNyZFBlb3BsZUBlbWFpbC5jb20iLCJhdmF0YXIiOiIzIHBhc3RlIGltZyBzcmMgaGVyZSIsImlzQWRtaW4iOmZhbHNlLCJhZGRyZXNzIjoiMTIzIHdvcnNoaW5ndG9uIG1hZGFnYXRnYSIsInBheXBhbCI6eyJ1c2VybmFtZSI6IjNyZHBheXBhbCJ9LCJjcmVkaXRDYXJkIjp7ImNhcmROdW1iZXIiOiIxMjM0NTY3ODkwMTIzNDU2IiwiZXhwaXJlZERhdGUiOiIxMi8yNCJ9LCJpYXQiOjE2MDUzNzMzMzd9.wfZxaBT6NWVjK6ydgVFmbLyQok2QjMZIDSeNo3rHE8E";
   }
@@ -32,10 +32,10 @@ export default class GoodCategories extends React.Component {
   // Click Function
   onChange(i) {
     this.setState({
-      start: 1+(3*i),
-      end: 3+(3*i)
+      start: 1+(9*i),
+      end: 9+(9*i)
     });
-    this.props.fetchGoodCategories(1+(3*i), 3+(3*i));
+    this.props.fetchGoodCategories(1+(9*i), 9+(9*i));
   }
   
   renderGoodCategories(goodCategories) {
@@ -49,7 +49,14 @@ export default class GoodCategories extends React.Component {
             <Link to={"/admin/goodCategories/edit/" + goodCategory.title}>Edit</Link>
           </div>
           <div className="col-sm-4" style={{color: 'black'}}>
-            <button onClick={() => this.props.deleteGoodCategory(goodCategory.title, this.props.member.token, this.state.start, this.state.end)}>Delete</button>
+            <button
+              style = {{backgroundColor: "orange", color: "white"}}
+              onClick = {
+                () => this.props.deleteGoodCategory(goodCategory.title, this.props.member.token, this.state.start, this.state.end)
+              }
+            >
+              Delete
+            </button>
           </div>
           <br/>
         </div>
@@ -65,7 +72,7 @@ export default class GoodCategories extends React.Component {
     const { data } = this.props.goodCategoryAmount;
 
     const buttons = [];
-    const pageNumber = Math.ceil(Number(data) / 3);
+    const pageNumber = Math.ceil(Number(data) / 9);
     for (let i=0; i<pageNumber; i++) {
       buttons.push(<button onClick={() => this.onChange(i)} >{i+1}</button>)
     }
@@ -83,7 +90,6 @@ export default class GoodCategories extends React.Component {
         <div className="card">
           <div className="card-header">
             <h5 className="title">List of Good Categories</h5>
-            <p className="category">Good Categories about Datascience, Search Engine Optimiser and Developer</p>
           </div>
           <Link to="/admin/goodCategories/create/">Create New Good Category</Link>
           <div className="card-body all-icons">

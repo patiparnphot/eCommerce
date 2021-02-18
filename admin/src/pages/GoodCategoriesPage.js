@@ -28,12 +28,10 @@ class GoodCategoriesPage extends Component {
     
     return (
       <div>
-        <Navbar pagename="ALL GOOD CATEGORIES" />
         <p>
 
 
         </p>
-        <Link to="/admin/goodCategories/create/">Create New Good Category</Link>
         <GoodCategories/>
       </div>
     );
