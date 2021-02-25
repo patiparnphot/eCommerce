@@ -29,7 +29,7 @@ function receiver(type, json) {
 }
 
 // const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost:3000/api' : '/api';
-const ROOT_URL = require('../../config.json').encodedApiLink;
+const ROOT_URL = require('../../../config.json').encodedApiLink;
 
 
 export function signInUser(props) {

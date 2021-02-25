@@ -28,7 +28,7 @@ function receiver(type, json) {
 }
 
 //const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost/api' : '/api';
-const ROOT_URL = require('../../config.json').encodedApiLink;
+const ROOT_URL = require('../../../config.json').encodedApiLink;
 export function fetchOrders(start, end) {
   return dispatch => {
     return fetch(atob(ROOT_URL) + atob('L29yZGVycy8=') + start + '/' + end)

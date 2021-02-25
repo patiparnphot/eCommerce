@@ -22,7 +22,7 @@ function receiver(type, json) {
 }
 
 //const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost/api' : '/api';
-const ROOT_URL = require('../../config.json').encodedApiLink;
+const ROOT_URL = require('../../../config.json').encodedApiLink;
 
 export function fetchContent(contentType) {
   return dispatch => {
