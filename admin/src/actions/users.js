@@ -29,87 +29,12 @@ function receiver(type, json) {
 }
 
 // const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost:3000/api' : '/api';
-const ROOT_URL = '/api';
-// export function meFromPage(username) {
-//   //check if the token is still valid, if so, get me from the server
-//   const request = axios({
-//     method: 'get',
-//     url: `${ROOT_URL}/mefrompage.php?page=${username}`,
-//     headers: {
-//       'Authorization': `Bearer ${username}`
-//     }
-//   });
-
-//   return {
-//     type: ME_FROM_PAGE,
-//     payload: request
-//   };
-// }
-
-export function meFromPageSuccess(currentUser) {
-  return {
-    type: ME_FROM_PAGE_SUCCESS,
-    payload: currentUser
-  };
-}
-
-// export function meFromPageFailure(error) {
-//   return {
-//     type: ME_FROM_PAGE_FAILURE,
-//     payload: error
-//   };
-// }
-
-
-export function resetMeFromPage() {//used for logout
-  return {
-    type: RESET_ME_FROM_PAGE
-  };
-}
-
-
-export function signUpUser(formValues) {
-    return dispatch => {
-        return fetch(`${ROOT_URL}/users/register/`, {
-            method: "post",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formValues)
-        })
-        .then(
-          (response) => {
-            if (response.status >= 400) {
-              return response.text();
-            } else {
-              return response.json();
-            }
-          },
-          error => console.log('An error occurred.', error)
-        )
-        .then(json => dispatch(receiver(SIGNUP_USER, json)));
-    };
-}
-
-export function signUpUserSuccess(user) {
-  return {
-    type: SIGNUP_USER_SUCCESS,
-    payload: user
-  };
-}
-
-export function signUpUserFailure(error) {
-  return {
-    type: SIGNUP_USER_FAILURE,
-    payload: error
-  };
-}
+const ROOT_URL = require('../../config.json').encodedApiLink;
 
 
 export function signInUser(props) {
   return dispatch => {
-    return fetch(`${ROOT_URL}/users/login/admin/`, {
+    return fetch(atob(ROOT_URL) + atob('L3VzZXJzL2xvZ2luL2FkbWluLw=='), {
       method: "post",
       headers: {
           'Accept': 'application/json',

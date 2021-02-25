@@ -40,10 +40,10 @@ function receiver(type, json) {
 }
 
 //const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost/api' : '/api';
-const ROOT_URL = '/api';
+const ROOT_URL = require('../../config.json').encodedApiLink;
 export function fetchRecentGoods() {
   return dispatch => {
-    return fetch(`${ROOT_URL}/goods/recent/`)
+    return fetch(atob(ROOT_URL) + atob('L2dvb2RzL3JlY2VudC8='))
       .then(response => response.json(), error => console.log('An error occurred.', error))
       .then(json => dispatch(receiver(FETCH_RCTGOODS, json)));
   };
@@ -64,7 +64,7 @@ export function fetchRecentGoodsFailure(error) {
 
 export function fetchPopularGoods() {
   return dispatch => {
-    return fetch(`${ROOT_URL}/goods/popular/`)
+    return fetch(atob(ROOT_URL) + atob('L2dvb2RzL3BvcHVsYXIv'))
       .then(response => response.json(), error => console.log('An error occurred.', error))
       .then(json => dispatch(receiver(FETCH_POPGOODS, json)));
   };
@@ -85,7 +85,7 @@ export function fetchPopularGoodsFailure(error) {
 
 export function fetchFilterGoods(filter) {
   return dispatch => {
-    return fetch(`${ROOT_URL}/goods/filter/`, {
+    return fetch(atob(ROOT_URL) + atob('L2dvb2RzL2ZpbHRlci8='), {
         method: "post",
         headers: {
           'Accept': 'application/json',
@@ -122,7 +122,7 @@ export function fetchFilterGoodsFailure(error) {
 
 export function fetchGood(slug) {
   return dispatch => {
-    return fetch(`${ROOT_URL}/goods/${slug}`)
+    return fetch(atob(ROOT_URL) + atob('L2dvb2RzLw==') + slug)
       .then(response => response.json(), error => console.log('An error occurred.', error))
       .then(json => dispatch(receiver(FETCH_GOOD, json)));
   };

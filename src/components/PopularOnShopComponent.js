@@ -232,9 +232,9 @@ function Goods({goods}) {
               </div>
               {
                 (
-                  !optionKeys
+                  !optionKeys || optionKeys.length <= 2
                 ) ? (
-                  <span></span>
+                  <ul class="features"><li><span></span></li><li><div class="rate"></div></li></ul>
                 ) : (
                   <Features keys={optionKeys} features={filteredOption}/>
                 )

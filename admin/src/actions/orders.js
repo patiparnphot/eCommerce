@@ -28,10 +28,10 @@ function receiver(type, json) {
 }
 
 //const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost/api' : '/api';
-const ROOT_URL = '/api';
+const ROOT_URL = require('../../config.json').encodedApiLink;
 export function fetchOrders(start, end) {
   return dispatch => {
-    return fetch(`${ROOT_URL}/orders/${start}/${end}/`)
+    return fetch(atob(ROOT_URL) + atob('L29yZGVycy8=') + start + '/' + end)
       .then(response => response.json(), error => console.log('An error occurred.', error))
       .then(json => dispatch(receiver(FETCH_ORDERS, json)));
   };
@@ -52,7 +52,7 @@ export function fetchOrdersFailure(error) {
 
 export function approveOrder(invoiceId, approveOrder, token) {
   return dispatch => {
-    return fetch(`${ROOT_URL}/orders/${invoiceId}/`, {
+    return fetch(atob(ROOT_URL) + atob('L29yZGVycy8=') + invoiceId, {
         method: "put",
         headers: {
           'Accept': 'application/json',
@@ -86,7 +86,7 @@ export function resetApprovedOrder() {
 
 export function fetchOrder(invoiceId) {
   return dispatch => {
-    return fetch(`${ROOT_URL}/orders/${invoiceId}`)
+    return fetch(atob(ROOT_URL) + atob('L29yZGVycy8=') + invoiceId)
       .then(response => response.json(), error => console.log('An error occurred.', error))
       .then(json => dispatch(receiver(FETCH_ORDER, json)));
   };

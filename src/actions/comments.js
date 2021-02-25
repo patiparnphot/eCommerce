@@ -28,11 +28,11 @@ function receiver(type, json) {
 }
 
 //const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost/api' : '/api';
-const ROOT_URL = '/api';
+const ROOT_URL = require('../../config.json').encodedApiLink;
 
 export function createComment(goodSlug, newComment, token) {
   return dispatch => {
-    return fetch(`${ROOT_URL}/comments`, {
+    return fetch(atob(ROOT_URL) + atob('L2NvbW1lbnRzLw=='), {
         method: "post",
         headers: {
           'Accept': 'application/json',
@@ -66,7 +66,7 @@ export function resetNewComment() {
 
 export function editComment(editedCommentId, goodSlug, editedComment, token) {
   return dispatch => {
-    return fetch(`${ROOT_URL}/comments/${editedCommentId}`, {
+    return fetch(atob(ROOT_URL) + atob('L2NvbW1lbnRzLw==') + editedCommentId, {
         method: "put",
         headers: {
           'Accept': 'application/json',
@@ -100,7 +100,7 @@ export function resetEditedComment() {
 
 export function deleteComment(deletedCommentId, goodSlug, token) {
   return dispatch => {
-    return fetch(`${ROOT_URL}/comments/${deletedCommentId}`, {
+    return fetch(atob(ROOT_URL) + atob('L2NvbW1lbnRzLw==') + deletedCommentId, {
         method: "delete",
         headers: {
           'Accept': 'application/json',

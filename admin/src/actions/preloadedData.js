@@ -36,11 +36,11 @@ function receiver(type, json) {
 }
 
 //const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost/api' : '/api';
-const ROOT_URL = '/api';
+const ROOT_URL = require('../../config.json').encodedApiLink;
 
 export function fetchBlogamount() {
   return dispatch => {
-    return fetch(`${ROOT_URL}/blogs/amount/`)
+    return fetch(atob(ROOT_URL) + atob('L2Jsb2dzL2Ftb3VudC8='))
       .then(response => response.json(), error => console.log('An error occurred.', error))
       .then(json => dispatch(receiver(FETCH_BLOGAMOUNT, json)));
   };
@@ -60,7 +60,7 @@ export function fetchBlogamountFailure(error) {
 
 export function fetchGoodamount() {
   return dispatch => {
-    return fetch(`${ROOT_URL}/goods/amount/`)
+    return fetch(atob(ROOT_URL) + atob('L2dvb2RzL2Ftb3VudC8='))
       .then(response => response.json(), error => console.log('An error occurred.', error))
       .then(json => dispatch(receiver(FETCH_GOODAMOUNT, json)));
   };
@@ -80,7 +80,7 @@ export function fetchGoodamountFailure(error) {
 
 export function fetchOrderamount() {
   return dispatch => {
-    return fetch(`${ROOT_URL}/orders/amount/`)
+    return fetch(atob(ROOT_URL) + atob('L29yZGVycy9hbW91bnQv'))
       .then(response => response.json(), error => console.log('An error occurred.', error))
       .then(json => dispatch(receiver(FETCH_ORDERAMOUNT, json)));
   };
@@ -100,7 +100,7 @@ export function fetchOrderamountFailure(error) {
 
 export function fetchGoodcategoryamount() {
   return dispatch => {
-    return fetch(`${ROOT_URL}/goods/categories/amount/`)
+    return fetch(atob(ROOT_URL) + atob('L2dvb2RzL2NhdGVnb3JpZXMvYW1vdW50Lw=='))
       .then(response => response.json(), error => console.log('An error occurred.', error))
       .then(json => dispatch(receiver(FETCH_GOODCATAMT, json)));
   };
@@ -120,7 +120,7 @@ export function fetchGoodcategoryamountFailure(error) {
 
 export function fetchGoodcategorytitles() {
   return dispatch => {
-    return fetch(`${ROOT_URL}/goods/categories/allProps/`)
+    return fetch(atob(ROOT_URL) + atob('L2dvb2RzL2NhdGVnb3JpZXMvYWxsUHJvcHMv'))
       .then(response => response.json(), error => console.log('An error occurred.', error))
       .then(json => dispatch(receiver(FETCH_GOODCATT, json)));
   };

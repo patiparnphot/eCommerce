@@ -40,12 +40,12 @@ function receiver(type, json) {
 }
 
 //const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost/api' : '/api';
-const ROOT_URL = '/api';
+const ROOT_URL = require('../../config.json').encodedApiLink;
 
 export function fetchBlogs(start, end) {
   return dispatch => {
-    console.log(`${ROOT_URL}/blogs/pagination/${start}/${end}/`);
-    return fetch(`${ROOT_URL}/blogs/pagination/${start}/${end}/`)
+    console.log(atob(ROOT_URL) + atob('L2Jsb2dzL3BhZ2luYXRpb24v') + start + '/' + end);
+    return fetch(atob(ROOT_URL) + atob('L2Jsb2dzL3BhZ2luYXRpb24v') + start + '/' + end)
       .then(response => response.json(), error => console.log('An error occurred.', error))
       .then(json => dispatch(receiver(FETCH_BLOGS, json)));
   };
@@ -66,7 +66,7 @@ export function fetchBlogsFailure(error) {
 
 export function createBlog(newBlog, token) {
   return dispatch => {
-    return fetch(`${ROOT_URL}/blogs/create`, {
+    return fetch(atob(ROOT_URL) + atob('L2Jsb2dzL2NyZWF0ZS8='), {
         method: "post",
         headers: {
           'Accept': 'application/json',
@@ -109,7 +109,7 @@ export function resetNewBlog() {
 
 export function editBlog(editedBlogId, editedBlogObj, token) {
   return dispatch => {
-    return fetch(`${ROOT_URL}/blogs/edit/${editedBlogId}`, {
+    return fetch(atob(ROOT_URL) + atob('L2Jsb2dzL2VkaXQv') + editedBlogId, {
         method: "put",
         headers: {
           'Accept': 'application/json',
@@ -152,7 +152,7 @@ export function resetEditedBlog() {
 
 export function fetchBlog(slug) {
   return dispatch => {
-    return fetch(`${ROOT_URL}/blogs/active/${slug}`)
+    return fetch(atob(ROOT_URL) + atob('L2Jsb2dzL2FjdGl2ZS8=') + slug)
       .then(response => response.json(), error => console.log('An error occurred.', error))
       .then(json => dispatch(receiver(FETCH_BLOG, json)));
   };
@@ -173,30 +173,4 @@ export function resetActiveBlog() {
   return {
     type: RESET_ACTIVE_BLOG
   }
-}
-
-
-export function deleteBlog(id) {
-  return dispatch => {
-    return fetch(`${ROOT_URL}/deleteblog?id="${id}"`)
-      .then(response => response.json(), error => console.log('An error occurred.', error))
-      .then(json => dispatch(receiver(DELETE_BLOG, json)));
-  };
-}
-export function deleteBlogSuccess(deletedBlog) {
-  return {
-    type: DELETE_BLOG_SUCCESS,
-    payload: deletedBlog
-  };
-}
-export function deleteBlogFailure(response) {
-  return {
-    type: DELETE_BLOG_FAILURE,
-    payload: response
-  };
-}
-export function resetDeletedBlog() {
-  return {
-    type: RESET_DELETED_BLOG
-  };
 }

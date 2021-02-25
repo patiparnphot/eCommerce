@@ -1,60 +1,60 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Field, reduxForm} from 'redux-form';
-import { sendMessage } from '../actions/contents';
+// import { sendMessage } from '../actions/contents';
 
 const ROOT_URL = '/api';
 
 
-function Submit(values, dispatch) {
-  console.log('contactUs', values);
-  dispatch(sendMessage(values)).then((response) => {
-     console.log('sendMessageResponse: ', response);
-  });
-}
+// function Submit(values, dispatch) {
+//   console.log('contactUs', values);
+//   dispatch(sendMessage(values)).then((response) => {
+//      console.log('sendMessageResponse: ', response);
+//   });
+// }
 
-const renderField = ({ input, label, type }) => {
-  if (type == "textarea") {
-    return (
-      <div className="form-group">
-        <textarea {...input} rows="5" placeholder={label} className="form-control"/>
-      </div>
-    );
-  } else {
-    return (
-      <div className="form-group">
-        <input {...input} type={type} placeholder={label} className="form-control"/>
-      </div>
-    );
-  }
-}
+// const renderField = ({ input, label, type }) => {
+//   if (type == "textarea") {
+//     return (
+//       <div className="form-group">
+//         <textarea {...input} rows="5" placeholder={label} className="form-control"/>
+//       </div>
+//     );
+//   } else {
+//     return (
+//       <div className="form-group">
+//         <input {...input} type={type} placeholder={label} className="form-control"/>
+//       </div>
+//     );
+//   }
+// }
 
-class SendUsMessage extends React.Component {
-  render() {
-    const {
-      handleSubmit,
-      submitting,
-      placeholderName,
-      placeholderEmail,
-      placeholderSubject,
-      placeholderMessage,
-      formButton
-    } = this.props;
-    return (
-      <form onSubmit={handleSubmit(Submit)}>
-        <Field name="name" type="text" label={placeholderName} component={renderField} />
-        <Field name="email" type="email" label={placeholderEmail} component={renderField} />
-        <Field name="subject" type="text" label={placeholderSubject} component={renderField} />
-        <Field name="message" type="textarea" label={placeholderMessage} component={renderField} />
-        <button type="submit" disabled={ submitting }>{formButton}</button>
-      </form>
-    )
-  }
-}
+// class SendUsMessage extends React.Component {
+//   render() {
+//     const {
+//       handleSubmit,
+//       submitting,
+//       placeholderName,
+//       placeholderEmail,
+//       placeholderSubject,
+//       placeholderMessage,
+//       formButton
+//     } = this.props;
+//     return (
+//       <form onSubmit={handleSubmit(Submit)}>
+//         <Field name="name" type="text" label={placeholderName} component={renderField} />
+//         <Field name="email" type="email" label={placeholderEmail} component={renderField} />
+//         <Field name="subject" type="text" label={placeholderSubject} component={renderField} />
+//         <Field name="message" type="textarea" label={placeholderMessage} component={renderField} />
+//         <button type="submit" disabled={ submitting }>{formButton}</button>
+//       </form>
+//     )
+//   }
+// }
 
-const SendUsMessageForm = reduxForm({
-  form: "SendUsMessage"
-})(SendUsMessage);
+// const SendUsMessageForm = reduxForm({
+//   form: "SendUsMessage"
+// })(SendUsMessage);
 
 
 export default class Footer extends React.Component {

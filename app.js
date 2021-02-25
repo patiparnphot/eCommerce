@@ -66,7 +66,7 @@ var blogRoutes    = require("./routes/blog"),
     orderRoutes   = require("./routes/order");
     
 // Database setup
-mongoose.connect("mongodb+srv://bomgeo57:bomgeo57@cluster0.w7pxj.mongodb.net/e-commerce?retryWrites=true&w=majority" || "mongodb://localhost/bnk48");
+mongoose.connect("mongodb+srv://bomgeo57:bomgeo57@cluster0.w7pxj.mongodb.net/patiparnaircon?retryWrites=true&w=majority" || "mongodb://localhost/e-commerce");
 
 // Parsers for POST data
 app.use(bodyParser.json({limit: '50mb'}));
@@ -74,6 +74,19 @@ app.use(bodyParser.urlencoded({limit: '50mb', extended: true }));
 
 // Setup https method
 app.use(methodOverride('_method'));
+
+// Redirect to HTTPS & WWW
+app.enable('trust proxy');
+app.use(function(req, res, next) {
+   var searchWWW = req.headers.host.search(/^www/);
+   if (searchWWW == -1) {
+      res.redirect('https://www.' + req.headers.host);
+   } else if (!req.secure && (searchWWW == 0)) {
+      res.redirect('https://' + req.headers.host);
+   } else {
+      next();
+   }
+});
 
 // PASSPORT CONFIGURATION
 // app.use(session({

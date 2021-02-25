@@ -128,7 +128,7 @@ function CategoryPage({fetchCategoryContent, fetchFilterGoods, categoryContent, 
           </div>
 
           <div className="row">
-            <div className="col-xs-12" style={{backgroundColor: "#bfbfbf", borderRadius: "5px"}}>
+            <div className="col-xs-12">
               <div dangerouslySetInnerHTML={getHTML(content.text)} />
             </div>
           </div>

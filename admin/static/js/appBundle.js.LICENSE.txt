@@ -361,6 +361,7 @@ object-assign
 
 /*!
  * Helper for JSON.stringify
+ * Ensure `name` and `message` show up in toJSON output re: gh-9847
  */
 
 /*!

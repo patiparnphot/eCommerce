@@ -102,8 +102,8 @@ export default class Goods extends React.Component {
             <div className="card">
               <div className="card-header">
                 <h5 className="title">{`List Of Goods (${data})`}</h5>
+                <Link to="/admin/goods/create/">Create New Good</Link>
               </div>
-              <Link to="/admin/goods/create/">Create New Good</Link>
               <div className="card-body all-icons">
                 <div className="row blog-container">              
                   {this.renderGoods(goods)}

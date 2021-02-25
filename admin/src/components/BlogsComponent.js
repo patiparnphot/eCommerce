@@ -91,8 +91,8 @@ export default class Blogs extends React.Component {
             <div className="card">
               <div className="card-header">
                 <h5 className="title">List of Blogs</h5>
+                <Link to="/admin/blogs/create/">Create New Blog</Link>
               </div>
-              <Link to="/admin/blogs/create/">Create New Blog</Link>
               <div className="card-body all-icons">
                 <div className="row blog-container">              
                   {this.renderBlogs(blogs)}

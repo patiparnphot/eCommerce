@@ -35,11 +35,11 @@ function receiver(type, json) {
 }
 
 // const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost:3000/api' : '/api';
-const ROOT_URL = '/api';
+const ROOT_URL = require('../../config.json').encodedApiLink;
 
 export function meFromToken(token) {
   return dispatch => {
-    return fetch(`${ROOT_URL}/users/profile/`, {
+    return fetch(atob(ROOT_URL) + atob('L3VzZXJzL3Byb2ZpbGUv'), {
         method: "get",
         headers: {
           'Accept': 'application/json',
@@ -68,7 +68,7 @@ export function resetMeFromPage() {
 
 export function signUpUser(formValues) {
   return dispatch => {
-    return fetch(`${ROOT_URL}/users/register/`, {
+    return fetch(atob(ROOT_URL) + atob('L3VzZXJzL3JlZ2lzdGVyLw=='), {
       method: "post",
       headers: {
         'Accept': 'application/json',
@@ -105,7 +105,7 @@ export function signUpUserFailure(error) {
 
 export function signInUser(props) {
   return dispatch => {
-    return fetch(`${ROOT_URL}/users/login/`, {
+    return fetch(atob(ROOT_URL) + atob('L3VzZXJzL2xvZ2luLw=='), {
       method: "post",
       headers: {
         'Accept': 'application/json',
@@ -133,7 +133,7 @@ export function signInUserFailure(error) {
 
 export function updateUser(token, editUser) {
   return dispatch => {
-    return fetch(`${ROOT_URL}/users/update/`, {
+    return fetch(atob(ROOT_URL) + atob('L3VzZXJzL3VwZGF0ZS8='), {
         method: "put",
         headers: {
           'Accept': 'application/json',
