@@ -37,6 +37,7 @@ function GoodPage ({
   const [goodSlugHistory, setGoodSlugHistory] = React.useState(slug);
   const [cost, setCost] = React.useState("");
   const [option, setOption] = React.useState("");
+  const [available, setAvailable] = React.useState(true);
   const [specificOption, setSpecificOption] = React.useState("");
   const [amount, setAmount] = React.useState(1);
   const [numberOfStars, setNumberOfStars] = React.useState(5);
@@ -54,6 +55,7 @@ function GoodPage ({
     if(activeGood.good && (activeGood.good.title != "noSlug") && (initial == "loading")) {
       setCost(activeGood.good.options[0].cost);
       setOption(activeGood.good.options[0].key);
+      setAvailable(activeGood.good.options[0].isAvailable);
       if(activeGood.good.specificOptions) {
         setSpecificOption(activeGood.good.specificOptions[0]);
       }
@@ -90,6 +92,7 @@ function GoodPage ({
     if (option) {
       setOption(option.key);
       setCost(option.cost);
+      setAvailable(option.isAvailable);
     }
   }
 
@@ -193,6 +196,7 @@ function GoodPage ({
                     good={activeGood.good}
                     cost={cost}
                     option={option}
+                    available={available}
                     selectOption={selectOption}
                     specificOption={specificOption}
                     selectSpecificOption={selectSpecificOption}
@@ -292,6 +296,7 @@ function GoodDetail({
   good,
   cost,
   option,
+  available,
   selectOption,
   specificOption,
   selectSpecificOption,
@@ -487,7 +492,7 @@ function GoodDetail({
               </div>
               {
                 (
-                  !good.isAvailable
+                  !available
                 ) ? (
                   <div class="btns-wrap btn-material bg-white">
                     <b>

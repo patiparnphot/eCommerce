@@ -3,7 +3,11 @@ import { connect } from 'react-redux';
 
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-  return {};
+  return {
+    toggleNavbar: () => {
+      dispatch({type: "TOGGLE_NAV"});
+    }
+  };
 };
 
 

@@ -25,6 +25,11 @@ export const DELETE_BLOG_SUCCESS = 'DELETE_BLOG_SUCCESS';
 export const DELETE_BLOG_FAILURE = 'DELETE_BLOG_FAILURE';
 export const RESET_DELETED_BLOG = 'RESET_DELETED_BLOG';
 
+//Fetch author blog
+export const FETCH_AUTHORBLOG = 'FETCH_BLOG';
+export const FETCH_AUTHORBLOG_SUCCESS = 'FETCH_BLOG_SUCCESS';
+export const FETCH_AUTHORBLOG_FAILURE = 'FETCH_BLOG_FAILURE';
+
 function receiver(type, json) {
   return {
     type: type,
@@ -34,10 +39,10 @@ function receiver(type, json) {
 }
 
 //const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost/api' : '/api';
-const ROOT_URL = require('../../config.json').encodedApiLink;
+const ROOT_URL = require('../../config.json').apiLink;
 export function fetchBlogs() {
   return dispatch => {
-    return fetch(atob(ROOT_URL) + atob('L2Jsb2dzLw=='))
+    return fetch(`${ROOT_URL}/blogs/`)
       .then(response => response.json(), error => console.log('An error occurred.', error))
       .then(json => dispatch(receiver(FETCH_BLOGS, json)));
   };
@@ -58,7 +63,7 @@ export function fetchBlogsFailure(error) {
 
 export function fetchBlog(title) {
   return dispatch => {
-    return fetch(atob(ROOT_URL) + atob('L2Jsb2dzLw==') + title)
+    return fetch(`${ROOT_URL}/blogs/${title}/`)
       .then(response => response.json(), error => console.log('An error occurred.', error))
       .then(json => dispatch(receiver(FETCH_BLOG, json)));
   };
@@ -79,4 +84,24 @@ export function resetActiveBlog() {
   return {
     type: RESET_ACTIVE_BLOG
   }
+}
+
+export function fetchAuthorblog() {
+  return dispatch => {
+    return fetch(`${ROOT_URL}/contents/authorblog/`)
+      .then(response => response.json(), error => console.log('An error occurred.', error))
+      .then(json => dispatch(receiver(FETCH_AUTHORBLOG, json)));
+  };
+}
+export function fetchAuthorblogSuccess(authorBlog) {
+  return {
+    type: FETCH_AUTHORBLOG_SUCCESS,
+    payload: authorBlog
+  };
+}
+export function fetchAuthorblogFailure(error) {
+  return {
+    type: FETCH_AUTHORBLOG_FAILURE,
+    payload: error
+  };
 }

@@ -40,12 +40,11 @@ function receiver(type, json) {
 }
 
 //const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost/api' : '/api';
-const ROOT_URL = require('../../../config.json').encodedApiLink;
+const ROOT_URL = require('../../../config.json').apiLink;
 
 export function fetchBlogs(start, end) {
   return dispatch => {
-    console.log(atob(ROOT_URL) + atob('L2Jsb2dzL3BhZ2luYXRpb24v') + start + '/' + end);
-    return fetch(atob(ROOT_URL) + atob('L2Jsb2dzL3BhZ2luYXRpb24v') + start + '/' + end)
+    return fetch(`${ROOT_URL}/blogs/pagination/${start}/${end}/`)
       .then(response => response.json(), error => console.log('An error occurred.', error))
       .then(json => dispatch(receiver(FETCH_BLOGS, json)));
   };
@@ -66,7 +65,7 @@ export function fetchBlogsFailure(error) {
 
 export function createBlog(newBlog, token) {
   return dispatch => {
-    return fetch(atob(ROOT_URL) + atob('L2Jsb2dzL2NyZWF0ZS8='), {
+    return fetch(`${ROOT_URL}/blogs/create/`, {
         method: "post",
         headers: {
           'Accept': 'application/json',
@@ -109,7 +108,7 @@ export function resetNewBlog() {
 
 export function editBlog(editedBlogId, editedBlogObj, token) {
   return dispatch => {
-    return fetch(atob(ROOT_URL) + atob('L2Jsb2dzL2VkaXQv') + editedBlogId, {
+    return fetch(`${ROOT_URL}/blogs/edit/${editedBlogId}/`, {
         method: "put",
         headers: {
           'Accept': 'application/json',
@@ -152,7 +151,7 @@ export function resetEditedBlog() {
 
 export function fetchBlog(slug) {
   return dispatch => {
-    return fetch(atob(ROOT_URL) + atob('L2Jsb2dzL2FjdGl2ZS8=') + slug)
+    return fetch(`${ROOT_URL}/blogs/active/${slug}/`)
       .then(response => response.json(), error => console.log('An error occurred.', error))
       .then(json => dispatch(receiver(FETCH_BLOG, json)));
   };

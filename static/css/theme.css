@@ -46,7 +46,7 @@ body {
 }
 .comp-header > span {
   display: block;
-  font-weight: 500;
+  font-weight: 300;
 }
 .comp-header.st-1 {
   font-size: 0.75em;
@@ -72,15 +72,23 @@ body {
   line-height: 1.125;
   letter-spacing: 0;
 }
+.comp-header.st-18 .desc {
+  font-size: 0.7em;
+  color: #98c5db;
+  -webkit-text-stroke: 1px rgb(30 47 74 / 71%);
+  margin-bottom: 30px;
+}
 @media (max-width: 991px) {
   .comp-header.st-18 {
     font-size: 2.25em;
   }
 }
 .comp-header.st-20 {
-  font-size: 4.5em;
+  font-size: 3.5em;
   line-height: 0.667;
   margin-bottom: 83px;
+  width: 100%;
+  text-align: center;
 }
 @media (max-width: 991px) {
   .comp-header.st-20 {
@@ -1152,23 +1160,24 @@ button {
 }
 .slideshow .header {
   font-weight: 800;
-  font-size: 4.5em;
+  font-size: 3.8em;
   letter-spacing: .035em;
   margin-bottom: 28px;
   line-height: .8;
-  margin-top: 150px;
+  margin-top: 120px;
 }
 @media (max-width: 767px) {
   .slideshow .header {
-    font-size: 3em;
-    margin-top: 50px;
+    font-size: 2em;
+    margin-top: 40px;
   }
 }
 .slideshow p {
-  font-size: 1em;
-  font-weight: 500;
+  font-size: 1.8em;
+  font-weight: 700;
   line-height: 1.5;
-  color: #8e8e8e;
+  color: #83c5d4;
+  -webkit-text-stroke: 1px rgb(30 47 74 / 71%);
 }
 .slideshow .btn-panel {
   margin-top: 74px;
@@ -6941,18 +6950,66 @@ textarea.form-control {
   margin-top: 200px;
 }
 
+#intro .container-fluid, #information .container {
+  height: 400px;
+}
+
+#intro .container-fluid .slideshow img {
+  height: 400px;
+  width: auto;
+}
+
 @media (max-width: 760px) {
   #content {
     margin-top: 100px;
   }
-}
-
-#intro .container-fluid, #campaign .container {
-  height: 300px;
-}
-
-@media (max-width: 760px) {
-  #intro .container-fluid, #campaign .container {
-    height: 200px;
+  #intro .container-fluid, #information .container {
+    height: 300px;
   }
+  #intro .container-fluid .slideshow img {
+    height: 300px;
+    width: auto;
+  }
+}
+
+#campaign .feature-item .col-lg-6 {
+  width: 100%;
+}
+
+.order-1 {
+  -ms-flex-order: 1;
+  order: 1;
+}
+
+.order-2 {
+  -ms-flex-order: 2;
+  order: 2;
+}
+
+@media (min-width: 992px) {
+  #campaign .feature-item .col-lg-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+  .order-lg-1 {
+    -ms-flex-order: 1;
+    order: 1;
+  }
+  .order-lg-2 {
+    -ms-flex-order: 2;
+    order: 2;
+  }
+}
+
+#campaign .row {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+}
+
+.navbar-brand>img, .footer-brand>img {
+  height: 60px;
+  width: auto;
 }

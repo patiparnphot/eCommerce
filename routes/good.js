@@ -421,8 +421,6 @@ router.put(
                     );
                 }
                 if(String(req.body.editCategory.options) != String(editedCategory._doc.options)) {
-                    console.log(req.body.editCategory.options);
-                    console.log(editedCategory._doc.options);
                     let editedOptions = req.body.editCategory.options;
                     let queryOrNotArrayMatch = [];
                     let queryAndArrayNotMatch = [];
@@ -515,15 +513,17 @@ router.delete(
     function(req, res, next) {
         Good.findOneAndRemove({ slug: req.params.slug }).populate("comments").exec(function(err, deletedGood) {
             if (err) return next(err);
-            deletedGood.comments.forEach((comment) => {
-                Comment.findByIdAndRemove(comment._id, function (err, removedComment) {
-                    if(!err && removedComment) {
-                        console.log("removed comment: ", removedComment._id);
-                    } else {
-                        console.log("cannot remove comment: ", comment._id);
-                    }
+            if (deletedGood && deletedGood.comments && Array.isArray(deletedGood.comments)) {
+                deletedGood.comments.forEach((comment) => {
+                    Comment.findByIdAndRemove(comment._id, function (err, removedComment) {
+                        if(!err && removedComment) {
+                            console.log("removed comment: ", removedComment._id);
+                        } else {
+                            console.log("cannot remove comment: ", comment._id);
+                        }
+                    });
                 });
-            });
+            }
             res.json(deletedGood);
         });
     }

@@ -146,6 +146,7 @@ const renderOptions = ({fields, allCat, cat, meta: {error, submitFailed}}) => {
                 <Field name={`${field}.${feature.name}`} type="number" label={feature.name} component={renderField}/>
               );
             })}
+            <Field name={`${field}.isAvailable`} type="checkbox" label="AVAILABLE" component={renderField} />
           </li>
         ))}
       </ul>
@@ -203,7 +204,6 @@ class EditGoodClass extends React.Component {
           <Field name="description" type="textarea" label={placeholderDesc} component={renderField} />
           <FieldArray name="options" component={renderOptions} allCat={allCat} cat={cat} />
           <FieldArray name="specificOptions" component={renderSpecificOptions} />
-          <Field name="isAvailable" type="checkbox" label={placeholderAvai} component={renderField} />
         </div>
         <button type="submit" style={{backgroundColor: "orange"}} disabled={ submitting }>{formButton}</button>
       </form>
@@ -294,6 +294,7 @@ export default class GoodPage extends React.Component {
       let features = [];
       features.push("key");
       features.push("cost");
+      features.push("isAvailable");
       data[targetIndex].features.forEach((feature) => {
         features.push(feature.name);
       });

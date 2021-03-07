@@ -2,6 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Route, Switch, useRouteMatch, useLocation } from 'react-router-dom';
 import SideBar from './containers/SideBarContainer';
+import Navbar from './containers/NavbarContainer';
 import DashboardPage from './pages/DashboardPage';
 import IndexContentPage from './pages/IndexContentPage';
 import TemplateContentPage from './pages/TemplateContentPage';
@@ -12,6 +13,7 @@ import BlogsPage from './pages/BlogsPage';
 import GoodsPage from './pages/GoodsPage';
 import GoodCategoriesPage from './pages/GoodCategoriesPage';
 import OrdersPage from './pages/OrdersPage';
+import AuthorPage from './pages/AuthorBlogPage';
 import BlogPage from './pages/BlogPage';
 import GoodPage from './pages/GoodPage';
 import GoodCategoryPage from './pages/GoodCategoryPage';
@@ -24,7 +26,7 @@ import NotFoundPage from './components/NotFoundPage';
 import fetch from 'cross-fetch';
 
 
-function App({member}) {
+function App({member, navToggle}) {
 
   // if(loading) {
   //   return <div className="container"><h1>MeatSEO</h1><h3>Loading...</h3></div>      
@@ -38,9 +40,11 @@ function App({member}) {
   }
 
   return (
-      <div>
+      <div className={navToggle ? "nav-open" : ""}>
         <SideBar pathname={useLocation().pathname} />
         <div className="main-panel" id="main-panel">
+          <Navbar pagename="Update JSON file:"/>
+          <div class="panel-header panel-header-sm"/>
           <Switch>
             <Route exact path="/admin/">
               <OrdersPage/>
@@ -59,6 +63,9 @@ function App({member}) {
             </Route>
             <Route exact path="/admin/blogs">
               <BlogsPage/>
+            </Route>
+            <Route exact path="/admin/author">
+              <AuthorPage/>
             </Route>
             <Route exact path="/admin/goods">
               <GoodsPage/>
@@ -144,7 +151,8 @@ const mapDispatchToProps = (dispatch) => {
 
 function mapStateToProps(state) {
   return {
-    member: state.member
+    member: state.member,
+    navToggle: state.preloadedData.navOpen
   };
 }
 

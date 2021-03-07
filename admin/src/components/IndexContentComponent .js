@@ -24,11 +24,7 @@ function Submit(values, dispatch) {
     },
     campaign: {
       title: values.campaignTitle,
-      subTitle: values.campaignSubTitle,
-      btnText: values.campaignBtnText,
-      btnLink: values.campaignBtnLink,
-      parallaxImage: values.campaignParallaxImage,
-      background: values.campaignBackground
+      features: values.campaignFeatures
     },
     popularOnShop: {
       sidebarImage: values.popularOnShopSidebarImage,
@@ -43,6 +39,8 @@ function Submit(values, dispatch) {
     information: {
       title: values.informationTitle,
       text: values.informationText,
+      btnText: values.informationBtnText,
+      btnLink: values.informationBtnLink,
       parallaxImage: values.informationParallaxImage,
       background: values.informationBackground
     }
@@ -120,21 +118,25 @@ const validate = values => {
   if (!values.campaignTitle) {
     errors.campaignTitle = 'Required'
   }
-  if (!values.campaignSubTitle) {
-    errors.campaignSubTitle = 'Required'
+  if (!values.campaignFeatures || !values.campaignFeatures.length) {
+    errors.campaignFeatures = { _error: 'At least one feature must be entered' }
+  } else {
+    const optionsArrayErrors = []
+    values.campaignFeatures.forEach((option, optionIndex) => {
+      const optionErrors = {}
+      if (!option || !option.image) {
+        optionErrors.image = 'Required'
+        optionsArrayErrors[optionIndex] = optionErrors
+      }
+      if (!option || !option.content) {
+        optionErrors.content = 'Required'
+        optionsArrayErrors[optionIndex] = optionErrors
+      }
+    })
+    if (optionsArrayErrors.length) {
+      errors.campaignFeatures = optionsArrayErrors
+    }
   }
-  // if (!values.campaignBtnText) {
-  //   errors.campaignBtnText = 'Required'
-  // }
-  if (!values.campaignBtnLink) {
-    errors.campaignBtnLink = 'Required'
-  }
-  if (!values.campaignParallaxImage) {
-    errors.campaignParallaxImage = 'Required'
-  }
-  // if (!values.campaignBackground) {
-  //   errors.campaignBackground = 'Required'
-  // }
   // if (!values.popularOnShopSidebarImage) {
   //   errors.popularOnShopSidebarImage = 'Required'
   // }
@@ -175,6 +177,12 @@ const validate = values => {
   if (!values.informationText) {
     errors.informationText = 'Required'
   }
+  // if (!values.informationBtnText) {
+  //   errors.informationBtnText = 'Required'
+  // }
+  if (!values.informationBtnLink) {
+    errors.informationBtnLink = 'Required'
+  }
   if (!values.informationParallaxImage) {
     errors.informationParallaxImage = 'Required'
   }
@@ -211,6 +219,26 @@ const renderSlideshows = ({fields, meta: {error, submitFailed}}) => (
         <Field name={`${slideshow}.link`} type="text" label="BUTTON TEXT" component={renderField}/>
         <Field name={`${slideshow}.btnLink`} type="text" label="BUTTON LINK" component={renderField}/>
         <Field name={`${slideshow}.image`} type="text" label="IMAGE" component={renderField}/>
+      </li>
+    ))}
+  </ul>
+);
+
+const renderFeatures = ({fields, meta: {error, submitFailed}}) => (
+  <ul>
+    <li>
+      <button type="button" style={{backgroundColor: "lightgreen"}} onClick={() => fields.push({})}>
+        Add Feature
+      </button>
+      {submitFailed && error && <span>{error}</span>}
+    </li>
+    {fields.map((feature, index) => (
+      <li key={index}>
+        <button type="button" style={{backgroundColor: "orange"}} title="Remove Feature" onClick={() => fields.remove(index)}>X</button>
+        <h4>Feature #{index + 1}</h4>
+        <Field name={`${feature}.image`} type="text" label="IMAGE" component={renderField}/>
+        <Field name={`${feature}.topic`} type="text" label="TOPIC" component={renderField}/>
+        <Field name={`${feature}.content`} type="text" label="CONTENT" component={renderField} />
       </li>
     ))}
   </ul>
@@ -255,12 +283,9 @@ class IndexContentClass extends React.Component {
           <FieldArray name="introSlideshows" component={renderSlideshows} />
         </div>
         <div className="col-sm-12" style={{backgroundColor: "white", margin: "10px"}}>
-          <h4>BANNER 1</h4>
+          <h4>CAMPAIGN</h4>
           <Field name="campaignTitle" type="text" label="HEADER" component={renderField} />
-          <Field name="campaignSubTitle" type="text" label="DESCRIPTION" component={renderField} />
-          <Field name="campaignBtnText" type="text" label="BUTTON TEXT" component={renderField} />
-          <Field name="campaignBtnLink" type="text" label="BUTTON LINK" component={renderField} />
-          <Field name="campaignParallaxImage" type="text" label="IMAGE" component={renderField} />
+          <FieldArray name="campaignFeatures" component={renderFeatures} />
         </div>
         <div className="col-sm-12" style={{backgroundColor: "white", margin: "10px"}}>
           <h4>CATEGORY SECTION</h4>
@@ -273,9 +298,11 @@ class IndexContentClass extends React.Component {
           <Field name="blogsSubHeader" type="text" label="DESCRIPTION" component={renderField} />
         </div>
         <div className="col-sm-12" style={{backgroundColor: "white", margin: "10px"}}>
-          <h4>BANNER 2</h4>
+          <h4>FOOTER BANNER</h4>
           <Field name="informationTitle" type="text" label="HEADER" component={renderField} />
           <Field name="informationText" type="text" label="DESCRIPTION" component={renderField} />
+          <Field name="informationBtnText" type="text" label="BUTTON TEXT" component={renderField} />
+          <Field name="informationBtnLink" type="text" label="BUTTON LINK" component={renderField} />
           <Field name="informationParallaxImage" type="text" label="IMAGE" component={renderField} />
         </div>
         <button type="submit" style={{backgroundColor: "orange"}} disabled={ submitting }>{formButton}</button>
@@ -327,11 +354,7 @@ export default class IndexContentPage extends React.Component {
         recentParallaxText: content.recent.parallaxText,
         recentHeader: content.recent.header,
         campaignTitle: content.campaign.title,
-        campaignSubTitle: content.campaign.subTitle,
-        campaignBtnText: content.campaign.btnText,
-        campaignBtnLink: content.campaign.btnLink,
-        campaignParallaxImage: content.campaign.parallaxImage,
-        campaignBackground: content.campaign.background,
+        campaignFeatures: content.campaign.features,
         popularOnShopSidebarImage: content.popularOnShop.sidebarImage,
         popularOnShopCategoryHead: content.popularOnShop.categoryHead,
         popularOnShopCategories: content.popularOnShop.categories,
@@ -342,6 +365,8 @@ export default class IndexContentPage extends React.Component {
         informationText: content.information.text,
         informationParallaxImage: content.information.parallaxImage,
         informationBackground: content.information.background,
+        informationBtnText: content.information.btnText,
+        informationBtnLink: content.information.btnLink,
         token: token
       };
     

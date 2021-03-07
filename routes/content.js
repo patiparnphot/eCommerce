@@ -4,6 +4,7 @@ var express = require("express"),
     nodeMailer  = require("nodemailer"),
     fs      = require("fs"),
     Content = require("../models/content"),
+    Author  = require("../models/author"),
     contentState = require("../initial_state/content");
     
 var handler = require('../data_handler');
@@ -86,6 +87,21 @@ router.get("/contactus", function(req, res, next){
     );
 });
 
+//BLOGAUTHOR - get author data of blogs
+router.get("/authorblog", function(req, res, next){
+    // res.json(handler.blogDetailContents());
+
+    Author.findOne(
+        {},
+        {},
+        { sort: { postedTime: -1 }, limit: 1 },
+        function(err, authorBlog){
+            if(err) return next(err);
+            res.json(authorBlog);
+        }
+    );
+});
+
 //INITIALSTATE - update JSON file of initialState content
 router.get("/updateJsonFile", async function(req, res, next) {
     try {
@@ -106,7 +122,7 @@ router.get("/updateJsonFile", async function(req, res, next) {
     }
 })
 
-//CREATE - add a new content to db
+//CREATE - add new content to db
 router.post(
     "/", 
     preAuthenticate, 
@@ -117,6 +133,21 @@ router.post(
             newContent.save();
             console.log(newContent);
             res.json(newContent);
+        });
+    }
+);
+
+//CREATE AUTHOR - add new author data of blogs
+router.post(
+    "/authorblog", 
+    preAuthenticate, 
+    passport.authenticate('jwt', {session: false}), 
+    function(req, res, next) {
+        Author.create(req.body.data, function (err, newAuthor) {
+            if (err) return next(err);
+            newAuthor.save();
+            console.log(newAuthor);
+            res.json(newAuthor);
         });
     }
 );

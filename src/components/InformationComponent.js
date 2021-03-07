@@ -18,13 +18,27 @@ export default function Information({information}) {
           <div className="row parallax-wrap">
             <div className="container block">
               <div className="row">
-                <div className="col-md-5">
+                <div className="col-sm-12">
                   <span className="comp-header st-18 text-uppercase">
                     {information.title} <br/>
-                    <span className="text-white">{information.text}</span>
+                    <div className="desc">{information.text}</div>
                   </span>
+                  <p>
+                    <span className="sdw-wrap">
+                      {
+                        (
+                          !information.btnText || (information.btnText == "")
+                        ) ? (
+                          <span></span>
+                        ) : (
+                          <a href={information.btnLink} className="sdw-hover btn btn-material btn-yellow btn-lg ripple-cont">
+                            {information.btnText}
+                          </a>
+                        )
+                      }
+                    </span>
+                  </p>
                 </div>
-                <div className="col-md-7"></div>
               </div>
             </div>
             <div className="parallax bg-grey-light opc-7"

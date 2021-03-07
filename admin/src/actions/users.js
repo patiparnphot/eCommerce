@@ -29,12 +29,12 @@ function receiver(type, json) {
 }
 
 // const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost:3000/api' : '/api';
-const ROOT_URL = require('../../../config.json').encodedApiLink;
+const ROOT_URL = require('../../../config.json').apiLink;
 
 
 export function signInUser(props) {
   return dispatch => {
-    return fetch(atob(ROOT_URL) + atob('L3VzZXJzL2xvZ2luL2FkbWluLw=='), {
+    return fetch(`${ROOT_URL}/users/login/admin/`, {
       method: "post",
       headers: {
           'Accept': 'application/json',

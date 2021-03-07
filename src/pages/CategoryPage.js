@@ -260,7 +260,7 @@ function Goods({goods, optionState, features}){
                   <Link to={ '/goods/' + good.category + '/' + good.slug } className="btn-material btn-price">
                     <span className="price">
                       <span className="price">
-                        ฿ {good.options[0].cost}<small>.00</small>
+                        ฿ {filteredOption[0].cost}<small>.00</small>
                       </span>
                     </span>
                   </Link>

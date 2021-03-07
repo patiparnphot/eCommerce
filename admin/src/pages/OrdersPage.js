@@ -28,10 +28,6 @@ class OrdersPage extends Component {
     
     return (
       <div>
-        <p>
-
-
-        </p>
         <Orders/>
       </div>
     );

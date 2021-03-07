@@ -96,19 +96,29 @@ export default class Footer extends React.Component {
                     </h3>
                     <ul className="nav-vrt white opc none-padding">
                       {footerTag.informations.map((information) => {
-                        return (
-                          <li>
-                            <Link 
-                              to={{
-                                pathname: information.pathname,
-                                state:{from: this.props.location.pathname}
-                              }}
-                              className="btn-material"
-                            >
-                              {information.text}
-                            </Link>
-                          </li>
-                        );
+                        if( information.pathname.slice(0, 4) == 'http' ) {
+                          return (
+                            <li>
+                              <a href={information.pathname} className="btn-material">
+                                {information.text}
+                              </a>
+                            </li>
+                          );
+                        } else {
+                          return (
+                            <li>
+                              <Link 
+                                to={{
+                                  pathname: information.pathname,
+                                  state:{from: this.props.location.pathname}
+                                }}
+                                className="btn-material"
+                              >
+                                {information.text}
+                              </Link>
+                            </li>
+                          );
+                        }
                       })}
                     </ul>
                   </div>
@@ -119,19 +129,29 @@ export default class Footer extends React.Component {
                     </h3>
                     <ul className="nav-vrt white opc none-padding">
                       {footerTag.services.map((service) => {
-                        return (
-                          <li>
-                            <Link 
-                              to={{
-                                pathname: service.pathname,
-                                state:{from: this.props.location.pathname}
-                              }}
-                              className="btn-material"
-                            >
-                              {service.text}
-                            </Link>
-                          </li>
-                        );
+                        if( service.pathname.slice(0, 4) == 'http' ) {
+                          return (
+                            <li>
+                              <a href={service.pathname} className="btn-material">
+                                {service.text}
+                              </a>
+                            </li>
+                          );
+                        } else {
+                          return (
+                            <li>
+                              <Link 
+                                to={{
+                                  pathname: service.pathname,
+                                  state:{from: this.props.location.pathname}
+                                }}
+                                className="btn-material"
+                              >
+                                {service.text}
+                              </Link>
+                            </li>
+                          );
+                        }
                       })}
                     </ul>
                   </div>

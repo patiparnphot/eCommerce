@@ -40,12 +40,11 @@ function receiver(type, json) {
 }
 
 //const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost/api' : '/api';
-const ROOT_URL = require('../../../config.json').encodedApiLink;
+const ROOT_URL = require('../../../config.json').apiLink;
 
 export function fetchGoodCategories(start, end) {
   return dispatch => {
-    console.log(atob(ROOT_URL) + atob('L2dvb2RzL2NhdGVnb3JpZXMv') + start + '/' + end);
-    return fetch(atob(ROOT_URL) + atob('L2dvb2RzL2NhdGVnb3JpZXMv') + start + '/' + end)
+    return fetch(`${ROOT_URL}/goods/categories/${start}/${end}/`)
       .then(response => response.json(), error => console.log('An error occurred.', error))
       .then(json => dispatch(receiver(FETCH_GOODCATEGORIES, json)));
   };
@@ -66,7 +65,7 @@ export function fetchGoodCategoriesFailure(error) {
 
 export function createGoodCategory(newCategory, token) {
   return dispatch => {
-    return fetch(atob(ROOT_URL) + atob('L2dvb2RzL2NhdGVnb3JpZXMv'), {
+    return fetch(`${ROOT_URL}/goods/categories/`, {
         method: "post",
         headers: {
           'Accept': 'application/json',
@@ -109,7 +108,7 @@ export function resetNewGoodCategory() {
 
 export function editGoodCategory(editedGoodCategoryId, editedGoodCategoryObj, token) {
   return dispatch => {
-    return fetch(atob(ROOT_URL) + atob('L2dvb2RzL2NhdGVnb3JpZXMv') + editedGoodCategoryId, {
+    return fetch(`${ROOT_URL}/goods/categories/${editedGoodCategoryId}/`, {
         method: "put",
         headers: {
           'Accept': 'application/json',
@@ -152,7 +151,7 @@ export function resetEditedGoodCategory() {
 
 export function fetchGoodCategory(title) {
   return dispatch => {
-    return fetch(atob(ROOT_URL) + atob('L2dvb2RzL2NhdGVnb3JpZXMv') + title)
+    return fetch(`${ROOT_URL}/goods/categories/${title}/`)
       .then(response => response.json(), error => console.log('An error occurred.', error))
       .then(json => dispatch(receiver(FETCH_GOODCATEGORY, json)));
   };
@@ -178,7 +177,7 @@ export function resetActiveGoodCategory() {
 
 export function deleteGoodCategory(deleteGoodCategoryTitle, token) {
   return dispatch => {
-    return fetch(atob(ROOT_URL) + atob('L2dvb2RzL2NhdGVnb3JpZXMv') + deleteGoodCategoryTitle, {
+    return fetch(`${ROOT_URL}/goods/categories/${deleteGoodCategoryTitle}/`, {
         method: "delete",
         headers: {
           'Accept': 'application/json',

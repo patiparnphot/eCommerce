@@ -22,11 +22,11 @@ function receiver(type, json) {
 }
 
 //const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost/api' : '/api';
-const ROOT_URL = require('../../../config.json').encodedApiLink;
+const ROOT_URL = require('../../../config.json').apiLink;
 
 export function fetchContent(contentType) {
   return dispatch => {
-    return fetch(atob(ROOT_URL) + atob('L2NvbnRlbnRzLw==') + contentType)
+    return fetch(`${ROOT_URL}/contents/${contentType}/`)
       .then(response => response.json(), error => console.log('An error occurred.', error))
       .then(json => dispatch(receiver(FETCH_CONTENT, json)));
   };
@@ -52,7 +52,7 @@ export function resetActiveContent() {
 
 export function createContent(newContent, token) {
   return dispatch => {
-    return fetch(atob(ROOT_URL) + atob('L2NvbnRlbnRzLw=='), {
+    return fetch(`${ROOT_URL}/contents/`, {
         method: "post",
         headers: {
           'Accept': 'application/json',
@@ -60,6 +60,30 @@ export function createContent(newContent, token) {
           'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({content: newContent})
+      })
+      .then(
+        (response) => {
+          if (response.status >= 400) {
+            return response.text();
+          } else {
+            return response.json();
+          }
+        },
+        error => console.log('An error occurred.', error)
+      )
+      .then(json => dispatch(receiver(CREATE_CONTENT, json)));
+  };
+}
+export function createAuthor(newAuthor, token) {
+  return dispatch => {
+    return fetch(`${ROOT_URL}/contents/authorblog/`, {
+        method: "post",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({data: newAuthor})
       })
       .then(
         (response) => {

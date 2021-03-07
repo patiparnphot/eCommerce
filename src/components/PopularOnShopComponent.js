@@ -36,7 +36,7 @@ export default function PopularOnShop({fetchGoods, resetGoods, filteringGoods, p
   } else {
     return (
       <section id="popularOnShop">
-        <div className="container-fluid block bg-grey-lightness space-top">
+        <div className="container-fluid block bg-grey-lightness">
           <div className="row">
             <div className="container space-top">
 
@@ -107,7 +107,7 @@ export default function PopularOnShop({fetchGoods, resetGoods, filteringGoods, p
 
 function Features({keys, features}) {
   return keys.map((key) => {
-    if(key != "key" && key != "cost" && key != "_id") {
+    if(key != "key" && key != "cost" && key != "_id" && key != "isAvailable") {
       return (
         <ul className="features" style={{marginBottom: '0px'}}>
           <li style={{width: 'auto'}}>

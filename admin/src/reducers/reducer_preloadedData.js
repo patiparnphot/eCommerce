@@ -8,6 +8,7 @@ import {
 
 
 	const INITIAL_STATE = {
+    navOpen:            true,
     blogAmount:         {data:null, error:null, loading: false},
     goodAmount:         {data:null, error:null, loading: false},
     goodCategoryAmount: {data:null, error:null, loading: false},
@@ -18,6 +19,9 @@ import {
 export default function(state = INITIAL_STATE, action) {
   let error;
   switch(action.type) {
+  
+  case "TOGGLE_NAV":
+    return { ...state, navOpen: !state.navOpen };
 
   case FETCH_BLOGAMOUNT:
     return { ...state, blogAmount: {...state.blogAmount, loading: true} }; 

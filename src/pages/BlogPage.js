@@ -11,7 +11,7 @@ export default function BlogPage () {
   let { title } = useParams();
   
   return (
-      <div className="container d-flex h-100">
+      <div className="container h-100">
         <Blog title={title} />
       </div>
   );

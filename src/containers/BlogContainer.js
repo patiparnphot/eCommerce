@@ -1,5 +1,12 @@
 import Blog from '../components/BlogComponent';
-import { fetchBlog, fetchBlogSuccess, fetchBlogFailure} from '../actions/blogs';
+import {
+  fetchBlog,
+  fetchBlogSuccess,
+  fetchBlogFailure,
+  fetchAuthorblog,
+  fetchAuthorblogSuccess,
+  fetchAuthorblogFailure
+} from '../actions/blogs';
 import {
   fetchBlogdetailcontent,
   fetchBlogdetailcontentSuccess,
@@ -15,6 +22,13 @@ const mapDispatchToProps = (dispatch) => {
         console.log('blog: ', response.payload);
         !response.error ? dispatch(fetchBlogSuccess(response.payload)) : dispatch(fetchBlogFailure(response.payload));
       });
+    },
+    fetchAuthorblog: () => {
+      dispatch(fetchAuthorblog())
+      // .then((res) => {
+      //   console.log('author of all blogs: ', res.payload);
+      //   !res.error ? dispatch(fetchAuthorblogSuccess(res.payload)) : dispatch(fetchAuthorblogFailure(res.payload));
+      // });
     },
     fetchBlogdetailcontent: () => {
       dispatch(fetchBlogdetailcontent()).then((response) => {
@@ -34,7 +48,7 @@ const mapDispatchToProps = (dispatch) => {
 function mapStateToProps(state, ownProps) {
   return {
     activeBlog: state.blogs.activeBlog,
-    // deletedBlog: state.blogs.deletedBlog,
+    authorBlog: state.blogs.authorBlog,
     blogTitle: ownProps.title,
     blogdetailContent: state.contents.blogDetail
   };

@@ -151,6 +151,7 @@ const renderOptions = ({fields, allCat, cat, meta: {error, submitFailed}}) => {
                 <Field name={`${field}.${feature.name}`} type="number" label={feature.name} component={renderField}/>
               );
             })}
+            <Field name={`${field}.isAvailable`} type="checkbox" label="AVAILABLE" component={renderField} />
           </li>
         ))}
       </ul>

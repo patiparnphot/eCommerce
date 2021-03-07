@@ -1,6 +1,7 @@
 import {
   FETCH_BLOGS, FETCH_BLOGS_SUCCESS, FETCH_BLOGS_FAILURE, RESET_BLOGS,
-	FETCH_BLOG, FETCH_BLOG_SUCCESS,  FETCH_BLOG_FAILURE, RESET_ACTIVE_BLOG,
+  FETCH_BLOG, FETCH_BLOG_SUCCESS,  FETCH_BLOG_FAILURE, RESET_ACTIVE_BLOG,
+  FETCH_AUTHORBLOG, FETCH_AUTHORBLOG_SUCCESS, FETCH_AUTHORBLOG_FAILURE,
 	CREATE_BLOG, CREATE_BLOG_SUCCESS, CREATE_BLOG_FAILURE, RESET_NEW_BLOG,
 	DELETE_BLOG, DELETE_BLOG_SUCCESS, DELETE_BLOG_FAILURE, RESET_DELETED_BLOG
 } from '../actions/blogs';
@@ -8,7 +9,8 @@ import {
 
 	const INITIAL_STATE = {
     blogsList: {blogs: [], error:null, loading: false},   
-    activeBlog:{blog:null, error:null, loading: false}
+    activeBlog:{blog:null, error:null, loading: false},
+    authorBlog:{data:null, error:null, loading: false}
   };
 
 export default function(state = INITIAL_STATE, action) {
@@ -34,6 +36,14 @@ export default function(state = INITIAL_STATE, action) {
     return { ...state, activeBlog: {blog: null, error:error, loading:false}};
   case RESET_ACTIVE_BLOG:
     return { ...state, activeBlog: {blog: null, error:null, loading: false}};
+  
+  case FETCH_AUTHORBLOG:
+    return { ...state, authorBlog: {data: action.payload, error:null, loading: false}};
+  // case FETCH_AUTHORBLOG_SUCCESS:
+  //   return { ...state, authorBlog: {data: action.payload, error:null, loading: false}};
+  // case FETCH_AUTHORBLOG_FAILURE:
+  //   error = action.payload || {message: action.payload.message};
+  //   return { ...state, authorBlog: {data: null, error:error, loading:false}};
 
   default:
     return state;

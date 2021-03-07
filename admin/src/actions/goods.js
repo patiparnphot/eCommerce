@@ -40,12 +40,11 @@ function receiver(type, json) {
 }
 
 //const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost/api' : '/api';
-const ROOT_URL = require('../../../config.json').encodedApiLink;
+const ROOT_URL = require('../../../config.json').apiLink;
 
 export function fetchGoods(start, end) {
   return dispatch => {
-    console.log(atob(ROOT_URL) + atob('L2dvb2RzLw==') + start + '/' + end);
-    return fetch(atob(ROOT_URL) + atob('L2dvb2RzLw==') + start + '/' + end)
+    return fetch(`${ROOT_URL}/goods/${start}/${end}/`)
       .then(response => response.json(), error => console.log('An error occurred.', error))
       .then(json => dispatch(receiver(FETCH_GOODS, json)));
   };
@@ -66,7 +65,7 @@ export function fetchGoodsFailure(error) {
 
 export function createGood(newGood, token) {
   return dispatch => {
-    return fetch(atob(ROOT_URL) + atob('L2dvb2RzLw=='), {
+    return fetch(`${ROOT_URL}/goods/`, {
         method: "post",
         headers: {
           'Accept': 'application/json',
@@ -109,7 +108,7 @@ export function resetNewGood() {
 
 export function editGood(editedGoodId, editedGoodObj, token) {
   return dispatch => {
-    return fetch(atob(ROOT_URL) + atob('L2dvb2RzLw==') + editedGoodId, {
+    return fetch(`${ROOT_URL}/goods/${editedGoodId}/`, {
         method: "put",
         headers: {
           'Accept': 'application/json',
@@ -152,7 +151,7 @@ export function resetEditedGood() {
 
 export function fetchGood(slug) {
   return dispatch => {
-    return fetch(atob(ROOT_URL) + atob('L2dvb2RzLw==') + slug)
+    return fetch(`${ROOT_URL}/goods/${slug}/`)
       .then(response => response.json(), error => console.log('An error occurred.', error))
       .then(json => dispatch(receiver(FETCH_GOOD, json)));
   };
@@ -178,7 +177,7 @@ export function resetActiveGood() {
 
 export function deleteGood(deleteGoodSlug, token) {
   return dispatch => {
-    return fetch(atob(ROOT_URL) + atob('L2dvb2RzLw==') + deleteGoodSlug, {
+    return fetch(`${ROOT_URL}/goods/${deleteGoodSlug}/`, {
         method: "delete",
         headers: {
           'Accept': 'application/json',

@@ -65,6 +65,12 @@ export default class SideBar extends React.Component {
                 <p>Blogs</p>
               </Link>
             </li>
+            <li className={pathname == "/admin/author" ? "active" : ""}>
+              <Link to="/admin/author">
+                <i className="now-ui-icons education_atom"></i>
+                <p>Author</p>
+              </Link>
+            </li>
             <li className={pathname == "/admin/contents/contactUs" ? "active" : ""}>
               <Link to="/admin/contents/contactUs">
                 <i className="now-ui-icons education_atom"></i>
@@ -72,7 +78,7 @@ export default class SideBar extends React.Component {
               </Link>
             </li>
             <li>
-              <a href="/" className="active-pro">
+              <a href="/">
                 <i className="now-ui-icons arrows-1_cloud-download-93"></i>
                 <p>Back to your Site</p>
               </a>

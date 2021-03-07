@@ -36,6 +36,7 @@ export default class BlogPage extends React.Component {
     //}(document, 'script', 'facebook-jssdk'));
     
     this.props.fetchBlog(this.props.blogTitle);
+    // this.props.fetchAuthorblog();
     //this.props.activeBlog.blog = initialBlogState(this.props.blogTitle);
     this.setState({blogTitleHistory: this.props.blogTitle});
     
@@ -99,7 +100,7 @@ export default class BlogPage extends React.Component {
       return  <div className="alert alert-danger">{blogError.message}</div>
     } else if(!content) {
       return <NotFoundPage/>
-    } else if(!blog || (blog.title == "noSlug")) {
+    } else if(!blog || (blog.title == "noSlug") || !this.props.authorBlog.data) {
       return <NotFoundPage/>
     }
 
@@ -189,12 +190,12 @@ export default class BlogPage extends React.Component {
                   </div>
                   <div className="blog-author">
                     <div className="media align-items-center">
-                      <img src={blog.author.image} alt="" />
+                      <img src={this.props.authorBlog.data.image} alt="" />
                       <div className="media-body">
                         <a href="#">
-                           <h4>{blog.author.name}</h4>
+                           <h4>{this.props.authorBlog.data.name}</h4>
                         </a>
-                        <p>{blog.author.description}</p>
+                        <p>{this.props.authorBlog.data.description}</p>
                       </div>
                     </div>
                   </div>

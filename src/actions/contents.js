@@ -35,11 +35,11 @@ function receiver(type, json) {
 }
 
 //const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost/api' : '/api';
-const ROOT_URL = require('../../config.json').encodedApiLink;
+const ROOT_URL = require('../../config.json').apiLink;
 
 export function fetchIndexcontent() {
   return dispatch => {
-    return fetch(atob(ROOT_URL) + atob('L2NvbnRlbnRzL2luZGV4Lw=='))
+    return fetch(`${ROOT_URL}/contents/index/`)
       .then(response => response.json(), error => console.log('An error occurred.', error))
       .then(json => dispatch(receiver(FETCH_INDEXCONTENT, json)));
   };
@@ -59,7 +59,7 @@ export function fetchIndexcontentFailure(error) {
 
 export function fetchTemplatecontent() {
   return dispatch => {
-    return fetch(atob(ROOT_URL) + atob('L2NvbnRlbnRzL3RlbXBsYXRlLw=='))
+    return fetch(`${ROOT_URL}/contents/template/`)
       .then(response => response.json(), error => console.log('An error occurred.', error))
       .then(json => dispatch(receiver(FETCH_TEMPLATECONTENT, json)));
   };
@@ -79,7 +79,7 @@ export function fetchTemplatecontentFailure(error) {
 
 export function fetchContactuscontent() {
   return dispatch => {
-    return fetch(atob(ROOT_URL) + atob('L2NvbnRlbnRzL2NvbnRhY3R1cy8='))
+    return fetch(`${ROOT_URL}/contents/contactus/`)
       .then(response => response.json(), error => console.log('An error occurred.', error))
       .then(json => dispatch(receiver(FETCH_CONTACTUSCONTENT, json)));
   };
@@ -99,7 +99,7 @@ export function fetchContactuscontentFailure(error) {
 
 export function fetchBlogdetailcontent() {
   return dispatch => {
-    return fetch(atob(ROOT_URL) + atob('L2NvbnRlbnRzL2Jsb2dkZXRhaWwv'))
+    return fetch(`${ROOT_URL}/contents/blogdetail/`)
       .then(response => response.json(), error => console.log('An error occurred.', error))
       .then(json => dispatch(receiver(FETCH_BLOGDETAILCONTENT, json)));
   };
@@ -119,8 +119,7 @@ export function fetchBlogdetailcontentFailure(error) {
 
 export function fetchGoodcategorycontent(category) {
   return dispatch => {
-    console.log(atob(ROOT_URL) + atob('L2dvb2RzL2NhdGVnb3JpZXMv') + category);
-    return fetch(atob(ROOT_URL) + atob('L2dvb2RzL2NhdGVnb3JpZXMv') + category)
+    return fetch(`${ROOT_URL}/goods/categories/${category}/`)
       .then(response => response.json(), error => console.log('An error occurred.', error))
       .then(json => dispatch(receiver(FETCH_GOODCATEGORYCONTENT, json)));
   };

@@ -1,6 +1,7 @@
-var Blog = require("../models/blog"),
+var Blog    = require("../models/blog"),
     Content = require("../models/content"),
-    Good      = require("../models/good"),
+    Good    = require("../models/good"),
+    Author  = require("../models/author"),
     handler = require("../data_handler");
 
 module.exports = async function() {
@@ -50,6 +51,12 @@ module.exports = async function() {
                   { sort: { rating: -1 }, limit: 10 }
                ).exec();
 
+               const authorBlog = await Author.findOne(
+                  {},
+                  {},
+                  { sort: { postedTime: -1 }, limit: 1 }
+               ).exec();
+
                try {
                   let initialState = {
                      "blogs": {
@@ -70,6 +77,11 @@ module.exports = async function() {
                         },
                         "deletedBlog": {
                            "blog": null,
+                           "error": null,
+                           "loading": false
+                        },
+                        "authorBlog": {
+                           "data": null,
                            "error": null,
                            "loading": false
                         }
@@ -131,6 +143,7 @@ module.exports = async function() {
                      "form": {}
                   };
                   initialState.blogs.blogsList.blogs = allBlogs;
+                  initialState.blogs.authorBlog.data = authorBlog;
                   initialState.goods.recentGoods.goods = recentGoods;
                   initialState.goods.filterGoods.goods = filterGoods;
                   initialState.contents.index.content = indexContent.content;
