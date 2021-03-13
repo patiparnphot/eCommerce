@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Loader from '../components/loader';
 import { connect } from 'react-redux';
 import { Map, GoogleApiWrapper, Marker } from 'google-maps-react';
 
@@ -33,7 +34,7 @@ function ContactUsPage ({google, contactUsContent, fetchContactuscontent}) {
   const { content } = contactUsContent;
   
   if(!content) {
-    return <div/>
+    return <Loader/>
   } else {
     return (
       <div class="page-section">

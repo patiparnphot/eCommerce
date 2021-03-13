@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Loader from '../components/loader';
 import { Link, useParams, useLocation } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -81,11 +82,11 @@ function CategoryPage({fetchCategoryContent, fetchFilterGoods, categoryContent, 
   const { goods } = filterGoods;
 
   if(loading) {
-    return <div className="container"><h1>MeatSEO</h1><h3>Loading...</h3></div>      
+    return <Loader/>      
   } else if(error) {
     return <div className="alert alert-danger">Error: {error.message}</div>
   } else if(!content || !goods || !alreadyFetch || !renderSlide) {
-    return <div className="container"><h1>MeatSEO</h1><h3>Loading...</h3></div>
+    return <Loader/>
   } else if(content.title == "noTitle") {
     return <NotFoundPage/>
   } else {

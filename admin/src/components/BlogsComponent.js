@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Loader from './loader';
 
 
 //var initialContentState = require("../../initial_state/initialContentState.json");
@@ -55,6 +56,9 @@ export default class Blogs extends React.Component {
                 <Link to={"/admin/blogs/edit/" + blog.slug} className="link-details" title="More Details">
                   <i className="now-ui-icons travel_info"></i>
                 </Link>
+                <a onClick={() => this.props.deleteBlog(blog._id, this.props.member.token, this.state.start, this.state.end)} href="#" className="link-delete" title="Delete">
+                  <i className="now-ui-icons ui-1_simple-remove"></i>
+                </a>
               </div>
             </div>
           </div>
@@ -76,8 +80,8 @@ export default class Blogs extends React.Component {
       buttons.push(<button onClick={() => this.onChange(i)} >{i+1}</button>)
     }
 
-    if(!data || !blogs) {
-      return <div className="container"><h1>MeatSEO</h1><h3>Loading...</h3></div>      
+    if((!data && (data != 0)) || !blogs) {
+      return <Loader/>
     //} else if(error) {
     //  return <div className="alert alert-danger">Error: {error.message}</div>
     //} else if(!content) {
@@ -95,7 +99,15 @@ export default class Blogs extends React.Component {
               </div>
               <div className="card-body all-icons">
                 <div className="row blog-container">              
-                  {this.renderBlogs(blogs)}
+                  {
+                    (
+                      data == 0
+                    ) ? (
+                      "NO BLOGS"
+                    ) : (
+                      this.renderBlogs(blogs)
+                    )
+                  }
                 </div>
               </div>
             </div>

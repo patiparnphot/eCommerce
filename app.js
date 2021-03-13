@@ -180,7 +180,7 @@ app.get('*', async (req, res, next) => {
       let descriptionHtml = initialStateJson.contents.index.content.descriptionHtml;
       let urlArr = (req.url).split("/");
       if (urlArr.length == 3 && (urlArr[2] != '') && urlArr[1] == 'blogs') {
-         let activeBlog = await initialBlogState(urlArr[2]);
+         let activeBlog = await initialBlogState(decodeURI(urlArr[2]));
          // console.log('blogState', activeBlog);
          initialStateJson.blogs.activeBlog = {
             "blog": activeBlog,
@@ -192,7 +192,7 @@ app.get('*', async (req, res, next) => {
             descriptionHtml = activeBlog.descriptionHtml;
          }
       } else if (urlArr.length == 3 && (urlArr[2] != '') && (urlArr[1] == 'goods')) {
-         let goodCategory = await initialGoodCatState(urlArr[2]);
+         let goodCategory = await initialGoodCatState(decodeURI(urlArr[2]));
          // console.log('goodCategoryState', goodCategory);
          initialStateJson.contents.goodCategory = {
             "content": goodCategory,
@@ -204,7 +204,7 @@ app.get('*', async (req, res, next) => {
             descriptionHtml = goodCategory.descriptionHtml;
          }
       } else if (urlArr.length == 4 && (urlArr[3] != '') && urlArr[1] == 'goods') {
-         let activeGood = await initialGoodState(urlArr[3]);
+         let activeGood = await initialGoodState(decodeURI(urlArr[3]));
          // console.log('goodState', activeGood);
          initialStateJson.goods.activeGood = {
             "good": activeGood,

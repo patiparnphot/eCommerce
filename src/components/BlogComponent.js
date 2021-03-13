@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import NotFoundPage from './NotFoundPage';
+import Loader from './loader';
 import { Helmet } from 'react-helmet';
 
 var initialBlogState = require("../../initial_state/initialBlogState");
@@ -93,7 +94,7 @@ export default class BlogPage extends React.Component {
     console.log("blog detail: ", blog);
     
     if (contentLoading || blogLoading) {
-      return <div className="container">Loading...</div>;
+      return <Loader/>;
     } else if(contentError) {
       return  <div className="alert alert-danger">{contentError.message}</div>
     } else if(blogError) {
@@ -146,7 +147,7 @@ export default class BlogPage extends React.Component {
                     </div>
                   </div>
                   <div className="navigation-top">
-                    <div className="fb-like" data-href="https://www.patiparnair.com" data-width="" data-layout="standard" data-action="like" data-size="small" data-share="true"></div>
+                    <div className="fb-like" data-href={content.url + "/blogs/" + blog.id} data-width="" data-layout="standard" data-action="like" data-size="small" data-share="true"></div>
                     <div className="navigation-area">
                       <div className="row">
                         <div className="col-lg-6 col-md-6 col-12 nav-left flex-row d-flex  align-items-center">
@@ -199,35 +200,10 @@ export default class BlogPage extends React.Component {
                       </div>
                     </div>
                   </div>
-                  <div className="fb-comments" data-href={"https://www.meatseo.com/blogs/" + blog.title} data-width="100%" data-numposts="5"></div>
+                  <div className="fb-comments" data-href={content.url + "/blogs/" + blog.id} data-width="100%" data-numposts="5"></div>
                 </div>
                 <div className="col-lg-3 col-md-3 col-12">
                   <div className="blog_right_sidebar">
-                    <aside className="single_sidebar_widget post_category_widget">
-                      <h4 className="widget_title">{content.categoryHead}</h4>
-                      <ul className="list cat-list">
-                        <li>
-                          <a href="#" className="d-flex">
-                            <p>All</p>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#" className="d-flex">
-                            <p>Data Science</p>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#" className="d-flex">
-                            <p>SEO</p>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#" className="d-flex">
-                            <p>Developer</p>
-                          </a>
-                        </li>
-                      </ul>
-                    </aside>
                     <aside className="single_sidebar_widget popular_post_widget">
                       <h3 className="widget_title">{content.recentPostHead}</h3>
                       {this.renderRecentPosts(blog.recentBlogs)}

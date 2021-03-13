@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import NotFoundPage from './NotFoundPage';
+import Loader from './loader';
 //import { Helmet } from 'react-helmet';
 
 
@@ -108,14 +108,14 @@ const renderArray = ({fields, meta: {error, submitFailed}}) => (
   <ul>
     <li>
       <button type="button" style={{backgroundColor: "lightgreen"}} onClick={() => fields.push()}>
-        Add Item
+        Add Item*
       </button>
       {submitFailed && error && <span>{error}</span>}
     </li>
     {fields.map((item, index) => (
       <li key={index}>
         <button type="button" style={{backgroundColor: "orange"}} title="Remove Item" onClick={() => fields.remove(index)}>X</button>
-        <Field name={item} type="text" label={`ITEM #${index + 1}`} component={renderField}/>
+        <Field name={item} type="text" label={`ITEM #${index + 1}*`} component={renderField}/>
       </li>
     ))}
     {error && <li className="error">{error}</li>}
@@ -133,23 +133,23 @@ class ContactUsContentClass extends React.Component {
       <form onSubmit={handleSubmit(Submit)}>
         <div className="col-sm-12" style={{backgroundColor: "white", margin: "10px"}}>
           <h4>LOCATION</h4>
-          <Field name="locationHead" type="text" label="HEADER" component={renderField} />
+          <Field name="locationHead" type="text" label="HEADER*" component={renderField} />
           <FieldArray name="locations" component={renderArray} />
         </div>
         <div className="col-sm-12" style={{backgroundColor: "white", margin: "10px"}}>
           <h4>CONTACT</h4>
-          <Field name="telephoneHead" type="text" label="HEADER" component={renderField} />
+          <Field name="telephoneHead" type="text" label="HEADER*" component={renderField} />
           <FieldArray name="telephones" component={renderArray} />
         </div>
         <div className="col-sm-12" style={{backgroundColor: "white", margin: "10px"}}>
           <h4>EMAIL</h4>
-          <Field name="emailHead" type="text" label="HEADER" component={renderField} />
+          <Field name="emailHead" type="text" label="HEADER*" component={renderField} />
           <FieldArray name="emails" component={renderArray} />
         </div>
         <div className="col-sm-12" style={{backgroundColor: "white", margin: "10px"}}>
           <h4>GOOGLE MAPS</h4>
-          <Field name="latitude" type="text" label="LATITUDE" component={renderField} />
-          <Field name="longitude" type="text" label="LONGITUDE" component={renderField} />
+          <Field name="latitude" type="text" label="LATITUDE*" component={renderField} />
+          <Field name="longitude" type="text" label="LONGITUDE*" component={renderField} />
         </div>
         <button type="submit" style={{backgroundColor: "orange"}} disabled={ submitting }>{formButton}</button>
       </form>
@@ -189,7 +189,7 @@ export default class TemplateContentPage extends React.Component {
     const { token } = this.props.member;
     
     if (!content || !token || !this.state.alreadyFetch) {
-      return <NotFoundPage/>
+      return <Loader/>
     } else {
 
       const initialContent = { ...content, token: token };
@@ -199,6 +199,7 @@ export default class TemplateContentPage extends React.Component {
             
             <h4>CONTACT</h4>
             <UploadPage/>
+            <span>( * = Required field )</span>
             <ContactUsContentForm
               initialValues={initialContent}
               formButton="Confirm"

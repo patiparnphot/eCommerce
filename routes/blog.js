@@ -1,5 +1,6 @@
 var express   = require("express"),
     router    = express.Router(),
+    passport     = require("passport"),
     moment    = require("moment-timezone"),
     fs        = require("fs"),
     Blog      = require("../models/blog"),
@@ -232,11 +233,12 @@ router.put("/edit/:id", async function(req, res, next) {
     );
 });
 
-// //DESTROY - delete a idol from db
-// router.delete("/:id", middleware.checkUserIdol, function(req, res, next) {
-//   Idol.findByIdAndRemove(req.params.id, function (err) {
-//     if (err) return next(err);
-//   });
-// });
+//DESTROY - delete a blog from db
+router.delete("/:id", passport.authenticate('jwt', {session: false}), function(req, res, next) {
+    Blog.findByIdAndRemove(req.params.id, function (err, deletedBlog) {
+        if (err) return next(err);
+        res.json(deletedBlog);
+    });
+});
 
 module.exports = router;

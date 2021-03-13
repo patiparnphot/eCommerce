@@ -21,6 +21,7 @@ import PopularOnShop from '../containers/PopularOnShopContainer';
 import Information from '../components/InformationComponent';
 import Blogs from '../containers/BlogsContainer';
 import NotFoundPage from '../components/NotFoundPage.js';
+import Loader from '../components/loader';
 
 class IndexPage extends Component {
 
@@ -42,7 +43,7 @@ class IndexPage extends Component {
     const { content, loading, error } = this.props.indexContent;
 
     if(loading) {
-      return <div className="container"><h1>MeatSEO</h1><h3>Loading...</h3></div>      
+      return <Loader/>      
     } else if(error) {
       return <div className="alert alert-danger">Error: {error.message}</div>
     } else if(!content) {

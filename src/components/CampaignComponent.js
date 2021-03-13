@@ -1,4 +1,5 @@
 import React from 'react';
+import Loader from './loader';
 
 
 export default function Campaign ({campaign}) {
@@ -9,7 +10,9 @@ export default function Campaign ({campaign}) {
   // }, []);
   
     
-  if (!campaign || !campaign.features || !Array.isArray(campaign.features) || !campaign.features.length) {
+  if (!campaign) {
+    return <Loader/>
+  } else if (!campaign.features || !Array.isArray(campaign.features) || !campaign.features.length || !campaign.title) {
     return <div/>
   } else {
     return (

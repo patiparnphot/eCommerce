@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-
-import {
-  fetchIndexcontent,
-  fetchIndexcontentSuccess,
-  fetchIndexcontentFailure
-} from '../actions/contents';
+import NotFoundPage from '../components/NotFoundPage';
+import Loader from '../components/loader';
 
 import {
   fetchOrder,
@@ -56,8 +52,10 @@ class InvoicePage extends Component {
           first!!!
         </h2>
       );
+    } else if(loading) {
+      return <Loader/>
     } else if(!order) {
-      return <div/>
+      return <NotFoundPage/>
     } else if(this.props.member.user.username != order.customer.username) {
       return (
         <h5 class="container">
@@ -334,12 +332,6 @@ function ThirdMethod(props) {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchIndexcontent: () => {
-      dispatch(fetchIndexcontent()).then((response) => {
-        console.log('indexContent: ', response.payload);
-        !response.error ? dispatch(fetchIndexcontentSuccess(response.payload)) : dispatch(fetchIndexcontentFailure(response.payload));
-      });
-    },
     fetchActiveOrder: (invoiceId) => {
       dispatch(fetchOrder(invoiceId)).then((response) => {
         console.log('activeOrder: ', response.payload);
@@ -355,7 +347,6 @@ const mapDispatchToProps = (dispatch) => {
 
 function mapStateToProps(state) {
   return {
-    indexContent: state.contents.index,
     member: state.member,
     activeOrder: state.orders.activeOrder
   };

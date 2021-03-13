@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useParams, useLocation } from 'react-router-dom';
+import Loader from '../components/loader';
 import NotFoundPage from '../components/NotFoundPage';
 import RecentComponent from '../components/RecentComponent';
 import {
@@ -56,7 +57,7 @@ function GoodPage ({
       setCost(activeGood.good.options[0].cost);
       setOption(activeGood.good.options[0].key);
       setAvailable(activeGood.good.options[0].isAvailable);
-      if(activeGood.good.specificOptions) {
+      if(activeGood.good.specificOptions && activeGood.good.specificOptions.length) {
         setSpecificOption(activeGood.good.specificOptions[0]);
       }
       setInitial("alreadyFetch");
@@ -164,7 +165,9 @@ function GoodPage ({
     setCommentMessage(event.target.value);
   }
 
-  if(!activeGood.good || (activeGood.good.title == "noSlug")) {
+  if(!activeGood.good) {
+    return <Loader/>
+  } else if (activeGood.good.title == "noSlug") {
     return <NotFoundPage/>
   } else {
     return (
@@ -255,7 +258,7 @@ function GoodPage ({
   initial={initial}
 /> */
 
-function Stars({rating, numberOfStars}) {
+function Stars({rating, numberOfStars = 5}) {
   let ratingNum = parseFloat(rating)
   let ratingRounded = Math.round(ratingNum);
   let array = [...Array(+numberOfStars).keys()];
@@ -285,11 +288,13 @@ function Options({options}) {
 }
 
 function SpecificOptions({specificOptions}) {
-  return specificOptions.map((specificOption) => {
-    return (
-      <option value={specificOption}>{specificOption}</option>
-    )
-  })
+  if (specificOptions && Array.isArray(specificOptions)) {
+    return specificOptions.map((specificOption) => {
+      return (
+        <option value={specificOption}>{specificOption}</option>
+      )
+    })
+  }
 }
 
 function GoodDetail({
@@ -545,29 +550,31 @@ function GoodDetail({
 }
 
 function Comments({comments, numberOfStars}) {
-  return comments.map((comment) => {
-    return (
-      <li class="media">
-        <div class="media-left">
-          <a href="#">
-            <img class="media-object" src="/images/profile/profile-img.jpg" alt="..."/>
-          </a>
-        </div>
-        <div class="media-body">
-          <h4 class="media-heading">
-            <a href="#">{comment.rater.username}</a>
-          </h4>
-          {comment.text}
-          <span class="media-info rate">
-            {comment.createdAt}
-            <ul className="stars">
-              <Stars rating={comment.rating} numberOfStars={numberOfStars}/>
-            </ul>
-          </span>
-        </div>
-      </li>
-    )
-  })
+  if (comments && Array.isArray(comments)) {
+    return comments.map((comment) => {
+      return (
+        <li class="media">
+          <div class="media-left">
+            <a href="#">
+              <img class="media-object" src="/images/profile/profile-img.jpg" alt="..."/>
+            </a>
+          </div>
+          <div class="media-body">
+            <h4 class="media-heading">
+              <a href="#">{comment.rater.username}</a>
+            </h4>
+            {comment.text}
+            <span class="media-info rate">
+              {comment.createdAt}
+              <ul className="stars">
+                <Stars rating={comment.rating} numberOfStars={numberOfStars}/>
+              </ul>
+            </span>
+          </div>
+        </li>
+      )
+    })
+  }
 }
 
 function GoodComment({
@@ -576,7 +583,7 @@ function GoodComment({
   ratingRef,
   currentRating,
   setRating,
-  numberOfStars,
+  numberOfStars = 5,
   hoverHandler,
   starClickHandler,
   alreadyRate,

@@ -1,4 +1,5 @@
 import React from 'react';
+import Loader from './loader';
 
 
 export default function Intro({intro}) {
@@ -26,7 +27,7 @@ export default function Intro({intro}) {
   
     
   if (!intro) {
-    return <div/>
+    return <Loader/>
   } else {
     return (
       <section id="intro">

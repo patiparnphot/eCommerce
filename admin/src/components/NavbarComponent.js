@@ -8,7 +8,7 @@ export default class Navbar extends React.Component {
   
   updateJsonFile (file) {
       fetch(`/api/${file}/updateJsonFile`)
-      .then(response => console.log(response), error => console.log('An error occurred.', error));
+      .then(response => alert("update successfully!!!"), error => console.log('An error occurred.', error));
     }
     
   render() {

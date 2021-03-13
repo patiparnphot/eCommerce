@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import NotFoundPage from './NotFoundPage';
-//import { Helmet } from 'react-helmet';
+import Loader from './loader';
 
 
 import React from 'react';
@@ -80,6 +80,10 @@ const validate = values => {
       //   optionErrors.fruity = 'Required'
       //   optionsArrayErrors[optionIndex] = optionErrors
       // }
+      if (!option || !option.isAvailable) {
+        optionErrors.isAvailable = 'Required'
+        optionsArrayErrors[optionIndex] = optionErrors
+      }
     })
     if (optionsArrayErrors.length) {
       errors.options = optionsArrayErrors
@@ -139,14 +143,14 @@ const renderOptions = ({fields, allCat, cat, meta: {error, submitFailed}}) => {
           <li key={index}>
             <button type="button" style={{backgroundColor: "orange"}} title="Remove Option" onClick={() => fields.remove(index)}>X</button>
             <h4>OPTION #{index + 1}</h4>
-            <Field name={`${field}.key`} type="select" choices={options} label="OPTION" component={renderField}/>
-            <Field name={`${field}.cost`} type="number" label="COST" component={renderField}/>
+            <Field name={`${field}.key`} type="select" choices={options} label="OPTION*" component={renderField}/>
+            <Field name={`${field}.cost`} type="number" label="COST*" component={renderField}/>
             {features.map((feature) => {
               return (
                 <Field name={`${field}.${feature.name}`} type="number" label={feature.name} component={renderField}/>
               );
             })}
-            <Field name={`${field}.isAvailable`} type="checkbox" label="AVAILABLE" component={renderField} />
+            <Field name={`${field}.isAvailable`} type="checkbox" label="AVAILABLE*" component={renderField} />
           </li>
         ))}
       </ul>
@@ -165,7 +169,7 @@ const renderSpecificOptions = ({fields, meta: {error, submitFailed}}) => (
     {fields.map((specificOption, index) => (
       <li key={index}>
         <button type="button" style={{backgroundColor: "orange"}} title="Remove Specific Option" onClick={() => fields.remove(index)}>X</button>
-        <Field name={specificOption} type="text" label={`SPECIFIC OPTION #${index + 1}`} component={renderField}/>
+        <Field name={specificOption} type="text" label={`SPECIFIC OPTION #${index + 1}*`} component={renderField}/>
       </li>
     ))}
     {error && <li className="error">{error}</li>}
@@ -183,7 +187,6 @@ class EditGoodClass extends React.Component {
       placeholderTitle,
       placeholderImage,
       placeholderDesc,
-      placeholderAvai,
       allCat,
       cat,
       formButton
@@ -242,17 +245,19 @@ export default class GoodPage extends React.Component {
   
   render() {
     
-    const { good } = this.props.activeGood;
+    const { good, loading } = this.props.activeGood;
     const { token } = this.props.member;
     const initialGood = { ...good, token: token, category: undefined };
     const { data } = this.props.allCat;
     
 
-    if (!good || !token || !data) {
+    if (loading || !token || !data) {
+      return <Loader/>
+    } else if (!good) {
       return <NotFoundPage/>
-    } else if (good && (this.state.category == "")) {
+    } else if (data && good && (this.state.category == "")) {
       this.setState({category: good.category});
-      return <NotFoundPage/>
+      return <Loader/>
     } else if (good && (this.state.category != "") && !this.state.alreadySelect) {
       return (
         <div className="form container">
@@ -331,14 +336,15 @@ export default class GoodPage extends React.Component {
           <button type="submit" onClick={() => this.setState({alreadySelect: false})}>Select Category</button>
           <br/>
 
+          <span>( * = Required field )</span>
+
           <EditGoodForm
-            placeholderSlug="SLUG"
-            placeholderTitleHtml="SEO Title"
-            placeholderDescHtml="Meta Description"
-            placeholderTitle="TITLE"
-            placeholderImage="IMAGE"
-            placeholderDesc="DESCRIPTION"
-            placeholderAvai="AVAILABLE"
+            placeholderSlug="SLUG* (no spacebar and /)"
+            placeholderTitleHtml="SEO Title*"
+            placeholderDescHtml="Meta Description*"
+            placeholderTitle="TITLE*"
+            placeholderImage="IMAGE* (460x630 px)"
+            placeholderDesc="DESCRIPTION*"
             initialValues={initialGood}
             allCat={data}
             cat={category}

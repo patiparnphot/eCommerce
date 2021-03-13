@@ -1,4 +1,5 @@
 import React from 'react';
+import Loader from './loader';
 import { Link } from 'react-router-dom';
 
 
@@ -46,7 +47,9 @@ export default function Recent ({recent, recentGoods, initial, setInitial}) {
   
   // const { goods, loading, error } = recentGoods;
   
-  if (!recent || !recentGoods || (recentGoods.length == 0)) {
+  if (!recent || !recentGoods) {
+    return <Loader/>
+  } else if (!Array.isArray(recentGoods) || !recentGoods.length) {
     return <div/>
   } else {
     return (

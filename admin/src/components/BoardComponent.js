@@ -1,4 +1,5 @@
 import React from 'react';
+import Loader from './loader';
 
 
 export default class Board extends React.Component {
@@ -16,7 +17,7 @@ export default class Board extends React.Component {
     //const { about } = this.props;
     
     //if (!about) {
-    //  return <div/>
+    //  return <Loader/>
     //}
     
     return (

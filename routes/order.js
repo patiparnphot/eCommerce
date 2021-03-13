@@ -1,16 +1,28 @@
-var express  = require("express"),
-    router   = express.Router(),
-    passport = require("passport"),
-    moment   = require("moment-timezone"),
-    fs       = require("fs"),
-    Order    = require("../models/order"),
-    Good     = require("../models/good");
+var express    = require("express"),
+    router     = express.Router(),
+    passport   = require("passport"),
+    nodeMailer = require("nodemailer"),
+    moment     = require("moment-timezone"),
+    fs         = require("fs"),
+    Order      = require("../models/order"),
+    Good       = require("../models/good");
     // middleware = require("../middleware");
 
 var preAuthenticate = function (req,res,next){
     console.log(JSON.stringify(req.body));
     return next();
 };
+
+var smtpTransport = nodeMailer.createTransport({
+    service: "Gmail",
+    host: "smtp.gmail.com",
+    port: 465,
+    secureConnection: true,
+    auth: {
+        user: "meatseo",
+        pass: "fkebumaqqapltjaq"
+    }
+ });
 
 function checkGoodDetail (good, subTotal) {
     return new Promise((resolve, reject) => {
@@ -109,6 +121,16 @@ router.post(
                 newlyOrder.customer.id = req.user._id;
                 newlyOrder.customer.username = req.user.username;
                 newlyOrder.save();
+                var mailOptions = {
+                    from: "meatseo@gmail.com",
+                    to: newlyOrder.customer.email,
+                    subject: "you ordered a product",
+                    text: "InvoiceId is " + newlyOrder.invoiceId
+                };
+                smtpTransport.sendMail(mailOptions, function(err){
+                    if(err) return next(err);
+                    console.log("mail sent");
+                });
                 console.log(newlyOrder);
                 res.json(newlyOrder);
             });

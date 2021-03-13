@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import NotFoundPage from './NotFoundPage';
+import Loader from './loader';
 //import { Helmet } from 'react-helmet';
 
 
@@ -85,6 +85,10 @@ const validate = values => {
       //   optionErrors.fruity = 'Required'
       //   optionsArrayErrors[optionIndex] = optionErrors
       // }
+      if (!option || !option.isAvailable) {
+        optionErrors.isAvailable = 'Required'
+        optionsArrayErrors[optionIndex] = optionErrors
+      }
     })
     if (optionsArrayErrors.length) {
       errors.options = optionsArrayErrors
@@ -136,7 +140,7 @@ const renderOptions = ({fields, allCat, cat, meta: {error, submitFailed}}) => {
       <ul>
         <li>
           <button type="button" style={{backgroundColor: "lightgreen"}} onClick={() => fields.push({})}>
-            Add Option
+            Add Option*
           </button>
           {submitFailed && error && <span>{error}</span>}
         </li>
@@ -144,14 +148,14 @@ const renderOptions = ({fields, allCat, cat, meta: {error, submitFailed}}) => {
           <li key={index}>
             <button type="button" style={{backgroundColor: "orange"}} title="Remove Option" onClick={() => fields.remove(index)}>X</button>
             <h4>OPTION #{index + 1}</h4>
-            <Field name={`${field}.key`} type="select" choices={options} label="OPTION" component={renderField}/>
-            <Field name={`${field}.cost`} type="number" label="COST" component={renderField}/>
+            <Field name={`${field}.key`} type="select" choices={options} label="OPTION*" component={renderField}/>
+            <Field name={`${field}.cost`} type="number" label="COST*" component={renderField}/>
             {features.map((feature) => {
               return (
                 <Field name={`${field}.${feature.name}`} type="number" label={feature.name} component={renderField}/>
               );
             })}
-            <Field name={`${field}.isAvailable`} type="checkbox" label="AVAILABLE" component={renderField} />
+            <Field name={`${field}.isAvailable`} type="checkbox" label="AVAILABLE*" component={renderField} />
           </li>
         ))}
       </ul>
@@ -170,7 +174,7 @@ const renderSpecificOptions = ({fields, meta: {error, submitFailed}}) => (
     {fields.map((specificOption, index) => (
       <li key={index}>
         <button type="button" style={{backgroundColor: "orange"}} title="Remove Specific Option" onClick={() => fields.remove(index)}>X</button>
-        <Field name={specificOption} type="text" label={`SPECIFIC OPTION #${index + 1}`} component={renderField}/>
+        <Field name={specificOption} type="text" label={`SPECIFIC OPTION #${index + 1}*`} component={renderField}/>
       </li>
     ))}
     {error && <li className="error">{error}</li>}
@@ -246,10 +250,10 @@ export default class CreateGood extends React.Component {
     const { data } = this.props.allCat;
 
     if (!data) {
-      return <NotFoundPage/>
+      return <Loader/>
     } else if (data && (this.state.category == "")) {
       this.setState({category: data[0].title});
-      return <NotFoundPage/>
+      return <Loader/>
     } else if (data && (this.state.category != "") && !this.state.alreadySelect) {
       return (
         <div className="form container">
@@ -298,14 +302,15 @@ export default class CreateGood extends React.Component {
           <button type="submit" onClick={() => this.setState({alreadySelect: false})}>Select Category</button>
           <br/>
 
+          <span>( * = Required field )</span>
+
           <CreateGoodForm
-            placeholderSlug="SLUG"
-            placeholderTitleHtml="SEO Title"
-            placeholderDescHtml="Meta Description"
-            placeholderTitle="TITLE"
-            placeholderImage="IMAGE"
-            placeholderDesc="DESCRIPTION"
-            placeholderCat="category of good"
+            placeholderSlug="SLUG* (no spacebar and /)"
+            placeholderTitleHtml="SEO Title*"
+            placeholderDescHtml="Meta Description*"
+            placeholderTitle="TITLE*"
+            placeholderImage="IMAGE* (460x630 px)"
+            placeholderDesc="DESCRIPTION*"
             initialValues={{token: this.props.member.token}}
             allCat={data}
             cat={category}

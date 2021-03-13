@@ -1967,6 +1967,7 @@ button {
   z-index: 2;
   background-color: #ffffff;
   border-radius: 3px;
+  width: 100%;
 }
 .shop-item .wrap > * {
   z-index: 2;
@@ -2309,8 +2310,8 @@ button {
     margin: 0;
   }
   .shop-items-full .shop-item .image img {
-    width: auto;
-    height: 100%;
+    width: 270px;
+    height: auto;
     border-radius: 3px 0 0 3px;
   }
   .shop-items-full .shop-item .image .hover {

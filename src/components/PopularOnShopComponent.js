@@ -1,4 +1,5 @@
 import React from 'react';
+import Loader from './loader';
 import { Link } from 'react-router-dom';
 
 
@@ -31,8 +32,8 @@ export default function PopularOnShop({fetchGoods, resetGoods, filteringGoods, p
     
   const { goods, loading, error } = filterGoods;
   
-  if (!popularOnShop || !goods) {
-    return <div/>
+  if (!popularOnShop || !goods || loading) {
+    return <Loader/>
   } else {
     return (
       <section id="popularOnShop">

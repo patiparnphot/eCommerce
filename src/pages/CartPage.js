@@ -3,12 +3,6 @@ import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import {
-  fetchIndexcontent,
-  fetchIndexcontentSuccess,
-  fetchIndexcontentFailure
-} from '../actions/contents';
-
-import {
   meFromToken,
   updateUser,
   updateUserSuccess,
@@ -665,12 +659,6 @@ const mapDispatchToProps = (dispatch) => {
         }
       });
     },
-    fetchIndexcontent: () => {
-      dispatch(fetchIndexcontent()).then((response) => {
-        console.log('indexContent: ', response.payload);
-        !response.error ? dispatch(fetchIndexcontentSuccess(response.payload)) : dispatch(fetchIndexcontentFailure(response.payload));
-      });
-    },
     deleteGood: (index, cartGoods) => {
       let before = cartGoods.slice(0, index);
       let after = cartGoods.slice(index + 1, cartGoods.length + 1);
@@ -718,7 +706,6 @@ const mapDispatchToProps = (dispatch) => {
 
 function mapStateToProps(state, ownProps) {
   return {
-    indexContent: state.contents.index,
     incartGoods: state.goods.incartGoods,
     member: state.member,
     newOrder: state.orders.newOrder

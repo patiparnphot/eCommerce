@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import NotFoundPage from './NotFoundPage';
+import Loader from './loader';
 //import { Helmet } from 'react-helmet';
 
 
@@ -65,9 +65,9 @@ class ContactUsContentClass extends React.Component {
       <form onSubmit={handleSubmit(Submit)}>
         <div className="col-sm-12" style={{backgroundColor: "white", margin: "10px"}}>
           <h4>DATA</h4>
-          <Field name="name" type="text" label="NAME" component={renderField} />
-          <Field name="description" type="text" label="DESCRIPTION" component={renderField} />
-          <Field name="image" type="text" label="IMAGE" component={renderField} />
+          <Field name="name" type="text" label="NAME*" component={renderField} />
+          <Field name="description" type="text" label="DESCRIPTION*" component={renderField} />
+          <Field name="image" type="text" label="IMAGE* (90x90 px)" component={renderField} />
         </div>
         <button type="submit" style={{backgroundColor: "orange"}} disabled={ submitting }>{formButton}</button>
       </form>
@@ -107,7 +107,7 @@ export default class TemplateContentPage extends React.Component {
     const { token } = this.props.member;
     
     if (!content || !token || !this.state.alreadyFetch) {
-      return <NotFoundPage/>
+      return <Loader/>
     } else {
 
       const initialContent = { ...content, token: token };
@@ -117,6 +117,7 @@ export default class TemplateContentPage extends React.Component {
             
             <h4>AUTHOR OF ALL BLOGS</h4>
             <UploadPage/>
+            <span>( * = Required field )</span>
             <ContactUsContentForm
               initialValues={initialContent}
               formButton="Confirm"

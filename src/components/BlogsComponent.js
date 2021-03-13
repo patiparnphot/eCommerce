@@ -1,4 +1,5 @@
 import React from 'react';
+import Loader from './loader';
 import { Link } from 'react-router-dom';
 
 
@@ -49,7 +50,7 @@ export default function Blog ({fetchBlogs, blogsList, content}) {
   const { blogs, loading, error } = blogsList;
 
   if(loading) {
-    return <div className="container"><h1>MeatSEO</h1><h3>Loading...</h3></div>      
+    return <Loader/>      
   } else if(error) {
     return <div className="alert alert-danger">Error: {error.message}</div>
   } else if(!content || !blogs) {

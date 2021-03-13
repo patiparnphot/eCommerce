@@ -173,3 +173,45 @@ export function resetActiveBlog() {
     type: RESET_ACTIVE_BLOG
   }
 }
+
+
+export function deleteBlog(deletedBlogId, token) {
+  return dispatch => {
+    return fetch(`${ROOT_URL}/blogs/${deletedBlogId}/`, {
+        method: "delete",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      .then(
+        (response) => {
+          if (response.status >= 400) {
+            return response.text();
+          } else {
+            return response.json();
+          }
+        },
+        error => console.log('An error occurred.', error)
+      )
+      .then(json => dispatch(receiver(DELETE_BLOG, json)));
+  };
+}
+export function deleteBlogSuccess(deletedBlog) {
+  return {
+    type: DELETE_BLOG_SUCCESS,
+    payload: deletedBlog
+  };
+}
+export function deleteBlogFailure(error) {
+  return {
+    type: DELETE_BLOG_FAILURE,
+    payload: error
+  };
+}
+export function resetDeletedBlog() {
+  return {
+    type: RESET_DELETED_BLOG
+  }
+}

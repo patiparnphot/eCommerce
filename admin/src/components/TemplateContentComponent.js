@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import NotFoundPage from './NotFoundPage';
+import Loader from './loader';
 //import { Helmet } from 'react-helmet';
 
 
@@ -204,7 +204,7 @@ const renderNavBar = ({fields, meta: {error, submitFailed}}) => (
   <ul>
     <li>
       <button type="button" style={{backgroundColor: "lightgreen"}} onClick={() => fields.push({})}>
-        Add More
+        Add More*
       </button>
       {submitFailed && error && <span>{error}</span>}
     </li>
@@ -212,9 +212,9 @@ const renderNavBar = ({fields, meta: {error, submitFailed}}) => (
       <li key={index}>
         <button type="button" style={{backgroundColor: "orange"}} title="Remove NavBar" onClick={() => fields.remove(index)}>X</button>
         <h4>NavBar #{index + 1}</h4>
-        <Field name={`${navBar}.pathname`} type="text" label="LINK" component={renderField}/>
+        <Field name={`${navBar}.pathname`} type="text" label="LINK*" component={renderField}/>
         <Field name={`${navBar}.hash`} type="text" label="SECTION" component={renderField}/>
-        <Field name={`${navBar}.text`} type="text" label="TEXT" component={renderField}/>
+        <Field name={`${navBar}.text`} type="text" label="TEXT*" component={renderField}/>
       </li>
     ))}
   </ul>
@@ -224,7 +224,7 @@ const renderFooterLink = ({fields, meta: {error, submitFailed}}) => (
   <ul>
     <li>
       <button type="button" style={{backgroundColor: "lightgreen"}} onClick={() => fields.push({})}>
-        Add Link
+        Add Link*
       </button>
       {submitFailed && error && <span>{error}</span>}
     </li>
@@ -232,8 +232,8 @@ const renderFooterLink = ({fields, meta: {error, submitFailed}}) => (
       <li key={index}>
         <button type="button" style={{backgroundColor: "orange"}} title="Remove Link" onClick={() => fields.remove(index)}>X</button>
         <h4>Link #{index + 1}</h4>
-        <Field name={`${link}.pathname`} type="text" label="LINK" component={renderField}/>
-        <Field name={`${link}.text`} type="text" label="TEXT" component={renderField}/>
+        <Field name={`${link}.pathname`} type="text" label="LINK*" component={renderField}/>
+        <Field name={`${link}.text`} type="text" label="TEXT*" component={renderField}/>
       </li>
     ))}
   </ul>
@@ -243,14 +243,14 @@ const renderWorkingTime = ({fields, meta: {error, submitFailed}}) => (
   <ul>
     <li>
       <button type="button" style={{backgroundColor: "lightgreen"}} onClick={() => fields.push()}>
-        Add Time
+        Add Time*
       </button>
       {submitFailed && error && <span>{error}</span>}
     </li>
     {fields.map((workingTime, index) => (
       <li key={index}>
         <button type="button" style={{backgroundColor: "orange"}} title="Remove WorkingTime" onClick={() => fields.remove(index)}>X</button>
-        <Field name={workingTime} type="text" label={`Working Time #${index + 1}`} component={renderField}/>
+        <Field name={workingTime} type="text" label={`Working Time #${index + 1}*`} component={renderField}/>
       </li>
     ))}
     {error && <li className="error">{error}</li>}
@@ -268,42 +268,42 @@ class TemplateContentClass extends React.Component {
       <form onSubmit={handleSubmit(Submit)}>
         <div className="col-sm-12" style={{backgroundColor: "white", margin: "10px"}}>
           <h4>TOP BAR MENU</h4>
-          <Field name="headerTelephone" type="text" label="TELEPHONE NUMBER" component={renderField} />
-          <Field name="headerSignup" type="text" label="SIGN UP" component={renderField} />
+          <Field name="headerTelephone" type="text" label="TELEPHONE NUMBER*" component={renderField} />
+          <Field name="headerSignup" type="text" label="SIGN UP*" component={renderField} />
         </div>
         <div className="col-sm-12" style={{backgroundColor: "white", margin: "10px"}}>
           <h4>NAVIGATION BAR</h4>
-          <Field name="headerBrandImage" type="text" label="LOGO PICTURE" component={renderField} />
-          <Field name="headerLogin" type="text" label="SIGN IN" component={renderField} />
-          <Field name="headerLogout" type="text" label="SIGN OUT" component={renderField} />
-          <Field name="headerCartText" type="text" label="CART" component={renderField} />
-          <Field name="headerCartBtn" type="text" label="VIEW ORDER" component={renderField} />
+          <Field name="headerBrandImage" type="text" label="LOGO PICTURE* (120x60 px)" component={renderField} />
+          <Field name="headerLogin" type="text" label="SIGN IN*" component={renderField} />
+          <Field name="headerLogout" type="text" label="SIGN OUT*" component={renderField} />
+          <Field name="headerCartText" type="text" label="CART*" component={renderField} />
+          <Field name="headerCartBtn" type="text" label="VIEW ORDER*" component={renderField} />
           <FieldArray name="headerNavBar" component={renderNavBar} />
         </div>
         <div className="col-sm-12" style={{backgroundColor: "white", margin: "10px"}}>
           <h4>FOOTER COLUMN 1</h4>
-          <Field name="footerInformationHead" type="text" label="HEADER" component={renderField} />
+          <Field name="footerInformationHead" type="text" label="HEADER*" component={renderField} />
           <FieldArray name="footerInformations" component={renderFooterLink} />
         </div>
         <div className="col-sm-12" style={{backgroundColor: "white", margin: "10px"}}>
           <h4>FOOTER COLUMN 2</h4>
-          <Field name="footerServiceHead" type="text" label="HEADER" component={renderField} />
+          <Field name="footerServiceHead" type="text" label="HEADER*" component={renderField} />
           <FieldArray name="footerServices" component={renderFooterLink} />
         </div>
         <div className="col-sm-12" style={{backgroundColor: "white", margin: "10px"}}>
           <h4>FOOTER COLUMN 3 (CONTACT INFO.)</h4>
-          <Field name="footerContactHead" type="text" label="HEADER" component={renderField} />
-          <Field name="footerContact" type="text" label="LOCATION" component={renderField} />
-          <Field name="footerEmail" type="text" label="EMAIL" component={renderField} />
-          <Field name="footerTelephone" type="text" label="TELEPHONE" component={renderField} />
-          <Field name="footerWorkingtimeHead" type="text" label="WORKING TIME" component={renderField} />
+          <Field name="footerContactHead" type="text" label="HEADER*" component={renderField} />
+          <Field name="footerContact" type="text" label="LOCATION*" component={renderField} />
+          <Field name="footerEmail" type="text" label="EMAIL*" component={renderField} />
+          <Field name="footerTelephone" type="text" label="TELEPHONE*" component={renderField} />
+          <Field name="footerWorkingtimeHead" type="text" label="WORKING TIME*" component={renderField} />
           <FieldArray name="footerWorkingtimes" component={renderWorkingTime} />
         </div>
         <div className="col-sm-12" style={{backgroundColor: "white", margin: "10px"}}>
           <h4>FOOTER COLUMN 4 (IDENTITY)</h4>
-          <Field name="footerBrandImage" type="text" label="LOGO PICTURE" component={renderField} />
-          <Field name="footerBrandName" type="text" label="NAME" component={renderField} />
-          <Field name="footerBrandDesc" type="text" label="DESCRIPTION" component={renderField} />
+          <Field name="footerBrandImage" type="text" label="LOGO PICTURE* (120x60 px)" component={renderField} />
+          <Field name="footerBrandName" type="text" label="NAME*" component={renderField} />
+          <Field name="footerBrandDesc" type="text" label="DESCRIPTION*" component={renderField} />
           <Field name="footerFacebook" type="text" label="FACEBOOK" component={renderField} />
           <Field name="footerInstagram" type="text" label="INSTAGRAM" component={renderField} />
           <Field name="footerTwitter" type="text" label="TWITTER" component={renderField} />
@@ -346,7 +346,7 @@ export default class TemplateContentPage extends React.Component {
     const { token } = this.props.member;
     
     if (!content || !token || !this.state.alreadyFetch) {
-      return <NotFoundPage/>
+      return <Loader/>
     } else {
 
       const initialContent = {
@@ -382,6 +382,7 @@ export default class TemplateContentPage extends React.Component {
             
             <h4>MENU & FOOTER</h4>
             <UploadPage/>
+            <span>( * = Required field )</span>
             <TemplateContentForm
               initialValues={initialContent}
               formButton="Confirm"

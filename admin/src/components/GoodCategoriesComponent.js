@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Loader from './loader';
 
 
 //var initialContentState = require("../../initial_state/initialContentState.json");
@@ -77,8 +78,8 @@ export default class GoodCategories extends React.Component {
       buttons.push(<button onClick={() => this.onChange(i)} >{i+1}</button>)
     }
 
-    if(!data || !good) {
-      return <div className="container"><h1>MeatSEO</h1><h3>Loading...</h3></div>      
+    if((!data && (data != 0)) || !good || loading) {
+      return <Loader/>
     //} else if(error) {
     //  return <div className="alert alert-danger">Error: {error.message}</div>
     //} else if(!content) {
@@ -93,25 +94,32 @@ export default class GoodCategories extends React.Component {
           </div>
           <Link to="/admin/goodCategories/create/">Create New Good Category</Link>
           <div className="card-body all-icons">
-            <div className="row blog-container">
-              
-              <div className="row">
-                <div className="col-sm-4">
-                  Category Title
-                </div>
-                <div className="col-sm-4">
-                  Edit Category
-                </div>
-                <div className="col-sm-4">
-                  Delete Category
-                </div>
-              </div>
+            {
+              (
+                data == 0
+              ) ? (
+                "NO GOOD CATEGORIES"
+              ) : (
+                <div className="row blog-container">
+                  <div className="row">
+                    <div className="col-sm-4">
+                      Category Title
+                    </div>
+                    <div className="col-sm-4">
+                      Edit Category
+                    </div>
+                    <div className="col-sm-4">
+                      Delete Category
+                    </div>
+                  </div>
 
-              <hr/>
+                  <hr/>
 
-              {this.renderGoodCategories(good)}
+                  {this.renderGoodCategories(good)}
 
-            </div>
+                </div>
+              )
+            }
           </div>
           {buttons}
         </div>

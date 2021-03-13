@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import NotFoundPage from './NotFoundPage';
+import Loader from './loader';
 //import { Helmet } from 'react-helmet';
 
 
@@ -115,26 +115,28 @@ const validate = values => {
   if (!values.recentHeader) {
     errors.recentHeader = 'Required'
   }
-  if (!values.campaignTitle) {
-    errors.campaignTitle = 'Required'
-  }
-  if (!values.campaignFeatures || !values.campaignFeatures.length) {
-    errors.campaignFeatures = { _error: 'At least one feature must be entered' }
-  } else {
-    const optionsArrayErrors = []
-    values.campaignFeatures.forEach((option, optionIndex) => {
-      const optionErrors = {}
-      if (!option || !option.image) {
-        optionErrors.image = 'Required'
-        optionsArrayErrors[optionIndex] = optionErrors
+  // if (!values.campaignTitle) {
+  //   errors.campaignTitle = 'Required'
+  // }
+  if (values.campaignFeatures && values.campaignFeatures.length) {
+    const featuresArrayErrors = []
+    values.campaignFeatures.forEach((feature, featureIndex) => {
+      const featureErrors = {}
+      if (!feature || !feature.image) {
+        featureErrors.image = 'Required'
+        featuresArrayErrors[featureIndex] = featureErrors
       }
-      if (!option || !option.content) {
-        optionErrors.content = 'Required'
-        optionsArrayErrors[optionIndex] = optionErrors
+      if (!feature || !feature.topic) {
+        featureErrors.topic = 'Required'
+        featuresArrayErrors[featureIndex] = featureErrors
+      }
+      if (!feature || !feature.content) {
+        featureErrors.content = 'Required'
+        featuresArrayErrors[featureIndex] = featureErrors
       }
     })
-    if (optionsArrayErrors.length) {
-      errors.campaignFeatures = optionsArrayErrors
+    if (featuresArrayErrors.length) {
+      errors.campaignFeatures = featuresArrayErrors
     }
   }
   // if (!values.popularOnShopSidebarImage) {
@@ -168,9 +170,9 @@ const validate = values => {
   if (!values.blogsSubHeader) {
     errors.blogsSubHeader = 'Required'
   }
-  if (!values.blogsParallaxText) {
-    errors.blogsParallaxText = 'Required'
-  }
+  // if (!values.blogsParallaxText) {
+  //   errors.blogsParallaxText = 'Required'
+  // }
   // if (!values.informationTitle) {
   //   errors.informationTitle = 'Required'
   // }
@@ -206,7 +208,7 @@ const renderSlideshows = ({fields, meta: {error, submitFailed}}) => (
   <ul>
     <li>
       <button type="button" style={{backgroundColor: "lightgreen"}} onClick={() => fields.push({})}>
-        Add Slideshow
+        Add Slideshow*
       </button>
       {submitFailed && error && <span>{error}</span>}
     </li>
@@ -214,11 +216,11 @@ const renderSlideshows = ({fields, meta: {error, submitFailed}}) => (
       <li key={index}>
         <button type="button" style={{backgroundColor: "orange"}} title="Remove Slideshow" onClick={() => fields.remove(index)}>X</button>
         <h4>Slideshow #{index + 1}</h4>
-        <Field name={`${slideshow}.header`} type="text" label="HEADER" component={renderField}/>
-        <Field name={`${slideshow}.description`} type="text" label="DESCRIPTION" component={renderField}/>
-        <Field name={`${slideshow}.link`} type="text" label="BUTTON TEXT" component={renderField}/>
+        <Field name={`${slideshow}.header`} type="text" label="HEADER*" component={renderField}/>
+        <Field name={`${slideshow}.description`} type="text" label="DESCRIPTION*" component={renderField}/>
+        <Field name={`${slideshow}.link`} type="text" label="BUTTON TEXT*" component={renderField}/>
         <Field name={`${slideshow}.btnLink`} type="text" label="BUTTON LINK" component={renderField}/>
-        <Field name={`${slideshow}.image`} type="text" label="IMAGE" component={renderField}/>
+        <Field name={`${slideshow}.image`} type="text" label="IMAGE (560x400 px)" component={renderField}/>
       </li>
     ))}
   </ul>
@@ -236,9 +238,9 @@ const renderFeatures = ({fields, meta: {error, submitFailed}}) => (
       <li key={index}>
         <button type="button" style={{backgroundColor: "orange"}} title="Remove Feature" onClick={() => fields.remove(index)}>X</button>
         <h4>Feature #{index + 1}</h4>
-        <Field name={`${feature}.image`} type="text" label="IMAGE" component={renderField}/>
-        <Field name={`${feature}.topic`} type="text" label="TOPIC" component={renderField}/>
-        <Field name={`${feature}.content`} type="text" label="CONTENT" component={renderField} />
+        <Field name={`${feature}.image`} type="text" label="IMAGE* (555x312 px)" component={renderField}/>
+        <Field name={`${feature}.topic`} type="text" label="TOPIC*" component={renderField}/>
+        <Field name={`${feature}.content`} type="text" label="CONTENT*" component={renderField} />
       </li>
     ))}
   </ul>
@@ -248,7 +250,7 @@ const renderCategories = ({fields, meta: {error, submitFailed}}) => (
   <ul>
     <li>
       <button type="button" style={{backgroundColor: "lightgreen"}} onClick={() => fields.push({})}>
-        Add Category
+        Add Category*
       </button>
       {submitFailed && error && <span>{error}</span>}
     </li>
@@ -256,8 +258,8 @@ const renderCategories = ({fields, meta: {error, submitFailed}}) => (
       <li key={index}>
         <button type="button" style={{backgroundColor: "orange"}} title="Remove Category" onClick={() => fields.remove(index)}>X</button>
         <h4>Category #{index + 1}</h4>
-        <Field name={`${category}.topic`} type="text" label="CATEGORY" component={renderField}/>
-        <Field name={`${category}.link`} type="text" label="LINK" component={renderField}/>
+        <Field name={`${category}.topic`} type="text" label="CATEGORY*" component={renderField}/>
+        <Field name={`${category}.link`} type="text" label="LINK*" component={renderField}/>
       </li>
     ))}
   </ul>
@@ -274,12 +276,12 @@ class IndexContentClass extends React.Component {
       <form onSubmit={handleSubmit(Submit)}>
         <div className="col-sm-12" style={{backgroundColor: "white", margin: "10px"}}>
           <h4>SEO</h4>
-          <Field name="titleHtml" type="text" label="SEO title" component={renderField} />
-          <Field name="descriptionHtml" type="text" label="Meta Description" component={renderField} />
+          <Field name="titleHtml" type="text" label="SEO title*" component={renderField} />
+          <Field name="descriptionHtml" type="text" label="Meta Description*" component={renderField} />
         </div>
         <div className="col-sm-12" style={{backgroundColor: "white", margin: "10px"}}>
           <h4>INTRO SECTION</h4>
-          <Field name="introBackground" type="text" label="BACKGROUND" component={renderField} />
+          <Field name="introBackground" type="text" label="BACKGROUND (1300x400 px)" component={renderField} />
           <FieldArray name="introSlideshows" component={renderSlideshows} />
         </div>
         <div className="col-sm-12" style={{backgroundColor: "white", margin: "10px"}}>
@@ -289,21 +291,21 @@ class IndexContentClass extends React.Component {
         </div>
         <div className="col-sm-12" style={{backgroundColor: "white", margin: "10px"}}>
           <h4>CATEGORY SECTION</h4>
-          <Field name="popularOnShopCategoryHead" type="text" label="TITLE" component={renderField} />
+          <Field name="popularOnShopCategoryHead" type="text" label="TITLE*" component={renderField} />
           <FieldArray name="popularOnShopCategories" component={renderCategories} />
         </div>
         <div className="col-sm-12" style={{backgroundColor: "white", margin: "10px"}}>
           <h4>BLOG</h4>
-          <Field name="blogsHeader" type="text" label="TITLE" component={renderField} />
-          <Field name="blogsSubHeader" type="text" label="DESCRIPTION" component={renderField} />
+          <Field name="blogsHeader" type="text" label="TITLE*" component={renderField} />
+          <Field name="blogsSubHeader" type="text" label="DESCRIPTION*" component={renderField} />
         </div>
         <div className="col-sm-12" style={{backgroundColor: "white", margin: "10px"}}>
           <h4>FOOTER BANNER</h4>
           <Field name="informationTitle" type="text" label="HEADER" component={renderField} />
-          <Field name="informationText" type="text" label="DESCRIPTION" component={renderField} />
+          <Field name="informationText" type="text" label="DESCRIPTION*" component={renderField} />
           <Field name="informationBtnText" type="text" label="BUTTON TEXT" component={renderField} />
-          <Field name="informationBtnLink" type="text" label="BUTTON LINK" component={renderField} />
-          <Field name="informationParallaxImage" type="text" label="IMAGE" component={renderField} />
+          <Field name="informationBtnLink" type="text" label="BUTTON LINK*" component={renderField} />
+          <Field name="informationParallaxImage" type="text" label="IMAGE* (1300x800 px)" component={renderField} />
         </div>
         <button type="submit" style={{backgroundColor: "orange"}} disabled={ submitting }>{formButton}</button>
       </form>
@@ -343,7 +345,7 @@ export default class IndexContentPage extends React.Component {
     const { token } = this.props.member;
     
     if (!content || !token || !this.state.alreadyFetch) {
-      return <NotFoundPage/>
+      return <Loader/>
     } else {
 
       const initialContent = {
@@ -375,6 +377,7 @@ export default class IndexContentPage extends React.Component {
             
             <h4>HOMEPAGE</h4>
             <UploadPage/>
+            <span>( * = Required field )</span>
             <IndexContentForm
               initialValues={initialContent}
               formButton="Confirm"

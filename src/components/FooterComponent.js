@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Field, reduxForm} from 'redux-form';
+import Loader from './loader';
 // import { sendMessage } from '../actions/contents';
 
 const ROOT_URL = '/api';
@@ -80,7 +80,7 @@ export default class Footer extends React.Component {
     const { footerTag } = this.props;
     
     if (!footerTag) {
-      return <div/>
+      return <Loader/>
     } else {
     
       return (

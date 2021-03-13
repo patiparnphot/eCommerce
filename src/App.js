@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import { Route, Switch, useRouteMatch, useParams, useHistory } from 'react-router-dom';
 import Header from './containers/HeaderContainer';
 import Footer from './containers/FooterContainer';
-import NotFoundPage from './components/NotFoundPage.js';
+import NotFoundPage from './components/NotFoundPage';
+import Loader from './components/loader';
 import IndexPage from './pages/IndexPage';
 import BlogPage from './pages/BlogPage';
 import CategoryPage from './pages/CategoryPage';
@@ -49,7 +50,7 @@ function App({autoLogin, autoLogout, refreshIncart, fetchTemplatecontent, templa
   const { content, loading, error } = templateContent;
   
   if(loading) {
-    return <div className="container"><h1>MeatSEO</h1><h3>Loading...</h3></div>      
+    return <Loader/>      
   } else if(error) {
     return <div className="alert alert-danger">Error: {error.message}</div>
   } else if(!content) {

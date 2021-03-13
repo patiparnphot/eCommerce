@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import NotFoundPage from './NotFoundPage';
+import Loader from './loader';
 //import { Helmet } from 'react-helmet';
 
 
@@ -142,24 +142,32 @@ export default class CreateBlog extends React.Component {
   
   
   render() {
+    
+    const { token } = this.props.member;
+
+    if (!token) {
+      return <Loader/>
+    } else {
         
-    return (
-        <div className="form container">
-          
-          <h4>CREATE BLOG</h4>
-          <UploadPage/>
-          <CreateBlogForm
-            placeholderSlug="SLUG"
-            placeholderTitleHtml="SEO Title"
-            placeholderDescHtml="Meta Description"
-            placeholderTitle="TITLE"
-            placeholderImage="BLOG COVER IMG"
-            placeholderText="BLOG CONTENT"
-            placeholderType="CATEGORY"
-            initialValues={{token: this.props.member.token}}
-            formButton="Confirm"
-          />
-        </div>
-    )
+      return (
+          <div className="form container">
+            
+            <h4>CREATE BLOG</h4>
+            <UploadPage/>
+            <span>( * = Required field )</span>
+            <CreateBlogForm
+              placeholderSlug="SLUG* (no spacebar and /)"
+              placeholderTitleHtml="SEO Title*"
+              placeholderDescHtml="Meta Description*"
+              placeholderTitle="TITLE*"
+              placeholderImage="BLOG COVER IMG* (850x950 px)"
+              placeholderText="BLOG CONTENT*"
+              placeholderType="CATEGORY*"
+              initialValues={{token: token}}
+              formButton="Confirm"
+            />
+          </div>
+      );
+    }
   }
 }

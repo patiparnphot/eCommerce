@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import NotFoundPage from './NotFoundPage';
-//import { Helmet } from 'react-helmet';
+import Loader from './loader';
 
 
 import React from 'react';
@@ -131,38 +131,39 @@ export default class BlogPage extends React.Component {
   
   render() {
     
-    const { blog } = this.props.activeBlog;
+    const { blog, loading } = this.props.activeBlog;
     const { token } = this.props.member;
     const initialBlog = { ...blog, token: token };
     
-    if (!blog || !token) {
+    if (loading || !token) {
+      return <Loader/>
+    } else if (!blog) {
       return <NotFoundPage/>
-    }
-
-    if (blog) {
+    } else if (blog) {
       $(document).ready(function() {
         // Summernote editor
         demo.initSummernote("text", blog.text);
       });
-    }
     
-    return (
+      return (
         <div className="form container">
           
           <h4>{`Blog: ${this.props.blogSlug}`}</h4>
           <UploadPage/>
+          <span>( * = Required field )</span>
           <EditBlogForm
-            placeholderSlug="SLUG"
-            placeholderTitleHtml="SEO Title"
-            placeholderDescHtml="Meta Description"
-            placeholderTitle="TITLE"
-            placeholderImage="BLOG COVER IMG"
-            placeholderText="BLOG CONTENT"
-            placeholderType="CATEGORY"
+            placeholderSlug="SLUG* (no spacebar and /)"
+            placeholderTitleHtml="SEO Title*"
+            placeholderDescHtml="Meta Description*"
+            placeholderTitle="TITLE*"
+            placeholderImage="BLOG COVER IMG* (850x950 px)"
+            placeholderText="BLOG CONTENT*"
+            placeholderType="CATEGORY*"
             initialValues={initialBlog}
             formButton="Confirm"
           />
         </div>
-    )
+      );
+    }
   }
 }

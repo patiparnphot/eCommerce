@@ -1,4 +1,5 @@
 import React from 'react';
+import Loader from './loader';
 
 
 export default function Information({information}) {
@@ -9,7 +10,9 @@ export default function Information({information}) {
   }, []);
 
   
-  if (!information || !information.title || (information.title == "")) {
+  if (!information) {
+    return <Loader/>
+  } else if (!information.title || (information.title == "")) {
     return <div/>
   } else {
     return (

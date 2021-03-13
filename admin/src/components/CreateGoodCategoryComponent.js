@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import NotFoundPage from './NotFoundPage';
+import Loader from './loader';
 //import { Helmet } from 'react-helmet';
 
 
@@ -126,11 +126,11 @@ const renderFeatures = ({fields, meta: {error, submitFailed}}) => (
       <li key={index}>
         <button type="button" style={{backgroundColor: "orange"}} title="Remove Feature" onClick={() => fields.remove(index)}>X</button>
         <h4>FEATURE #{index + 1}</h4>
-        <Field name={`${field}.name`} type="text" label="NAME" component={renderField}/>
-        <Field name={`${field}.first`} type="number" label="FIRST" component={renderField}/>
-        <Field name={`${field}.last`} type="number" label="LAST" component={renderField}/>
-        <Field name={`${field}.min`} type="number" label="MIN" component={renderField}/>
-        <Field name={`${field}.max`} type="number" label="MAX" component={renderField}/>
+        <Field name={`${field}.name`} type="text" label="NAME*" component={renderField}/>
+        <Field name={`${field}.first`} type="number" label="FIRST*" component={renderField}/>
+        <Field name={`${field}.last`} type="number" label="LAST*" component={renderField}/>
+        <Field name={`${field}.min`} type="number" label="MIN*" component={renderField}/>
+        <Field name={`${field}.max`} type="number" label="MAX*" component={renderField}/>
       </li>
     ))}
   </ul>
@@ -140,14 +140,14 @@ const renderOptions = ({fields, meta: {error, submitFailed}}) => (
   <ul>
     <li>
       <button type="button" style={{backgroundColor: "lightgreen"}} onClick={() => fields.push()}>
-        Add Option
+        Add Option*
       </button>
       {submitFailed && error && <span>{error}</span>}
     </li>
     {fields.map((option, index) => (
       <li key={index}>
         <button type="button" style={{backgroundColor: "orange"}} title="Remove Option" onClick={() => fields.remove(index)}>X</button>
-        <Field name={option} type="text" label={`OPTION #${index + 1}`} component={renderField}/>
+        <Field name={option} type="text" label={`OPTION #${index + 1}*`} component={renderField}/>
       </li>
     ))}
     {error && <li className="error">{error}</li>}
@@ -208,20 +208,28 @@ export default class CreateGood extends React.Component {
   
   
   render() {
+    
+    const { token } = this.props.member;
+
+    if (!token) {
+      return <Loader/>
+    } else {
         
-    return (
+      return (
         <div className="form container">
           
           <h4>CREATE PRODUCT CATEGORY</h4>
+          <span>( * = Required field )</span>
           <CreateGoodForm
-            placeholderTitleHtml="SEO Title"
-            placeholderDescHtml="Meta Description"
-            placeholderTitle="TITLE"
+            placeholderTitleHtml="SEO Title*"
+            placeholderDescHtml="Meta Description*"
+            placeholderTitle="TITLE* (no spacebar and /)"
             placeholderText="DESCRIPTION"
-            initialValues={{token: this.props.member.token}}
+            initialValues={{token: token}}
             formButton="Confirm"
           />
         </div>
-    )
+      );
+    }
   }
 }

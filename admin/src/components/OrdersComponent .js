@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import order from '../../../models/order';
+import Loader from './loader';
 
 
 //var initialContentState = require("../../initial_state/initialContentState.json");
@@ -98,8 +99,8 @@ export default class Orders extends React.Component {
       buttons.push(<button onClick={() => this.onChange(i)} >{i+1}</button>)
     }
 
-    if(!data || !orders) {
-      return <div className="container"><h1>MeatSEO</h1><h3>Loading...</h3></div>      
+    if((!data && (data != 0)) || !orders) {
+      return <Loader/>
     //} else if(error) {
     //  return <div className="alert alert-danger">Error: {error.message}</div>
     //} else if(!content) {
@@ -113,31 +114,38 @@ export default class Orders extends React.Component {
             <h5 className="title">{`OREDERS LIST (${data})`}</h5>
           </div>
           <div className="card-body all-icons">
-            <div className="row blog-container">
-              
-              <div className="row">
-                <div className="col-sm-3">
-                  Invoice Id
-                </div>
-                <div className="col-sm-3">
-                  Customer Name
-                </div>
-                <div className="col-sm-3">
-                  Created At
-                </div>
-                <div className="col-sm-1">
-                  Show
-                </div>
-                <div className="col-sm-2">
-                  Approve
-                </div>
-              </div>
+            {
+              (
+                data == 0
+              ) ? (
+                "NO ORDERS"
+              ) : (
+                <div className="row blog-container">
+                  <div className="row">
+                    <div className="col-sm-3">
+                      Invoice Id
+                    </div>
+                    <div className="col-sm-3">
+                      Customer Name
+                    </div>
+                    <div className="col-sm-3">
+                      Created At
+                    </div>
+                    <div className="col-sm-1">
+                      Show
+                    </div>
+                    <div className="col-sm-2">
+                      Approve
+                    </div>
+                  </div>
 
-              <hr/>
+                  <hr/>
 
-              {this.renderOrders(orders)}
+                  {this.renderOrders(orders)}
 
-            </div>
+                </div>
+              )
+            }
           </div>
           {buttons}
         </div>

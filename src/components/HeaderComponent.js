@@ -1,4 +1,5 @@
 import React from 'react';
+import Loader from './loader';
 import { HashLink as Link } from 'react-router-hash-link';
 
 export default class Header extends React.Component {
@@ -117,7 +118,7 @@ export default class Header extends React.Component {
     const { headerTag } = this.props;
     
     if (!headerTag) {
-      return <div/>
+      return <Loader/>
     } else {
       return (
         <nav className="navbar navbar-default" id="header">
