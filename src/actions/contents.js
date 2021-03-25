@@ -26,6 +26,16 @@ export const FETCH_GOODCATEGORYCONTENT = 'FETCH_GOODCATEGORYCONTENT';
 export const FETCH_GOODCATEGORYCONTENT_SUCCESS = 'FETCH_GOODCATEGORYCONTENT_SUCCESS';
 export const FETCH_GOODCATEGORYCONTENT_FAILURE = 'FETCH_GOODCATEGORYCONTENT_FAILURE';
 
+//Fetch good detail content
+export const FETCH_GOODDETAILCONTENT = 'FETCH_GOODDETAILCONTENT';
+export const FETCH_GOODDETAILCONTENT_SUCCESS = 'FETCH_GOODDETAILCONTENT_SUCCESS';
+export const FETCH_GOODDETAILCONTENT_FAILURE = 'FETCH_GOODDETAILCONTENT_FAILURE';
+
+//Fetch cart content
+export const FETCH_CARTCONTENT = 'FETCH_CARTCONTENT';
+export const FETCH_CARTCONTENT_SUCCESS = 'FETCH_CARTCONTENT_SUCCESS';
+export const FETCH_CARTCONTENT_FAILURE = 'FETCH_CARTCONTENT_FAILURE';
+
 function receiver(type, json) {
   return {
     type: type,
@@ -133,6 +143,46 @@ export function fetchGoodcategorycontentSuccess(goodcategoryContent) {
 export function fetchGoodcategorycontentFailure(error) {
   return {
     type: FETCH_GOODCATEGORYCONTENT_FAILURE,
+    payload: error
+  };
+}
+
+export function fetchGooddetailcontent() {
+  return dispatch => {
+    return fetch(`${ROOT_URL}/contents/gooddetail/`)
+      .then(response => response.json(), error => console.log('An error occurred.', error))
+      .then(json => dispatch(receiver(FETCH_GOODDETAILCONTENT, json)));
+  };
+}
+export function fetchGooddetailcontentSuccess(gooddetailContent) {
+  return {
+    type: FETCH_GOODDETAILCONTENT_SUCCESS,
+    payload: gooddetailContent
+  };
+}
+export function fetchGooddetailcontentFailure(error) {
+  return {
+    type: FETCH_GOODDETAILCONTENT_FAILURE,
+    payload: error
+  };
+}
+
+export function fetchCartcontent() {
+  return dispatch => {
+    return fetch(`${ROOT_URL}/contents/cart/`)
+      .then(response => response.json(), error => console.log('An error occurred.', error))
+      .then(json => dispatch(receiver(FETCH_CARTCONTENT, json)));
+  };
+}
+export function fetchCartcontentSuccess(cartContent) {
+  return {
+    type: FETCH_CARTCONTENT_SUCCESS,
+    payload: cartContent
+  };
+}
+export function fetchCartcontentFailure(error) {
+  return {
+    type: FETCH_CARTCONTENT_FAILURE,
     payload: error
   };
 }

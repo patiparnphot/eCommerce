@@ -12,6 +12,8 @@ import { createContent, createContentSuccess, createContentFailure } from '../ac
 
 function Submit(values, dispatch) {
   let templateContent = {
+    memberRate: values.memberRate,
+    memberLike: values.memberLike,
     headerTag: {
       brandImage: values.headerBrandImage,
       telephone: values.headerTelephone,
@@ -350,6 +352,8 @@ export default class TemplateContentPage extends React.Component {
     } else {
 
       const initialContent = {
+        memberRate: content.memberRate,
+        memberLike: content.memberLike,
         headerBrandImage: content.headerTag.brandImage,
         headerTelephone: content.headerTag.telephone,
         headerSignup: content.headerTag.signup,

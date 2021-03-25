@@ -32,6 +32,18 @@ module.exports = async function() {
                { sort: { postedTime: -1 }, limit: 1 }
             ).exec();
 
+            const goodDetailContent = await Content.findOne(
+               { contentType: "gooddetail" },
+               {},
+               { sort: { postedTime: -1 }, limit: 1 }
+            ).exec();
+
+            const cartContent = await Content.findOne(
+               { contentType: "cart" },
+               {},
+               { sort: { postedTime: -1 }, limit: 1 }
+            ).exec();
+
             try {
                const allBlogs = await Blog.find(
                   { postedTime: { $lt: Date.now() } },
@@ -138,6 +150,16 @@ module.exports = async function() {
                            "content": {},
                            "error": null,
                            "loading": false
+                        },
+                        "goodDetail": {
+                           "content": {},
+                           "error": null,
+                           "loading": false
+                        },
+                        "cart": {
+                           "content": {},
+                           "error": null,
+                           "loading": false
                         }
                      },
                      "form": {}
@@ -150,6 +172,8 @@ module.exports = async function() {
                   initialState.contents.template.content = templateContent.content;
                   initialState.contents.contactUs.content = contactUsContent.content;
                   initialState.contents.blogDetail.content = blogDetailContent.content;
+                  initialState.contents.goodDetail.content = goodDetailContent.content;
+                  initialState.contents.cart.content = cartContent.content;
 
                   return(initialState);
 

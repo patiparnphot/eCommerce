@@ -19,32 +19,53 @@ import {
 } from '../actions/goods';
 
 
-function CategoryPage({fetchCategoryContent, fetchFilterGoods, categoryContent, filterGoods}) {
+function CategoryPage({
+  toggleNavbar,
+  fetchCategoryContent,
+  fetchFilterGoods,
+  categoryContent,
+  filterGoods,
+  memberRate
+}) {
 
   const { category } = useParams();
 
-  const [alreadyFetch, setAlreadyFetch] = React.useState(false);
+  const [categoryHistory, setCategoryHistory] = React.useState(category);
+  const [initial, setInitial] = React.useState("initial");
   const [renderSlide, setRenderSlide] = React.useState(false);
   const [optionState, setOptionState] = React.useState("");
   const [features, setFeatures] = React.useState([]);
   
   React.useEffect(() => {
     window.scrollTo(0, 0);
-    fetchCategoryContent(category, setAlreadyFetch);
+    toggleNavbar();
+    fetchCategoryContent(category, setInitial);
     fetchFilterGoods({category: category});
   }, []);
 
   React.useEffect(() => {
-    if(alreadyFetch && categoryContent.content && (categoryContent.content.title != "noTitle")) {
+    if((initial == "loading") && categoryContent.content && (categoryContent.content.title != "noTitle")) {
       setFeatures(categoryContent.content.features);
       setOptionState(categoryContent.content.options[0]);
+      setInitial("alreadyFetch");
       setRenderSlide(true);
-      // console.log("content: ", categoryContent.content);
     }
-  }, [alreadyFetch]);
+  }, [initial]);
 
   React.useEffect(() => {
-    if(alreadyFetch && renderSlide && features) {
+    console.log("good cat: ", category);
+    console.log("good hiscat: ", categoryHistory);
+    
+    if ( category != categoryHistory ) {
+      setRenderSlide(false);
+      fetchCategoryContent(category, setInitial);
+      setCategoryHistory(category);
+      fetchFilterGoods({category: category});
+    }
+  }, [category]);
+
+  React.useEffect(() => {
+    if((initial == "alreadyFetch") && renderSlide && features) {
       features.forEach((feature) => {
         // console.log("feature: ", feature);
         $(`#${feature.name}-slider`).each(function() {
@@ -85,9 +106,9 @@ function CategoryPage({fetchCategoryContent, fetchFilterGoods, categoryContent, 
     return <Loader/>      
   } else if(error) {
     return <div className="alert alert-danger">Error: {error.message}</div>
-  } else if(!content || !goods || !alreadyFetch || !renderSlide) {
+  } else if(!goods) {
     return <Loader/>
-  } else if(content.title == "noTitle") {
+  } else if(!content || content.title == "noTitle") {
     return <NotFoundPage/>
   } else {
     return (
@@ -108,21 +129,29 @@ function CategoryPage({fetchCategoryContent, fetchFilterGoods, categoryContent, 
 
           <div className="row">
 
-            <div className="col-md-4 col-lg-3 col-sm-12 col-xs-12 cat-bar">
-              <div className="inblock sdw">
-                <div className="wrap bg-white">
+            {
+              (
+                renderSlide
+              ) ? (
+                <div className="col-md-4 col-lg-3 col-sm-12 col-xs-12 cat-bar">
+                  <div className="inblock sdw">
+                    <div className="wrap bg-white">
 
-                  <Slider features={features}/>
-                  
-                  <Options options={content.options} optionState={optionState} selectOption={selectOption}/>
-                
+                      <Slider features={features}/>
+                      
+                      <Options options={content.options} optionState={optionState} selectOption={selectOption}/>
+                    
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
+              ) : (
+                <div/>
+              )
+            }
 
             <div className="col-md-8 col-lg-9 col-sm-12 col-xs-12 cat-bar">
 
-              <Goods goods={goods} optionState={optionState} features={features}/>
+              <Goods goods={goods} optionState={optionState} features={features} memberRate={memberRate} />
 
             </div>
 
@@ -210,79 +239,127 @@ function Stars({rating, numberOfStars=5}) {
   });
 }
 
-function Goods({goods, optionState, features}){
-  return goods.map((good) => {
-    let filteredOption = good.options.filter((option) => option.key == optionState);
-    if(filteredOption.length == 1) {
-      for(let i = 0; i <= features.length; i++) {
-        if(i < features.length) {
-          if(
-            !filteredOption[0][features[i].name] ||
-            +(filteredOption[0][features[i].name]) < +(features[i].first) ||
-            +(filteredOption[0][features[i].name]) > +(features[i].last)
-          ) {
-            return <div/>
-          }
-        } else if(i == features.length) {
-          return (
-            <div className="shop-item hover-sdw col-xs-6 col-sm-6 col-md-4 col-lg-4">
-              <div className="wrap">
-                <div className="body">
-                  <div className="comp-header st-4 text-uppercase">
-                    {good.title}
-                    <span>
-                      {good.brand}
-                    </span>
-                    <div className="rate">
-                      <ul className="stars">
-                        <Stars rating={good.rating}/>
-                      </ul>
-                      <div className="rate-info">
-                        {good.raterAmount} members rate it
-                      </div>
-                    </div>
-                    {
-                      (
-                        !good.campaign
-                      ) ? (
-                        <span></span>
-                      ) : (
-                        <span className="sale-badge item-badge text-uppercase bg-green">
-                          {good.campaign}
-                        </span>
-                      )
-                    }
-                  </div>
-                  <div className="image">
-                    <img className="main" src={good.image} alt={good.descriptonHtml}/>
+function Goods({goods, optionState, features, memberRate}){
+  if (!optionState || optionState == "" || !features || features == []) {
+    return goods.map((good) => {
+      return (
+        <div className="shop-item hover-sdw col-xs-6 col-sm-6 col-md-4 col-lg-4">
+          <div className="wrap">
+            <div className="body">
+              <div className="comp-header st-4 text-uppercase">
+                {good.title}
+                <span>
+                  {good.brand}
+                </span>
+                <div className="rate">
+                  <ul className="stars">
+                    <Stars rating={good.rating}/>
+                  </ul>
+                  <div className="rate-info">
+                    {`${good.raterAmount} ${memberRate}`} 
                   </div>
                 </div>
-                <div className="info">
-                  <Link to={ '/goods/' + good.category + '/' + good.slug } className="btn-material btn-price">
-                    <span className="price">
-                      <span className="price">
-                        ฿ {filteredOption[0].cost}<small>.00</small>
-                      </span>
+                {
+                  (
+                    !good.campaign
+                  ) ? (
+                    <span></span>
+                  ) : (
+                    <span className="sale-badge item-badge text-uppercase bg-green">
+                      {good.campaign}
                     </span>
-                  </Link>
-                </div>
+                  )
+                }
+              </div>
+              <div className="image">
+                <img className="main" src={good.image} alt={good.descriptonHtml}/>
               </div>
             </div>
-          );
+            <div className="info">
+              <Link to={ '/goods/' + good.category + '/' + good.slug } className="btn-material btn-price">
+                <span className="price">
+                  More Info
+                </span>
+              </Link>
+            </div>
+          </div>
+        </div>
+      ); 
+    });
+  } else {
+    return goods.map((good) => {
+      let filteredOption = good.options.filter((option) => option.key == optionState);
+      if(filteredOption.length == 1) {
+        for(let i = 0; i <= features.length; i++) {
+          if(i < features.length) {
+            if(
+              !filteredOption[0][features[i].name] ||
+              +(filteredOption[0][features[i].name]) < +(features[i].first) ||
+              +(filteredOption[0][features[i].name]) > +(features[i].last)
+            ) {
+              return <div/>
+            }
+          } else if(i == features.length) {
+            return (
+              <div className="shop-item hover-sdw col-xs-6 col-sm-6 col-md-4 col-lg-4">
+                <div className="wrap">
+                  <div className="body">
+                    <div className="comp-header st-4 text-uppercase">
+                      {good.title}
+                      <span>
+                        {good.brand}
+                      </span>
+                      <div className="rate">
+                        <ul className="stars">
+                          <Stars rating={good.rating}/>
+                        </ul>
+                        <div className="rate-info">
+                          {`${good.raterAmount} ${memberRate}`} 
+                        </div>
+                      </div>
+                      {
+                        (
+                          !good.campaign
+                        ) ? (
+                          <span></span>
+                        ) : (
+                          <span className="sale-badge item-badge text-uppercase bg-green">
+                            {good.campaign}
+                          </span>
+                        )
+                      }
+                    </div>
+                    <div className="image">
+                      <img className="main" src={good.image} alt={good.descriptonHtml}/>
+                    </div>
+                  </div>
+                  <div className="info">
+                    <Link to={ '/goods/' + good.category + '/' + good.slug } className="btn-material btn-price">
+                      <span className="price">
+                        <span className="price">
+                          ฿ {filteredOption[0].cost}<small>.00</small>
+                        </span>
+                      </span>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            );
+          }
         }
       }
-    }
-  });
+    });
+  }
 }
 
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchCategoryContent: (category, setAlreadyFetch) => {
+    fetchCategoryContent: (category, setInitial) => {
       dispatch(fetchGoodcategorycontent(category)).then((response) => {
         console.log('goodCategoryContent: ', response.payload);
         !response.error ? dispatch(fetchGoodcategorycontentSuccess(response.payload)) : dispatch(fetchGoodcategorycontentFailure(response.payload));
-        setAlreadyFetch(true);
+        setInitial("loading");
       });
     },
     fetchFilterGoods: (filter) => {
@@ -297,10 +374,12 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   return {
+    toggleNavbar: ownProps.toggleNavbar,
     categoryContent: state.contents.goodCategory,
-    filterGoods: state.goods.filterGoods
+    filterGoods: state.goods.filterGoods,
+    memberRate: ownProps.memberRate
   };
 }
 

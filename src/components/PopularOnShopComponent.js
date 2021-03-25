@@ -3,7 +3,7 @@ import Loader from './loader';
 import { Link } from 'react-router-dom';
 
 
-export default function PopularOnShop({fetchGoods, resetGoods, filteringGoods, popularGoods, filterGoods, popularOnShop}) {
+export default function PopularOnShop({fetchGoods, resetGoods, filteringGoods, popularGoods, filterGoods, popularOnShop, memberRate, memberLike}) {
     
   const [alreadyFetch, setAlreadyFetch] = React.useState(false);
   
@@ -90,7 +90,7 @@ export default function PopularOnShop({fetchGoods, resetGoods, filteringGoods, p
                                         
                   <div className="row item-wrapper">
 
-                    <Goods goods={goods}/>
+                    <Goods goods={goods} memberRate={memberRate} memberLike={memberLike} />
 
                   </div>
 
@@ -185,7 +185,7 @@ function Stars({rating, option, numberOfStars=5}) {
   }
 }
 
-function Goods({goods}) {
+function Goods({goods, memberRate, memberLike}) {
   return goods.map((good) => {
     let filteredOption = good.options[0];
     let optionKeys = Object.keys(filteredOption);
@@ -203,7 +203,7 @@ function Goods({goods}) {
                   <Stars rating={good.rating}/>
                 </ul>
                 <div className="rate-info">
-                  {good.raterAmount} members rate it
+                  {`${good.raterAmount} ${memberRate}`}
                 </div>
               </div>
               {
@@ -227,8 +227,7 @@ function Goods({goods}) {
                   <Stars rating={good.rating}/>
                 </ul>
                 <div className="rate-info">
-                  {good.raterAmount} members
-                  <span>like it</span>
+                  {`${good.raterAmount} ${memberLike}`}
                 </div>
               </div>
               {
@@ -246,7 +245,7 @@ function Goods({goods}) {
             <Link to={ '/goods/' + good.category + '/' + good.slug } className="btn-material btn-price">
               <span className="price">
                 <span className="price">
-                  ฿ {filteredOption.cost}<small>.00 per Unit</small>
+                  ฿ {filteredOption.cost}<small>.00</small>
                 </span>
               </span>
             </Link>

@@ -3,11 +3,16 @@ import { signInUser, signInUserSuccess, signInUserFailure } from '../actions/use
 import { connect } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 
-function SignInPage ({signIn, member}) {
+function SignInPage ({toggleNavbar, signIn, member}) {
   
     const history = useHistory();
     const [username, setUsername] = React.useState("");
     const [password, setPassword] = React.useState("");
+
+    React.useEffect(() => {
+        window.scrollTo(0, 0);
+        toggleNavbar();
+    }, []);
 
     React.useEffect(() => {
         const logHistory = {...history};
@@ -47,7 +52,7 @@ function SignInPage ({signIn, member}) {
             
                 <div class="modal-header">
                     <h3>
-                        Authorization
+                        การเข้าสู่ระบบ
                     </h3>
                 </div>
                 
@@ -82,17 +87,13 @@ function SignInPage ({signIn, member}) {
                                 </div>
                                 
                                 <span class="sdw-wrap">
-                                    <button onClick={() => logIn()} class="sdw-hover btn btn-material btn-yellow btn-lg ripple-cont">Login</button>
+                                    <button onClick={() => logIn()} class="sdw-hover btn btn-material btn-yellow btn-lg ripple-cont">ยืนยัน</button>
                                     <span class="sdw"></span>
                                 </span>
 
                                 <ul class="addon-login-btn">
                                     <li>
-                                        <Link to="/register">register</Link>
-                                    </li>
-                                    <li>or</li>
-                                    <li>
-                                        <a href="#">restore password</a>
+                                        <Link to="/register">สมัครสมาชิกใหม่</Link>
                                     </li>
                                 </ul>
                         </div>
@@ -110,10 +111,10 @@ const mapDispatchToProps = (dispatch) => {
                 console.log('signInRes: ', response.payload);
                 if(response.payload.modUser && (response.payload.modUser.username == account.username)) {
                     !response.error ? dispatch(signInUserSuccess(response.payload)) : dispatch(signInUserFailure(response.payload));
-                    alert("Login Successfull!!!");
+                    alert("เข้าสู่ระบบสำเร็จ!!!");
                     localStorage.setItem('eCommerceAuth', JSON.stringify(response.payload));
                 } else {
-                    alert("Please check your username and password");
+                    alert("กรุณาตรวจสอบ username และ password ของท่านใหม่");
                 }
             });
         }
@@ -121,8 +122,9 @@ const mapDispatchToProps = (dispatch) => {
 };
   
   
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
     return {
+        toggleNavbar: ownProps.toggleNavbar,
         member: state.member
     };
 }

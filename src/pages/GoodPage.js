@@ -21,6 +21,8 @@ import { Helmet } from 'react-helmet';
 
 
 function GoodPage ({
+  toggleNavbar,
+  gooddetailContent,
   activeGood,
   incartGoods,
   member,
@@ -28,7 +30,8 @@ function GoodPage ({
   fetchGood,
   addGoodInCart,
   createComment,
-  resetNewComment
+  resetNewComment,
+  memberRate
 }) {
 
   const { type, slug } = useParams();
@@ -49,6 +52,7 @@ function GoodPage ({
   
   React.useEffect(() => {
     window.scrollTo(0, 0);
+    toggleNavbar();
     fetchGood(slug, setInitial);
   }, []);
 
@@ -128,12 +132,19 @@ function GoodPage ({
   }
 
   function addComment(event) {
-    if(alreadyRate && member && member.token) {
+    if(alreadyRate && member && member.token && member.user) {
       let currentComment = {
           text: commentMessage,
           rating: currentRating
       };
-      createComment(slug, currentComment, member.token);
+      if(activeGood.good && activeGood.good.comments && gooddetailContent.content) {
+        let filteredComment = activeGood.good.comments.filter(x => x.rater.username == member.user.username);
+        if(filteredComment.length == 0) {
+          createComment(slug, currentComment, member.token, gooddetailContent.content.successfulComment);
+        } else {
+          alert(gooddetailContent.content.sameUserComment);
+        }
+      }
     }
   }
 
@@ -165,7 +176,7 @@ function GoodPage ({
     setCommentMessage(event.target.value);
   }
 
-  if(!activeGood.good) {
+  if(!activeGood.good || !gooddetailContent.content) {
     return <Loader/>
   } else if (activeGood.good.title == "noSlug") {
     return <NotFoundPage/>
@@ -181,7 +192,7 @@ function GoodPage ({
           <div class="row">
             <div class="col-xs-12">     
               <ol class="breadcrumb bg-blue">
-                <li><Link to="/">Homepage</Link></li>
+                <li><Link to="/">{gooddetailContent.content.homepage}</Link></li>
                 <li><Link to={"/goods/" + type}>{type}</Link></li>
                 <li class="active"><Link to={"/goods/" + type + "/" + slug}>{slug}</Link></li>
               </ol>
@@ -196,6 +207,8 @@ function GoodPage ({
                 <div class="col-xs-12">
   
                   <GoodDetail
+                    content={gooddetailContent.content}
+                    memberRate={memberRate}
                     good={activeGood.good}
                     cost={cost}
                     option={option}
@@ -213,6 +226,7 @@ function GoodPage ({
                   />
 
                   <GoodComment
+                    content={gooddetailContent.content}
                     member={member}
                     good={activeGood.good}
                     ratingRef={ratingRef}
@@ -229,15 +243,17 @@ function GoodPage ({
                   />
 
                   <RecentComponent
-                    recent={{header: "Recent", parallaxText: ""}}
+                    recent={{header: gooddetailContent.content.recentHead, parallaxText: gooddetailContent.content.recentParallax}}
                     recentGoods={activeGood.good.recentGoods}
                     initial={initial}
+                    memberRate={memberRate}
                   />
                   
                   <RecentComponent
-                    recent={{header: "Popular", parallaxText: ""}}
+                    recent={{header: gooddetailContent.content.popularHead, parallaxText: gooddetailContent.content.popularParallax}}
                     recentGoods={activeGood.good.popularGoods}
                     initial={initial}
+                    memberRate={memberRate}
                   />
   
                 </div>
@@ -280,11 +296,13 @@ function Stars({rating, numberOfStars = 5}) {
 }
 
 function Options({options}) {
-  return options.map((option) => {
-    return (
-      <option value={option.key}>{option.key}</option>
-    )
-  })
+  if (options && Array.isArray(options)) {
+    return options.map((option) => {
+      return (
+        <option value={option.key}>{option.key}</option>
+      )
+    })
+  }
 }
 
 function SpecificOptions({specificOptions}) {
@@ -298,6 +316,8 @@ function SpecificOptions({specificOptions}) {
 }
 
 function GoodDetail({
+  content,
+  memberRate,
   good,
   cost,
   option,
@@ -425,10 +445,10 @@ function GoodDetail({
         <div class="divider-dotted"></div>
         <div class="row price-pan">
           <div class="col-md-12">
-            <span class="head">Price</span>
+            <span class="head">{content.price}</span>
             <span class="price">
               <span class="price">
-                <span class="curr">$</span>
+                <span class="curr">฿</span>
                 {cost}<small>.00</small>
               </span>
             </span>
@@ -448,8 +468,8 @@ function GoodDetail({
             <div class="rate">
 
               <div class="rate-info">
-                <span class="head">Rating</span> 
-                <span class="post-head"> {good.raterAmount} members rate it</span>
+                <span class="head">{content.rating}</span> 
+                <span class="post-head"> {`${good.raterAmount} ${memberRate}`}</span>
               </div>
 
               <ul class="stars">
@@ -465,7 +485,7 @@ function GoodDetail({
         <div class="row set-panel">
               
           <div class="col-md-6">
-            <span class="head">options</span>
+            <span class="head">{content.options}</span>
             <br/><br/>
             <select value={option} onChange={(e) => selectOption(e, good.options)}>
               <Options options={good.options}/>
@@ -479,7 +499,7 @@ function GoodDetail({
               <div class="col-md-6"></div>
             ) : (
               <div class="col-md-6">
-                <span class="head">specific option</span>
+                <span class="head">{content.specificOptions}</span>
                 <br/><br/>
                 <select value={specificOption} onChange={selectSpecificOption}>
                   <SpecificOptions specificOptions={good.specificOptions}/>
@@ -500,9 +520,7 @@ function GoodDetail({
                   !available
                 ) ? (
                   <div class="btns-wrap btn-material bg-white">
-                    <b>
-                      NOT AVAILABLE
-                    </b>
+                    <b>{content.notAvailable}</b>
                   </div>
                 ) : (
                   (
@@ -520,12 +538,12 @@ function GoodDetail({
                           <i class="icofont icofont-minus"></i>
                         </span>
                       </span>
-                      <a class="text-blue" href="#" onClick={() => addToCart(good)}>Put in cart</a>
+                      <a class="text-blue" href="#" onClick={() => addToCart(good)}>{content.putInCart}</a>
                     </div>
                   ) : (
                     <div class="btns-wrap btn-material bg-white">
                       <Link to={{pathname:"/signin", state:{from: location.pathname}}}><b>
-                        Please LogIn, Before buy this good.
+                        {content.beforeBuy}
                       </b></Link>
                     </div>
                   )
@@ -536,9 +554,7 @@ function GoodDetail({
         </div>
         <div class="row description">
           <div class="col-xs-12">
-            <h2 class="header">
-              Description:
-            </h2>
+            <h2 class="header">{content.description}</h2>
             <div dangerouslySetInnerHTML={getHTML(good.description)} />
           </div>
         </div>
@@ -556,7 +572,7 @@ function Comments({comments, numberOfStars}) {
         <li class="media">
           <div class="media-left">
             <a href="#">
-              <img class="media-object" src="/images/profile/profile-img.jpg" alt="..."/>
+              <i className="icofont icofont-user-alt-4 text-blue"></i>
             </a>
           </div>
           <div class="media-body">
@@ -578,6 +594,7 @@ function Comments({comments, numberOfStars}) {
 }
 
 function GoodComment({
+  content,
   member,
   good,
   ratingRef,
@@ -600,12 +617,12 @@ function GoodComment({
         <ul class="nav nav-tabs">
           <li className="active">
             <a>
-              Comments <span className="glyphicon glyphicon-comment" aria-hidden="true"></span>
+              {content.comments} <span className="glyphicon glyphicon-comment" aria-hidden="true"></span>
             </a>
           </li>
           <li className="text-right pull-right">
             <a className="pull-right" role="button" data-toggle="collapse" href="#collapseComment" aria-expanded="false" aria-controls="collapseComment">
-              <span className="glyphicon glyphicon-plus" aria-hidden="true"></span> Add new comment
+              <span className="glyphicon glyphicon-plus" aria-hidden="true"></span> {content.addComment}
             </a>
           </li>
         </ul>
@@ -618,7 +635,7 @@ function GoodComment({
               ) ? (
                 <div class="form-horizontal" >
                   <div class="form-group">
-                    <label for="inputRate" class="col-sm-3 control-label">Rate this good</label>
+                    <label for="inputRate" class="col-sm-3 control-label">{content.rateThisGood}</label>
                     <div class="col-sm-7">
                       <div className="rating" style={{fontSize: '2.25em'}} ref={ratingRef} data-rating={currentRating} onMouseOut={setRating}>
                         {[...Array(+numberOfStars).keys()].map(n => {
@@ -629,11 +646,11 @@ function GoodComment({
                           );
                         })}
                       </div>
-                      { !alreadyRate && <div className="alert alert-danger">Rate is required</div> }
+                      { !alreadyRate && <div className="alert alert-danger">{content.requireRate}</div> }
                     </div>
                   </div>
                   <div class="form-group">
-                    <label for="inputText" class="col-sm-3 control-label">Message (Optional)</label>
+                    <label for="inputText" class="col-sm-3 control-label">{content.message}</label>
                     <div class="col-sm-7">
                       <textarea class="form-control" id="inputText" cols="30" rows="3" value={commentMessage} onChange={changeTextarea}/>
                     </div>
@@ -641,7 +658,7 @@ function GoodComment({
                   <div class="form-group">
                     <div class="col-sm-offset-3 col-sm-7">
                       <button type="submit" class="btn btn-primary btn-material" onClick={(e) => addComment(e)}>
-                        <span class="body">Send message</span>
+                        <span class="body">{content.sendMessage}</span>
                         <i class="icon icofont icofont-check-circled"></i>
                       </button>
                     </div>
@@ -650,7 +667,9 @@ function GoodComment({
               ) : (
                 <div>
                   <br/><br/>
-                  Please <Link to={{pathname:"/signin", state:{from: location.pathname}}}><b>LogIn</b></Link>, Before review this good.
+                  <Link to={{pathname:"/signin", state:{from: location.pathname}}}><b>
+                    {content.beforeReview}
+                  </b></Link>
                   <br/><br/>
                 </div>
               )
@@ -696,10 +715,11 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(addCartGoods(goodsInCart));
       localStorage.setItem('eCommerceIncart', JSON.stringify(goodsInCart));
     },
-    createComment: (slug, comment, token) => {
+    createComment: (slug, comment, token, successfulAlert) => {
       dispatch(createComment(slug, comment, token)).then((response) => {
         console.log('newComment: ', response.payload);
         !response.error ? dispatch(createCommentSuccess(response.payload)) : dispatch(createCommentFailure(response.payload));
+        alert(successfulAlert);
       });
     },
     resetNewComment: () => {
@@ -709,12 +729,15 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   return {
+    toggleNavbar: ownProps.toggleNavbar,
+    gooddetailContent: state.contents.goodDetail,
     activeGood: state.goods.activeGood,
     incartGoods: state.goods.incartGoods,
     member: state.member,
-    newComment: state.comments.newComment
+    newComment: state.comments.newComment,
+    memberRate: ownProps.memberRate
   };
 }
 

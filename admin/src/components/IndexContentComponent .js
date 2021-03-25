@@ -34,7 +34,8 @@ function Submit(values, dispatch) {
     blogs: {
       header: values.blogsHeader,
       subHeader: values.blogsSubHeader,
-      parallaxText: values.blogsParallaxText
+      parallaxText: values.blogsParallaxText,
+      blogBtn: values.blogsBlogBtn
     },
     information: {
       title: values.informationTitle,
@@ -363,6 +364,7 @@ export default class IndexContentPage extends React.Component {
         blogsHeader: content.blogs.header,
         blogsSubHeader: content.blogs.subHeader,
         blogsParallaxText: content.blogs.parallaxText,
+        blogsBlogBtn: content.blogs.blogBtn,
         informationTitle: content.information.title,
         informationText: content.information.text,
         informationParallaxImage: content.information.parallaxImage,

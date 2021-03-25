@@ -20,7 +20,8 @@ class InvoicePage extends Component {
   }
   
   componentDidMount() {
-    console.log({...this.props});
+    // console.log({...this.props});
+    this.props.toggleNavbar();
     this.props.fetchActiveOrder(this.state.invoiceId);
   }
   
@@ -31,7 +32,11 @@ class InvoicePage extends Component {
   
   render() {
 
-    // const { content, loading, error } = this.props.indexContent;
+    function getHTML(htmlCode) {
+      return { __html: htmlCode };
+    }
+
+    const { content } = this.props.cartContent;
 
     // if(loading) {
     //   return <div className="container"><h1>MeatSEO</h1><h3>Loading...</h3></div>      
@@ -54,7 +59,7 @@ class InvoicePage extends Component {
       );
     } else if(loading) {
       return <Loader/>
-    } else if(!order) {
+    } else if(!order || !content) {
       return <NotFoundPage/>
     } else if(this.props.member.user.username != order.customer.username) {
       return (
@@ -69,103 +74,73 @@ class InvoicePage extends Component {
     return (
       <div class="container">
         
-                <h2 style={{textAlign: "center"}}><b>InvoiceId: {this.state.invoiceId}</b></h2>
-                <hr/>
-                <ThirdMethod 
-                  firstname={order.customer.firstname}
-                  lastname={order.customer.lastname}
-                  telephone={order.customer.telephone}
-                  address={order.customer.address}
-                  goods={order.goods}
-                  subTotal={order.subTotal}
-                  deliverCost={order.delivereeFee}
-                  netCost={order.total}
-                />;
+        <h2 style={{textAlign: "center"}}><b>InvoiceId: {this.state.invoiceId}</b></h2>
+        <hr/>
+        <ThirdMethod 
+          content={content}
+          firstname={order.customer.firstname}
+          lastname={order.customer.lastname}
+          telephone={order.customer.telephone}
+          address={order.customer.address}
+          goods={order.goods}
+          subTotal={order.subTotal}
+          deliverCost={order.delivereeFee}
+          netCost={order.total}
+        />;
 
-                <div class="row">
-                    <div class="col-xs-12">
-                        <div class="panel-group" id="accordion">
-                            
-                            <div class="panel panel-default">
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="panel-group" id="accordion">
+                    
+              <div class="panel panel-default">
 
-                                <div class="panel-heading" id="headingOne">
-                                    <h4 class="panel-title">
-                                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#bankTransrerColl">
-                                            <span class="panel-indicator"></span>
-                                            Direct bank transfer
-                                        </a>
-                                    </h4>
-                                </div>
-
-                                <div id="bankTransrerColl" class="panel-collapse collapse">
-                                  <div class="panel-body">
-
-                                    <div class="row">
-                                      <div class="col-sm-4">
-                                          Bank Name
-                                          <hr/>
-                                          Kasikorn Bank
-                                      </div>
-                                      <div class="col-sm-4">
-                                          Account Name
-                                          <hr/>
-                                          Mr.something isHere
-                                      </div>
-                                      <div class="col-sm-4">
-                                          Account number
-                                          <hr/>
-                                          330923809458034
-                                      </div>
-                                    </div>
-
-                                  </div>
-                                </div>
-
-                            </div>
-
-                            <div class="panel panel-default">
-
-                                <div class="panel-heading" id="headingTwo">
-                                    <h4 class="panel-title">
-                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-                                            <span class="panel-indicator"></span>
-                                            Payment Method
-                                        </a>
-                                    </h4>
-                                </div>
-
-                                <div id="collapseTwo" class="panel-collapse collapse in">
-                                    <div class="panel-body">
-                                        3 Thing to inform
-                                        <ul>
-                                          <li>InvoiceId</li>
-                                          <li>netCost</li>
-                                          <li>slip picture</li>
-                                        </ul>
-
-                                        to one of these contact
-                                        <ul>
-                                          <li>Facebook: www.facebook.com/something</li>
-                                          <li>Line: @something</li>
-                                          <li>Email: somrthing@email.com</li>
-                                        </ul>
-                                    
-                                    </div>
-                                </div>
-                            
-                            </div>
-                                
-                        </div>
-                    </div>
+                <div class="panel-heading" id="headingOne">
+                  <h4 class="panel-title">
+                    <a>
+                      <span class="panel-indicator"></span>
+                      {content.bankTransferHead}
+                    </a>
+                  </h4>
                 </div>
-                        
+
+                <div class="panel-body">
+
+                  <div dangerouslySetInnerHTML={getHTML(content.bankTransferText)} />
+
+                </div>
+
+              </div>
+
+              <div class="panel panel-default">
+
+                <div class="panel-heading" id="headingTwo">
+                  <h4 class="panel-title">
+                    <a>
+                      <span class="panel-indicator"></span>
+                      {content.paymentMethodHead}
+                    </a>
+                  </h4>
+                </div>
+
+                <div class="panel-body">
+
+                  <div dangerouslySetInnerHTML={getHTML(content.paymentMethodText)} />
+
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+              
       </div>
     );
   }
 }
 
-function CFGoods(props) {
-  return props.goods.map((good) => {
+function CFGoods({goods}) {
+  return goods.map((good) => {
     return (
       <div class="item">
 
@@ -184,7 +159,7 @@ function CFGoods(props) {
 
         <div class="price hidden-xs">
           <span class="price">
-            <i class="icofont icofont-cur-dollar"></i>
+            <span class="icofont curr">฿</span>
             <span class="prc">
               <span>{good.costPerUnit}</span><small>.00</small>
             </span>
@@ -200,7 +175,7 @@ function CFGoods(props) {
         </div>
 
         <div class="total">
-          <i class="icofont icofont-cur-dollar"></i>
+          <span class="icofont curr">฿</span>
           <span>{good.cost}</span>
         </div>
 
@@ -209,7 +184,17 @@ function CFGoods(props) {
   });
 }
 
-function ThirdMethod(props) {
+function ThirdMethod({
+  content,
+  firstname,
+  lastname,
+  telephone,
+  address,
+  goods,
+  subTotal,
+  deliverCost,
+  netCost
+}) {
   return (
     <div class="row block none-padding-top">
       <div class="col-xs-12">
@@ -219,23 +204,23 @@ function ThirdMethod(props) {
             <div class="row" style={{margin: "0px"}}>
               <div class="col-sm-12 control-label pd-none">
                 <h3>
-                  <b>{props.firstname} {props.lastname}</b>
+                  <b>{firstname} {lastname}</b>
                 </h3>
               </div>
             </div>
             <div class="row" style={{margin: "0px"}}>
-              <label class="col-sm-3 control-label pd-none">Telephone:</label>
+              <label class="col-sm-3 control-label pd-none">{content.CFTelephone}</label>
               <div class="col-sm-9">
                 <span class="text">
-                  {props.telephone}
+                  {telephone}
                 </span>
               </div>
             </div>
             <div class="row" style={{margin: "0px"}}>
-              <label class="col-sm-3 control-label pd-none">Shipping Address:</label>
+              <label class="col-sm-3 control-label pd-none">{content.CFAddress}</label>
               <div class="col-sm-9">
                 <span class="text">
-                  {props.address}
+                  {address}
                 </span>
               </div>
             </div>
@@ -244,27 +229,27 @@ function ThirdMethod(props) {
 
             <div class="list-header text-uppercase">
               <div class="product">
-                Product
+                {content.product}
               </div>
               <div class="price hidden-xs hidden-sm">
-                Price
+                {content.price}
               </div>
               <div class="qnt hidden-xs hidden-sm">
-                Quantity
+                {content.quantity}
               </div>
               <div class="total hidden-xs hidden-sm">
-                Total
+                {content.total}
               </div>
             </div>
 
             <div class="list-body">
 
-              <CFGoods goods={props.goods}/>
+              <CFGoods goods={goods}/>
 
               <div class="item">
 
                 <div class="product">
-                  Sub Total:
+                  {content.subTotal}
                 </div>
 
                 <div class="price hidden-xs">
@@ -274,8 +259,8 @@ function ThirdMethod(props) {
                 <div class="qnt"></div>
 
                 <div class="total">
-                  <i class="icofont icofont-cur-dollar"></i>
-                  <span><b>{props.subTotal}</b></span>
+                  <span class="icofont curr">฿</span>
+                  <span><b>{subTotal}</b></span>
                 </div>
 
               </div>
@@ -283,7 +268,7 @@ function ThirdMethod(props) {
               <div class="item">
 
                 <div class="product">
-                  Cost delivery:
+                  {content.deliverCost}
                 </div>
 
                 <div class="price hidden-xs">
@@ -293,8 +278,8 @@ function ThirdMethod(props) {
                 <div class="qnt"></div>
 
                 <div class="total">
-                  <i class="icofont icofont-cur-dollar"></i>
-                  <span><b>{props.deliverCost}</b></span>
+                  <span class="icofont curr">฿</span>
+                  <span><b>{deliverCost}</b></span>
                 </div>
 
               </div>
@@ -305,7 +290,7 @@ function ThirdMethod(props) {
               <div class="item">
 
                 <div class="product">
-                  Net Cost:
+                  {content.netCost}
                 </div>
 
                 <div class="price hidden-xs">
@@ -315,8 +300,8 @@ function ThirdMethod(props) {
                 <div class="qnt"></div>
 
                 <div class="total">
-                  <i class="icofont icofont-cur-dollar"></i>
-                  <span><b>{props.netCost}</b></span>
+                  <span class="icofont curr">฿</span>
+                  <span><b>{netCost}</b></span>
                 </div>
 
               </div>
@@ -345,8 +330,10 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   return {
+    toggleNavbar: ownProps.toggleNavbar,
+    cartContent: state.contents.cart,
     member: state.member,
     activeOrder: state.orders.activeOrder
   };

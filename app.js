@@ -16,6 +16,7 @@ var express         = require("express"),
     http            = require("http"),
     https           = require("https"),
     User            = require("./models/user"),
+    config          = require("./config.json"),
     path            = require("path");
 
 //import { Helmet } from "react-helmet";
@@ -66,7 +67,7 @@ var blogRoutes    = require("./routes/blog"),
     orderRoutes   = require("./routes/order");
     
 // Database setup
-mongoose.connect("mongodb+srv://bomgeo57:bomgeo57@cluster0.w7pxj.mongodb.net/patiparnaircon?retryWrites=true&w=majority" || "mongodb://localhost/e-commerce");
+mongoose.connect(config.mongodb);
 
 // Parsers for POST data
 app.use(bodyParser.json({limit: '50mb'}));
@@ -76,17 +77,19 @@ app.use(bodyParser.urlencoded({limit: '50mb', extended: true }));
 app.use(methodOverride('_method'));
 
 // Redirect to HTTPS & WWW
-app.enable('trust proxy');
-app.use(function(req, res, next) {
-   var searchWWW = req.headers.host.search(/^www/);
-   if (searchWWW == -1) {
-      res.redirect('https://www.' + req.headers.host);
-   } else if (!req.secure && (searchWWW == 0)) {
-      res.redirect('https://' + req.headers.host);
-   } else {
-      next();
-   }
-});
+if (config.checkHttpsWWW) {
+   app.enable('trust proxy');
+   app.use(function(req, res, next) {
+      var searchWWW = req.headers.host.search(/^www/);
+      if (searchWWW == -1) {
+         res.redirect('https://www.' + req.headers.host);
+      } else if (!req.secure && (searchWWW == 0)) {
+         res.redirect('https://' + req.headers.host);
+      } else {
+         next();
+      }
+   });
+}
 
 // PASSPORT CONFIGURATION
 // app.use(session({
@@ -195,13 +198,18 @@ app.get('*', async (req, res, next) => {
          let goodCategory = await initialGoodCatState(decodeURI(urlArr[2]));
          // console.log('goodCategoryState', goodCategory);
          initialStateJson.contents.goodCategory = {
-            "content": goodCategory,
+            "content": goodCategory.content,
             "error": null,
             "loading": false
          };
-         if(goodCategory && goodCategory.title != "noTitle") {
-            titleHtml = goodCategory.titleHtml;
-            descriptionHtml = goodCategory.descriptionHtml;
+         initialStateJson.goods.filterGoods = {
+            "goods": goodCategory.goods,
+            "error": null,
+            "loading": false
+         };
+         if(goodCategory && goodCategory.content && goodCategory.content.title != "noTitle") {
+            titleHtml = goodCategory.content.titleHtml;
+            descriptionHtml = goodCategory.content.descriptionHtml;
          }
       } else if (urlArr.length == 4 && (urlArr[3] != '') && urlArr[1] == 'goods') {
          let activeGood = await initialGoodState(decodeURI(urlArr[3]));
@@ -235,24 +243,24 @@ app.use(function(req, res, next){
 /**
  * Get port from environment and store in Express.
  */
-const port = '1210';
-const sslPort = '443';
-app.set('port', port);
-app.set('sslPort', sslPort);
+app.set('port', config.httpPort);
+app.set('sslPort', config.sslPort);
 
 /**
  * Create HTTP server.
  */
-//const options = {
-//   key:  fs.readFileSync('../cert/privkey.pem'),
-//   cert: fs.readFileSync('../cert/cert.pem')
-//};
 const server = http.createServer(app);
-//const secureSocketsLayer = https.createServer(options, app);
 
 /**
  * Listen on provided port, on all network interfaces.
  */
-server.listen(port, () => console.log(`The MEATSEO Server Has Started!`));
-//secureSocketsLayer.listen(sslPort, () => console.log(`The Secure Sockets Layer Is Connected!`));
+server.listen(config.httpPort, () => console.log(`The OCTORAX Server Has Started!`));
 
+if (config.useSSL) {
+   const options = {
+      key:  fs.readFileSync('../cert/privkey.pem'),
+      cert: fs.readFileSync('../cert/cert.pem')
+   };
+   const secureSocketsLayer = https.createServer(options, app);
+   secureSocketsLayer.listen(config.sslPort, () => console.log(`The Secure Sockets Layer Is Connected!`));
+}

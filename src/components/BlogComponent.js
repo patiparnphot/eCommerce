@@ -93,7 +93,7 @@ export default class BlogPage extends React.Component {
     // console.log("blog detail content: ", content);
     console.log("blog detail: ", blog);
     
-    if (contentLoading || blogLoading) {
+    if (contentLoading || blogLoading || !this.props.authorBlog.data) {
       return <Loader/>;
     } else if(contentError) {
       return  <div className="alert alert-danger">{contentError.message}</div>
@@ -101,7 +101,7 @@ export default class BlogPage extends React.Component {
       return  <div className="alert alert-danger">{blogError.message}</div>
     } else if(!content) {
       return <NotFoundPage/>
-    } else if(!blog || (blog.title == "noSlug") || !this.props.authorBlog.data) {
+    } else if(!blog || (blog.title == "noSlug")) {
       return <NotFoundPage/>
     }
 

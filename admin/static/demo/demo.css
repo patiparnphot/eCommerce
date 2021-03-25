@@ -74,7 +74,7 @@
   margin: 0;
 }
 
-.blog-item .blog-wrap:hover img {
+.blog-item .blog-wrap img {
   opacity: 0.4;
   transition: 0.3s;
 }
@@ -103,7 +103,7 @@
   -ms-flex-direction: column;
   flex-direction: column;
   text-align: center;
-  opacity: 0;
+  opacity: 1;
   transition: 0.2s linear;
 }
 
@@ -165,7 +165,7 @@
   color: #fff;
 }
 
-.blog-item .blog-wrap:hover {
+.blog-item .blog-wrap {
   background: #282646;
 }
 

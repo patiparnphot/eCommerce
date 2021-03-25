@@ -3,7 +3,7 @@ import { signUpUser, signUpUserSuccess, signUpUserFailure } from '../actions/use
 import { connect } from 'react-redux';
 import { useLocation, useHistory } from 'react-router-dom';
 
-function SignUpPage ({signUp, member}) {
+function SignUpPage ({toggleNavbar, signUp, member}) {
   
     const history = useHistory();
     const [username, setUsername] = React.useState("");
@@ -14,6 +14,11 @@ function SignUpPage ({signUp, member}) {
     const [email, setEmail] = React.useState("");
     const [telephone, setTelephone] = React.useState("");
     const [address, setAddress] = React.useState("");
+
+    React.useEffect(() => {
+        window.scrollTo(0, 0);
+        toggleNavbar();
+    }, []);
 
     React.useEffect(() => {
         if(member.user && member.user.username == username) {
@@ -86,7 +91,7 @@ function SignUpPage ({signUp, member}) {
             
                 <div class="modal-header">
                     <h3>
-                        Registration
+                        การสมัครสมาชิก
                     </h3>
                 </div>
                 
@@ -95,8 +100,9 @@ function SignUpPage ({signUp, member}) {
                     <div class="auth-form">
 
                         <div style={{margin: "30px 5%"}}>
+                            ( * = จำเป็น )<br/><br/>
                                 <div class="form-group row">
-                                    <label for="inputUsername" class="col-md-4">Username (Required)</label>
+                                    <label for="inputUsername" class="col-md-4">Username *</label>
                                     <input
                                         type="text" class="form-control" class="col-md-6"
                                         id="inputUsername" placeholder="username"
@@ -104,7 +110,7 @@ function SignUpPage ({signUp, member}) {
                                     />
                                 </div>
                                 <div class="form-group row">
-                                    <label for="inputPassword" class="col-md-4">Password (Required)</label>
+                                    <label for="inputPassword" class="col-md-4">Password *</label>
                                     <input
                                         type="password" class="form-control" class="col-md-6"
                                         id="inputPassword" placeholder="Password"
@@ -112,7 +118,7 @@ function SignUpPage ({signUp, member}) {
                                     />
                                 </div>
                                 <div class="form-group row">
-                                    <label for="inputConfirmPassword" class="col-md-4">Confirm Password (Required)</label>
+                                    <label for="inputConfirmPassword" class="col-md-4">Confirm Password *</label>
                                     <input
                                         type="password" class="form-control" class="col-md-6"
                                         id="inputConfirmPassword" placeholder="Confirm Password"
@@ -120,7 +126,7 @@ function SignUpPage ({signUp, member}) {
                                     />
                                 </div>
                                 <div class="form-group row">
-                                    <label for="inputFirstname" class="col-md-4">Firstname (Required)</label>
+                                    <label for="inputFirstname" class="col-md-4">Firstname *</label>
                                     <input
                                         type="text" class="form-control" class="col-md-6"
                                         id="inputFirstname" placeholder="firstname"
@@ -128,7 +134,7 @@ function SignUpPage ({signUp, member}) {
                                     />
                                 </div>
                                 <div class="form-group row">
-                                    <label for="inputLastname" class="col-md-4">Lastname (Required)</label>
+                                    <label for="inputLastname" class="col-md-4">Lastname *</label>
                                     <input
                                         type="text" class="form-control" class="col-md-6"
                                         id="inputLastname" placeholder="lastname"
@@ -136,7 +142,7 @@ function SignUpPage ({signUp, member}) {
                                     />
                                 </div>
                                 <div class="form-group row">
-                                    <label for="inputEmail" class="col-md-4">Email (Required)</label>
+                                    <label for="inputEmail" class="col-md-4">Email *</label>
                                     <input
                                         type="email" class="form-control" class="col-md-6"
                                         id="inputEmail" placeholder="email"
@@ -144,7 +150,7 @@ function SignUpPage ({signUp, member}) {
                                     />
                                 </div>
                                 <div class="form-group row">
-                                    <label for="inputTelephone" class="col-md-4">Telephone (Optional)</label>
+                                    <label for="inputTelephone" class="col-md-4">Telephone</label>
                                     <input
                                         type="number" class="form-control" class="col-md-6"
                                         id="inputTelephone" placeholder="telephone"
@@ -152,7 +158,7 @@ function SignUpPage ({signUp, member}) {
                                     />
                                 </div>
                                 <div class="form-group row">
-                                    <label for="inputAddress" class="col-md-4">Address (Required)</label>
+                                    <label for="inputAddress" class="col-md-4">Address *</label>
                                     <textarea
                                         rows="3" class="form-control" class="col-md-6"
                                         id="inputAddress" placeholder="address"
@@ -161,7 +167,7 @@ function SignUpPage ({signUp, member}) {
                                 </div>
                                 
                                 <span class="sdw-wrap">
-                                    <button onClick={() => register()} class="sdw-hover btn btn-material btn-yellow btn-lg ripple-cont">Register</button>
+                                    <button onClick={() => register()} class="sdw-hover btn btn-material btn-yellow btn-lg ripple-cont">ยืนยัน</button>
                                     <span class="sdw"></span>
                                 </span>
 
@@ -180,19 +186,20 @@ const mapDispatchToProps = (dispatch) => {
                 console.log('signUpRes: ', response.payload);
                 if(response.payload.modUser && (response.payload.modUser.username == account.username)) {
                     !response.error ? dispatch(signUpUserSuccess(response.payload)) : dispatch(signUpUserFailure(response.payload));
-                    alert("Sign up Successfull!!!");
+                    alert("ลงทะเบียนสมาชิกใหม่สำเร็จ!!!");
                     localStorage.setItem('eCommerceAuth', JSON.stringify(response.payload));
                 } else {
-                    alert("Cannot use this username or email");
+                    alert("ไม่สามารถใช้ username หรือ อีเมล นี้ได้");
                 }
             });
         }
     };
 };
+
   
-  
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
     return {
+        toggleNavbar: ownProps.toggleNavbar,
         member: state.member
     };
 }

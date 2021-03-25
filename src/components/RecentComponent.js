@@ -3,7 +3,7 @@ import Loader from './loader';
 import { Link } from 'react-router-dom';
 
 
-export default function Recent ({recent, recentGoods, initial, setInitial}) {
+export default function Recent ({recent, recentGoods, initial, memberRate}) {
 
   // const [alreadyFetch, setAlreadyFetch] = React.useState(false);
   
@@ -88,7 +88,7 @@ export default function Recent ({recent, recentGoods, initial, setInitial}) {
             <div className="col-xs-12">
               <div className="owl-carousel owl-default features nav-top-left">
 
-                <Goods goods={recentGoods}/>
+                <Goods goods={recentGoods} memberRate={memberRate} />
               
               </div>
             </div>
@@ -122,7 +122,7 @@ function Stars({rating, numberOfStars=5}) {
   });
 }
 
-function Goods({goods}) {
+function Goods({goods, memberRate}) {
   return goods.map((good) => {
     return (
       <div className="shop-item hover-sdw">
@@ -138,7 +138,7 @@ function Goods({goods}) {
                   <Stars rating={good.rating}/>
                 </ul>
                 <div className="rate-info">
-                  {good.raterAmount} members rate it
+                  {`${good.raterAmount} ${memberRate}`}
                 </div>
               </div>
               {

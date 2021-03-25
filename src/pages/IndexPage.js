@@ -34,6 +34,7 @@ class IndexPage extends Component {
   
   componentDidMount() {
     window.scrollTo(0, 0);
+    this.props.toggleNavbar();
     this.props.fetchIndexcontent();
     this.props.fetchRecentGoods((e) => this.setState({initial: e}));
   }
@@ -60,9 +61,9 @@ class IndexPage extends Component {
         </Helmet>
         <Intro intro={content.intro} />
         <main id='main'>
-          <Recent recent={content.recent} recentGoods={this.props.recentGoods.goods} initial={this.state.initial} setInitial={(e) => this.setState({initial: e})} />
+          <Recent recent={content.recent} recentGoods={this.props.recentGoods.goods} initial={this.state.initial} setInitial={(e) => this.setState({initial: e})} memberRate={this.props.memberRate} />
           <Campaign campaign={content.campaign} />
-          <PopularOnShop popularOnShop={content.popularOnShop} />
+          <PopularOnShop popularOnShop={content.popularOnShop} memberLike={this.props.memberLike} memberRate={this.props.memberRate} />
           <Blogs blogs={content.blogs} />
           <Information information={content.information} />
         </main>
@@ -91,10 +92,13 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   return {
+    toggleNavbar: ownProps.toggleNavbar,
     indexContent: state.contents.index,
-    recentGoods: state.goods.recentGoods
+    recentGoods: state.goods.recentGoods,
+    memberRate: ownProps.memberRate,
+    memberLike: ownProps.memberLike
   };
 }
 

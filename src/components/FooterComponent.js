@@ -262,7 +262,7 @@ export default class Footer extends React.Component {
                 <div className="row">
                   <div className="col-md-6">
                     <span className="copy">
-                      © 2020 e-Commerce by MEATSEO. All rights reserved.
+                      © 2020 e-Commerce by OCTORAX. All rights reserved.
                     </span>
                   </div>
                 </div>

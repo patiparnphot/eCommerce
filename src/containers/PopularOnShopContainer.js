@@ -41,7 +41,9 @@ function mapStateToProps(state, ownProps) {
   return {
     popularOnShop: ownProps.popularOnShop,
     popularGoods: state.goods.popularGoods,
-    filterGoods: state.goods.filterGoods
+    filterGoods: state.goods.filterGoods,
+    memberRate: ownProps.memberRate,
+    memberLike: ownProps.memberLike
   };
 }
 

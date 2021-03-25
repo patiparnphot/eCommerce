@@ -7014,3 +7014,7 @@ textarea.form-control {
   height: 60px;
   width: auto;
 }
+
+.media .media-left .icofont-user-alt-4 {
+  font-size: 4em;
+}

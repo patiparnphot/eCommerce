@@ -2,6 +2,7 @@ var express    = require("express"),
     router     = express.Router(),
     passport   = require("passport"),
     nodeMailer = require("nodemailer"),
+    config     = require("../config.json"),
     moment     = require("moment-timezone"),
     fs         = require("fs"),
     Order      = require("../models/order"),
@@ -19,8 +20,8 @@ var smtpTransport = nodeMailer.createTransport({
     port: 465,
     secureConnection: true,
     auth: {
-        user: "meatseo",
-        pass: "fkebumaqqapltjaq"
+        user: config.userEmail,
+        pass: config.passEmail
     }
  });
 
@@ -122,10 +123,10 @@ router.post(
                 newlyOrder.customer.username = req.user.username;
                 newlyOrder.save();
                 var mailOptions = {
-                    from: "meatseo@gmail.com",
+                    from: `${config.userEmail}@gmail.com`,
                     to: newlyOrder.customer.email,
                     subject: "you ordered a product",
-                    text: "InvoiceId is " + newlyOrder.invoiceId
+                    html: `<a href="${config.domainname}/invoice/${newlyOrder.invoiceId}">InvoiceId is ${newlyOrder.invoiceId}</a>`
                 };
                 smtpTransport.sendMail(mailOptions, function(err){
                     if(err) return next(err);

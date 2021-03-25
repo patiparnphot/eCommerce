@@ -29,7 +29,14 @@ import { editCartGoods } from './actions/goods'
 //const history = createMemoryHistory();
 
 
-function App({autoLogin, autoLogout, refreshIncart, fetchTemplatecontent, templateContent}) {
+function App({
+  toggleNavbar,
+  autoLogin,
+  autoLogout,
+  refreshIncart,
+  fetchTemplatecontent,
+  templateContent
+}) {
   
   React.useEffect(() => {
     fetchTemplatecontent();
@@ -65,30 +72,30 @@ function App({autoLogin, autoLogout, refreshIncart, fetchTemplatecontent, templa
         <div id="content">
         <Switch>
           <Route exact path="/">
-            <IndexPage/>
+            <IndexPage memberRate={content.memberRate} memberLike={content.memberLike} toggleNavbar={toggleNavbar} />
           </Route>
           <Route path="/blogs">
-            <BlogsPage/>
+            <BlogsPage toggleNavbar={toggleNavbar}/>
           </Route>
           <Route path="/goods">
-            <GoodsPage/>
+            <GoodsPage memberRate={content.memberRate} toggleNavbar={toggleNavbar}/>
           </Route>
           <Route path="/cart">
-            <CartPage/>
+            <CartPage toggleNavbar={toggleNavbar}/>
           </Route>
           <Route path="/signin">
-            <SignInPage/>
+            <SignInPage toggleNavbar={toggleNavbar}/>
           </Route>
           <Route path="/register">
-            <RegisterPage/>
+            <RegisterPage toggleNavbar={toggleNavbar}/>
           </Route>
           <Route path="/invoice/:invoiceId">
-            <InvoicePage/>
+            <InvoicePage toggleNavbar={toggleNavbar}/>
           </Route>
           <Route path="/contactUs">
-            <ContactUsPage/>
+            <ContactUsPage toggleNavbar={toggleNavbar}/>
           </Route>
-          <Route path="*" component={NotFoundPage}/>
+          <Route path="*" component={NotFoundPage} toggleNavbar={toggleNavbar}/>
         </Switch>
         </div>
         <Footer footerTag={content.footerTag} />
@@ -97,26 +104,26 @@ function App({autoLogin, autoLogout, refreshIncart, fetchTemplatecontent, templa
   );
 }
 
-function BlogsPage() {
+function BlogsPage({toggleNavbar}) {
   let { path } = useRouteMatch();
 
   return (
     <Route path={`${path}/:title`}>
-      <BlogPage />
+      <BlogPage toggleNavbar={toggleNavbar}/>
     </Route>
   );
 }
 
-function GoodsPage() {
+function GoodsPage({toggleNavbar, memberRate}) {
   let { path } = useRouteMatch();
 
   return (
     <Switch>
       <Route exact path={`${path}/:category`}>
-        <CategoryPage/>
+        <CategoryPage toggleNavbar={toggleNavbar} memberRate={memberRate}/>
       </Route>
       <Route path={`${path}/:type/:slug`}>
-        <GoodPage />
+        <GoodPage toggleNavbar={toggleNavbar} memberRate={memberRate}/>
       </Route>
     </Switch>
   );
@@ -124,6 +131,9 @@ function GoodsPage() {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    toggleNavbar: () => {
+      dispatch({type: "TOGGLE_NAV", payload: false});
+    },
     fetchTemplatecontent: () => {
       dispatch(fetchTemplatecontent()).then((response) => {
         console.log('templateContent: ', response.payload);

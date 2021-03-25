@@ -1,5 +1,6 @@
+var config    = require("../config.json");
 
-module.exports = function template(title = "MEATSEO", initialState = {}, content = "", description = "We are the best") {
+module.exports = function template(title = "OCTORAX", initialState = {}, content = "", description = "We are the best") {
   let scripts = ''; // Dynamically ship scripts based on render type
   if (content) {
     scripts = ` <script>
@@ -41,14 +42,7 @@ module.exports = function template(title = "MEATSEO", initialState = {}, content
                     <!--Main Stylesheet File -->
                     <link href="/css/theme.css" rel="stylesheet">
     
-                    <!-- Global site tag (gtag.js) - Google Analytics -->
-                    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-155291561-5"></script>
-                    <script>
-                       window.dataLayer = window.dataLayer || [];
-                       function gtag(){dataLayer.push(arguments);}
-                       gtag('js', new Date());
-                       gtag('config', 'UA-155291561-5');
-                    </script>
+                    ${config.headScript}
 
                  </head>
                  <body>
@@ -90,6 +84,8 @@ module.exports = function template(title = "MEATSEO", initialState = {}, content
 
                     <!-- Template Main Javascript File -->
                     <script src="/js/main.js"></script>
+
+                    ${config.bodyScript}
     
                     ${scripts}
 

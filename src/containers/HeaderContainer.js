@@ -9,6 +9,9 @@ import { connect } from 'react-redux';
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    toggleNavbar: (toggle) => {
+      dispatch({type: "TOGGLE_NAV", payload: toggle});
+    },
     fetchGoodInCart: () => {
       dispatch(fetchCartGoods());
     },
@@ -45,6 +48,7 @@ const mapDispatchToProps = (dispatch) => {
 
 function mapStateToProps(state, ownProps) {
   return {
+    navToggle: state.contents.navOpen,
     headerTag: ownProps.headerTag,
     incartGoods: state.goods.incartGoods,
     member: state.member

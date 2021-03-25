@@ -9,11 +9,17 @@ import {
   fetchContactuscontentFailure
 } from '../actions/contents';
 
-function ContactUsPage ({google, contactUsContent, fetchContactuscontent}) {
+function ContactUsPage ({
+  toggleNavbar,
+  google,
+  contactUsContent,
+  fetchContactuscontent
+}) {
 
   React.useEffect(() => {
-    fetchContactuscontent();
     window.scrollTo(0, 0);
+    toggleNavbar();
+    fetchContactuscontent();
     // function initMap() {
     //   // Latitude and Longitude
     //   var myLatLng = {lat: -6.207690, lng: 106.985270};
@@ -83,7 +89,9 @@ function ContactUsPage ({google, contactUsContent, fetchContactuscontent}) {
                     style={{width: "96%", height: "93%", inset: "inherit"}}
                     initialCenter={{lat: parseFloat(content.latitude), lng: parseFloat(content.longitude)}}
                   >
-
+                    <Marker
+                      position={{lat: parseFloat(content.latitude), lng: parseFloat(content.longitude)}}
+                    />
                   </Map>
                 </div>
               </div>
@@ -112,8 +120,9 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   return {
+    toggleNavbar: ownProps.toggleNavbar,
     contactUsContent: state.contents.contactUs
   };
 }

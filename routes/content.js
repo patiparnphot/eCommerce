@@ -102,6 +102,36 @@ router.get("/authorblog", function(req, res, next){
     );
 });
 
+//GOODDETAILCONTENT - get content of good
+router.get("/gooddetail", function(req, res, next){
+    // res.json(handler.blogDetailContents());
+
+    Content.findOne(
+        { contentType: "gooddetail" },
+        {},
+        { sort: { postedTime: -1 }, limit: 1 },
+        function(err, gooddetailContent){
+            if(err) return next(err);
+            res.json(gooddetailContent.content);
+        }
+    );
+});
+
+//CARTCONTENT - get content of cart
+router.get("/cart", function(req, res, next){
+    // res.json(handler.blogDetailContents());
+
+    Content.findOne(
+        { contentType: "cart" },
+        {},
+        { sort: { postedTime: -1 }, limit: 1 },
+        function(err, cartContent){
+            if(err) return next(err);
+            res.json(cartContent.content);
+        }
+    );
+});
+
 //INITIALSTATE - update JSON file of initialState content
 router.get("/updateJsonFile", async function(req, res, next) {
     try {

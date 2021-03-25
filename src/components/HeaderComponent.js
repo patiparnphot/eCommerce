@@ -35,7 +35,7 @@ export default class Header extends React.Component {
                 </span>
               </span>
               <span className="price">
-                <span className="text-grey-dark">$</span>
+                <span className="text-grey-dark">฿</span>
                 {good.costPerUnit} <small className="text-grey-dark">.00</small>
               </span>
             </div>
@@ -75,10 +75,23 @@ export default class Header extends React.Component {
             {headerTag.cartText}
           </a>
           <ul className="dropdown-menu">
+          {
+              (
+                this.props.incartGoods.goods.length > 3
+              ) ? (
+                <li class="more-btn sdw">
+                  <Link to={{pathname:"/cart", state:{from: this.props.location.pathname}}} className="btn-material btn-primary">
+                    {headerTag.cartBtn} <i className="icofont icofont-check-circled"></i>
+                  </Link>
+                </li>
+              ) : (
+                <li></li>
+              )
+            }
             {this.renderGoodsInCart(this.props.incartGoods.goods)}
             {
               (
-                this.props.incartGoods.goods.length > 0
+                (this.props.incartGoods.goods.length > 0) && (this.props.incartGoods.goods.length < 4)
               ) ? (
                 <li class="more-btn sdw">
                   <Link to={{pathname:"/cart", state:{from: this.props.location.pathname}}} className="btn-material btn-primary">
@@ -124,7 +137,7 @@ export default class Header extends React.Component {
         <nav className="navbar navbar-default" id="header">
           <div className="container">
             <div className="navbar-header">
-              <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+              <button type="button" className="navbar-toggle" onClick={() => this.props.toggleNavbar(!this.props.navToggle)}>
                 <span className="sr-only">Toggle navigation</span>
                 <span className="icon-bar"></span>
                 <span className="icon-bar"></span>
@@ -134,7 +147,7 @@ export default class Header extends React.Component {
                 <img src={headerTag.brandImage} alt="" className="brand"/>
               </Link>
             </div>
-            <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <div className={`navbar-collapse ${this.props.navToggle ? "" : "collapse"}`}>
               <div className="top-panel">
                 <div className="phone text-blue">
                   <i className="icofont icofont-phone-circle"></i>

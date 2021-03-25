@@ -24,6 +24,8 @@ import {
 
 
 function CartPage({
+  toggleNavbar,
+  cartContent,
   meFromToken,
   updateUser,
   deleteGood,
@@ -51,6 +53,11 @@ function CartPage({
   const [subTotal, setSubTotal] = React.useState(0);
   const [deliverCost, setDeliverCost] = React.useState(0);
   const [netCost, setNetCost] = React.useState(0);
+
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+    toggleNavbar();
+  }, []);
   
   React.useEffect(() => {
     if(member.user) {
@@ -80,11 +87,11 @@ function CartPage({
     }
   }, [hisAddress]);
 
-  function nextMethod() {
+  function nextMethod(limitCost, defaultCost) {
     if((methodState == 1) && member.token && !checkUserData) {
       meFromToken(member.token, setHisTelephone, setEmail, setHisAddress, setCheckUserData);
     } else if(methodState == 2) {
-      calculateCost([...incartGoods.goods]);
+      calculateCost([...incartGoods.goods], limitCost, defaultCost);
     }
     setMethodState(methodState + 1);
   }
@@ -122,18 +129,18 @@ function CartPage({
     }
   }
 
-  function calculateCost(goods) {
+  function calculateCost(goods, limitCost, defaultCost) {
     let sum = 0;
     goods.forEach((good, index) => {
       sum += good.cost;
       if(index == (goods.length - 1)) {
         setSubTotal(sum);
-        if(sum > 200) {
+        if(sum > +limitCost) {
           setDeliverCost(0);
           setNetCost(sum);
         } else {
-          setDeliverCost(150);
-          setNetCost(sum + 150);
+          setDeliverCost(defaultCost);
+          setNetCost(sum + defaultCost);
         }
       }
     })
@@ -179,7 +186,7 @@ function CartPage({
   // } else if(error) {
   //   return <div className="alert alert-danger">Error: {error.message}</div>
   // } else 
-  if(!incartGoods.goods || !member.user) {
+  if(!incartGoods.goods || !member.user || !cartContent.content) {
     return <div/>
   }
 
@@ -192,51 +199,7 @@ function CartPage({
         <div class="row block none-padding-top">
           <div class="col-xs-12">
             <ul class="steps row">
-              <li class="active col-xs-12 col-sm-4 col-md-4 col-lg-3">
-                <div class="icon number bg-blue">
-                  1
-                </div>
-                <span>
-                  Confirm 
-                </span>
-                products list
-                <span class="dir-icon hidden-xs">
-                  <i class="icofont icofont-stylish-right text-yellow"></i>
-                </span>
-              </li>
-              <li class="hidden-xs col-sm-4 col-md-4 col-lg-3">
-                <div class="icon number bg-grey">
-                  2
-                </div>
-                <span>
-                  Enter
-                </span>
-                your address
-                <span class="dir-icon">
-                  <i class="icofont icofont-stylish-right"></i>
-                </span>
-              </li>
-              <li class="hidden-xs col-sm-4 col-md-4 col-lg-3">
-                <div class="icon number bg-grey">
-                  3
-                </div>
-                <span>
-                  Select
-                </span>
-                payment method
-                <span class="dir-icon hidden-sm hidden-md">
-                  <i class="icofont icofont-stylish-right"></i>
-                </span>
-              </li>
-              <li class="hidden-xs col-lg-3 hidden-sm hidden-md">
-                <div class="icon number bg-grey">
-                  4
-                </div>
-                <span>
-                  Confirm
-                </span>
-                your order
-              </li>
+              <Navigators navigators={cartContent.content.navigators} methodState={methodState} />
             </ul>
           </div>
         </div>
@@ -244,12 +207,47 @@ function CartPage({
         {
           (() => {
             if (methodState == 1) {
-              return <FirstMethod incartGoods={[...incartGoods.goods]} reduceEvent={reduceEvent} addEvent={addEvent} deleteEvent={deleteEvent} nextMethod={nextMethod}/>;
+              return (
+                <FirstMethod
+                  content={cartContent.content}
+                  incartGoods={[...incartGoods.goods]}
+                  reduceEvent={reduceEvent}
+                  addEvent={addEvent}
+                  deleteEvent={deleteEvent}
+                  nextMethod={nextMethod}
+                />
+              );
             } else if (methodState == 2) {
-              return <SecondMethod changeInput={changeInput} firstname={firstname} lastname={lastname} telephone={telephone} email={email} address={address} previousMethod={previousMethod} nextMethod={nextMethod}/>;
+              return (
+                <SecondMethod
+                  content={cartContent.content}
+                  changeInput={changeInput}
+                  firstname={firstname}
+                  lastname={lastname}
+                  telephone={telephone}
+                  email={email}
+                  address={address}
+                  previousMethod={previousMethod}
+                  nextMethod={nextMethod}
+                />
+              );
             } else if (methodState == 3) {
-              return <ThirdMethod firstname={firstname} lastname={lastname} telephone={telephone} address={address} incartGoods={[...incartGoods.goods]} subTotal={subTotal} deliverCost={deliverCost} netCost={netCost} previousMethod={previousMethod} makeOrder={makeOrder}/>;
-            } else if (methodState == 4) {
+              return (
+                <ThirdMethod
+                  content={cartContent.content}
+                  firstname={firstname}
+                  lastname={lastname}
+                  telephone={telephone}
+                  address={address}
+                  incartGoods={[...incartGoods.goods]}
+                  subTotal={subTotal}
+                  deliverCost={deliverCost}
+                  netCost={netCost}
+                  previousMethod={previousMethod}
+                  makeOrder={makeOrder}
+                />
+              );
+            } else {
               return <div/>
             }
           })()
@@ -261,8 +259,27 @@ function CartPage({
   );
 }
 
-function Goods(props) {
-  return props.incartGoods.map((good, index) => {
+function Navigators({navigators, methodState}) {
+  return navigators.map((navigator, index) => {
+    return (
+      <li class={`col-sm-4 col-md-4 col-lg-4 ${(+index == +methodState - 1) ? "col-xs-12" : "hidden-xs"}`} >
+        <div class={`icon number ${(+index < +methodState) ? "bg-blue" : "bg-grey"}`}>
+          {index + 1}
+        </div>
+        <span>
+          {navigator.head}
+        </span>
+        {navigator.subHead}
+        <span class="dir-icon hidden-xs">
+          <i class={`icofont icofont-stylish-right ${(+index == +methodState - 1) ? "text-yellow" : ""}`}/>
+        </span>
+      </li>
+    );
+  });
+}
+
+function Goods({incartGoods, reduceEvent, addEvent, deleteEvent}) {
+  return incartGoods.map((good, index) => {
     return (
       <div class="item">
 
@@ -281,7 +298,7 @@ function Goods(props) {
 
         <div class="price hidden-xs">
           <span class="price">
-            <i class="icofont icofont-cur-dollar"></i>
+            <span class="icofont curr">฿</span>
             <span class="prc">
               <span>{good.costPerUnit}</span><small>.00</small>
             </span>
@@ -290,25 +307,25 @@ function Goods(props) {
 
         <div class="qnt">
           <span>
-            <span class="minus" onClick={() => props.reduceEvent(index)}>
+            <span class="minus" onClick={() => reduceEvent(index)}>
               <i class="icofont icofont-minus"></i>
             </span>
             <span class="input">
               <input type="text" value={good.amount}/>
             </span>
-            <span class="plus" onClick={() => props.addEvent(index)}>
+            <span class="plus" onClick={() => addEvent(index)}>
               <i class="icofont icofont-plus"></i>
             </span>
           </span>
         </div>
 
         <div class="total">
-          <i class="icofont icofont-cur-dollar"></i>
+          <span class="icofont curr">฿</span>
           <span>{good.cost}</span>
         </div>
 
         <div class="rmv text-center">
-          <button class="remove-btn" onClick={() => props.deleteEvent(index)}>
+          <button class="remove-btn" onClick={() => deleteEvent(index)}>
             <i class="icofont icofont-close-line"></i>
           </button>
         </div>
@@ -318,8 +335,8 @@ function Goods(props) {
   });
 }
 
-function CFGoods(props) {
-  return props.incartGoods.map((good) => {
+function CFGoods({incartGoods}) {
+  return incartGoods.map((good) => {
     return (
       <div class="item">
 
@@ -338,7 +355,7 @@ function CFGoods(props) {
 
         <div class="price hidden-xs">
           <span class="price">
-            <i class="icofont icofont-cur-dollar"></i>
+            <span class="icofont curr">฿</span>
             <span class="prc">
               <span>{good.costPerUnit}</span><small>.00</small>
             </span>
@@ -354,7 +371,7 @@ function CFGoods(props) {
         </div>
 
         <div class="total">
-          <i class="icofont icofont-cur-dollar"></i>
+          <span class="icofont curr">฿</span>
           <span>{good.cost}</span>
         </div>
 
@@ -363,7 +380,14 @@ function CFGoods(props) {
   });
 }
 
-function FirstMethod(props) {
+function FirstMethod({
+  content,
+  incartGoods,
+  reduceEvent,
+  addEvent,
+  deleteEvent,
+  nextMethod
+}) {
   return (
     <div class="row block none-padding-top">
       <div class="col-xs-12">
@@ -372,32 +396,36 @@ function FirstMethod(props) {
 
             <div class="list-header text-uppercase">
               <div class="product">
-                Product
+                {content.product}
               </div>
               <div class="price hidden-xs hidden-sm">
-                Price
+                {content.price}
               </div>
               <div class="qnt hidden-xs hidden-sm">
-                Quantity
+                {content.quantity}
               </div>
               <div class="total hidden-xs hidden-sm">
-                Total
+                {content.total}
               </div>
               <div class="rmv hidden-xs hidden-sm">
-                Remove
+                {content.remove}
               </div>
             </div>
 
             <div class="list-body">
 
-              <Goods incartGoods={props.incartGoods} reduceEvent={props.reduceEvent} addEvent={props.addEvent} deleteEvent={props.deleteEvent}/>
+              <Goods
+                incartGoods={incartGoods}
+                reduceEvent={reduceEvent}
+                addEvent={addEvent}
+                deleteEvent={deleteEvent}
+              />
                           
             </div>
                       
             <div class="list-footer bg-blue">
-              <a onClick={() => props.nextMethod()} class="btn btn-default btn-material">
-                <i class="icofont icofont-cart-alt"></i>
-                <span class="body">Make a purchase</span>
+              <a onClick={() => nextMethod()} class="btn btn-default btn-material">
+                <span class="body">{content.nextMethod}</span>
               </a>
             </div>
 
@@ -408,9 +436,19 @@ function FirstMethod(props) {
   );
 }
 
-function SecondMethod(props) {
+function SecondMethod({
+  content,
+  changeInput,
+  firstname,
+  lastname,
+  telephone,
+  email,
+  address,
+  previousMethod,
+  nextMethod
+}) {
   return (
-    <div class="row block none-padding-top">       
+    <div class="row block none-padding-top">
       <div class="col-xs-12 get-height">
         <div class="sdw-block">
           <div class="wrap bg-white">
@@ -420,73 +458,75 @@ function SecondMethod(props) {
 
                   <div class="panel panel-default">
 
-                    <h2>Please check your personal information</h2>
+                    <h2>{content.personalInfoHead}</h2>
                     
                     <div class="panel-body">
                       <form class="form-horizontal">
                         <div class="form-group">
-                          <label for="firstname" class="col-sm-3 control-label">Firstname:</label>
+                          <label for="firstname" class="col-sm-3 control-label">{content.firstname}</label>
                           <div class="col-sm-9">
                             <input
                               type="text" class="form-control" id="firstname"
                               placeholder="Enter your firstname"
-                              value={props.firstname}
-                              onChange={(e) => props.changeInput(e, "firstname")}
+                              value={firstname}
+                              onChange={(e) => changeInput(e, "firstname")}
                             />
                           </div>
                         </div>
                         <div class="form-group">
-                          <label for="lastname" class="col-sm-3 control-label">Lastname:</label>
+                          <label for="lastname" class="col-sm-3 control-label">{content.lastname}</label>
                           <div class="col-sm-9">
                             <input
                               type="text" class="form-control" id="lastname"
                               placeholder="Enter your lastname"
-                              value={props.lastname}
-                              onChange={(e) => props.changeInput(e, "lastname")}
+                              value={lastname}
+                              onChange={(e) => changeInput(e, "lastname")}
                             />
                           </div>
                         </div>
                         <div class="form-group">
-                          <label for="telephone" class="col-sm-3 control-label">Telephone:</label>
+                          <label for="telephone" class="col-sm-3 control-label">{content.telephone}</label>
                           <div class="col-sm-9">
                             <input
                               type="text" class="form-control" id="telephone"
                               placeholder="Enter your telephone number"
-                              value={props.telephone}
-                              onChange={(e) => props.changeInput(e, "telephone")}
+                              value={telephone}
+                              onChange={(e) => changeInput(e, "telephone")}
                             />
                           </div>
                         </div>
                         <div class="form-group">
-                          <label for="email" class="col-sm-3 control-label">Email:</label>
+                          <label for="email" class="col-sm-3 control-label">{content.email}</label>
                           <div class="col-sm-9">
                             <input
                               type="text" class="form-control" id="email"
                               placeholder="Enter your email"
-                              value={props.email}
+                              value={email}
                               disabled
                             />
                           </div>
                         </div>
                         <div class="form-group padding">
-                          <label for="address" class="col-sm-3 control-label">Address:</label>
+                          <label for="address" class="col-sm-3 control-label">{content.address}</label>
                           <div class="col-sm-9">
                             <textarea
                               rows="3" class="form-control" id="address"
                               placeholder="Enter your address"
-                              value={props.address}
-                              onChange={(e) =>props.changeInput(e, "address")}
+                              value={address}
+                              onChange={(e) => changeInput(e, "address")}
                             />
                           </div>
                         </div>
                         <div class="form-group">
                           <div class="col-sm-offset-3 col-sm-8">
                             <span class="sdw-wrap">
-                              <a onClick={() => props.previousMethod()} class="btn btn-default btn-material">
-                                <i class="icofont icofont-cart-alt"></i>
-                                <span class="body">Previous Method</span>
+                              <a onClick={() => previousMethod()} class="btn btn-default btn-material">
+                                <span class="body">{content.previousMethod}</span>
                               </a>
-                              <a onClick={() => props.nextMethod()} class="sdw-hover btn btn-material btn-yellow btn-lg ripple-cont">Go to next step</a>
+                              &nbsp;&nbsp;&nbsp;
+                              <a onClick={() => nextMethod(content.limitCost, content.defaultCost)} class="btn btn-material btn-yellow btn-lg ripple-cont">
+                                {content.nextMethod}
+                              </a>
                               <span class="sdw"></span>
                             </span>
                           </div>
@@ -506,7 +546,19 @@ function SecondMethod(props) {
   );
 }
 
-function ThirdMethod(props) {
+function ThirdMethod({
+  content,
+  firstname,
+  lastname,
+  telephone,
+  address,
+  incartGoods,
+  subTotal,
+  deliverCost,
+  netCost,
+  previousMethod,
+  makeOrder
+}) {
   return (
     <div class="row block none-padding-top">
       <div class="col-xs-12">
@@ -516,23 +568,23 @@ function ThirdMethod(props) {
             <div class="row" style={{margin: "0px"}}>
               <div class="col-sm-12 control-label pd-none">
                 <h3>
-                  <b>{props.firstname} {props.lastname}</b>
+                  <b>{firstname} {lastname}</b>
                 </h3>
               </div>
             </div>
             <div class="row" style={{margin: "0px"}}>
-              <label class="col-sm-3 control-label pd-none">Telephone:</label>
+              <label class="col-sm-3 control-label pd-none">{content.CFTelephone}</label>
               <div class="col-sm-9">
                 <span class="text">
-                  {props.telephone}
+                  {telephone}
                 </span>
               </div>
             </div>
             <div class="row" style={{margin: "0px"}}>
-              <label class="col-sm-3 control-label pd-none">Shipping Address:</label>
+              <label class="col-sm-3 control-label pd-none">{content.CFAddress}</label>
               <div class="col-sm-9">
                 <span class="text">
-                  {props.address}
+                  {address}
                 </span>
               </div>
             </div>
@@ -541,27 +593,27 @@ function ThirdMethod(props) {
 
             <div class="list-header text-uppercase">
               <div class="product">
-                Product
+                {content.product}
               </div>
               <div class="price hidden-xs hidden-sm">
-                Price
+                {content.price}
               </div>
               <div class="qnt hidden-xs hidden-sm">
-                Quantity
+                {content.quantity}
               </div>
               <div class="total hidden-xs hidden-sm">
-                Total
+                {content.total}
               </div>
             </div>
 
             <div class="list-body">
 
-              <CFGoods incartGoods={props.incartGoods}/>
+              <CFGoods incartGoods={incartGoods}/>
 
               <div class="item">
 
                 <div class="product">
-                  Sub Total:
+                  {content.subTotal}
                 </div>
 
                 <div class="price hidden-xs">
@@ -571,8 +623,8 @@ function ThirdMethod(props) {
                 <div class="qnt"></div>
 
                 <div class="total">
-                  <i class="icofont icofont-cur-dollar"></i>
-                  <span><b>{props.subTotal}</b></span>
+                  <span class="icofont curr">฿</span>
+                  <span><b>{subTotal}</b></span>
                 </div>
 
               </div>
@@ -580,16 +632,16 @@ function ThirdMethod(props) {
               <div class="item">
 
                 <div class="product">
-                  Cost delivery:
+                  {content.deliverCost}
                 </div>
 
                 <div class="qnt" style={{width: "32%"}}>
-                  If SubTotal is more than 200, then we will deliver <b>FREE!!!</b>
+                  {content.deliverWarning}
                 </div>
 
                 <div class="total">
-                  <i class="icofont icofont-cur-dollar"></i>
-                  <span><b>{props.deliverCost}</b></span>
+                  <span class="icofont curr">฿</span>
+                  <span><b>{deliverCost}</b></span>
                 </div>
 
               </div>
@@ -600,7 +652,7 @@ function ThirdMethod(props) {
               <div class="item">
 
                 <div class="product">
-                  Net Cost:
+                  {content.netCost}
                 </div>
 
                 <div class="price hidden-xs">
@@ -610,21 +662,21 @@ function ThirdMethod(props) {
                 <div class="qnt"></div>
 
                 <div class="total">
-                  <i class="icofont icofont-cur-dollar"></i>
-                  <span><b>{props.netCost}</b></span>
+                  <span class="icofont curr">฿</span>
+                  <span><b>{netCost}</b></span>
                 </div>
 
               </div>
             </div>
                       
             <div class="list-footer bg-blue">
-              <a onClick={() => props.previousMethod()} class="btn btn-default btn-material">
-                <i class="icofont icofont-cart-alt"></i>
-                <span class="body">Previous Method</span>
+              <a onClick={() => previousMethod()} class="btn btn-default btn-material">
+                <span class="body">{content.previousMethod}</span>
               </a>
-              <a onClick={() => props.makeOrder()} class="btn btn-default btn-material">
+              &nbsp;&nbsp;&nbsp;
+              <a onClick={() => makeOrder()} class="btn btn-default btn-material">
                 <i class="icofont icofont-cart-alt"></i>
-                <span class="body">Make a purchase</span>
+                <span class="body">{content.makeOrder}</span>
               </a>
             </div>
 
@@ -706,6 +758,8 @@ const mapDispatchToProps = (dispatch) => {
 
 function mapStateToProps(state, ownProps) {
   return {
+    toggleNavbar: ownProps.toggleNavbar,
+    cartContent: state.contents.cart,
     incartGoods: state.goods.incartGoods,
     member: state.member,
     newOrder: state.orders.newOrder

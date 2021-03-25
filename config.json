@@ -1,3 +1,13 @@
 {
-    "apiLink": "/api"
+    "apiLink":       "/api",
+    "domainname":    "https://www.patiparnaircon.com",
+    "headScript":    "<script async src='https://www.googletagmanager.com/gtag/js?id=UA-155291561-5'></script><script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'UA-155291561-5');</script>",
+    "bodyScript":    "",
+    "mongodb":       "mongodb+srv://bomgeo57:bomgeo57@cluster0.w7pxj.mongodb.net/patiparnaircon?retryWrites=true&w=majority",
+    "checkHttpsWWW": false,
+    "httpPort":      "1210",
+    "sslPort":       "443",
+    "useSSL":        false,
+    "userEmail":     "meatseo",
+    "passEmail":     "fkebumaqqapltjaq"
 }
