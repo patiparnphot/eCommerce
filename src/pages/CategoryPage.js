@@ -20,7 +20,6 @@ import {
 
 
 function CategoryPage({
-  toggleNavbar,
   fetchCategoryContent,
   fetchFilterGoods,
   categoryContent,
@@ -38,7 +37,6 @@ function CategoryPage({
   
   React.useEffect(() => {
     window.scrollTo(0, 0);
-    toggleNavbar();
     fetchCategoryContent(category, setInitial);
     fetchFilterGoods({category: category});
   }, []);
@@ -376,7 +374,6 @@ const mapDispatchToProps = (dispatch) => {
 
 function mapStateToProps(state, ownProps) {
   return {
-    toggleNavbar: ownProps.toggleNavbar,
     categoryContent: state.contents.goodCategory,
     filterGoods: state.goods.filterGoods,
     memberRate: ownProps.memberRate

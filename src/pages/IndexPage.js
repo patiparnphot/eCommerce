@@ -34,7 +34,6 @@ class IndexPage extends Component {
   
   componentDidMount() {
     window.scrollTo(0, 0);
-    this.props.toggleNavbar();
     this.props.fetchIndexcontent();
     this.props.fetchRecentGoods((e) => this.setState({initial: e}));
   }
@@ -94,7 +93,6 @@ const mapDispatchToProps = (dispatch) => {
 
 function mapStateToProps(state, ownProps) {
   return {
-    toggleNavbar: ownProps.toggleNavbar,
     indexContent: state.contents.index,
     recentGoods: state.goods.recentGoods,
     memberRate: ownProps.memberRate,

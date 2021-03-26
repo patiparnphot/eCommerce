@@ -24,7 +24,6 @@ import {
 
 
 function CartPage({
-  toggleNavbar,
   cartContent,
   meFromToken,
   updateUser,
@@ -56,7 +55,6 @@ function CartPage({
 
   React.useEffect(() => {
     window.scrollTo(0, 0);
-    toggleNavbar();
   }, []);
   
   React.useEffect(() => {
@@ -758,7 +756,6 @@ const mapDispatchToProps = (dispatch) => {
 
 function mapStateToProps(state, ownProps) {
   return {
-    toggleNavbar: ownProps.toggleNavbar,
     cartContent: state.contents.cart,
     incartGoods: state.goods.incartGoods,
     member: state.member,

@@ -107,12 +107,13 @@ export default class Footer extends React.Component {
                         } else {
                           return (
                             <li>
-                              <Link 
+                              <Link
+                                className="btn-material"
                                 to={{
                                   pathname: information.pathname,
                                   state:{from: this.props.location.pathname}
                                 }}
-                                className="btn-material"
+                                onClick={() => window.scrollTo(0, 0)}
                               >
                                 {information.text}
                               </Link>
@@ -140,12 +141,13 @@ export default class Footer extends React.Component {
                         } else {
                           return (
                             <li>
-                              <Link 
+                              <Link
+                                className="btn-material"
                                 to={{
                                   pathname: service.pathname,
                                   state:{from: this.props.location.pathname}
                                 }}
-                                className="btn-material"
+                                onClick={() => window.scrollTo(0, 0)}
                               >
                                 {service.text}
                               </Link>

@@ -158,7 +158,7 @@ function Goods({goods, memberRate}) {
             </div>
           </div>
           <div className="info">
-            <Link to={ '/goods/' + good.category + '/' + good.slug } className="btn-material btn-price">
+            <Link to={ '/goods/' + good.category + '/' + good.slug } className="btn-material btn-price" onClick={() => window.scrollTo(0, 0)}>
               <span className="price">
                 <span className="price">
                   ฿ {good.options[0].cost}<small>.00</small>

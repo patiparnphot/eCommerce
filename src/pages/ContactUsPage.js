@@ -10,7 +10,6 @@ import {
 } from '../actions/contents';
 
 function ContactUsPage ({
-  toggleNavbar,
   google,
   contactUsContent,
   fetchContactuscontent
@@ -18,7 +17,6 @@ function ContactUsPage ({
 
   React.useEffect(() => {
     window.scrollTo(0, 0);
-    toggleNavbar();
     fetchContactuscontent();
     // function initMap() {
     //   // Latitude and Longitude
@@ -122,7 +120,6 @@ const mapDispatchToProps = (dispatch) => {
 
 function mapStateToProps(state, ownProps) {
   return {
-    toggleNavbar: ownProps.toggleNavbar,
     contactUsContent: state.contents.contactUs
   };
 }

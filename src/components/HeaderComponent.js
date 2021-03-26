@@ -80,7 +80,14 @@ export default class Header extends React.Component {
                 this.props.incartGoods.goods.length > 3
               ) ? (
                 <li class="more-btn sdw">
-                  <Link to={{pathname:"/cart", state:{from: this.props.location.pathname}}} className="btn-material btn-primary">
+                  <Link
+                    className="btn-material btn-primary"
+                    to={{
+                      pathname:"/cart",
+                      state:{from: this.props.location.pathname}
+                    }}
+                    onClick={() => this.props.toggleNavbar(false)}
+                  >
                     {headerTag.cartBtn} <i className="icofont icofont-check-circled"></i>
                   </Link>
                 </li>
@@ -94,7 +101,14 @@ export default class Header extends React.Component {
                 (this.props.incartGoods.goods.length > 0) && (this.props.incartGoods.goods.length < 4)
               ) ? (
                 <li class="more-btn sdw">
-                  <Link to={{pathname:"/cart", state:{from: this.props.location.pathname}}} className="btn-material btn-primary">
+                  <Link
+                    className="btn-material btn-primary"
+                    to={{
+                      pathname:"/cart",
+                      state:{from: this.props.location.pathname}
+                    }}
+                    onClick={() => this.props.toggleNavbar(false)}
+                  >
                     {headerTag.cartBtn} <i className="icofont icofont-check-circled"></i>
                   </Link>
                 </li>
@@ -115,7 +129,13 @@ export default class Header extends React.Component {
       return (
         <ul className="list-btn-group nav navbar-nav navbar-right info-panel">
           <li>
-            <Link to={{pathname:"/signin", state:{from: this.props.location.pathname}}}>
+            <Link
+              to={{
+                pathname:"/signin",
+                state:{from: this.props.location.pathname}
+              }}
+              onClick={() => this.props.toggleNavbar(false)}
+            >
               <b>{headerTag.login}</b>
             </Link>
           </li>
@@ -143,7 +163,14 @@ export default class Header extends React.Component {
                 <span className="icon-bar"></span>
                 <span className="icon-bar"></span>
               </button>
-              <Link className="navbar-brand" to={{pathname:"/", state:{from: this.props.location.pathname}}}>
+              <Link
+                className="navbar-brand"
+                to={{
+                  pathname:"/",
+                  state:{from: this.props.location.pathname}
+                }}
+                onClick={() => {this.props.toggleNavbar(false)}}
+              >
                 <img src={headerTag.brandImage} alt="" className="brand"/>
               </Link>
             </div>
@@ -156,7 +183,13 @@ export default class Header extends React.Component {
                 <div className="btn-cols">
                   <ul className="list-btn-group">
                     <li>
-                      <Link to={{pathname:"/register", state:{from: this.props.location.pathname}}}>
+                      <Link
+                        to={{
+                          pathname:"/register",
+                          state:{from: this.props.location.pathname}
+                        }}
+                        onClick={() => this.props.toggleNavbar(false)}
+                      >
                         <b>{headerTag.signup}</b>
                       </Link>
                     </li>
@@ -167,15 +200,67 @@ export default class Header extends React.Component {
               {this.renderMemberNav(member)}
 
               <ul className="nav navbar-nav">
+
                 {headerTag.navBar.map((nav, index) => {
                   return (
-                    <li className={index=0?"active":""}>
-                      <Link to={{pathname: nav.pathname, hash: nav.hash, state:{from: this.props.location.pathname}}}>
+                    <li className={(index == 0) ? "active" : ""}>
+                      <Link
+                        to={{
+                          pathname: nav.pathname,
+                          hash: nav.hash,
+                          state:{from: this.props.location.pathname}
+                        }}
+                        onClick={() => this.props.toggleNavbar(false)}
+                      >
                         {nav.text}
                       </Link>
                     </li>
                   );
                 })}
+
+                {
+                  (
+                    !headerTag.navDropdown
+                  ) ? (
+                    ""
+                  ) : (
+                    headerTag.navDropdown.map((nav) => {
+                      return (
+                        <li>
+                          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            {nav.text} <i class="icofont icofont-curved-down"></i>
+                          </a>
+                          <ul class="dropdown-menu">
+                            {
+                              (
+                                !nav.dropdowns
+                              ) ? (
+                                ""
+                              ) : (
+                                nav.dropdowns.map((dropdown) => {
+                                  return (
+                                    <li>
+                                      <Link
+                                        to={{
+                                          pathname: dropdown.pathname,
+                                          hash: dropdown.hash,
+                                          state:{from: this.props.location.pathname}
+                                        }}
+                                        onClick={() => this.props.toggleNavbar(false)}
+                                      >
+                                        {dropdown.text}
+                                      </Link>
+                                    </li>
+                                  );
+                                })
+                              )
+                            }
+                          </ul>
+                        </li>
+                      );
+                    })
+                  )
+                }
               </ul>
             </div>
           </div>

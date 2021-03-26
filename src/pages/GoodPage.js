@@ -21,7 +21,6 @@ import { Helmet } from 'react-helmet';
 
 
 function GoodPage ({
-  toggleNavbar,
   gooddetailContent,
   activeGood,
   incartGoods,
@@ -52,7 +51,6 @@ function GoodPage ({
   
   React.useEffect(() => {
     window.scrollTo(0, 0);
-    toggleNavbar();
     fetchGood(slug, setInitial);
   }, []);
 
@@ -483,14 +481,22 @@ function GoodDetail({
         </div>
         <div class="divider-dotted"></div>
         <div class="row set-panel">
-              
-          <div class="col-md-6">
-            <span class="head">{content.options}</span>
-            <br/><br/>
-            <select value={option} onChange={(e) => selectOption(e, good.options)}>
-              <Options options={good.options}/>
-            </select>
-          </div>
+
+          {
+            (
+              !good.options
+            ) ? (
+              <div class="col-md-6"></div>
+            ) : (
+              <div class="col-md-6">
+                <span class="head">{content.options}</span>
+                <br/><br/>
+                <select value={option} onChange={(e) => selectOption(e, good.options)}>
+                  <Options options={good.options}/>
+                </select>
+              </div>
+            )
+          }
               
           {
             (
@@ -731,7 +737,6 @@ const mapDispatchToProps = (dispatch) => {
 
 function mapStateToProps(state, ownProps) {
   return {
-    toggleNavbar: ownProps.toggleNavbar,
     gooddetailContent: state.contents.goodDetail,
     activeGood: state.goods.activeGood,
     incartGoods: state.goods.incartGoods,

@@ -3,7 +3,7 @@ import { signUpUser, signUpUserSuccess, signUpUserFailure } from '../actions/use
 import { connect } from 'react-redux';
 import { useLocation, useHistory } from 'react-router-dom';
 
-function SignUpPage ({toggleNavbar, signUp, member}) {
+function SignUpPage ({signUp, member}) {
   
     const history = useHistory();
     const [username, setUsername] = React.useState("");
@@ -17,7 +17,6 @@ function SignUpPage ({toggleNavbar, signUp, member}) {
 
     React.useEffect(() => {
         window.scrollTo(0, 0);
-        toggleNavbar();
     }, []);
 
     React.useEffect(() => {
@@ -199,7 +198,6 @@ const mapDispatchToProps = (dispatch) => {
   
 function mapStateToProps(state, ownProps) {
     return {
-        toggleNavbar: ownProps.toggleNavbar,
         member: state.member
     };
 }

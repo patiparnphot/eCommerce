@@ -43,7 +43,7 @@ function SignInPage ({signIn, member}) {
                 
                 <div>
 
-                    <div class="row auth-form">
+                    <div class="row auth-form container">
 
                         <div class="col-md-4">
                             <div class="asside-nav no-bg">

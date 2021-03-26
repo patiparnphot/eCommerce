@@ -21,7 +21,6 @@ class InvoicePage extends Component {
   
   componentDidMount() {
     // console.log({...this.props});
-    this.props.toggleNavbar();
     this.props.fetchActiveOrder(this.state.invoiceId);
   }
   
@@ -332,7 +331,6 @@ const mapDispatchToProps = (dispatch) => {
 
 function mapStateToProps(state, ownProps) {
   return {
-    toggleNavbar: ownProps.toggleNavbar,
     cartContent: state.contents.cart,
     member: state.member,
     activeOrder: state.orders.activeOrder

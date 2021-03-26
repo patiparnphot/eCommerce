@@ -22,7 +22,8 @@ function Submit(values, dispatch) {
       cartBtn: values.headerCartBtn,
       logout: values.headerLogout,
       login: values.headerLogin,
-      navBar: values.headerNavBar
+      navBar: values.headerNavBar,
+      navDropdown: values.headerNavDropdown
     },
     footerTag: {
       informationHead: values.footerInformationHead,
@@ -97,6 +98,47 @@ const validate = values => {
     })
     if (navBarsArrayErrors.length) {
       errors.headerNavBar = navBarsArrayErrors
+    }
+  }
+  if (values.headerNavDropdown && values.headerNavDropdown.length) {
+    const navDropdownArrayErrors = []
+    values.headerNavDropdown.forEach((navDropdown, navDropdownIndex) => {
+      const navDropdownErrors = {}
+      if (!navDropdown || !navDropdown.text) {
+        navDropdownErrors.text = 'Required'
+        navDropdownArrayErrors[navDropdownIndex] = navDropdownErrors
+      }
+      if (!navDropdown || !navDropdown.dropdowns || !navDropdown.dropdowns.length) {
+        navDropdownErrors.dropdowns = { _error: 'At least one dropdown must be entered' }
+        navDropdownArrayErrors[navDropdownIndex] = navDropdownErrors
+      } else {
+        const dropdownArrayErrors = []
+        navDropdown.dropdowns.forEach((dropdown, dropdownIndex) => {
+          const dropdownErrors = {}
+          if (!dropdown || !dropdown.pathname) {
+            dropdownErrors.pathname = 'Required'
+            dropdownArrayErrors[dropdownIndex] = dropdownErrors
+          }
+          if (!dropdown || !dropdown.text) {
+            dropdownErrors.text = 'Required'
+            dropdownArrayErrors[dropdownIndex] = dropdownErrors
+          }
+        })
+        if (dropdownArrayErrors.length) {
+          navDropdownErrors.dropdowns = dropdownArrayErrors
+          navDropdownArrayErrors[navDropdownIndex] = navDropdownErrors
+        }
+        if (navDropdown.dropdowns.length > 5) {
+          // if (!navDropdownErrors.dropdowns) {
+          //   navDropdownErrors.dropdowns = []
+          // }
+          navDropdownErrors.dropdowns._error = 'No more than five dropdown allowed'
+          navDropdownArrayErrors[navDropdownIndex] = navDropdownErrors
+        }
+      }
+    })
+    if (navDropdownArrayErrors.length) {
+      errors.headerNavDropdown = navDropdownArrayErrors
     }
   }
   if (!values.footerInformationHead) {
@@ -222,6 +264,45 @@ const renderNavBar = ({fields, meta: {error, submitFailed}}) => (
   </ul>
 );
 
+const renderNavDropdown = ({fields, meta: {error, submitFailed}}) => (
+  <ul>
+    <li>
+      <button type="button" style={{backgroundColor: "lightgreen"}} onClick={() => fields.push({})}>
+        Add Nav Dropdown
+      </button>
+      {submitFailed && error && <span>{error}</span>}
+    </li>
+    {fields.map((navDropdown, index) => (
+      <li key={index}>
+        <button type="button" style={{backgroundColor: "orange"}} title="Remove NavDropdown" onClick={() => fields.remove(index)}>X</button>
+        <h4>NavDropdown #{index + 1}</h4>
+        <Field name={`${navDropdown}.text`} type="text" label="TEXT*" component={renderField}/>
+        <FieldArray name={`${navDropdown}.dropdowns`} component={renderDropdown} />
+      </li>
+    ))}
+  </ul>
+);
+
+const renderDropdown = ({fields, meta: {error, submitFailed}}) => (
+  <ul>
+    <li>
+      <button type="button" style={{backgroundColor: "lightgreen"}} onClick={() => fields.push({})}>
+        Add Dropdown*
+      </button>
+      {submitFailed && error && <span>{error}</span>}
+    </li>
+    {fields.map((dropdown, index) => (
+      <li key={index}>
+        <button type="button" style={{backgroundColor: "orange"}} title="Remove Dropdown" onClick={() => fields.remove(index)}>X</button>
+        <h4>Dropdown #{index + 1}</h4>
+        <Field name={`${dropdown}.pathname`} type="text" label="LINK*" component={renderField}/>
+        <Field name={`${dropdown}.hash`} type="text" label="SECTION" component={renderField}/>
+        <Field name={`${dropdown}.text`} type="text" label="TEXT*" component={renderField}/>
+      </li>
+    ))}
+  </ul>
+);
+
 const renderFooterLink = ({fields, meta: {error, submitFailed}}) => (
   <ul>
     <li>
@@ -281,6 +362,7 @@ class TemplateContentClass extends React.Component {
           <Field name="headerCartText" type="text" label="CART*" component={renderField} />
           <Field name="headerCartBtn" type="text" label="VIEW ORDER*" component={renderField} />
           <FieldArray name="headerNavBar" component={renderNavBar} />
+          <FieldArray name="headerNavDropdown" component={renderNavDropdown} />
         </div>
         <div className="col-sm-12" style={{backgroundColor: "white", margin: "10px"}}>
           <h4>FOOTER COLUMN 1</h4>
@@ -362,6 +444,7 @@ export default class TemplateContentPage extends React.Component {
         headerLogout: content.headerTag.logout,
         headerLogin: content.headerTag.login,
         headerNavBar: content.headerTag.navBar,
+        headerNavDropdown: content.headerTag.navDropdown,
         footerInformationHead: content.footerTag.informationHead,
         footerInformations: content.footerTag.informations,
         footerServiceHead: content.footerTag.serviceHead,

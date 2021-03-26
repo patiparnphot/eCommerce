@@ -30,7 +30,6 @@ import { editCartGoods } from './actions/goods'
 
 
 function App({
-  toggleNavbar,
   autoLogin,
   autoLogout,
   refreshIncart,
@@ -72,30 +71,30 @@ function App({
         <div id="content">
         <Switch>
           <Route exact path="/">
-            <IndexPage memberRate={content.memberRate} memberLike={content.memberLike} toggleNavbar={toggleNavbar} />
+            <IndexPage memberRate={content.memberRate} memberLike={content.memberLike}/>
           </Route>
           <Route path="/blogs">
-            <BlogsPage toggleNavbar={toggleNavbar}/>
+            <BlogsPage/>
           </Route>
           <Route path="/goods">
-            <GoodsPage memberRate={content.memberRate} toggleNavbar={toggleNavbar}/>
+            <GoodsPage memberRate={content.memberRate}/>
           </Route>
           <Route path="/cart">
-            <CartPage toggleNavbar={toggleNavbar}/>
+            <CartPage/>
           </Route>
           <Route path="/signin">
-            <SignInPage toggleNavbar={toggleNavbar}/>
+            <SignInPage/>
           </Route>
           <Route path="/register">
-            <RegisterPage toggleNavbar={toggleNavbar}/>
+            <RegisterPage/>
           </Route>
           <Route path="/invoice/:invoiceId">
-            <InvoicePage toggleNavbar={toggleNavbar}/>
+            <InvoicePage/>
           </Route>
           <Route path="/contactUs">
-            <ContactUsPage toggleNavbar={toggleNavbar}/>
+            <ContactUsPage/>
           </Route>
-          <Route path="*" component={NotFoundPage} toggleNavbar={toggleNavbar}/>
+          <Route path="*" component={NotFoundPage}/>
         </Switch>
         </div>
         <Footer footerTag={content.footerTag} />
@@ -104,26 +103,26 @@ function App({
   );
 }
 
-function BlogsPage({toggleNavbar}) {
+function BlogsPage() {
   let { path } = useRouteMatch();
 
   return (
     <Route path={`${path}/:title`}>
-      <BlogPage toggleNavbar={toggleNavbar}/>
+      <BlogPage/>
     </Route>
   );
 }
 
-function GoodsPage({toggleNavbar, memberRate}) {
+function GoodsPage({memberRate}) {
   let { path } = useRouteMatch();
 
   return (
     <Switch>
       <Route exact path={`${path}/:category`}>
-        <CategoryPage toggleNavbar={toggleNavbar} memberRate={memberRate}/>
+        <CategoryPage memberRate={memberRate}/>
       </Route>
       <Route path={`${path}/:type/:slug`}>
-        <GoodPage toggleNavbar={toggleNavbar} memberRate={memberRate}/>
+        <GoodPage memberRate={memberRate}/>
       </Route>
     </Switch>
   );
@@ -131,9 +130,6 @@ function GoodsPage({toggleNavbar, memberRate}) {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    toggleNavbar: () => {
-      dispatch({type: "TOGGLE_NAV", payload: false});
-    },
     fetchTemplatecontent: () => {
       dispatch(fetchTemplatecontent()).then((response) => {
         console.log('templateContent: ', response.payload);
