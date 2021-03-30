@@ -172,3 +172,9 @@
 .blog-item .blog-wrap:hover .blog-info {
   opacity: 1;
 }
+
+.auth-form {
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 80px;
+}

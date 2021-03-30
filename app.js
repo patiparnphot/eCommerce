@@ -224,6 +224,18 @@ app.get('*', async (req, res, next) => {
             descriptionHtml = activeGood.descriptionHtml;
          }
       }
+      if (urlArr.length == 2 && urlArr[1] == 'signin') {
+         titleHtml = 'เข้าสู่ระบบ';
+         descriptionHtml = '';
+      }
+      if (urlArr.length == 2 && urlArr[1] == 'register') {
+         titleHtml = 'ลงทะเบียน';
+         descriptionHtml = '';
+      }
+      if (urlArr.length == 2 && urlArr[1] == 'contactUs') {
+         titleHtml = 'ติดต่อเรา';
+         descriptionHtml = '';
+      }
       //const helmet = Helmet.renderStatic();
       const { preloadedState, content } = serverSideRender(initialStateJson, req.url);
       const response = template(titleHtml, preloadedState, content, descriptionHtml);

@@ -221,7 +221,7 @@ const renderSlideshows = ({fields, meta: {error, submitFailed}}) => (
         <Field name={`${slideshow}.description`} type="text" label="DESCRIPTION*" component={renderField}/>
         <Field name={`${slideshow}.link`} type="text" label="BUTTON TEXT*" component={renderField}/>
         <Field name={`${slideshow}.btnLink`} type="text" label="BUTTON LINK" component={renderField}/>
-        <Field name={`${slideshow}.image`} type="text" label="IMAGE (560x400 px)" component={renderField}/>
+        <Field name={`${slideshow}.image`} type="text" label="IMAGE (400x400 px)" component={renderField}/>
       </li>
     ))}
   </ul>
@@ -282,7 +282,7 @@ class IndexContentClass extends React.Component {
         </div>
         <div className="col-sm-12" style={{backgroundColor: "white", margin: "10px"}}>
           <h4>INTRO SECTION</h4>
-          <Field name="introBackground" type="text" label="BACKGROUND (1300x400 px)" component={renderField} />
+          <Field name="introBackground" type="text" label="BACKGROUND (1300x800 px)" component={renderField} />
           <FieldArray name="introSlideshows" component={renderSlideshows} />
         </div>
         <div className="col-sm-12" style={{backgroundColor: "white", margin: "10px"}}>

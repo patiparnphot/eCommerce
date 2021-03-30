@@ -122,7 +122,7 @@ const renderFeatures = ({fields, meta: {error, submitFailed}}) => (
       <li key={index}>
         <button type="button" style={{backgroundColor: "orange"}} title="Remove Feature" onClick={() => fields.remove(index)}>X</button>
         <h4>FEATURE #{index + 1}</h4>
-        <Field name={`${field}.name`} type="text" label="NAME*" component={renderField}/>
+        <Field name={`${field}.name`} type="text" label="NAME*(no spacebar or symbol)" component={renderField}/>
         <Field name={`${field}.first`} type="number" label="FIRST*" component={renderField}/>
         <Field name={`${field}.last`} type="number" label="LAST*" component={renderField}/>
         <Field name={`${field}.min`} type="number" label="MIN*" component={renderField}/>

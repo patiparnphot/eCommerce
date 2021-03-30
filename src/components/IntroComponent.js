@@ -31,7 +31,7 @@ export default function Intro({intro}) {
   } else {
     return (
       <section id="intro">
-        <div className="container-fluid" style={{background: intro.background}}>
+        <div className="container-fluid" style={{backgroundImage: intro.background}}>
           <div className="row">
             <div className="clearfix">
               <div className="owl-carousel slideshow">

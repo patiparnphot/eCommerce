@@ -9,5 +9,6 @@
     "sslPort":       "443",
     "useSSL":        false,
     "userEmail":     "meatseo",
-    "passEmail":     "fkebumaqqapltjaq"
+    "passEmail":     "fkebumaqqapltjaq",
+    "iconLink":      "https://www.octorax.com/upload/1617038849037-logo-octorax.png"
 }

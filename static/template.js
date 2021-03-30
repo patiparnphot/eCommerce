@@ -22,7 +22,7 @@ module.exports = function template(title = "OCTORAX", initialState = {}, content
                     <meta name="description" content="${description}">
     
                     <!--Favicons -->
-                    <link href="/img/favicon.png" rel="icon">
+                    <link href="${config.iconLink}" rel="icon">
                     <link href="/img/apple-touch-icon.png" rel="apple-touch-icon">
     
                     <!--Google Fonts -->

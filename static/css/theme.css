@@ -85,7 +85,7 @@ body {
 }
 .comp-header.st-20 {
   font-size: 3.5em;
-  line-height: 0.667;
+  /* line-height: 0.667; */
   margin-bottom: 83px;
   width: 100%;
   text-align: center;
@@ -6163,6 +6163,8 @@ textarea.form-control {
 * Auth form
 */
 .auth-form {
+  padding-left: 15px;
+  padding-right: 15px;
   padding-bottom: 80px;
 }
 .auth-form .header {
@@ -6952,6 +6954,9 @@ textarea.form-control {
 }
 
 #intro .container-fluid, #information .container {
+  background-size: 100% auto;
+  background-position: center;
+  background-repeat: no-repeat;
   height: 400px;
 }
 
