@@ -1,13 +1,13 @@
 var moment  = require("moment-timezone"),
-    Blog = require("../models/blog"),
+   //  Blog = require("../models/blog"),
     handler = require("../data_handler");
 
 module.exports = async function(slug) {
    // let slug = arg.toLowerCase();
    
    try {
-      // let currentlyBlog = await handler.findByBlogName(slug);
-      let currentlyBlog = await Blog.findOne({slug: slug}).exec();
+      let currentlyBlog = await handler.findByBlogName(slug);
+      // let currentlyBlog = await Blog.findOne({slug: slug}).exec();
       // console.log(currentlyBlog);
 
       if(!currentlyBlog) {
@@ -17,32 +17,32 @@ module.exports = async function(slug) {
       } else {
 
          try {
-            // let nextBlog = await handler.findByNextBlog(slug);
-            let nextBlog = await Blog.findOne(
-               { postedTime: { $gt: currentlyBlog.postedTime } },
-               { slug: 1, image: 1, title: 1 },
-               { sort: { postedTime: 1 }, limit: 1 }
-            ).exec();
+            let nextBlog = await handler.findByNextBlog(slug);
+            // let nextBlog = await Blog.findOne(
+            //    { postedTime: { $gt: currentlyBlog.postedTime } },
+            //    { slug: 1, image: 1, title: 1 },
+            //    { sort: { postedTime: 1 }, limit: 1 }
+            // ).exec();
             if (!nextBlog) nextBlog = currentlyBlog;
             //console.log(nextBlog);
 
             try {
-               // let prevBlog = await handler.findByPrevBlog(slug);
-               let prevBlog = await Blog.findOne(
-                  { postedTime: { $lt: currentlyBlog.postedTime } },
-                  { slug: 1, image: 1, title: 1 },
-                  { sort: { postedTime: -1 }, limit: 1 }
-               ).exec();
+               let prevBlog = await handler.findByPrevBlog(slug);
+               // let prevBlog = await Blog.findOne(
+               //    { postedTime: { $lt: currentlyBlog.postedTime } },
+               //    { slug: 1, image: 1, title: 1 },
+               //    { sort: { postedTime: -1 }, limit: 1 }
+               // ).exec();
                if (!prevBlog) prevBlog = currentlyBlog;
                //console.log(prevBlog);
 
                try {
-                  // let recentBlogs = await handler.findByRecentBlogs(4);
-                  let recentBlogs = await Blog.find(
-                     { postedTime: { $lt: Date.now() } },
-                     { slug: 1, image: 1, title: 1, postedTime: 1 },
-                     { sort: { postedTime: -1 }, limit: 4 }
-                  ).exec();
+                  let recentBlogs = await handler.findByRecentBlogs(4);
+                  // let recentBlogs = await Blog.find(
+                  //    { postedTime: { $lt: Date.now() } },
+                  //    { slug: 1, image: 1, title: 1, postedTime: 1 },
+                  //    { sort: { postedTime: -1 }, limit: 4 }
+                  // ).exec();
                   //console.log(recentBlogs);
                   let postedTime
                   let postedDuration = "";

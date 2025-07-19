@@ -35,9 +35,9 @@ function App({member, navToggle}) {
   // } else if(!data) {
   //   return <NotFoundPage/>
   // } else
-  if(!member.user || !member.token) {
-    return <SignInPage/>
-  }
+  // if(!member.user || !member.token) {
+  //   return <SignInPage/>
+  // }
 
   return (
       <div className={navToggle ? "nav-open" : ""}>
@@ -47,7 +47,7 @@ function App({member, navToggle}) {
           <div class="panel-header panel-header-sm"/>
           <Switch>
             <Route exact path="/admin/">
-              <OrdersPage/>
+              <UploadPage/>
             </Route>
             <Route path="/admin/upload">
               <UploadPage/>

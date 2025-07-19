@@ -145,9 +145,9 @@ export default class CreateBlog extends React.Component {
     
     const { token } = this.props.member;
 
-    if (!token) {
-      return <Loader/>
-    } else {
+    // if (!token) {
+    //   return <Loader/>
+    // } else {
         
       return (
           <div className="form container">
@@ -168,6 +168,6 @@ export default class CreateBlog extends React.Component {
             />
           </div>
       );
-    }
+    // }
   }
 }

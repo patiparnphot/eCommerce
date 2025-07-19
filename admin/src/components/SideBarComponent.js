@@ -29,12 +29,12 @@ export default class SideBar extends React.Component {
         </div>
         <div className="sidebar-wrapper" id="sidebar-wrapper">
           <ul className="nav">
-            <li className={pathname == "/admin/" ? "active" : ""}>
+            {/* <li className={pathname == "/admin/" ? "active" : ""}>
               <Link to="/admin/">
                 <i className="now-ui-icons design_app"></i>
                 <p>Orders</p>
               </Link>
-            </li>
+            </li> */}
             <li className={pathname == "/admin/contents/index" ? "active" : ""}>
               <Link to="/admin/contents/index">
                 <i className="now-ui-icons education_atom"></i>
@@ -65,12 +65,12 @@ export default class SideBar extends React.Component {
                 <p>Blogs</p>
               </Link>
             </li>
-            <li className={pathname == "/admin/author" ? "active" : ""}>
+            {/* <li className={pathname == "/admin/author" ? "active" : ""}>
               <Link to="/admin/author">
                 <i className="now-ui-icons education_atom"></i>
                 <p>Author</p>
               </Link>
-            </li>
+            </li> */}
             <li className={pathname == "/admin/contents/contactUs" ? "active" : ""}>
               <Link to="/admin/contents/contactUs">
                 <i className="now-ui-icons education_atom"></i>

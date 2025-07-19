@@ -40,7 +40,7 @@ const mapDispatchToProps = (dispatch) => {
     },
     deleteBlog: (deleteBlogId, token, start, end) => {
       dispatch(deleteBlog(deleteBlogId, token)).then((response) => {
-        if(response.payload._id && (response.payload._id == deleteBlogId)) {
+        if(response.payload.id && (response.payload.id == deleteBlogId)) {
           console.log('deletedBlog: ', response.payload);
           dispatch(deleteBlogSuccess(response.payload));
           alert("delete blog successful");

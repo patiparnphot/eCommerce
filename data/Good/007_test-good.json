@@ -1,0 +1,25 @@
+{
+    "id": "007",
+    "descriptionHtml": "test desc html",
+    "titleHtml": "test title html",
+    "image": "/images/shop/img-08.jpg",
+    "slug": "test-good",
+    "title": "test title",
+    "description": "<p>blah blah blah blah blah blah blah</p>",
+    "category": "เทส",
+    "rating": "4",
+    "ratingAmount": "36",
+    "raterAmount": "9",
+    "postedTime": "2019-11-15T02:00:00.000Z",
+    "options": [
+        {
+            "key": "size M",
+            "cost": "399",
+            "aroma": "3",
+            "acidity": "4",
+            "fruity": "3",
+            "isAvailable": true
+        }
+    ],
+    "specificOptions": []
+}

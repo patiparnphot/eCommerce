@@ -14,7 +14,7 @@ function Submit(values, dispatch) {
   let editedForm = { ...values };
   editedForm.text = demo.executeSummernote("text");
   console.log('editedForm', editedForm);
-  dispatch(editBlog(editedForm._id, editedForm, editedForm.token)).then((response) => {
+  dispatch(editBlog(editedForm.id, editedForm, editedForm.token)).then((response) => {
     if(response.payload.slug && (response.payload.slug == editedForm.slug)) {
       console.log('editBlogResponse: ', response.payload);
       dispatch(editBlogSuccess(response.payload));
@@ -135,7 +135,9 @@ export default class BlogPage extends React.Component {
     const { token } = this.props.member;
     const initialBlog = { ...blog, token: token };
     
-    if (loading || !token) {
+    if (loading 
+      // !token
+    ) {
       return <Loader/>
     } else if (!blog) {
       return <NotFoundPage/>

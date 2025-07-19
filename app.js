@@ -3,7 +3,7 @@ var express         = require("express"),
     app             = express(),
     bodyParser      = require("body-parser"),
     fs		        = require("fs"),
-    mongoose        = require("mongoose"),
+   //  mongoose        = require("mongoose"),
     passport        = require("passport"),
     LocalStrategy   = require("passport-local"),
     JWTStrategy     = require("passport-jwt").Strategy,
@@ -50,7 +50,7 @@ fs.watchFile(require.resolve('./initial_state/initialGoodState'), function () {
 fs.watchFile(require.resolve('./initial_state/initialGoodCatState'), function () {
    console.log("InitialGoodCatState changed, reloading...");
    delete require.cache[require.resolve('./initial_state/initialGoodCatState')]
-   initialGoodState = require('./initial_state/initialGoodCatState');
+   initialGoodCatState = require('./initial_state/initialGoodCatState');
    console.log("InitialGoodCatState has changed and Server has reloaded!!!");
 });
 
@@ -67,7 +67,7 @@ var blogRoutes    = require("./routes/blog"),
     orderRoutes   = require("./routes/order");
     
 // Database setup
-mongoose.connect(config.mongodb);
+// mongoose.connect(config.mongodb);
 
 // Parsers for POST data
 app.use(bodyParser.json({limit: '50mb'}));
@@ -141,14 +141,15 @@ var upload = multer({ storage: storage, fileFilter: imageFilter})
 // Set upload API
 app.post(
    '/upload',
-   passport.authenticate('jwt', {session: false}),
+   // passport.authenticate('jwt', {session: false}),
    upload.single('image'),
    function(req, res, next){
-      if(req.user.isAdmin) {
+      // if(req.user.isAdmin) {
+      console.log("file: ", req.file);
          return res.json(req.file);
-      } else {
-         return res.status(422).send("this user isn't admin");
-      }
+      // } else {
+      //    return res.status(422).send("this user isn't admin");
+      // }
    }
 );
 

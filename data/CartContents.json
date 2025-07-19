@@ -1,0 +1,42 @@
+{
+    "navigators": [
+        {
+            "head": "ยืนยัน",
+            "subHead": "รายการสินค้า"
+        },
+        {
+            "head": "ตรวจสอบ",
+            "subHead": "ข้อมูลจัดส่ง"
+        },
+        {
+            "head": "ยืนยัน",
+            "subHead": "คำสั่งซื้อ"
+        }
+    ],
+    "product": "รายการ",
+    "price": "ราคา",
+    "quantity": "จำนวน",
+    "total": "รวม",
+    "remove": "ยกเลิก",
+    "nextMethod": "ขั้นตอนถัดไป",
+    "personalInfoHead": "กรุณาตรวจสอบข้อมูลของท่าน",
+    "firstname": "ชื่อจริง:",
+    "lastname": "นามสกุล:",
+    "telephone": "เบอร์โทรติดต่อ:",
+    "email": "อีเมล:",
+    "address": "ที่อยู่จัดส่ง:",
+    "previousMethod": "ขั้นตอนก่อนหน้า",
+    "CFTelephone": "เบอร์โทรติดต่อ:",
+    "CFAddress": "ที่อยู่จัดส่ง:",
+    "subTotal": "ยอดรวมสินค้า:",
+    "deliverCost": "ค่าจัดส่ง:",
+    "limitCost": 200,
+    "defaultCost": 150,
+    "deliverWarning": "ถ้ายอดรวมสินค้ามากกว่า200บาท ฟรีค่าจัดส่ง!!!",
+    "netCost": "ยอดรวมสุทธิ:",
+    "makeOrder": "สั่งซื้อสินค้า",
+    "bankTransferHead": "ช่องทางการชำระเงิน",
+    "bankTransferText": "<div class='row'><div class='col-sm-4'>ชื่อธนาคาร<hr/>ธนาคารกสิกรไทย</div><div class='col-sm-4'>ชื่อบัญชี<hr/>นายสมศักดิ์ ล้ำลึก</div><div class='col-sm-4'>เลขที่บัญชี<hr/>330923809458034</div></div>",
+    "paymentMethodHead": "วิธีการแจ้งการชำระเงิน",
+    "paymentMethodText": "<div>3 สิ่งที่ต้องระบุ<br/><ol><li>InvoiceId</li><li>ยอดรวมสุทธิ</li><li>หลักฐานการโอนเงิน(e-slip หรือ รูปใบสลิป)</li></ol><br/>ส่งมาที่ช่องทางการติดต่อใดการติดต่อหนึ่งตามนี้<br/><ol><li>Facebook: www.facebook.com/something</li><li>Line: @something</li><li>Email: somrthing@email.com</li></ol></div>"
+}

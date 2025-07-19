@@ -4,7 +4,7 @@
   "description": "seo blog",
   "main": "meatseo.js",
   "scripts": {
-    "build": "webpack -p --config ./webpack.config.js"
+    "build": "NODE_OPTIONS=--openssl-legacy-provider webpack -p --config ./webpack.config.js"
   },
   "author": "bukunjom",
   "license": "ISC",

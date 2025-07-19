@@ -56,7 +56,7 @@ export default class Blogs extends React.Component {
                 <Link to={"/admin/blogs/edit/" + blog.slug} className="link-details" title="More Details">
                   <i className="now-ui-icons travel_info"></i>
                 </Link>
-                <a onClick={() => this.props.deleteBlog(blog._id, this.props.member.token, this.state.start, this.state.end)} href="#" className="link-delete" title="Delete">
+                <a onClick={() => this.props.deleteBlog(blog.id, this.props.member.token, this.state.start, this.state.end)} href="#" className="link-delete" title="Delete">
                   <i className="now-ui-icons ui-1_simple-remove"></i>
                 </a>
               </div>

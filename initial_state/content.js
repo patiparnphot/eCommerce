@@ -6,68 +6,78 @@ var Blog    = require("../models/blog"),
 
 module.exports = async function() {
    try {
-      const indexContent = await Content.findOne(
-         { contentType: "index" },
-         {},
-         { sort: { postedTime: -1 }, limit: 1 }
-      ).exec();
+      // const indexContent = await Content.findOne(
+      //    { contentType: "index" },
+      //    {},
+      //    { sort: { postedTime: -1 }, limit: 1 }
+      // ).exec();
+      const indexContent = await handler.indexContents();
 
       try {
-         const templateContent = await Content.findOne(
-            { contentType: "template" },
-            {},
-            { sort: { postedTime: -1 }, limit: 1 }
-         ).exec();
+         // const templateContent = await Content.findOne(
+         //    { contentType: "template" },
+         //    {},
+         //    { sort: { postedTime: -1 }, limit: 1 }
+         // ).exec();
+         const templateContent = await handler.templateContents();
 
-         const contactUsContent = await Content.findOne(
-            { contentType: "contactus" },
-            {},
-            { sort: { postedTime: -1 }, limit: 1 }
-         ).exec();
+         // const contactUsContent = await Content.findOne(
+         //    { contentType: "contactus" },
+         //    {},
+         //    { sort: { postedTime: -1 }, limit: 1 }
+         // ).exec();
+         const contactUsContent = await handler.contactUsContents();
 
          try {
-            const blogDetailContent = await Content.findOne(
-               { contentType: "blogdetail" },
-               {},
-               { sort: { postedTime: -1 }, limit: 1 }
-            ).exec();
+            // const blogDetailContent = await Content.findOne(
+            //    { contentType: "blogdetail" },
+            //    {},
+            //    { sort: { postedTime: -1 }, limit: 1 }
+            // ).exec();
+            const blogDetailContent = await handler.blogDetailContents();
 
-            const goodDetailContent = await Content.findOne(
-               { contentType: "gooddetail" },
-               {},
-               { sort: { postedTime: -1 }, limit: 1 }
-            ).exec();
+            // const goodDetailContent = await Content.findOne(
+            //    { contentType: "gooddetail" },
+            //    {},
+            //    { sort: { postedTime: -1 }, limit: 1 }
+            // ).exec();
+            const goodDetailContent = await handler.goodDetailContents();
 
-            const cartContent = await Content.findOne(
-               { contentType: "cart" },
-               {},
-               { sort: { postedTime: -1 }, limit: 1 }
-            ).exec();
+            // const cartContent = await Content.findOne(
+            //    { contentType: "cart" },
+            //    {},
+            //    { sort: { postedTime: -1 }, limit: 1 }
+            // ).exec();
+            const cartContent = await handler.cartContents();
 
             try {
-               const allBlogs = await Blog.find(
-                  { postedTime: { $lt: Date.now() } },
-                  {},
-                  { sort: { postedTime: -1 }, limit: 20 }
-               ).exec();
+               // const allBlogs = await Blog.find(
+               //    { postedTime: { $lt: Date.now() } },
+               //    {},
+               //    { sort: { postedTime: -1 }, limit: 20 }
+               // ).exec();
+               const allBlogs = await handler.findByRecentBlogs(20);
                
-               const recentGoods = await Good.find(
-                  { postedTime: { $lt: Date.now() } },
-                  {},
-                  { sort: { postedTime: -1 }, limit: 20 }
-               ).exec();
+               // const recentGoods = await Good.find(
+               //    { postedTime: { $lt: Date.now() } },
+               //    {},
+               //    { sort: { postedTime: -1 }, limit: 20 }
+               // ).exec();
+               const recentGoods = await handler.findByRecentGoods(20);
 
-               const filterGoods = await Good.find(
-                  {},
-                  {},
-                  { sort: { rating: -1 }, limit: 10 }
-               ).exec();
+               // const filterGoods = await Good.find(
+               //    {},
+               //    {},
+               //    { sort: { rating: -1 }, limit: 10 }
+               // ).exec();
+               const popularGoods = await handler.findByPopularGoods(10);
 
-               const authorBlog = await Author.findOne(
-                  {},
-                  {},
-                  { sort: { postedTime: -1 }, limit: 1 }
-               ).exec();
+               // const authorBlog = await Author.findOne(
+               //    {},
+               //    {},
+               //    { sort: { postedTime: -1 }, limit: 1 }
+               // ).exec();
+               const authorBlog = await handler.authors();
 
                try {
                   let initialState = {
@@ -167,13 +177,13 @@ module.exports = async function() {
                   initialState.blogs.blogsList.blogs = allBlogs;
                   initialState.blogs.authorBlog.data = authorBlog;
                   initialState.goods.recentGoods.goods = recentGoods;
-                  initialState.goods.filterGoods.goods = filterGoods;
-                  initialState.contents.index.content = indexContent.content;
-                  initialState.contents.template.content = templateContent.content;
-                  initialState.contents.contactUs.content = contactUsContent.content;
-                  initialState.contents.blogDetail.content = blogDetailContent.content;
-                  initialState.contents.goodDetail.content = goodDetailContent.content;
-                  initialState.contents.cart.content = cartContent.content;
+                  initialState.goods.filterGoods.goods = popularGoods;
+                  initialState.contents.index.content = indexContent;
+                  initialState.contents.template.content = templateContent;
+                  initialState.contents.contactUs.content = contactUsContent;
+                  initialState.contents.blogDetail.content = blogDetailContent;
+                  initialState.contents.goodDetail.content = goodDetailContent;
+                  initialState.contents.cart.content = cartContent;
 
                   return(initialState);
 

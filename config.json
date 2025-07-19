@@ -1,6 +1,6 @@
 {
     "apiLink":       "/api",
-    "domainname":    "https://www.patiparnaircon.com",
+    "domainname":    "http://localhost:1210",
     "headScript":    "<script async src='https://www.googletagmanager.com/gtag/js?id=UA-155291561-5'></script><script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'UA-155291561-5');</script>",
     "bodyScript":    "",
     "mongodb":       "mongodb+srv://bomgeo57:bomgeo57@cluster0.w7pxj.mongodb.net/patiparnaircon?retryWrites=true&w=majority",
@@ -10,5 +10,5 @@
     "useSSL":        false,
     "userEmail":     "meatseo",
     "passEmail":     "fkebumaqqapltjaq",
-    "iconLink":      "https://www.octorax.com/upload/1617038849037-logo-octorax.png"
+    "iconLink":      "http://localhost:1210/images/slideshow/img-01.png"
 }

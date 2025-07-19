@@ -136,6 +136,8 @@ const renderOptions = ({fields, allCat, cat, meta: {error, submitFailed}}) => {
       .filter(x => x[1].title == cat)[0][0];
     let options = allCat[targetIndex].options;
     let features = allCat[targetIndex].features;
+    console.log("fields: ", fields);
+    if (!fields) { fields = []; }
     return (
       <ul>
         <li>

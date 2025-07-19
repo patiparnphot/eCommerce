@@ -1,0 +1,25 @@
+{
+    "id": "002",
+    "descriptionHtml": "2 desc html",
+    "titleHtml": "2 title html",
+    "image": "/images/shop/img-10.jpg",
+    "slug": "2nd-good",
+    "title": "2 title",
+    "description": "<p>blah blah blah blah blah blah blah</p>",
+    "category": "cloth",
+    "rating": "3",
+    "ratingAmount": "10",
+    "raterAmount": "3",
+    "postedTime": "2019-09-05T02:00:00.000Z",
+    "options": [
+        {
+            "key": "size L",
+            "cost": "455",
+            "aroma": "5",
+            "acidity": "4",
+            "fruity": "3",
+            "isAvailable": true
+        }
+    ],
+    "specificOptions": []
+}

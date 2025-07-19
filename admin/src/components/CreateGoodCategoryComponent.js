@@ -211,9 +211,9 @@ export default class CreateGood extends React.Component {
     
     const { token } = this.props.member;
 
-    if (!token) {
-      return <Loader/>
-    } else {
+    // if (!token) {
+    //   return <Loader/>
+    // } else {
         
       return (
         <div className="form container">
@@ -230,6 +230,6 @@ export default class CreateGood extends React.Component {
           />
         </div>
       );
-    }
+    // }
   }
 }

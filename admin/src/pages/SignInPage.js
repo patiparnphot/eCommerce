@@ -8,10 +8,12 @@ function SignInPage ({signIn, member}) {
     const history = useHistory();
     const [username, setUsername] = React.useState("");
     const [password, setPassword] = React.useState("");
-
+console.log("bmember: ", member);
     React.useEffect(() => {
+        console.log("memberSignIn: ", member)
         if(member.user && member.user.username == username) {
-            history.push("/admin/");
+            console.log("signInPageOut")
+            history.push("/admin");
         }
     }, [member])
 

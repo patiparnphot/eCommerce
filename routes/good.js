@@ -10,6 +10,8 @@ var express      = require("express"),
     goodCatState = require("../initial_state/goodCategory");
     // middleware = require("../middleware");
 
+var handler = require('../data_handler');
+
 var preAuthenticate = function (req,res,next){
     console.log(JSON.stringify(req.body));
     return next();
@@ -40,102 +42,117 @@ function getAndDeleteGood(category, callback) {
 
 
 //GOOD AMOUNT - get good amount
-router.get("/amount", function(req, res, next){
-    Good.count(
-        { postedTime: { $lt: Date.now() } },
-        function(err, goodAmount){
-            if(err) return next(err);
-            res.json(goodAmount);
-        }
-    );
+router.get("/amount", async function(req, res, next){
+    let goodAmount = await handler.howManyGoods();
+    res.json(goodAmount);
+    // Good.count(
+    //     { postedTime: { $lt: Date.now() } },
+    //     function(err, goodAmount){
+    //         if(err) return next(err);
+    //         res.json(goodAmount);
+    //     }
+    // );
 });
 
 //GOOD CATEGORY AMOUNT - get good category amount
-router.get("/categories/amount", function(req, res, next){
-    Category.count(
-        {
-            categoryType: "good", 
-            postedTime: { $lt: Date.now() }
-        },
-        function(err, goodCategoryAmount){
-            if(err) return next(err);
-            res.json(goodCategoryAmount);
-        }
-    );
+router.get("/categories/amount", async function(req, res, next){
+    let goodCategoryAmount = await handler.howManyGoodCats();
+    res.json(goodCategoryAmount);
+    // Category.count(
+    //     {
+    //         categoryType: "good", 
+    //         postedTime: { $lt: Date.now() }
+    //     },
+    //     function(err, goodCategoryAmount){
+    //         if(err) return next(err);
+    //         res.json(goodCategoryAmount);
+    //     }
+    // );
 });
 
 //GOOD CATEGORY PROPS - get good category properties
 router.get("/categories/allProps", async function(req, res, next){
-    Category.find(
-        {
-            categoryType: "good", 
-            postedTime: { $lt: Date.now() }
-        },
-        {
-            title: 1,
-            options: 1,
-            features: 1,
-            _id: 0
-        },
-        async function(err, goodCategoryProps){
-            if(err) return next(err);
-            res.json(goodCategoryProps);
-        }
-    );
+    let goodCategoryProps = await handler.findByGoodCategories(20);
+    res.json(goodCategoryProps);
+    // Category.find(
+    //     {
+    //         categoryType: "good", 
+    //         postedTime: { $lt: Date.now() }
+    //     },
+    //     {
+    //         title: 1,
+    //         options: 1,
+    //         features: 1,
+    //         _id: 0
+    //     },
+    //     async function(err, goodCategoryProps){
+    //         if(err) return next(err);
+    //         res.json(goodCategoryProps);
+    //     }
+    // );
 });
 
 //RECENT GOODS - get a recent list of goods
-router.get("/recent", function(req, res, next){
-    Good.find(
-        { postedTime: { $lt: Date.now() } },
-        {},
-        { sort: { postedTime: -1 }, limit: 20 },
-        function(err, listOfGoods){
-            if(err) return next(err);
-            res.json(listOfGoods);
-        }
-    );
+router.get("/recent", async function(req, res, next){
+    let recentGoods = await handler.findByRecentGoods(20);
+    res.json(recentGoods);
+    // Good.find(
+    //     { postedTime: { $lt: Date.now() } },
+    //     {},
+    //     { sort: { postedTime: -1 }, limit: 20 },
+    //     function(err, listOfGoods){
+    //         if(err) return next(err);
+    //         res.json(listOfGoods);
+    //     }
+    // );
 });
 
 //POPULAR GOODS - get a popular list of goods
-router.get("/popular", function(req, res, next){
-    Good.find(
-        {},
-        {},
-        { sort: { rating: -1 }, limit: 20 },
-        function(err, listOfGoods){
-            if(err) return next(err);
-            res.json(listOfGoods);
-        }
-    );
+router.get("/popular", async function(req, res, next){
+    let popularGoods = await handler.findByPopularGoods(20);
+    res.json(popularGoods);
+    // Good.find(
+    //     {},
+    //     {},
+    //     { sort: { rating: -1 }, limit: 20 },
+    //     function(err, listOfGoods){
+    //         if(err) return next(err);
+    //         res.json(listOfGoods);
+    //     }
+    // );
 });
 
 //FILTER GOODS - get a filtered list of goods
-router.post("/filter", function(req, res, next){
-    Good.find(
-        req.body.filter,
-        {},
-        { sort: { postedTime: -1 } },
-        function(err, listOfGoods){
-            if(err) return next(err);
-            res.json(listOfGoods);
-        }
-    );
+router.post("/filter", async function(req, res, next){
+    const filterGoods = await handler.findBySimilarGoods(req.body.filter.category, 20);
+    res.json(filterGoods);
+    // Good.find(
+    //     req.body.filter,
+    //     {},
+    //     { sort: { postedTime: -1 } },
+    //     function(err, listOfGoods){
+    //         if(err) return next(err);
+    //         res.json(listOfGoods);
+    //     }
+    // );
 });
 
 //INITIALSTATE - update JSON file of initialState good
 router.get("/updateJsonFile", async function(req, res, next) {
-    try {
-        Good.find({}, {slug: 1, _id: 0}, {}, async function(err, listOfGoods){
-            if (err) return next(err);
+    // try {
+    //     Good.find({}, {slug: 1, _id: 0}, {}, async function(err, listOfGoods){
+            let listOfGoods = await handler.listOfGoodName();
+            console.log("listOfGoods: ", listOfGoods)
+            // if (err) return next(err);
             let goodStateArr = [];
             if (Array.isArray(listOfGoods) && (listOfGoods.length > 0)) {
                 for (let i = 0; i < listOfGoods.length; i++) {
-                    let goodSlug = listOfGoods[i].slug;
-                    goodStateArr.push(goodState(goodSlug));
+                    let goodSlug = listOfGoods[i];
+                    goodStateArr.push(handler.findByGoodName(goodSlug));
                 };
             };
             let finalGoodStateArr = await Promise.all(goodStateArr);
+            console.log("finalGoodStateArr: ", finalGoodStateArr)
             let goodStateJS = `module.exports = function(goodSlug) { `;
             for (let j = 0; j < finalGoodStateArr.length; j++) {
                 if (j == 0) {
@@ -145,7 +162,7 @@ router.get("/updateJsonFile", async function(req, res, next) {
                 }
                 goodStateJS += JSON.stringify(finalGoodStateArr[j].slug);
                 goodStateJS += ` ) { return `;
-                goodStateJS += JSON.stringify(finalGoodStateArr[j].state);
+                goodStateJS += JSON.stringify(finalGoodStateArr[j]);
                 goodStateJS += `; } `;
             };
             goodStateJS += `else { return {"title": "noSlug"}; } }`;
@@ -160,21 +177,22 @@ router.get("/updateJsonFile", async function(req, res, next) {
                 console.log("The Javascript file which contains initial good state is written !!!");
             });
             res.send("The Javascript file which contains initial good state is updated !!!");
-        });
-    } catch (err) {
-        res.send(err);
-    }
+    //     });
+    // } catch (err) {
+    //     res.send(err);
+    // }
 })
 
 //INITIALCATEGORYSTATE - update JSON file of initialState good category
 router.get("/categories/updateJsonFile", async function(req, res, next) {
-    try {
-        Category.find({}, {title: 1, _id: 0}, {}, async function(err, listOfGoodCats){
-            if (err) return next(err);
+    // try {
+    //     Category.find({}, {title: 1, _id: 0}, {}, async function(err, listOfGoodCats){
+    //         if (err) return next(err);
+            let listOfGoodCats = await handler.listOfGoodCatName();
             let goodCatStateArr = [];
             if (Array.isArray(listOfGoodCats) && (listOfGoodCats.length > 0)) {
                 for (let i = 0; i < listOfGoodCats.length; i++) {
-                    let goodCatTitle = listOfGoodCats[i].title;
+                    let goodCatTitle = listOfGoodCats[i];
                     goodCatStateArr.push(goodCatState(goodCatTitle));
                 };
             };
@@ -203,88 +221,90 @@ router.get("/categories/updateJsonFile", async function(req, res, next) {
                 console.log("The Javascript file which contains initial good category state is written !!!");
             });
             res.send("The Javascript file which contains initial good catefory state is updated !!!");
-        });
-    } catch (err) {
-        res.send(err);
-    }
+    //     });
+    // } catch (err) {
+    //     res.send(err);
+    // }
 })
 
 //GOOD - get a single good
-router.get("/:slug", function(req, res, next) {
-  Good.findOne({ slug: req.params.slug }).populate("comments").exec(function(err, currentlyGood){
-    if (err || !currentlyGood) return res.json({'title': 'noSlug', 'err': err});
-    console.log("currently good: ", currentlyGood);
+router.get("/:slug", async function(req, res, next) {
+    let good = await handler.findByGoodName(req.params.slug);
+    res.json(good);
+//   Good.findOne({ slug: req.params.slug }).populate("comments").exec(function(err, currentlyGood){
+//     if (err || !currentlyGood) return res.json({'title': 'noSlug', 'err': err});
+//     console.log("currently good: ", currentlyGood);
     
-    Good.find(
-        { category: currentlyGood.category },
-        {},
-        { sort: { postedTime: -1 }, limit: 10 },
-        function(err, sameCategoryGoods) {
-            if(err) return next(err);
-            // console.log("Same category good: " + sameCategoryGoods);
-            let similarGoods = [];
-            if (sameCategoryGoods && sameCategoryGoods.length > 0) {
-                for (let i = 0; i < sameCategoryGoods.length; i++) {
-                    if (sameCategoryGoods[i].title != currentlyGood.title) {
-                        similarGoods.push(sameCategoryGoods[i]);
-                    }
-                }
-            } else { similarGoods.push(currentlyGood); }
+//     Good.find(
+//         { category: currentlyGood.category },
+//         {},
+//         { sort: { postedTime: -1 }, limit: 10 },
+//         function(err, sameCategoryGoods) {
+//             if(err) return next(err);
+//             // console.log("Same category good: " + sameCategoryGoods);
+//             let similarGoods = [];
+//             if (sameCategoryGoods && sameCategoryGoods.length > 0) {
+//                 for (let i = 0; i < sameCategoryGoods.length; i++) {
+//                     if (sameCategoryGoods[i].title != currentlyGood.title) {
+//                         similarGoods.push(sameCategoryGoods[i]);
+//                     }
+//                 }
+//             } else { similarGoods.push(currentlyGood); }
             
-            Good.find(
-                {},
-                {},
-                { sort: { rating: -1 }, limit: 10 },
-                function(err, popularGoods) {
-                    if(err) return next(err);
-                    // console.log("Popular good: " + popularGoods);
-                    if (!popularGoods || popularGoods.length < 1) {
-                        popularGoods = [];
-                        popularGoods.push(currentlyGood);
-                    }
+//             Good.find(
+//                 {},
+//                 {},
+//                 { sort: { rating: -1 }, limit: 10 },
+//                 function(err, popularGoods) {
+//                     if(err) return next(err);
+//                     // console.log("Popular good: " + popularGoods);
+//                     if (!popularGoods || popularGoods.length < 1) {
+//                         popularGoods = [];
+//                         popularGoods.push(currentlyGood);
+//                     }
                     
-                    Good.find(
-                        { postedTime: { $lt: Date.now() } },
-                        {},
-                        { sort: { postedTime: -1 }, limit: 10 },
-                        function(err, recentGoods) {
-                            if(err) return next(err);
-                            // console.log("Recent Good: " + recentGoods);
+//                     Good.find(
+//                         { postedTime: { $lt: Date.now() } },
+//                         {},
+//                         { sort: { postedTime: -1 }, limit: 10 },
+//                         function(err, recentGoods) {
+//                             if(err) return next(err);
+//                             // console.log("Recent Good: " + recentGoods);
                             
-                            let goodDetail = {};
-                            goodDetail = {
-                                '_id': currentlyGood._id,
-                                'descriptionHtml': currentlyGood.descriptionHtml,
-                                'titleHtml': currentlyGood.titleHtml,
-                                'image': currentlyGood.image,
-                                'slug': currentlyGood.slug,
-                                'title': currentlyGood.title,
-                                'description': currentlyGood.description,
-                                'category': currentlyGood.category,
-                                'rating': currentlyGood.rating,
-                                'ratingAmount': currentlyGood.ratingAmount,
-                                'raterAmount': currentlyGood.raterAmount,
-                                'postedTime': currentlyGood.postedTime,
-                                'options': currentlyGood.options,
-                                'specificOptions': currentlyGood.specificOptions,
-                                'isAvailable': currentlyGood.isAvailable,
-                                'comments': currentlyGood.comments,
-                                'similarGoods': similarGoods,
-                                'popularGoods': popularGoods,
-                                'recentGoods': recentGoods,
-                                'comments': currentlyGood.comments
-                            };
-                            // console.log(goodDetail);
-                            res.json(goodDetail);
-                        }
-                    );
+//                             let goodDetail = {};
+//                             goodDetail = {
+//                                 '_id': currentlyGood._id,
+//                                 'descriptionHtml': currentlyGood.descriptionHtml,
+//                                 'titleHtml': currentlyGood.titleHtml,
+//                                 'image': currentlyGood.image,
+//                                 'slug': currentlyGood.slug,
+//                                 'title': currentlyGood.title,
+//                                 'description': currentlyGood.description,
+//                                 'category': currentlyGood.category,
+//                                 'rating': currentlyGood.rating,
+//                                 'ratingAmount': currentlyGood.ratingAmount,
+//                                 'raterAmount': currentlyGood.raterAmount,
+//                                 'postedTime': currentlyGood.postedTime,
+//                                 'options': currentlyGood.options,
+//                                 'specificOptions': currentlyGood.specificOptions,
+//                                 'isAvailable': currentlyGood.isAvailable,
+//                                 'comments': currentlyGood.comments,
+//                                 'similarGoods': similarGoods,
+//                                 'popularGoods': popularGoods,
+//                                 'recentGoods': recentGoods,
+//                                 'comments': currentlyGood.comments
+//                             };
+//                             // console.log(goodDetail);
+//                             res.json(goodDetail);
+//                         }
+//                     );
                     
-                }
-            );
-        }
-    );
+//                 }
+//             );
+//         }
+//     );
     
-  });
+//   });
  
 });
 
@@ -293,64 +313,73 @@ router.get("/categories/:title", async function(req, res, next) {
     if(!req.params.title || typeof(req.params.title) != "string") next("title is invalid");
     let title = req.params.title;
     console.log("title: ", title);
-    Category.findOne(
-        {
-            categoryType: "good",
-            title: title
-        },
-        function(err, category){
-            if(err) return next(err);
-            res.json(category);
-        }
-    );
+    let category = await handler.findByGoodCatName(title);
+    res.json(category);
+    // Category.findOne(
+    //     {
+    //         categoryType: "good",
+    //         title: title
+    //     },
+    //     function(err, category){
+    //         if(err) return next(err);
+    //         res.json(category);
+    //     }
+    // );
 })
 
 //GOOD PAGINATION - get a paginate list of goods
-router.get("/:start/:end", function(req, res, next){
-    Good.find(
-        { postedTime: { $lt: Date.now() } },
-        {},
-        { 
-            sort: { postedTime: -1 }, 
-            skip: Number(req.params.start) - 1, 
-            limit: (Number(req.params.end) - Number(req.params.start)) + 1 
-        }, 
-        function(err, listOfGoods){
-            if(err) return next(err);
-            res.json(listOfGoods);
-        }
-    );
+router.get("/:start/:end", async function(req, res, next){
+    let goodArray = await handler.findByPaginationGoods(req.params.start, req.params.end);
+    res.json(goodArray);
+    // Good.find(
+    //     { postedTime: { $lt: Date.now() } },
+    //     {},
+    //     { 
+    //         sort: { postedTime: -1 }, 
+    //         skip: Number(req.params.start) - 1, 
+    //         limit: (Number(req.params.end) - Number(req.params.start)) + 1 
+    //     }, 
+    //     function(err, listOfGoods){
+    //         if(err) return next(err);
+    //         res.json(listOfGoods);
+    //     }
+    // );
 });
 
 //GOOD CATEGORY PAGINATION - get a paginate list of good categories
-router.get("/categories/:start/:end", function(req, res, next){
-    Category.find(
-        { categoryType: "good" },
-        {},
-        { 
-            sort: { postedTime: -1 }, 
-            skip: Number(req.params.start) - 1, 
-            limit: (Number(req.params.end) - Number(req.params.start)) + 1 
-        }, 
-        function(err, listOfCategories){
-            if(err) return next(err);
-            res.json(listOfCategories);
-        }
-    );
+router.get("/categories/:start/:end", async function(req, res, next){
+    let goodCatArray = await handler.findByPaginationGoodCats(req.params.start, req.params.end);
+    res.json(goodCatArray);
+    // Category.find(
+    //     { categoryType: "good" },
+    //     {},
+    //     { 
+    //         sort: { postedTime: -1 }, 
+    //         skip: Number(req.params.start) - 1, 
+    //         limit: (Number(req.params.end) - Number(req.params.start)) + 1 
+    //     }, 
+    //     function(err, listOfCategories){
+    //         if(err) return next(err);
+    //         res.json(listOfCategories);
+    //     }
+    // );
 });
 
 //CREATE GOOD - add a new good to db
 router.post(
     "/", 
     preAuthenticate, 
-    passport.authenticate('jwt', {session: false}), 
-    function(req, res, next) {
-        Good.create(req.body.good, function (err, newGood) {
-            if (err) return next(err);
-            newGood.save();
-            console.log(newGood);
-            res.json(newGood);
-        });
+    // passport.authenticate('jwt', {session: false}), 
+    async function(req, res, next) {
+        const newGood = await handler.createNewGood(req.body.good);
+        if (!newGood || newGood == {}) return next("create fail");
+        res.json(newGood);
+        // Good.create(req.body.good, function (err, newGood) {
+        //     if (err) return next(err);
+        //     newGood.save();
+        //     console.log(newGood);
+        //     res.json(newGood);
+        // });
     }
 );
 
@@ -358,14 +387,17 @@ router.post(
 router.post(
     "/categories/", 
     preAuthenticate, 
-    passport.authenticate('jwt', {session: false}), 
-    function(req, res, next) {
-        Category.create(req.body.category, function (err, newCategory) {
-            if (err) return next(err);
-            newCategory.save();
-            console.log(newCategory);
-            res.json(newCategory);
-        });
+    // passport.authenticate('jwt', {session: false}), 
+    async function(req, res, next) {
+        const newGoodCat = await handler.createNewGoodCat(req.body.category);
+        if (!newGoodCat || newGoodCat == {}) return next("create fail");
+        res.json(newGoodCat);
+        // Category.create(req.body.category, function (err, newCategory) {
+        //     if (err) return next(err);
+        //     newCategory.save();
+        //     console.log(newCategory);
+        //     res.json(newCategory);
+        // });
     }
 );
 
@@ -373,19 +405,22 @@ router.post(
 router.put(
     "/:id", 
     preAuthenticate, 
-    passport.authenticate('jwt', {session: false}),
+    // passport.authenticate('jwt', {session: false}),
     //middleware.checkUserIdol, 
-    function(req, res, next) {
-        Good.findByIdAndUpdate(
-            req.params.id, 
-            req.body.editGood, 
-            { new: true }, 
-            function (err, editedGood) {
-                if (err) return next(err);
-                console.log(editedGood);
-                res.json(editedGood);
-            }
-        );
+    async function(req, res, next) {
+        const editedGood = await handler.editGood(req.params.id, req.body.editGood);
+        if (!editedGood || editedGood == {} || editedGood.id != req.params.id) return next("edit fail");
+        res.json(editedGood);
+        // Good.findByIdAndUpdate(
+        //     req.params.id, 
+        //     req.body.editGood, 
+        //     { new: true }, 
+        //     function (err, editedGood) {
+        //         if (err) return next(err);
+        //         console.log(editedGood);
+        //         res.json(editedGood);
+        //     }
+        // );
     }
 );
 

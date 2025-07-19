@@ -10,6 +10,9 @@ var express = require("express"),
     //multer = require("multer"),
     //request = require('request'),
     middleware = require("../middleware");
+
+const { error } = require("cli");
+var handler = require('../data_handler');
     
 const userFieldSet = 'name, link, is_verified, picture';
 const pageFieldSet = 'name, category, link, picture, is_verified';
@@ -102,31 +105,40 @@ router.post("/login", function(req, res, next){
 });
 
 //SIGNIN - matching data and user db and admin
-router.post("/login/admin", function(req, res, next){
-    passport.authenticate('local', {session: false}, (err, user, info) => {
-        if(err) return next(err);
-        console.log(user);
-        if(user) {
-            if(user.isAdmin) {
-                let modUser = {
-                    id: user._id,
-                    username: user.username,
-                    firstname: user.firstname,
-                    lastname: user.lastname
-                };
-                let token = jwt.sign(modUser, 'bukunjom');
-                return res.json({modUser, token});
-            } else {
-                let notAdminMsg = {
-                    message: "This user is not allowed to access admin part",
-                    name: "IncorrectAdminError"
-                };
-                return res.json(notAdminMsg);
-            }
-        } else {
-            return res.status(422).json(info);
-        }
-    })(req, res, next);
+router.post("/login/admin", async function(req, res, next){
+    // passport.authenticate('local', {session: false}, (err, user, info) => {
+    //     if(err) return next(err);
+    //     console.log(user);
+    //     if(user) {
+    //         if(user.isAdmin) {
+    //             let modUser = {
+    //                 id: user._id,
+    //                 username: user.username,
+    //                 firstname: user.firstname,
+    //                 lastname: user.lastname
+    //             };
+    //             let token = jwt.sign(modUser, 'bukunjom');
+    //             return res.json({modUser, token});
+    //         } else {
+    //             let notAdminMsg = {
+    //                 message: "This user is not allowed to access admin part",
+    //                 name: "IncorrectAdminError"
+    //             };
+    //             return res.json(notAdminMsg);
+    //         }
+    //     } else {
+    //         return res.status(422).json(info);
+    //     }
+    // })(req, res, next);
+    let user = await handler.login(req.body.username, req.body.password);
+    if(user == {}) return next("invalid user");
+    let modUser = {
+        "id": user.id,
+        "username": user.username,
+        "firstname": user.firstname,
+        "lastname": user.lastname
+    };
+    res.json({modUser, "token": ""});
 });
 
 //LOGOUT - sign out

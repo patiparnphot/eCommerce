@@ -183,7 +183,7 @@ export default class Header extends React.Component {
                 <div className="btn-cols">
                   <ul className="list-btn-group">
                     <li>
-                      <Link
+                      {/* <Link
                         to={{
                           pathname:"/register",
                           state:{from: this.props.location.pathname}
@@ -191,13 +191,13 @@ export default class Header extends React.Component {
                         onClick={() => this.props.toggleNavbar(false)}
                       >
                         <b>{headerTag.signup}</b>
-                      </Link>
+                      </Link> */}
                     </li>
                   </ul>
                 </div>
               </div>  
               
-              {this.renderMemberNav(member)}
+              {/* {this.renderMemberNav(member)} */}
 
               <ul className="nav navbar-nav">
 

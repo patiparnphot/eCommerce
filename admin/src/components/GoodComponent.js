@@ -16,7 +16,7 @@ function Submit(values, dispatch) {
   let editedForm = { ...values, category: category };
   editedForm.description = demo.executeSummernote("description");
   console.log('editedForm', editedForm);
-  dispatch(editGood(editedForm._id, editedForm, editedForm.token)).then((response) => {
+  dispatch(editGood(editedForm.id, editedForm, editedForm.token)).then((response) => {
     if(response.payload.slug && (response.payload.slug == editedForm.slug)) {
       console.log('editGoodResponse: ', response.payload);
       dispatch(editGoodSuccess(response.payload));
@@ -251,7 +251,10 @@ export default class GoodPage extends React.Component {
     const { data } = this.props.allCat;
     
 
-    if (loading || !token || !data) {
+    if (loading ||
+      // !token ||
+      !data
+    ) {
       return <Loader/>
     } else if (!good) {
       return <NotFoundPage/>

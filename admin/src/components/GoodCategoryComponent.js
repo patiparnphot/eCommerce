@@ -18,7 +18,7 @@ function Submit(values, dispatch) {
   editedForm.text = demo.executeSummernote("text");
   let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QzIiwiZmlyc3RuYW1lIjoiM3JkUGVvcGxlIiwibGFzdG5hbWUiOiJpc0hlcmUiLCJlbWFpbCI6IjNyZFBlb3BsZUBlbWFpbC5jb20iLCJhdmF0YXIiOiIzIHBhc3RlIGltZyBzcmMgaGVyZSIsImlzQWRtaW4iOmZhbHNlLCJhZGRyZXNzIjoiMTIzIHdvcnNoaW5ndG9uIG1hZGFnYXRnYSIsInBheXBhbCI6eyJ1c2VybmFtZSI6IjNyZHBheXBhbCJ9LCJjcmVkaXRDYXJkIjp7ImNhcmROdW1iZXIiOiIxMjM0NTY3ODkwMTIzNDU2IiwiZXhwaXJlZERhdGUiOiIxMi8yNCJ9LCJpYXQiOjE2MDUzNzMzMzd9.wfZxaBT6NWVjK6ydgVFmbLyQok2QjMZIDSeNo3rHE8E";
   console.log('editedForm', editedForm);
-  dispatch(editGoodCategory(editedForm._id, editedForm, editedForm.token)).then((response) => {
+  dispatch(editGoodCategory(editedForm.id, editedForm, editedForm.token)).then((response) => {
     if(response.payload.title && (response.payload.title == editedForm.title)) {
       console.log('editGoodCategoryResponse: ', response.payload);
       dispatch(editGoodCategorySuccess(response.payload));
@@ -207,7 +207,9 @@ export default class GoodPage extends React.Component {
     const { token } = this.props.member;
     const initialGood = { ...good, token: token };
     
-    if (loading || !token) {
+    if (loading
+      // !token
+    ) {
       return <Loader/>
     } else if (!good) {
       return <NotFoundPage/>

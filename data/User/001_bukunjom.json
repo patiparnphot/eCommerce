@@ -1,0 +1,16 @@
+{
+    "username": "bukunjom",
+    "password": "bomgeo57",
+    "firstname": "patiparn",
+    "lastname": "photchanart",
+    "email": "bom1za1210@gmail.com",
+    "telephone": "0929025757",
+    "avatar": "",
+    "isAdmin": true,
+    "address": "",
+    "paypal": "",
+    "creditCard": {
+        "cardNumber": "",
+        "expiredDate": ""
+    }
+}

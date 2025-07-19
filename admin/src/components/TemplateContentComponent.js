@@ -429,7 +429,10 @@ export default class TemplateContentPage extends React.Component {
     const { content } = this.props.activeContent;
     const { token } = this.props.member;
     
-    if (!content || !token || !this.state.alreadyFetch) {
+    if (!content ||
+      // !token ||
+      !this.state.alreadyFetch
+    ) {
       return <Loader/>
     } else {
 
