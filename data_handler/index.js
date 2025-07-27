@@ -2,6 +2,17 @@ var fs   = require( 'fs' ),
     glob = require( 'glob' ),
     path = require( 'path' );
 
+let goodCatPrototype = {
+    "options":[],
+    "features":[],
+    "id":"",
+    "title":"",
+    "titleHtml":"",
+    "descriptionHtml":"",
+    "text":"",
+    "categoryType":"good"
+}
+
 function setBlogIdFormat (blogIdInt) {
     var blogIdString = blogIdInt.toString();
     if (blogIdString.length == 3) { return blogIdString; }
@@ -525,10 +536,11 @@ module.exports = {
             var newLastestGoodCatId = await setBlogIdFormat(newLastestGoodCatIdInt);
             newGoodCatObj.id = await newLastestGoodCatId;
             newGoodCatObj.title = await newGoodCatObj.title.toLowerCase();
+            newGoodCatObj = await editJsonFile(goodCatPrototype, newGoodCatObj);
             var newGoodCatStr = await JSON.stringify(newGoodCatObj);
             console.log("newGoodCatId: ", newLastestGoodCatId);
             return new Promise((resolve, reject) => {
-                fs.writeFile("./data/GoodCat/" + newLastestGoodCatId + "_lastest_" + newGoodCatObj.slug + ".json", newGoodCatStr, function(err) {
+                fs.writeFile("./data/GoodCat/" + newLastestGoodCatId + "_lastest_" + newGoodCatObj.title + ".json", newGoodCatStr, function(err) {
 	            if(err) reject(err)
 		    var files = glob.sync("./data/GoodCat/*_lastest_**.json");
 		    console.log(files);
