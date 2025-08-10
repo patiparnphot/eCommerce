@@ -1,0 +1,25 @@
+{
+    "image": "/images/shop/img-11.jpg",
+    "descriptionHtml": "Mitsubishi heavy duty | Wall type desc html",
+    "slug": "kaze-series--non-inverter--mitsubishi-heavy-duty--wall-type",
+    "titleHtml": "KAZE Series | Non-Inverter | Mitsubishi Heavy Duty | Wall Type",
+    "title": "KAZE-series | Mitsubishi heavy duty",
+    "options": [
+        {
+            "cost": "9000",
+            "isAvailable": true,
+            "key": "9000 BTU"
+        },
+        {
+            "key": "12000 BTU",
+            "cost": "12000",
+            "isAvailable": true
+        }
+    ],
+    "description": "<p>โคตรดี โคตรทน โคตรคุ้ม</p>",
+    "category": "mitsubishi-heavy-duty--wall-type",
+    "rating": "0",
+    "ratingAmount": "0",
+    "raterAmount": "0",
+    "id": "001"
+}

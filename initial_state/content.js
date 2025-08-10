@@ -176,7 +176,7 @@ module.exports = async function() {
                   };
                   initialState.blogs.blogsList.blogs = allBlogs;
                   initialState.blogs.authorBlog.data = authorBlog;
-                  initialState.goods.recentGoods.goods = recentGoods;
+                  initialState.goods.recentGoods.goods = popularGoods;
                   initialState.goods.filterGoods.goods = popularGoods;
                   initialState.contents.index.content = indexContent;
                   initialState.contents.template.content = templateContent;

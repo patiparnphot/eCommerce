@@ -1,0 +1,16 @@
+{
+    "options": [
+        "9000 BTU",
+        "12000 BTU",
+        "15000 BTU",
+        "18000 BTU",
+        "24000 BTU"
+    ],
+    "features": [],
+    "id": "001",
+    "title": "mitsubishi-heavy-duty--wall-type",
+    "titleHtml": "Mitsubishi Heavy Duty | Wall Type",
+    "descriptionHtml": "Mitsubishi heavy duty | Wall type desc html",
+    "text": "<p>โคตรดี โคตรทน โคตรคุ้ม</p>",
+    "categoryType": "good"
+}

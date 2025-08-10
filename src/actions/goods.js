@@ -43,7 +43,7 @@ function receiver(type, json) {
 const ROOT_URL = require('../../config.json').apiLink;
 export function fetchRecentGoods() {
   return dispatch => {
-    return fetch(`${ROOT_URL}/goods/recent/`)
+    return fetch(`${ROOT_URL}/goods/popular/`)
       .then(response => response.json(), error => console.log('An error occurred.', error))
       .then(json => dispatch(receiver(FETCH_RCTGOODS, json)));
   };

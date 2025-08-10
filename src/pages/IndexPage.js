@@ -62,7 +62,7 @@ class IndexPage extends Component {
         <main id='main'>
           <Recent recent={content.recent} recentGoods={this.props.recentGoods.goods} initial={this.state.initial} setInitial={(e) => this.setState({initial: e})} memberRate={this.props.memberRate} />
           <Campaign campaign={content.campaign} />
-          <PopularOnShop popularOnShop={content.popularOnShop} memberLike={this.props.memberLike} memberRate={this.props.memberRate} />
+          {/* <PopularOnShop popularOnShop={content.popularOnShop} memberLike={this.props.memberLike} memberRate={this.props.memberRate} /> */}
           <Blogs blogs={content.blogs} />
           <Information information={content.information} />
         </main>
