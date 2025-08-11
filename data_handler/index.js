@@ -6,6 +6,7 @@ let goodCatPrototype = {
     "options":[],
     "features":[],
     "id":"",
+    "slug":"",
     "title":"",
     "titleHtml":"",
     "descriptionHtml":"",
@@ -535,12 +536,12 @@ module.exports = {
             var newLastestGoodCatIdInt = parseInt(lastestGoodCatId, 10) + 1;
             var newLastestGoodCatId = await setBlogIdFormat(newLastestGoodCatIdInt);
             newGoodCatObj.id = await newLastestGoodCatId;
-            newGoodCatObj.title = await newGoodCatObj.title.toLowerCase();
+            newGoodCatObj.slug = await newGoodCatObj.slug.toLowerCase();
             newGoodCatObj = await editJsonFile(goodCatPrototype, newGoodCatObj);
             var newGoodCatStr = await JSON.stringify(newGoodCatObj);
             console.log("newGoodCatId: ", newLastestGoodCatId);
             return new Promise((resolve, reject) => {
-                fs.writeFile("./data/GoodCat/" + newLastestGoodCatId + "_lastest_" + newGoodCatObj.title + ".json", newGoodCatStr, function(err) {
+                fs.writeFile("./data/GoodCat/" + newLastestGoodCatId + "_lastest_" + newGoodCatObj.slug + ".json", newGoodCatStr, function(err) {
 	            if(err) reject(err)
 		    var files = glob.sync("./data/GoodCat/*_lastest_**.json");
 		    console.log(files);

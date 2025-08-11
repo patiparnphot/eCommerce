@@ -23,7 +23,7 @@ function Submit(values, dispatch) {
   let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QzIiwiZmlyc3RuYW1lIjoiM3JkUGVvcGxlIiwibGFzdG5hbWUiOiJpc0hlcmUiLCJlbWFpbCI6IjNyZFBlb3BsZUBlbWFpbC5jb20iLCJhdmF0YXIiOiIzIHBhc3RlIGltZyBzcmMgaGVyZSIsImlzQWRtaW4iOmZhbHNlLCJhZGRyZXNzIjoiMTIzIHdvcnNoaW5ndG9uIG1hZGFnYXRnYSIsInBheXBhbCI6eyJ1c2VybmFtZSI6IjNyZHBheXBhbCJ9LCJjcmVkaXRDYXJkIjp7ImNhcmROdW1iZXIiOiIxMjM0NTY3ODkwMTIzNDU2IiwiZXhwaXJlZERhdGUiOiIxMi8yNCJ9LCJpYXQiOjE2MDUzNzMzMzd9.wfZxaBT6NWVjK6ydgVFmbLyQok2QjMZIDSeNo3rHE8E";
   console.log('newForm', newForm);
   dispatch(createGoodCategory(newForm, values.token)).then((response) => {
-    if(response.payload.title && (response.payload.title == newForm.title)) {
+    if(response.payload.slug && (response.payload.slug == newForm.slug)) {
       console.log('newCategoryResponse: ', response.payload);
       dispatch(createGoodCategorySuccess(response.payload));
       alert("create good category successful");
@@ -39,6 +39,9 @@ function Submit(values, dispatch) {
 
 const validate = values => {
   const errors = {}
+  if (!values.slug) {
+    errors.slug = 'Required'
+  }
   if (!values.titleHtml) {
     errors.titleHtml = 'Required'
   }
@@ -159,6 +162,7 @@ class CreateGoodClass extends React.Component {
     const {
       handleSubmit,
       submitting,
+      placeholderSlug,
       placeholderTitleHtml,
       placeholderDescHtml,
       placeholderTitle,
@@ -171,6 +175,7 @@ class CreateGoodClass extends React.Component {
           <h4>SEO</h4>
           <Field name="titleHtml" type="text" label={placeholderTitleHtml} component={renderField} />
           <Field name="descriptionHtml" type="text" label={placeholderDescHtml} component={renderField} />
+          <Field name="slug" type="text" label={placeholderSlug} component={renderField} />
         </div>
         <div className="col-sm-12" style={{backgroundColor: "white", margin: "10px"}}>
           <h4>PRODUCT CATEGORY INFO.</h4>
@@ -221,9 +226,10 @@ export default class CreateGood extends React.Component {
           <h4>CREATE PRODUCT CATEGORY</h4>
           <span>( * = Required field )</span>
           <CreateGoodForm
+            placeholderSlug="SLUG* (no spacebar and /)"
             placeholderTitleHtml="SEO Title*"
             placeholderDescHtml="Meta Description*"
-            placeholderTitle="TITLE* (no spacebar and /)"
+            placeholderTitle="TITLE*"
             placeholderText="DESCRIPTION"
             initialValues={{token: token}}
             formButton="Confirm"

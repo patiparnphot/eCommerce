@@ -186,30 +186,30 @@ router.get("/updateJsonFile", async function(req, res, next) {
 //INITIALCATEGORYSTATE - update JSON file of initialState good category
 router.get("/categories/updateJsonFile", async function(req, res, next) {
     // try {
-    //     Category.find({}, {title: 1, _id: 0}, {}, async function(err, listOfGoodCats){
+    //     Category.find({}, {slug: 1, _id: 0}, {}, async function(err, listOfGoodCats){
     //         if (err) return next(err);
             let listOfGoodCats = await handler.listOfGoodCatName();
             let goodCatStateArr = [];
             if (Array.isArray(listOfGoodCats) && (listOfGoodCats.length > 0)) {
                 for (let i = 0; i < listOfGoodCats.length; i++) {
-                    let goodCatTitle = listOfGoodCats[i];
-                    goodCatStateArr.push(goodCatState(goodCatTitle));
+                    let goodCatSlug = listOfGoodCats[i];
+                    goodCatStateArr.push(goodCatState(goodCatSlug));
                 };
             };
             let finalGoodCatStateArr = await Promise.all(goodCatStateArr);
-            let goodCatStateJS = `module.exports = function(goodCatTitle) { `;
+            let goodCatStateJS = `module.exports = function(goodCatSlug) { `;
             for (let j = 0; j < finalGoodCatStateArr.length; j++) {
                 if (j == 0) {
-                    goodCatStateJS += `if ( goodCatTitle == `;
+                    goodCatStateJS += `if ( goodCatSlug == `;
                 } else {
-                    goodCatStateJS += `else if ( goodCatTitle == `;
+                    goodCatStateJS += `else if ( goodCatSlug == `;
                 }
-                goodCatStateJS += JSON.stringify(finalGoodCatStateArr[j].title);
+                goodCatStateJS += JSON.stringify(finalGoodCatStateArr[j].slug);
                 goodCatStateJS += ` ) { return `;
                 goodCatStateJS += JSON.stringify(finalGoodCatStateArr[j].state);
                 goodCatStateJS += `; } `;
             };
-            goodCatStateJS += `else { return {"title": "noTitle"}; } }`;
+            goodCatStateJS += `else { return {"title": "noSlug"}; } }`;
             if (fs.existsSync("./initial_state/initialGoodCatState.js")) {
                 fs.unlink("./initial_state/initialGoodCatState.js", function(err) {
                     if (err) return next(err);
@@ -309,11 +309,11 @@ router.get("/:slug", async function(req, res, next) {
 });
 
 //ACTIVE GOOD CATEGORY - get a single good category
-router.get("/categories/:title", async function(req, res, next) {
-    if(!req.params.title || typeof(req.params.title) != "string") next("title is invalid");
-    let title = req.params.title;
-    console.log("title: ", title);
-    let category = await handler.findByGoodCatName(title);
+router.get("/categories/:slug", async function(req, res, next) {
+    if(!req.params.slug || typeof(req.params.slug) != "string") next("slug is invalid");
+    let slug = req.params.slug;
+    console.log("slug: ", slug);
+    let category = await handler.findByGoodCatName(slug);
     res.json(category);
     // Category.findOne(
     //     {
