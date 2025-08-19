@@ -50,86 +50,88 @@ export default function Intro({intro}) {
 function Slideshow({items}) {
   return items.map((item) => {
     return (
-      <div className="item">
-        <div className="container">
-          <div className="row">
-            <div className="col-sm-12 col-md-5 hidden-xs hidden-sm">
-              <h2 className="header text-uppercase text-blue">{item.header}</h2>
-              <p>{item.description}</p>
-              <span className="btn-panel">
-                <span className="sdw-wrap">
-                  {
-                    (
-                      !item.btnLink || (item.btnLink == "")
-                    ) ? (
-                      <span></span>
-                    ) : (
-                      <a href={item.link} className="sdw-hover btn btn-lg btn-material btn-default">
-                        <span className="body">{item.btnLink}</span>
-                      </a>
-                    )
-                  }
-                </span>
-              </span>
-            </div>
-            <div className="col-xs-10 col-xs-offset-1 col-md-7 col-md-offset-0">
-              {
-                (
-                  !item.image || (item.image == "")
-                ) ? (
-                  <div></div>
-                ) : (
-                  <div className="img">
-                    <img src={item.image} alt=""/>
-                  </div>
-                )
-              }
-              {
-                (
-                  !item.campaign || (item.campaign == "")
-                ) ? (
-                  <span></span>
-                ) : (
-                  <span className="sale-badge bg-green text-uppercase">
-                    {item.campaign}
+      <a href={item.link}>
+        <div className="item">
+          <div className="container">
+            <div className="row">
+              <div className="col-sm-12 col-md-5 hidden-xs hidden-sm">
+                <h2 className="header text-uppercase text-blue">{item.header}</h2>
+                <p>{item.description}</p>
+                <span className="btn-panel">
+                  <span className="sdw-wrap">
+                    {
+                      (
+                        !item.btnLink || (item.btnLink == "")
+                      ) ? (
+                        <span></span>
+                      ) : (
+                        <a href={item.link} className="sdw-hover btn btn-lg btn-material btn-default">
+                          <span className="body">{item.btnLink}</span>
+                        </a>
+                      )
+                    }
                   </span>
-                )
-              }
-              <span className="price hidden-xs">
+                </span>
+              </div>
+              <div className="col-xs-10 col-xs-offset-1 col-md-7 col-md-offset-0">
                 {
                   (
-                    !item.tag || (item.tag == "")
+                    !item.image || (item.image == "")
+                  ) ? (
+                    <div></div>
+                  ) : (
+                    <div className="img">
+                      <img src={item.image} alt=""/>
+                    </div>
+                  )
+                }
+                {
+                  (
+                    !item.campaign || (item.campaign == "")
                   ) ? (
                     <span></span>
                   ) : (
-                    <span className="wrap text-red">
-                      {item.tag}
+                    <span className="sale-badge bg-green text-uppercase">
+                      {item.campaign}
                     </span>
                   )
                 }
-              </span>
-              <span className="text-center visible-xs">
-                {
-                  (
-                    !item.tag || (item.tag == "")
-                  ) ? (
-                    <span></span>
-                  ) : (
-                    <span className="sdw-wrap">
-                      <a href={item.link} className="sdw-hover btn btn-lg btn-material btn-primary">
-                        <i className="icon icofont icofont-basket"></i>
-                        <span className="body">
-                          {item.tag}
-                        </span>
-                      </a>
-                    </span> 
-                  )
-                }
-              </span>
+                <span className="price hidden-xs">
+                  {
+                    (
+                      !item.tag || (item.tag == "")
+                    ) ? (
+                      <span></span>
+                    ) : (
+                      <span className="wrap text-red">
+                        {item.tag}
+                      </span>
+                    )
+                  }
+                </span>
+                <span className="text-center visible-xs">
+                  {
+                    (
+                      !item.tag || (item.tag == "")
+                    ) ? (
+                      <span></span>
+                    ) : (
+                      <span className="sdw-wrap">
+                        <a href={item.link} className="sdw-hover btn btn-lg btn-material btn-primary">
+                          <i className="icon icofont icofont-basket"></i>
+                          <span className="body">
+                            {item.tag}
+                          </span>
+                        </a>
+                      </span> 
+                    )
+                  }
+                </span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </a>
     );
   });
 }
