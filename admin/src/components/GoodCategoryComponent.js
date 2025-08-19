@@ -170,10 +170,10 @@ class EditGoodClass extends React.Component {
         </div>
         <div className="col-sm-12" style={{backgroundColor: "white", margin: "10px"}}>
           <h4>PRODUCT CATEGORY INFO.</h4>
-          <Field name="title" type="text" label={placeholderTitle} component={renderField} />
+          {/* <Field name="title" type="text" label={placeholderTitle} component={renderField} /> */}
           <Field name="text" type="textarea" label={placeholderText} component={renderField} />
-          <FieldArray name="options" component={renderOptions} />
-          <FieldArray name="features" component={renderFeatures} />
+          {/* <FieldArray name="options" component={renderOptions} />
+          <FieldArray name="features" component={renderFeatures} /> */}
         </div>
         <button type="submit" style={{backgroundColor: "orange"}} disabled={ submitting }>{formButton}</button>
       </form>

@@ -47,13 +47,13 @@ export default class GoodCategories extends React.Component {
             {goodCategory.title}
           </div>
           <div className="col-sm-4">
-            <Link to={"/admin/goodCategories/edit/" + goodCategory.title}>Edit</Link>
+            <Link to={"/admin/goodCategories/edit/" + goodCategory.slug}>Edit</Link>
           </div>
           <div className="col-sm-4" style={{color: 'black'}}>
             <button
               style = {{backgroundColor: "orange", color: "white"}}
               onClick = {
-                () => this.props.deleteGoodCategory(goodCategory.title, this.props.member.token, this.state.start, this.state.end)
+                () => this.props.deleteGoodCategory(goodCategory.slug, this.props.member.token, this.state.start, this.state.end)
               }
             >
               Delete

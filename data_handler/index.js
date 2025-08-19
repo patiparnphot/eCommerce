@@ -642,6 +642,47 @@ module.exports = {
             }
         }
     },
+    async editGoodCat(goodId, editedForm){
+        if (!goodId && !editedForm) {
+            return {};
+        }
+        var goodIdInt = await parseInt(goodId, 10);
+        var editGoodId = await setBlogIdFormat(goodIdInt);
+        editedForm.id = editGoodId;
+        var files = await glob.sync("./data/GoodCat/" + editGoodId + "*.json");
+        if (!files || files.length == 0) {
+            return false;
+        } else {
+            var wannaEditStr = await callJsonFileByGoodCatId(editGoodId);
+            if (!wannaEditStr) return {};
+            var wannaEditJson = JSON.parse(wannaEditStr);
+            var editedGood = await editJsonFile(wannaEditJson, editedForm);
+            if (!editedGood || editedGood == {}) return {};
+            editedGood.slug = await editedGood.slug.toLowerCase();
+            var editedGoodStr = JSON.stringify(editedGood);
+            if (wannaEditJson.slug == editedForm.slug) {
+                return new Promise((resolve, reject) => {
+                    fs.writeFile(path.resolve(files[0]), editedGoodStr, "utf8", async (err) => {
+                        if(err) reject(err)
+                        else resolve(editedGood)
+                    })
+                })
+            } else {
+                var newPathFile = await editBlogName(files[0], editedForm.slug.toLowerCase());
+                return new Promise((resolve, reject) => {
+                    fs.writeFile(path.resolve(newPathFile), editedBlogStr, "utf8", async (err) => {
+                        if(err) reject(err)
+                        else {
+                            fs.unlink(path.resolve(files[0]), async (err) => {
+                                if(err) reject(err)
+                                else resolve(editedGood);
+                            });
+                        }
+                    })
+                })
+            }
+        }
+    },
     howManyBlogs: function(){
         var files = glob.sync("./data/Blog/*.json");
         return files.length;
