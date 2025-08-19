@@ -249,14 +249,14 @@ function Goods({goods, optionState, features, memberRate}){
                 <span>
                   {good.brand}
                 </span>
-                <div className="rate">
+                {/* <div className="rate">
                   <ul className="stars">
                     <Stars rating={good.rating}/>
                   </ul>
                   <div className="rate-info">
                     {`${good.raterAmount} ${memberRate}`} 
                   </div>
-                </div>
+                </div> */}
                 {
                   (
                     !good.campaign
@@ -307,14 +307,14 @@ function Goods({goods, optionState, features, memberRate}){
                       <span>
                         {good.brand}
                       </span>
-                      <div className="rate">
+                      {/* <div className="rate">
                         <ul className="stars">
                           <Stars rating={good.rating}/>
                         </ul>
                         <div className="rate-info">
                           {`${good.raterAmount} ${memberRate}`} 
                         </div>
-                      </div>
+                      </div> */}
                       {
                         (
                           !good.campaign
