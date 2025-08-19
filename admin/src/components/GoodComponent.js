@@ -15,6 +15,9 @@ let category = "";
 function Submit(values, dispatch) {
   let editedForm = { ...values, category: category };
   editedForm.description = demo.executeSummernote("description");
+  for (let i = 0; i < editedForm.options.length; i++) {
+    editedForm.options[i].description = demo.executeSummernote("options"+i+"description");
+  }
   console.log('editedForm', editedForm);
   dispatch(editGood(editedForm.id, editedForm, editedForm.token)).then((response) => {
     if(response.payload.slug && (response.payload.slug == editedForm.slug)) {
@@ -68,6 +71,10 @@ const validate = values => {
         optionErrors.cost = 'Required'
         optionsArrayErrors[optionIndex] = optionErrors
       }
+      // if (!option || !option.description) {
+      //   optionErrors.description = 'Required'
+      //   optionsArrayErrors[optionIndex] = optionErrors
+      // }
       // if (!option || !option.aroma) {
       //   optionErrors.aroma = 'Required'
       //   optionsArrayErrors[optionIndex] = optionErrors
@@ -92,8 +99,20 @@ const validate = values => {
   return errors
 }
 
+function hasSpecificFormat(str) {
+  // The regular expression to check for the format <some text>[<some integer>].<some text>
+  const regex = /.+\[\d+]\..+/;
+  
+  // The test() method returns true if the string matches the regex, and false otherwise.
+  return regex.test(str);
+}
+
 const renderField = ({ input, label, choices, type, meta: { touched, error } }) => {
   if (type == "textarea") {
+    if (hasSpecificFormat(input.name)) {
+      // input.name = input.name.replace(/\[\d+]\./, '');
+      input.name = input.name.replace(/[\[\].]/g, '');
+    }
     return (
       <div>
         <label>{label}</label>
@@ -125,35 +144,108 @@ const renderField = ({ input, label, choices, type, meta: { touched, error } }) 
   }
 }
 
-const renderOptions = ({fields, allCat, cat, meta: {error, submitFailed}}) => {
+const renderOptions = ({fields, allCat, cat, placeholderDesc, initialOptions, meta: {error, submitFailed}}) => {
   if(cat != "") {
     let targetIndex = allCat.map((cat, i) => [i, cat])
-      .filter(x => x[1].title == cat)[0][0];
+      .filter(x => x[1].slug == cat)[0][0];
     let options = allCat[targetIndex].options;
     let features = allCat[targetIndex].features;
+
+    function removeField(index) {
+      fields.remove(index);
+    }
+
     return (
       <ul>
         <li>
-          <button type="button" style={{backgroundColor: "lightgreen"}} onClick={() => fields.push({})}>
+          <button
+            type="button"
+            style={{backgroundColor: "lightgreen"}}
+            onClick={() => {
+              fields.push({})
+            }}
+          >
             Add Option
           </button>
           {submitFailed && error && <span>{error}</span>}
         </li>
-        {fields.map((field, index) => (
-          <li key={index}>
-            <button type="button" style={{backgroundColor: "orange"}} title="Remove Option" onClick={() => fields.remove(index)}>X</button>
-            <h4>OPTION #{index + 1}</h4>
-            <Field name={`${field}.key`} type="select" choices={options} label="OPTION*" component={renderField}/>
-            <Field name={`${field}.cost`} type="number" label="COST*" component={renderField}/>
-            {features.map((feature) => {
-              return (
-                <Field name={`${field}.${feature.name}`} type="number" label={feature.name} component={renderField}/>
-              );
-            })}
-            <Field name={`${field}.isAvailable`} type="checkbox" label="AVAILABLE*" component={renderField} />
-          </li>
-        ))}
+        {fields.map((field, index) => {
+          if (initialOptions && index < initialOptions.length) {
+            return (
+              <OptionDetail
+                field={field}
+                index={index}
+                options={options}
+                features={features}
+                placeholderDesc={placeholderDesc}
+                removeField={removeField}
+                initialOption={initialOptions[index]}
+              />
+            )
+          } else {
+            return (
+              <OptionDetail
+                field={field}
+                index={index}
+                options={options}
+                features={features}
+                placeholderDesc={placeholderDesc}
+                removeField={removeField}
+              />
+            )
+          }
+        })}
       </ul>
+    );
+  }
+}
+
+class OptionDetail extends React.Component {
+
+  constructor(props) {
+    super(props);
+  }
+
+  componentDidMount() {
+    
+    if (this.props && this.props.field && this.props.initialOption && this.props.initialOption.description) {
+      // $(document).ready(function() {
+        // Summernote editor
+        demo.initSummernote(`${this.props.field.replace(/[\[\]]/g, '')}description`, this.props.initialOption.description);
+      // });
+    } else if (this.props && this.props.field) {
+      // $(document).ready(function() {
+        // Summernote editor
+        demo.initSummernote(`${this.props.field.replace(/[\[\]]/g, '')}description`);
+      // });
+    }
+  }
+
+  render() {
+
+    const {
+      field,
+      index,
+      options,
+      features,
+      placeholderDesc,
+      removeField
+    } = this.props;
+
+    return (
+      <li key={index}>
+        <button type="button" style={{backgroundColor: "orange"}} title="Remove Option" onClick={() => removeField(index)}>X</button>
+        <h4>OPTION #{index + 1}</h4>
+        <Field name={`${field}.key`} type="select" choices={options} label="OPTION*" component={renderField}/>
+        <Field name={`${field}.cost`} type="number" label="COST*" component={renderField}/>
+        <Field name={`${field}.description`} type="textarea" label={placeholderDesc} component={renderField} />
+        {features.map((feature) => {
+          return (
+            <Field name={`${field}.${feature.name}`} type="number" label={feature.name} component={renderField}/>
+          );
+        })}
+        <Field name={`${field}.isAvailable`} type="checkbox" label="AVAILABLE*" component={renderField} />
+      </li>
     );
   }
 }
@@ -189,7 +281,8 @@ class EditGoodClass extends React.Component {
       placeholderDesc,
       allCat,
       cat,
-      formButton
+      formButton,
+      initialValues
     } = this.props;
     console.log("category: ", cat);
     return (
@@ -205,7 +298,7 @@ class EditGoodClass extends React.Component {
           <Field name="title" type="text" label={placeholderTitle} component={renderField} />
           <Field name="image" type="text" label={placeholderImage} component={renderField} />
           <Field name="description" type="textarea" label={placeholderDesc} component={renderField} />
-          <FieldArray name="options" component={renderOptions} allCat={allCat} cat={cat} />
+          <FieldArray name="options" component={renderOptions} allCat={allCat} cat={cat} placeholderDesc={placeholderDesc} initialOptions={initialValues.options} />
           <FieldArray name="specificOptions" component={renderSpecificOptions} />
         </div>
         <button type="submit" style={{backgroundColor: "orange"}} disabled={ submitting }>{formButton}</button>
@@ -275,7 +368,7 @@ export default class GoodPage extends React.Component {
               onChange={(e) => this.setState({category: e.target.value})}
             >
               {data.map((cat) => {
-                return (<option value={cat.title}>{cat.title}</option>);
+                return (<option value={cat.slug}>{cat.title}</option>);
               })}
             </select>
           </div>
@@ -298,10 +391,11 @@ export default class GoodPage extends React.Component {
       });
       category = this.state.category;
       let targetIndex = data.map((cat, i) => [i, cat])
-        .filter(x => x[1].title == this.state.category)[0][0];
+        .filter(x => x[1].slug == this.state.category)[0][0];
       let features = [];
       features.push("key");
       features.push("cost");
+      features.push("description");
       features.push("isAvailable");
       data[targetIndex].features.forEach((feature) => {
         features.push(feature.name);

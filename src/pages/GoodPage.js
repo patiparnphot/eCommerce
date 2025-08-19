@@ -40,6 +40,7 @@ function GoodPage ({
   const [goodSlugHistory, setGoodSlugHistory] = React.useState(slug);
   const [cost, setCost] = React.useState("");
   const [option, setOption] = React.useState("");
+  const [optionDesc, setOptionDesc] = React.useState("");
   const [available, setAvailable] = React.useState(true);
   const [specificOption, setSpecificOption] = React.useState("");
   const [amount, setAmount] = React.useState(1);
@@ -58,6 +59,7 @@ function GoodPage ({
     if(activeGood.good && (activeGood.good.title != "noSlug") && (initial == "loading")) {
       setCost(activeGood.good.options[0].cost);
       setOption(activeGood.good.options[0].key);
+      setOptionDesc(activeGood.good.options[0].description);
       setAvailable(activeGood.good.options[0].isAvailable);
       if(activeGood.good.specificOptions && activeGood.good.specificOptions.length) {
         setSpecificOption(activeGood.good.specificOptions[0]);
@@ -95,6 +97,7 @@ function GoodPage ({
     if (option) {
       setOption(option.key);
       setCost(option.cost);
+      setOptionDesc(option.description);
       setAvailable(option.isAvailable);
     }
   }
@@ -210,6 +213,7 @@ function GoodPage ({
                     good={activeGood.good}
                     cost={cost}
                     option={option}
+                    optionDesc={optionDesc}
                     available={available}
                     selectOption={selectOption}
                     specificOption={specificOption}
@@ -319,6 +323,7 @@ function GoodDetail({
   good,
   cost,
   option,
+  optionDesc,
   available,
   selectOption,
   specificOption,
@@ -431,9 +436,9 @@ function GoodDetail({
           <div class="col-md-7">
             <h1 class="comp-header st-12 text-uppercase text-blue">
               {good.title}
-              <span class="text-dark">
-                {good.category}
-              </span>
+              <br/>
+              <br/>
+              <div class="text-dark" dangerouslySetInnerHTML={getHTML(good.description)} />
               <span class="text-dark">
                 {good.brand}
               </span>
@@ -441,7 +446,7 @@ function GoodDetail({
           </div>
         </div>
         <div class="divider-dotted"></div>
-        <div class="row price-pan">
+        {/* <div class="row price-pan">
           <div class="col-md-12">
             <span class="head">{content.price}</span>
             <span class="price">
@@ -479,7 +484,7 @@ function GoodDetail({
             </div>
           </div>
         </div>
-        <div class="divider-dotted"></div>
+        <div class="divider-dotted"></div> */}
         <div class="row set-panel">
 
           {
@@ -515,7 +520,7 @@ function GoodDetail({
           }
 
         </div>
-        <div class="row">
+        {/* <div class="row">
           <div class="col-xs-12">
             <div class="buy-btn-panel bg-blue">
               <div class="cart-icon">
@@ -529,40 +534,39 @@ function GoodDetail({
                     <b>{content.notAvailable}</b>
                   </div>
                 ) : (
-                  // (
-                  //   member && member.token
-                  // ) ? (
-                  //   <div class="btns-wrap btn-material bg-white">
-                  //     <span class="qnt-select">
-                  //       <span class="plus" onClick={increaseAmount}>
-                  //         <i class="icofont icofont-plus"></i>
-                  //       </span>
-                  //       <span class="view-sum">
-                  //         {amount}
-                  //       </span>
-                  //       <span class="minus" onClick={decreaseAmount}>
-                  //         <i class="icofont icofont-minus"></i>
-                  //       </span>
-                  //     </span>
-                  //     <a class="text-blue" href="#" onClick={() => addToCart(good)}>{content.putInCart}</a>
-                  //   </div>
-                  // ) : (
+                  (
+                    member && member.token
+                  ) ? (
                     <div class="btns-wrap btn-material bg-white">
-                      ติดต่อเรา
-                      {/* <Link to={{pathname:"/signin", state:{from: location.pathname}}}><b>
+                      <span class="qnt-select">
+                        <span class="plus" onClick={increaseAmount}>
+                          <i class="icofont icofont-plus"></i>
+                        </span>
+                        <span class="view-sum">
+                          {amount}
+                        </span>
+                        <span class="minus" onClick={decreaseAmount}>
+                          <i class="icofont icofont-minus"></i>
+                        </span>
+                      </span>
+                      <a class="text-blue" href="#" onClick={() => addToCart(good)}>{content.putInCart}</a>
+                    </div>
+                  ) : (
+                    <div class="btns-wrap btn-material bg-white">\
+                      <Link to={{pathname:"/signin", state:{from: location.pathname}}}><b>
                         {content.beforeBuy}
-                      </b></Link> */}
+                      </b></Link>
                     </div>
                   // )
                 )
               }
             </div>
           </div>
-        </div>
+        </div> */}
         <div class="row description">
           <div class="col-xs-12">
             <h2 class="header">{content.description}</h2>
-            <div dangerouslySetInnerHTML={getHTML(good.description)} />
+            <div dangerouslySetInnerHTML={getHTML(optionDesc)} />
           </div>
         </div>
           
