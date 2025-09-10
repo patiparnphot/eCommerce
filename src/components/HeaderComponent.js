@@ -22,7 +22,7 @@ export default class Header extends React.Component {
         <li>
           <div className="wrap">
             <div className="image">
-              <img src={good.image} alt=""/>
+              <img src={good.images[0]} alt=""/>
             </div>
             <div className="caption">
               <span className="comp-header st-1 text-uppercase">

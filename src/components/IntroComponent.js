@@ -12,14 +12,14 @@ export default function Intro({intro}) {
       center     : true,
       smartSpeed : 1000,
       items      : true,
-      nav        : true,
-      navText    : ['<span class="arrow-left icofont icofont-curved-left">', '<span class="arrow-right icofont icofont-curved-right">'],
+      // nav        : true,
+      // navText    : ['<span class="arrow-left icofont icofont-curved-left">', '<span class="arrow-right icofont icofont-curved-right">'],
       responsive: {
         0:{
           dots : false
         },
         992:{
-          dots : true
+          dots : false
         }
       }
     });
@@ -96,7 +96,7 @@ function Slideshow({items}) {
                     </span>
                   )
                 }
-                <span className="price hidden-xs">
+                {/* <span className="price hidden-xs">
                   {
                     (
                       !item.tag || (item.tag == "")
@@ -126,7 +126,7 @@ function Slideshow({items}) {
                       </span> 
                     )
                   }
-                </span>
+                </span> */}
               </div>
             </div>
           </div>

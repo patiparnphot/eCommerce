@@ -144,7 +144,7 @@ function CFGoods({goods}) {
       <div class="item">
 
         <div class="product">
-          <img src={good.image} alt=""/>
+          <img src={good.images[0]} alt=""/>
           <span class="comp-header st-8 text-uppercase">
             {good.title}
             <span>

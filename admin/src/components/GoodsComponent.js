@@ -53,12 +53,12 @@ export default class Goods extends React.Component {
       return (
         <div key={good.title} className={"col-lg-4 col-md-6 blog-item filter-" + good.category}>
           <div className="blog-wrap">
-            <img src={ good.image } className="img-fluid" alt="" />
+            <img src={ good.images[0] } className="img-fluid" alt="" />
             <div className="blog-info">
               <h4><Link to={"/admin/goods/edit/" + good.slug}>{ good.title }</Link></h4>
               <p>{good.category}</p>
               <div>
-                <a href={ good.image } data-lightbox="blog" data-title={ good.title } className="link-preview" title="Preview">
+                <a href={ good.images[0] } data-lightbox="blog" data-title={ good.title } className="link-preview" title="Preview">
                   <i className="now-ui-icons media-1_album"></i>
                 </a>
                 <Link to={"/admin/goods/edit/" + good.slug} className="link-details" title="More Details">

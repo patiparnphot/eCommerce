@@ -1,0 +1,49 @@
+{
+    "titleHtml": "HARU Series | Inverter | Mitsubishi Heavy Duty | Wall Type",
+    "descriptionHtml": "Mitsubishi heavy duty | Wall type desc html",
+    "slug": "haru-series--inverter--mitsubishi-heavy-duty--wall-type",
+    "title": "HARU-series | Mitsubishi heavy duty",
+    "images": [
+        "/images/shop/haru-1.png",
+        "/images/shop/haru-2.png",
+        "/images/shop/haru-3.png"
+    ],
+    "options": [
+        {
+            "key": "รหัส 10",
+            "isAvailable": true,
+            "cost": "18990",
+            "description": "<div class=\"col-md-12\">ราคา ฿18990<small>.00</small></div>"
+        },
+        {
+            "key": "รหัส 13",
+            "cost": "21490",
+            "isAvailable": true,
+            "description": "<div class=\"col-md-12\">ราคา ฿21490<small>.00</small></div>"
+        },
+        {
+            "key": "รหัส 15",
+            "cost": "24990",
+            "isAvailable": true,
+            "description": "<div class=\"col-md-12\">ราคา ฿24990<small>.00</small></div>"
+        },
+        {
+            "key": "รหัส 18",
+            "cost": "29490",
+            "isAvailable": true,
+            "description": "<div class=\"col-md-12\">ราคา ฿29490<small>.00</small></div>"
+        },
+        {
+            "key": "รหัส 24",
+            "cost": "38590",
+            "isAvailable": true,
+            "description": "<div class=\"col-md-12\">ราคา ฿38590<small>.00</small></div>"
+        }
+    ],
+    "description": "<p><span style=\"font-family: Helvetica Neue; font-size: 1.5rem;\">ถ้าพูดถึงเครื่องปรับอากาศสัญชาติญี่ปุ่นก็คงต้องพูดถึงตระกูล Mitsubishi เป็นแน่แต่วันนี้เราจะพูดถึง Mitsubishi heavy duty ซึ่งจริงๆแล้วเป็นต้นกำเนิดของ Mitsubishi electric ก่อนที่จะแยกตัวออกมาก่อนสงครามโลกครั้งที่ 2 ด้วยซ้ำ</span></p>",
+    "category": "mitsubishi-heavy-duty--wall-type",
+    "rating": "0",
+    "ratingAmount": "0",
+    "raterAmount": "0",
+    "id": "002"
+}

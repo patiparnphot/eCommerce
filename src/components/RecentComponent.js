@@ -154,7 +154,7 @@ function Goods({goods, memberRate}) {
               }
             </div>
             <div className="image">
-              <img className="main" src={good.image} alt=""/>
+              <img className="main" src={good.images[0]} alt=""/>
             </div>
           </div>
           <div className="info">

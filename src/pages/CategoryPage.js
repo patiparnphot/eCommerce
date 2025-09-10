@@ -270,7 +270,7 @@ function Goods({goods, optionState, features, memberRate}){
                 }
               </div>
               <div className="image">
-                <img className="main" src={good.image} alt={good.descriptonHtml}/>
+                <img className="main" src={good.images[0]} alt={good.descriptonHtml}/>
               </div>
             </div>
             <div className="info">
@@ -328,7 +328,7 @@ function Goods({goods, optionState, features, memberRate}){
                       }
                     </div>
                     <div className="image">
-                      <img className="main" src={good.image} alt={good.descriptonHtml}/>
+                      <img className="main" src={good.images[0]} alt={good.descriptonHtml}/>
                     </div>
                   </div>
                   <div className="info">

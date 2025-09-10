@@ -120,7 +120,7 @@ function GoodPage ({
     let goodOrder = {
       title: good.title,
       description: good.description,
-      image: good.image,
+      image: good.images[0],
       category: good.category,
       key: option,
       specificDetail: specificOption,
@@ -424,9 +424,13 @@ function GoodDetail({
       <div class="col-sm-4 col-md-5 fix-height">
         <div class="item-gallery float-block">
           <div class="owl-carousel image">
-            <div class="item">
-              <img src={good.image} alt=""/>
-            </div>
+            {good.images.map((image) => {
+              return (
+                <div class="item">
+                  <img src={image} alt=""/>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

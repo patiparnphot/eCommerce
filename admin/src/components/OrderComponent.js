@@ -21,7 +21,7 @@ export default class OrderPage extends React.Component {
         <div class="row">
   
           <div class="col-sm-3">
-            <img src={good.image} style={{width: "70px"}}/>
+            <img src={good.images[0]} style={{width: "70px"}}/>
             <span style={{display: "inline-block", paddingLeft: "30px", position: "relative", top: "5px"}}>
               {good.title}
               <span style={{display: "block"}}>

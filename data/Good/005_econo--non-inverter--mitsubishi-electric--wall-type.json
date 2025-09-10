@@ -1,0 +1,36 @@
+{
+    "titleHtml": "Econo | Non-Inverter | Mitsubishi Electric | Wall Type",
+    "descriptionHtml": "Mitsubishi Electric (Mr.Slim) | Wall type desc html",
+    "slug": "econo--non-inverter--mitsubishi-electric--wall-type",
+    "title": "Econo | Mitsubishi Electric",
+    "images": [
+        "/images/shop/econo-1.png",
+        "/images/shop/econo-2.png"
+    ],
+    "options": [
+        {
+            "key": "รหัส 09",
+            "cost": "17500",
+            "isAvailable": true,
+            "description": "<div class=\"col-md-12\">ราคา ฿17500<small>.00</small></div>"
+        },
+        {
+            "key": "รหัส 12",
+            "cost": "20500",
+            "isAvailable": true,
+            "description": "<div class=\"col-md-12\">ราคา ฿20500<small>.00</small></div>"
+        },
+        {
+            "key": "รหัส 18",
+            "cost": "29500",
+            "isAvailable": true,
+            "description": "<div class=\"col-md-12\">ราคา ฿29500<small>.00</small></div>"
+        }
+    ],
+    "description": "<p><span style=\"font-family: Helvetica Neue; font-size: 1.5rem;\">ถ้าพูดถึงเครื่องปรับอากาศที่มีความนิยมสูงมาอย่างยาวนานแล้วละก็ใครๆก็คงต้องพูดถึง Mitsubishi Electric เป็นตัวเลือกนึงในหัวแน่นอน</span></p>",
+    "category": "mitsubishi-electric--wall-type",
+    "rating": "0",
+    "ratingAmount": "0",
+    "raterAmount": "0",
+    "id": "005"
+}

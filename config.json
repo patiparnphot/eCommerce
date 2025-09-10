@@ -1,6 +1,6 @@
 {
     "apiLink":       "/api",
-    "domainname":    "http://localhost:1210",
+    "domainname":    "https://www.patiparnair.com",
     "headScript":    "<script async src='https://www.googletagmanager.com/gtag/js?id=UA-155291561-5'></script><script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'UA-155291561-5');</script>",
     "bodyScript":    "",
     "mongodb":       "mongodb+srv://bomgeo57:bomgeo57@cluster0.w7pxj.mongodb.net/patiparnaircon?retryWrites=true&w=majority",
@@ -10,5 +10,5 @@
     "useSSL":        false,
     "userEmail":     "meatseo",
     "passEmail":     "fkebumaqqapltjaq",
-    "iconLink":      "http://localhost:1210/images/slideshow/img-01.png"
+    "iconLink":      "/images/brands/logo-white-c.png"
 }

@@ -61,6 +61,9 @@ const validate = values => {
   if (!values.image) {
     errors.image = 'Required'
   }
+  if (!values.images || !values.images.length || values.images.length == 0) {
+    errors.images = { _error: 'At least one image must be entered' }
+  }
   // if (!values.category) {
   //   errors.category = 'Required'
   // }
@@ -273,7 +276,23 @@ const renderSpecificOptions = ({fields, meta: {error, submitFailed}}) => (
         <Field name={specificOption} type="text" label={`SPECIFIC OPTION #${index + 1}*`} component={renderField}/>
       </li>
     ))}
-    {error && <li className="error">{error}</li>}
+  </ul>
+);
+
+const renderImages = ({fields, meta: {error, submitFailed}}) => (
+  <ul>
+    <li>
+      <button type="button" style={{backgroundColor: "lightgreen"}} onClick={() => fields.push()}>
+        Add Image
+      </button>
+      {submitFailed && error && <span>{error}</span>}
+    </li>
+    {fields.map((image, index) => (
+      <li key={index}>
+        <button type="button" style={{backgroundColor: "orange"}} title="Remove Image" onClick={() => fields.remove(index)}>X</button>
+        <Field name={image} type="text" label={`IMAGE #${index + 1}*`} component={renderField}/>
+      </li>
+    ))}
   </ul>
 );
 
@@ -304,7 +323,7 @@ class CreateGoodClass extends React.Component {
         <div className="col-sm-12" style={{backgroundColor: "white", margin: "10px"}}>
           <h4>PRODUCT INFO.</h4>
           <Field name="title" type="text" label={placeholderTitle} component={renderField} />
-          <Field name="image" type="text" label={placeholderImage} component={renderField} />
+          <FieldArray name="images" component={renderImages} />
           <Field name="description" type="textarea" label={placeholderDesc} component={renderField} />
           <FieldArray name="options" component={renderOptions} allCat={allCat} cat={cat} placeholderDesc={placeholderDesc} initialOptions={initialValues.options} />
           <FieldArray name="specificOptions" component={renderSpecificOptions} />

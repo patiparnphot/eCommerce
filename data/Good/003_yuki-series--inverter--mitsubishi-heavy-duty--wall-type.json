@@ -1,0 +1,48 @@
+{
+    "titleHtml": "YUKI Series | Inverter | Mitsubishi Heavy Duty | Wall Type",
+    "descriptionHtml": "Mitsubishi heavy duty | Wall type desc html",
+    "slug": "yuki-series--inverter--mitsubishi-heavy-duty--wall-type",
+    "title": "YUKI-series | Mitsubishi heavy duty",
+    "images": [
+        "/images/shop/yuki-1.png",
+        "/images/shop/yuki-2.png"
+    ],
+    "options": [
+        {
+            "key": "รหัส 10",
+            "isAvailable": true,
+            "cost": "19990",
+            "description": "<div class=\"col-md-12\">ราคา ฿19990<small>.00</small></div>"
+        },
+        {
+            "key": "รหัส 13",
+            "cost": "22590",
+            "isAvailable": true,
+            "description": "<div class=\"col-md-12\">ราคา ฿22590<small>.00</small></div>"
+        },
+        {
+            "key": "รหัส 15",
+            "cost": "28990",
+            "isAvailable": true,
+            "description": "<div class=\"col-md-12\">ราคา ฿28990<small>.00</small></div>"
+        },
+        {
+            "key": "รหัส 18",
+            "cost": "31890",
+            "isAvailable": true,
+            "description": "<div class=\"col-md-12\">ราคา ฿31890<small>.00</small></div>"
+        },
+        {
+            "key": "รหัส 24",
+            "cost": "41990",
+            "isAvailable": true,
+            "description": "<div class=\"col-md-12\">ราคา ฿41990<small>.00</small></div>"
+        }
+    ],
+    "description": "<p><span style=\"font-family: Helvetica Neue; font-size: 1.5rem;\">ถ้าพูดถึงเครื่องปรับอากาศสัญชาติญี่ปุ่นก็คงต้องพูดถึงตระกูล Mitsubishi เป็นแน่แต่วันนี้เราจะพูดถึง Mitsubishi heavy duty ซึ่งจริงๆแล้วเป็นต้นกำเนิดของ Mitsubishi electric ก่อนที่จะแยกตัวออกมาก่อนสงครามโลกครั้งที่ 2 ด้วยซ้ำ</span></p>",
+    "category": "mitsubishi-heavy-duty--wall-type",
+    "rating": "0",
+    "ratingAmount": "0",
+    "raterAmount": "0",
+    "id": "003"
+}
