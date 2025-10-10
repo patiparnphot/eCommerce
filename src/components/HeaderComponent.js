@@ -176,11 +176,19 @@ export default class Header extends React.Component {
             </div>
             <div className={`navbar-collapse ${this.props.navToggle ? "" : "collapse"}`}>
               <div className="top-panel">
-                <div className="phone text-blue">
-                  <i className="icofont icofont-phone-circle"></i>
-                  {headerTag.telephone}
-                </div>
+                <a href={`tel:+66`+headerTag.telephone}>
+                  <div className="phone text-blue">
+                    <i className="icofont icofont-phone-circle"></i>
+                    {`0`+headerTag.telephone}
+                  </div>
+                </a>
                 <div className="btn-cols">
+                  <a href="https://lin.ee/20N1HUy">
+                    <div className="phone text-blue">
+                      <i className="icofont icofont-social-line"></i>
+                      {"@295vzlqi"}
+                    </div>
+                  </a>
                   <ul className="list-btn-group">
                     <li>
                       {/* <Link
